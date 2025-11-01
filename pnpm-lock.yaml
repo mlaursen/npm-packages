@@ -27,6 +27,52 @@ importers:
         specifier: ^2.5.8
         version: 2.6.0
 
+  packages/cli:
+    dependencies:
+      '@mlaursen/copy-scss-files':
+        specifier: workspace:*
+        version: link:../copy-scss-files
+      chokidar:
+        specifier: ^4.0.3
+        version: 4.0.3
+      glob:
+        specifier: ^11.0.3
+        version: 11.0.3
+    devDependencies:
+      '@mlaursen/eslint-config':
+        specifier: workspace:*
+        version: link:../eslint-config
+      '@rollup/plugin-node-resolve':
+        specifier: ^16.0.3
+        version: 16.0.3(rollup@4.52.5)
+      '@trivago/prettier-plugin-sort-imports':
+        specifier: ^5.2.2
+        version: 5.2.2(prettier@3.6.2)
+      '@types/node':
+        specifier: ^24.9.2
+        version: 24.9.2
+      commander:
+        specifier: ^14.0.2
+        version: 14.0.2
+      concurrently:
+        specifier: ^9.2.1
+        version: 9.2.1
+      eslint:
+        specifier: ^9.39.0
+        version: 9.39.0
+      prettier:
+        specifier: ^3.6.2
+        version: 3.6.2
+      rollup:
+        specifier: ^4.52.5
+        version: 4.52.5
+      rollup-plugin-swc3:
+        specifier: ^0.12.1
+        version: 0.12.1(@swc/core@1.14.0)(rollup@4.52.5)
+      typescript:
+        specifier: ^5.9.3
+        version: 5.9.3
+
   packages/copy-scss-files:
     dependencies:
       chokidar:
