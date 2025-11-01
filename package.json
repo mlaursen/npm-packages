@@ -6,19 +6,18 @@
   "scripts": {
     "prepare": "husky",
     "turbo-s": "cross-env TURBO_NO_UPDATE_NOTIFIER=1 TURBO_TELEMETRY_DISABLED=1 turbo",
-    "format": "pnpm run turbo-s format",
-    "check-format": "pnpm run turbo-s check-format",
-    "dev": "pnpm run turbo-s dev",
-    "lint": "pnpm run turbo-s lint",
-    "lint-fix": "pnpm run turbo-s lint-fix",
-    "typecheck": "pnpm run turbo-s typecheck",
-    "typecheck-watch": "pnpm run turbo-s typecheck-watch",
-    "test": "pnpm run turbo-s test",
-    "test-renderer": "pnpm --filter react-marked-renderer test",
-    "coverage-renderer": "pnpm --filter react-marked-renderer test-coverage",
-    "clean-dist": "pnpm run turbo-s clean-dist",
+    "format": "pnpm turbo-s format",
+    "check-format": "pnpm turbo-s check-format",
+    "dev": "pnpm turbo-s dev",
+    "lint": "pnpm turbo-s lint",
+    "lint-fix": "pnpm turbo-s lint-fix",
+    "typecheck": "pnpm turbo-s typecheck",
+    "typecheck-watch": "pnpm turbo-s typecheck-watch",
+    "build": "pnpm turbo-s build",
+    "clean-dist": "pnpm turbo-s clean-dist",
+    "clean-other": "pnpm turbo-s clean",
     "clean-root": "rm -rf .turbo node_modules",
-    "clean": "pnpm run clean-dist && pnpm run clean-root"
+    "clean": "pnpm clean-other && pnpm clean-root"
   },
   "devDependencies": {
     "@trivago/prettier-plugin-sort-imports": "^5.2.2",
@@ -34,13 +33,13 @@
     ]
   },
   "engines": {
-    "node": "22.20.0",
-    "pnpm": "10.18.3"
+    "node": "24.11.0",
+    "pnpm": "10.20.0"
   },
   "engineStrict": true,
-  "packageManager": "pnpm@10.18.3",
+  "packageManager": "pnpm@10.20.0",
   "volta": {
-    "node": "22.20.0",
-    "pnpm": "10.18.3"
+    "node": "24.11.0",
+    "pnpm": "10.20.0"
   }
 }

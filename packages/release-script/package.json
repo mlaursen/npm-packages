@@ -7,12 +7,15 @@
   "author": "Mikkel Laursen <mlaursen03@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "typecheck": "tsc --noEmit",
-    "check-format": "prettier --check .",
+    "clean-dist": "rm -rf dist",
+    "clean-cache": "rm -rf .turbo  node_modules",
+    "clean": "concurrently 'pnpm clean-dist' 'pnpm clean-cache'",
     "format": "prettier --write .",
-    "clean": "rm -rf dist",
+    "check-format": "prettier --check .",
+    "typecheck": "tsc --noEmit",
+    "typecheck-watch": "tsc --noEmit --watch",
     "build": "tsc -p tsconfig.build.json",
-    "release": "tsx index.ts"
+    "dev": "concurrently 'pnpm build-types-watch' 'pnpm build-dist-watch'"
   },
   "files": [
     "dist/"
@@ -39,10 +42,8 @@
   },
   "devDependencies": {
     "@types/node": "^24.9.2",
-    "husky": "^9.1.7",
-    "lint-staged": "^16.2.6",
+    "concurrently": "^9.2.1",
     "prettier": "^3.6.2",
-    "tsx": "^4.20.6",
     "typescript": "^5.9.3"
   },
   "publishConfig": {
