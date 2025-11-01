@@ -1,0 +1,61 @@
+{
+  "name": "@mlaursen/release-script",
+  "type": "module",
+  "version": "0.0.6",
+  "description": "The release script I normally use for packages I publish to npm",
+  "repository": "https://github.com/mlaursen/release-script.git",
+  "author": "Mikkel Laursen <mlaursen03@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "prepare": "husky",
+    "typecheck": "tsc --noEmit",
+    "check-format": "prettier --check .",
+    "format": "prettier --write .",
+    "clean": "rm -rf dist",
+    "build": "tsc -p tsconfig.build.json",
+    "release": "tsx index.ts"
+  },
+  "files": [
+    "dist/"
+  ],
+  "exports": {
+    ".": "./dist/index.js",
+    "./package.json": "./package.json"
+  },
+  "bugs": {
+    "url": "https://github.com/mlaursen/release-script/issues"
+  },
+  "keywords": [
+    "release",
+    "script",
+    "npm"
+  ],
+  "dependencies": {
+    "@changesets/cli": "^2.29.7",
+    "@inquirer/confirm": "^5.1.19",
+    "@inquirer/input": "^4.2.5",
+    "@inquirer/rawlist": "^4.1.9",
+    "@octokit/core": "^7.0.6",
+    "dotenv": "^17.2.3"
+  },
+  "devDependencies": {
+    "@types/node": "^24.9.2",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.6",
+    "prettier": "^3.6.2",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "lint-staged": {
+    "**/*.{js,jsx,ts,tsx,md,yml,yaml,json}": [
+      "prettier --write"
+    ]
+  },
+  "volta": {
+    "node": "24.11.0",
+    "pnpm": "10.20.0"
+  }
+}
