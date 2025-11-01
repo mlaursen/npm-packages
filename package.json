@@ -1,0 +1,46 @@
+{
+  "name": "npm-packages",
+  "type": "module",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "prepare": "husky",
+    "turbo-s": "cross-env TURBO_NO_UPDATE_NOTIFIER=1 TURBO_TELEMETRY_DISABLED=1 turbo",
+    "format": "pnpm run turbo-s format",
+    "check-format": "pnpm run turbo-s check-format",
+    "dev": "pnpm run turbo-s dev",
+    "lint": "pnpm run turbo-s lint",
+    "lint-fix": "pnpm run turbo-s lint-fix",
+    "typecheck": "pnpm run turbo-s typecheck",
+    "typecheck-watch": "pnpm run turbo-s typecheck-watch",
+    "test": "pnpm run turbo-s test",
+    "test-renderer": "pnpm --filter react-marked-renderer test",
+    "coverage-renderer": "pnpm --filter react-marked-renderer test-coverage",
+    "clean-dist": "pnpm run turbo-s clean-dist",
+    "clean-root": "rm -rf .turbo node_modules",
+    "clean": "pnpm run clean-dist && pnpm run clean-root"
+  },
+  "devDependencies": {
+    "@trivago/prettier-plugin-sort-imports": "^5.2.2",
+    "cross-env": "^10.1.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.6",
+    "prettier": "^3.6.2",
+    "turbo": "^2.5.8"
+  },
+  "lint-staged": {
+    "**/*.{scss,js,jsx,md,yml,json,ts,tsx}": [
+      "prettier --write"
+    ]
+  },
+  "engines": {
+    "node": "22.20.0",
+    "pnpm": "10.18.3"
+  },
+  "engineStrict": true,
+  "packageManager": "pnpm@10.18.3",
+  "volta": {
+    "node": "22.20.0",
+    "pnpm": "10.18.3"
+  }
+}
