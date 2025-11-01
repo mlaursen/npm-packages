@@ -1,2 +1,3 @@
-# code-utils
-Code utils  I use when documenting or just showing code on a website.
+# npm-packages
+
+This is a for all the packages I publish under the `@mlaursen` scope.
