@@ -7,7 +7,7 @@ import {
 } from "@react-md/core/test-utils";
 import { Fragment, type ReactElement } from "react";
 
-import { RootProviders } from "@/RootProviders.tsx";
+import { RootProviders } from "@/components/RootProviders";
 
 export * from "@react-md/core/test-utils";
 export * from "@react-md/core/test-utils/vitest";

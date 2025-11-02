@@ -1,0 +1,64 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`HomePage > should render correctly 1`] = `
+<div>
+  <div
+    class="rmd-text-container"
+  >
+    <h2
+      class="rmd-typography rmd-typography--headline-2"
+    >
+      ReactMD + Next.js Starter
+    </h2>
+    <p
+      class="rmd-typography rmd-typography--body-1"
+    >
+      See
+       
+      <a
+        class="rmd-link"
+        href="https://react-md.dev"
+        target="_blank"
+      >
+        https://react-md.dev
+      </a>
+       
+      and
+       
+      <a
+        class="rmd-link"
+        href="https://nextjs.org"
+        target="_blank"
+      >
+        https://nextjs.org
+      </a>
+       
+      for more information.
+    </p>
+    <div
+      class="code-block rmd-text-primary-color rmd-dark-surface"
+    >
+      <div
+        class="code-block__scroll-container"
+      >
+        <div
+          class="code-block__pre-container"
+        >
+          <div
+            data-highlighted="false"
+            data-highlighting="true"
+          >
+            <pre
+              class="shiki"
+            >
+              <code>
+                npm install --save @mlaursen/code @react-md/core cnbuilder
+              </code>
+            </pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

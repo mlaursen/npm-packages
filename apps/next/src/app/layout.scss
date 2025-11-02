@@ -1,0 +1,8 @@
+@use "@/everything" as *;
+
+@include styles;
+@include code-styles;
+
+[class*="material-symbol-"] {
+  @include icon-use-var(font-size, size);
+}
