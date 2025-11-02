@@ -13,7 +13,7 @@ export default defineConfig({
     // I do not like having tests in the same folders as the rest of the files
     include: ["**/src/**/__tests__/*.{ts,tsx}"],
     coverage: {
-      include: ["src/**/*"],
+      include: ["src/**/*.{ts,tsx,js,jsx}"],
       exclude: ["**/{index,types,testSetup}.ts", "**/__snapshots__/**"],
     },
   },
