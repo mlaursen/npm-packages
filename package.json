@@ -27,6 +27,10 @@
     "prettier": "^3.6.2",
     "turbo": "^2.5.8"
   },
+  "resolutions": {
+    "@types/react": "^19.2.2",
+    "@types/react-dom": "^19.2.2"
+  },
   "lint-staged": {
     "**/*.{scss,js,jsx,md,yml,json,ts,tsx}": [
       "prettier --write"

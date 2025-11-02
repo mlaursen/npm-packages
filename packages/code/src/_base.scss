@@ -1,0 +1,33 @@
+////
+/// @group code.base
+////
+
+@use "code-block/code-block";
+@use "color-preview/color-preview";
+@use "inline-code/inline-code";
+@use "shiki/shiki";
+
+@mixin use-light-theme {
+  @include color-preview.use-light-theme;
+  @include inline-code.use-light-theme;
+  @include shiki.use-light-theme;
+}
+
+@mixin use-dark-theme {
+  @include color-preview.use-dark-theme;
+  @include inline-code.use-dark-theme;
+  @include shiki.use-dark-theme;
+}
+
+@mixin variables {
+  @include code-block.variables;
+  @include color-preview.variables;
+  @include inline-code.variables;
+}
+
+@mixin styles($disable-layer: false) {
+  @include code-block.styles($disable-layer);
+  @include color-preview.styles($disable-layer);
+  @include inline-code.styles($disable-layer);
+  @include shiki.styles($disable-layer);
+}

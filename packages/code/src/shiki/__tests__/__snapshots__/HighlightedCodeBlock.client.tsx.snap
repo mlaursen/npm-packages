@@ -1,0 +1,122 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`HighlightedCodeBlock > should be able to highlight code 1`] = `
+<div
+  data-highlighted="false"
+  data-highlighting="true"
+  data-testid="wrapper"
+>
+  <pre
+    class="shiki"
+  >
+    <code>
+      
+const x = 3;
+const y = "hello";
+
+    </code>
+  </pre>
+</div>
+`;
+
+exports[`HighlightedCodeBlock > should be able to highlight code 2`] = `
+<div>
+  <div
+    class="code-block rmd-text-primary-color rmd-dark-surface"
+  >
+    <div
+      class="code-block__scroll-container"
+    >
+      <div
+        class="code-block__pre-container"
+      >
+        <div
+          data-highlighted="true"
+          data-highlighting="false"
+          data-testid="wrapper"
+        >
+          <pre
+            class="shiki shiki-themes solarized-light solarized-dark code-block__pre"
+            dir="ltr"
+            style="background-color:#FDF6E3;--shiki-dark-bg:#002B36;color:#657B83;--shiki-dark:#839496"
+            tabindex="0"
+          >
+            <code>
+              <span
+                class="line"
+              />
+              
+
+              <span
+                class="line"
+              >
+                <span
+                  style="color:#586E75;--shiki-light-font-weight:bold;--shiki-dark:#93A1A1;--shiki-dark-font-weight:bold"
+                >
+                  const
+                </span>
+                <span
+                  style="color:#268BD2;--shiki-dark:#268BD2"
+                >
+                   x
+                </span>
+                <span
+                  style="color:#859900;--shiki-dark:#859900"
+                >
+                   =
+                </span>
+                <span
+                  style="color:#D33682;--shiki-dark:#D33682"
+                >
+                   3
+                </span>
+                <span
+                  style="color:#657B83;--shiki-dark:#839496"
+                >
+                  ;
+                </span>
+              </span>
+              
+
+              <span
+                class="line"
+              >
+                <span
+                  style="color:#586E75;--shiki-light-font-weight:bold;--shiki-dark:#93A1A1;--shiki-dark-font-weight:bold"
+                >
+                  const
+                </span>
+                <span
+                  style="color:#268BD2;--shiki-dark:#268BD2"
+                >
+                   y
+                </span>
+                <span
+                  style="color:#859900;--shiki-dark:#859900"
+                >
+                   =
+                </span>
+                <span
+                  style="color:#2AA198;--shiki-dark:#2AA198"
+                >
+                   "hello"
+                </span>
+                <span
+                  style="color:#657B83;--shiki-dark:#839496"
+                >
+                  ;
+                </span>
+              </span>
+              
+
+              <span
+                class="line"
+              />
+            </code>
+          </pre>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

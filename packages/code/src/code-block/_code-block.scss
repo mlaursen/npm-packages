@@ -1,0 +1,68 @@
+@use "@react-md/core" as *;
+
+$disable-everything: false !default;
+$margin: 2rem 0 !default;
+$padding: null !default;
+$pre-margin: 0 !default;
+$pre-padding: 1em !default;
+$max-height: 50rem !default;
+$tablet-max-height: min(60vh, $max-height) !default;
+
+@function maybe-var($name, $value) {
+  @return if($value, var(#{$name}, #{$value}), var(#{$name}));
+}
+
+@mixin styles($disable-layer: false) {
+  @if not $disable-everything {
+    @include optional-layer(code-block, $disable-layer) {
+      .code-block {
+        margin: maybe-var(--code-margin, $margin);
+        padding: maybe-var(--code-padding, $padding);
+        position: relative;
+        width: 100%;
+
+        &--no-tm {
+          margin-top: 0;
+        }
+
+        &__scroll-container {
+          @include interaction-outline($outline-offset: false);
+
+          max-height: maybe-var(--code-max-height, $max-height);
+          overflow: auto;
+
+          &:focus-visible,
+          &:has(:focus-visible) {
+            @include interaction-focus-styles($disable-background: true);
+          }
+
+          @include tablet-media {
+            --code-max-height: maybe-var(
+              --code-tablet-max-height,
+              $tablet-max-height
+            );
+          }
+        }
+
+        &__pre-container {
+          float: left;
+          min-width: 100%;
+          overflow: hidden;
+          position: relative;
+        }
+
+        &__pre {
+          margin: maybe-var(--code-pre-margin, $pre-margin);
+          padding: maybe-var(--code-pre-padding, $pre-padding);
+          white-space: pre;
+
+          &--wrap {
+            overflow-wrap: anywhere;
+            white-space: pre-wrap;
+            word-break: break-all;
+          }
+        }
+      }
+    }
+  }
+}

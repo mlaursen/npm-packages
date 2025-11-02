@@ -1,0 +1,40 @@
+@use "@react-md/core" as *;
+
+$disable-everything: false !default;
+$light-theme-color: $pink-600 !default;
+$dark-theme-color: $pink-400 !default;
+$color: theme-get-default-color($light-theme-color, $dark-theme-color) !default;
+
+$font-family: "Source Code Pro", Consolas, Monaco, monospace !default;
+
+@mixin use-light-theme {
+  @if not $disable-everything {
+    --code-color: #{$light-theme-color};
+  }
+}
+
+@mixin use-dark-theme {
+  @if not $disable-everything {
+    --code-color: #{$dark-theme-color};
+  }
+}
+
+@mixin styles($disable-layer: false) {
+  @if not $disable-everything {
+    @include optional-layer(inline-code, $disable-layer) {
+      .inline-code {
+        color: var(--code-color, #{$color});
+        font-family: var(--code-inline-font-family, #{$font-family});
+        font-size: 1em;
+        white-space: pre-wrap;
+
+        &--ticked {
+          &::before,
+          &::after {
+            content: "\`";
+          }
+        }
+      }
+    }
+  }
+}

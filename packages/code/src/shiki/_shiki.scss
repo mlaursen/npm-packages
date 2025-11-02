@@ -1,0 +1,53 @@
+@use "@react-md/core";
+@use "../code-block/code-block";
+
+$disable-everything: code-block.$disable-everything !default;
+$disable-theme-fonts: false !default;
+$light-mode-element: html !default;
+$light-mode-class: null !default;
+
+@mixin use-light-theme {
+  .shiki,
+  .shiki span {
+    color: var(--shiki-light) !important;
+    background-color: var(--shiki-light-bg) !important;
+
+    @if not $disable-theme-fonts {
+      font-style: var(--shiki-light-font-style) !important;
+      font-weight: var(--shiki-light-font-weight) !important;
+      text-decoration: var(--shiki-light-text-decoration) !important;
+    }
+  }
+}
+
+@mixin use-dark-theme {
+  .shiki,
+  .shiki span {
+    color: var(--shiki-dark) !important;
+    background-color: var(--shiki-dark-bg) !important;
+
+    @if not $disable-theme-fonts {
+      font-style: var(--shiki-dark-font-style) !important;
+      font-weight: var(--shiki-dark-font-weight) !important;
+      text-decoration: var(--shiki-dark-text-decoration) !important;
+    }
+  }
+}
+
+@mixin styles($disable-layer: false) {
+  @if not $disable-everything {
+    @if core.$color-scheme == system and not core.$disable-default-root-theme {
+      :root {
+        @media (prefers-color-scheme: dark) {
+          @include use-dark-theme;
+        }
+      }
+
+      @if $light-mode-class {
+        #{$light-mode-element + ":where(:not(.#{$light-mode-class}))"} {
+          @include use-light-theme;
+        }
+      }
+    }
+  }
+}
