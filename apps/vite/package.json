@@ -1,0 +1,58 @@
+{
+  "name": "vite",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "clean-dist": "rm -rf dist",
+    "clean-cache": "rm -rf .turbo node_modules",
+    "clean": "concurrently 'pnpm clean-dist' 'pnpm clean-cache'",
+    "check-format": "prettier --check .",
+    "format": "prettier --write .",
+    "lint": "eslint .",
+    "lint-fix": "pnpm lint --fix",
+    "dev": "vite",
+    "dev-compiler": "REACT_COMPILER=true vite",
+    "build": "tsc -b && vite build",
+    "build-compiler": "tsc -b && REACT_COMPILER=true vite build",
+    "test": "vitest",
+    "test-compiler": "REACT_COMPILER=true vitest",
+    "test-coverage": "vitest run --coverage",
+    "test-coverage-compiler": "pnpm test-compiler run --coverage",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@mlaursen/code": "workspace:*",
+    "@react-md/core": "^6.3.4",
+    "cnbuilder": "^3.1.0",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1"
+  },
+  "devDependencies": {
+    "@mlaursen/eslint-config": "workspace:*",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/user-event": "^14.6.1",
+    "@trivago/prettier-plugin-sort-imports": "^5.2.2",
+    "@types/node": "^24.6.0",
+    "@types/react": "^19.1.16",
+    "@types/react-dom": "^19.1.9",
+    "@vitejs/plugin-react": "^5.1.0",
+    "@vitejs/plugin-react-swc": "^4.1.0",
+    "@vitest/coverage-v8": "^4.0.6",
+    "babel-plugin-react-compiler": "^1.0.0",
+    "eslint": "^9.36.0",
+    "eslint-plugin-react-refresh": "^0.4.22",
+    "jsdom": "^27.1.0",
+    "prettier": "^3.6.2",
+    "sass-embedded": "^1.93.3",
+    "typescript": "~5.9.3",
+    "vite": "^7.1.7",
+    "vite-tsconfig-paths": "^5.1.4",
+    "vitest": "^4.0.6"
+  },
+  "volta": {
+    "node": "24.11.0",
+    "pnpm": "10.20.0"
+  }
+}

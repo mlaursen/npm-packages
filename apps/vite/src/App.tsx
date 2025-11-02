@@ -1,0 +1,32 @@
+import { HighlightedCodeBlock } from "@mlaursen/code/shiki/HighlightedCodeBlock";
+import { Link } from "@react-md/core/link/Link";
+import { TextContainer } from "@react-md/core/typography/TextContainer";
+import { Typography } from "@react-md/core/typography/Typography";
+import { type ReactElement } from "react";
+
+import { RootLayout } from "./RootLayout.tsx";
+
+export default function App(): ReactElement {
+  return (
+    <RootLayout>
+      <TextContainer>
+        <Typography type="headline-2">ReactMD + Vite Starter</Typography>
+        <Typography>
+          See{" "}
+          <Link href="https://react-md.dev" target="_blank">
+            https://react-md.dev
+          </Link>{" "}
+          and{" "}
+          <Link href="https://vite.dev" target="_blank">
+            https://vite.dev
+          </Link>{" "}
+          for more information.
+        </Typography>
+        <HighlightedCodeBlock
+          lang="shell"
+          code="npm install --save @mlaursen/code @react-md/core cnbuilder"
+        />
+      </TextContainer>
+    </RootLayout>
+  );
+}

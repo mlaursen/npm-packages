@@ -11,6 +11,7 @@
     "dev": "pnpm turbo-s dev",
     "lint": "pnpm turbo-s lint",
     "lint-fix": "pnpm turbo-s lint-fix",
+    "test-coverage": "pnpm turbo-s test-coverage",
     "typecheck": "pnpm turbo-s typecheck",
     "typecheck-watch": "pnpm turbo-s typecheck-watch",
     "build": "pnpm turbo-s build",
