@@ -1,0 +1,28 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`CopyToClipboard > should render a tooltipped button with some reasonable defaults 1`] = `
+<button
+  aria-label="Copy"
+  class="rmd-button rmd-button--icon rmd-button--small rmd-interaction-surface"
+  id="_r_0_"
+  type="button"
+>
+  <span
+    aria-hidden="true"
+    class="rmd-icon rmd-icon--symbol material-symbols-outlined"
+  >
+    content_copy
+  </span>
+</button>
+`;
+
+exports[`CopyToClipboard > should show a tooltip with a default label 1`] = `
+<span
+  class="rmd-tooltip rmd-tooltip--right rmd-tooltip--visible"
+  id="_r_2_-tooltip"
+  role="tooltip"
+  style="position: fixed; left: 24px; top: 16px;"
+>
+  Copy to clipboard
+</span>
+`;

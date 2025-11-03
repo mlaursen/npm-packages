@@ -1,10 +1,11 @@
+import type { HTMLAttributes } from "react";
 import type {
   BundledTheme,
   CodeOptionsMultipleThemes,
   TransformerOptions,
 } from "shiki";
 
-import type { CodeBlockConfigurableProps } from "../code-block/CodeBlock.js";
+import type { ConfigurableCodeBlockScrollWrappersProps } from "../code-block/CodeBlockScrollWrappers.js";
 
 export interface CodeHighlightOptions
   extends Partial<CodeOptionsMultipleThemes<BundledTheme>>,
@@ -15,8 +16,21 @@ export interface CodeHighlightOptions
 }
 
 export interface HighlightedCodeBlockProps
-  extends CodeBlockConfigurableProps,
-    CodeHighlightOptions {}
+  extends ConfigurableCodeBlockScrollWrappersProps,
+    CodeHighlightOptions {
+  /**
+   * Shiki does not have a nice way to render to react elements without complex
+   * hast traversals, so just do:
+   *
+   * ```tsx
+   * <div {...preWrapperProps} dangerouslySetInnerHTML={{ __html: code }} />
+   * ```
+   */
+  preWrapperProps?: Omit<
+    HTMLAttributes<HTMLDivElement>,
+    "children" | "dangerouslySetInnerHTML"
+  >;
+}
 
 export interface CodeHighlightState {
   html: string;

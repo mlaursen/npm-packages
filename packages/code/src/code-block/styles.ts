@@ -4,11 +4,24 @@ import { cnb } from "cnbuilder";
 
 const styles = bem("code-block");
 
-export interface ClassNameOptions {
-  className?: string;
+declare module "react" {
+  interface CSSProperties {
+    "--code-margin"?: number | string;
+    "--code-padding"?: number | string;
+    "--code-max-height"?: number | string;
+    "--code-tablet-max-height"?: number | string;
+    "--code-pre-margin"?: number | string;
+    "--code-pre-padding"?: number | string;
+  }
 }
 
-export interface CodeBlockClassNameOptions extends ClassNameOptions {
+export interface CodeBlockClassNameOptions {
+  className?: string;
+
+  /**
+   * This should be enabled if the header or preview exists above the code
+   * block.
+   */
   disableMarginTop?: boolean;
 }
 
@@ -24,20 +37,39 @@ export function codeBlock(options: CodeBlockClassNameOptions = {}): string {
   );
 }
 
+export interface CodeBlockScrollContainerClassNameOptions {
+  className?: string;
+}
+
 export function codeBlockScrollContainer(
-  options: ClassNameOptions = {}
+  options: CodeBlockScrollContainerClassNameOptions = {}
 ): string {
   const { className } = options;
   return cnb(styles("scroll-container"), className);
 }
 
-export function codeBlockPreContainer(options: ClassNameOptions = {}): string {
+export interface CodeBlockPreContainerClassNameOptions {
+  className?: string;
+}
+
+export function codeBlockPreContainer(
+  options: CodeBlockPreContainerClassNameOptions = {}
+): string {
   const { className } = options;
 
   return cnb(styles("pre-container"), className);
 }
 
-export interface CodeBlockPreClassNameOptions extends ClassNameOptions {
+export interface CodeBlockPreClassNameOptions {
+  className?: string;
+
+  /**
+   * Set to `true` to allow the code to line wrap instead of showing scrollbars.
+   * This is recommended when showing code within a limited space (like a right
+   * fixed dialog/sheet).
+   *
+   * @defaultValue `false`
+   */
   lineWrap?: boolean;
 }
 

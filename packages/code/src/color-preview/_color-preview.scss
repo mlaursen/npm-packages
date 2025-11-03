@@ -1,150 +1,223 @@
-@use "@react-md/core" as *;
+@use "@react-md/core";
 
 $disable-everything: false !default;
-$disable-icon: $icon-disable-svg and $icon-disable-font and $icon-disable-symbol !default;
-$disable-text: false !default;
-$disable-textless: false !default;
+$disable-icon: core.$icon-disable-svg and core.$icon-disable-font and
+  core.$icon-disable-symbol !default;
+$disable-tooltip: false !default;
+$disable-inline-shadowed: false !default;
 
-$offset: 0.25em !default;
-$large-offset: 50% !default;
-$border-radius: 0.25em !default;
-$inline-size: 1em !default;
-$display-size: 2.5em !default;
-$outer-width: 0.25em !default;
-$border-width: $outer-width + 0.0625em !default;
+$var-prefix: "--color-preview-" !default;
 
-$light-theme-background-color: $black !default;
-$dark-theme-background-color: $white !default;
-$background-color: theme-get-default-color(
+/// The available configurable css variables and mostly used internally for the
+/// `get-var`, `set-var`, and `use-var` utils.
+/// @type List
+$variables: (
+  color,
+  inline-size,
+  inline-margin-x,
+  inline-margin-y,
+  border-radius,
+  icon-margin-x,
+  icon-margin-y,
+  tooltip-size,
+  tooltip-x,
+  tooltip-y,
+  tooltip-transform-x,
+  tooltip-transform-x-rtl,
+  tooltip-transform-y,
+  background-color,
+  shadow-color,
+  inline-shadow-inner-width,
+  inline-shadow-outer-width,
+  tooltip-shadow-inner-width,
+  tooltip-shadow-outer-width
+);
+
+/// @param {String} name - The supported variable name
+/// @param {any} fallback [null] - An optional fallback value
+/// @returns {String} a `var()` statement
+@function get-var($name, $fallback: null) {
+  $var: $var-prefix + core.validate($variables, $name, "color-preview var");
+  @if $fallback {
+    @return var(#{$var}, #{$fallback});
+  }
+
+  @return var(#{$var});
+}
+
+/// @param {String} name - The supported variable name
+/// @param {any} value - The value to set the variable to. Supports `null` which
+/// will just be a no-op.
+@mixin set-var($name, $value) {
+  @if $value {
+    #{$var-prefix + core.validate($variables, $name, "color-preview var")}: #{$value};
+  }
+}
+
+/// @param {String} property - The css property to apply the variable to
+/// @param {String} name [$property] - The supported variable name
+/// @param {any} fallback [null] - An optional fallback value if the variable
+/// has not been set
+@mixin use-var($property, $name: $property, $fallback: null) {
+  #{$property}: get-var($name, $fallback);
+}
+
+$light-theme-background-color: core.$black !default;
+$dark-theme-background-color: core.$white !default;
+$background-color: core.get-default-color(
   $light-theme-background-color,
   $dark-theme-background-color
 ) !default;
 
-$light-theme-border-color: $white !default;
-$dark-theme-border-color: $black !default;
-$border-color: theme-get-default-color(
-  $light-theme-border-color,
-  $dark-theme-border-color
+$light-theme-shadow-color: core.$white !default;
+$dark-theme-shadow-color: core.$black !default;
+$shadow-color: core.get-default-color(
+  $light-theme-shadow-color,
+  $dark-theme-shadow-color
+) !default;
+
+$inline-size: 1rem !default;
+$inline-margin-x: core.spacing-get-var(sm) !default;
+$inline-margin-y: 0 !default;
+$border-radius: 0.25em !default;
+
+$icon-margin-x: 0 !default;
+$icon-margin-y: 0 !default;
+
+$tooltip-size: 2.5em !default;
+$tooltip-x: 50% !default;
+$tooltip-y: core.negate-var(core.spacing-get-var(xs)) !default;
+$tooltip-transform-x: calc(
+  get-var(inline-margin-x, $inline-margin-x) - 50%
+) !default;
+$tooltip-transform-x-rtl: calc(
+  50% - get-var(inline-margin-x, $inline-margin-x)
+) !default;
+$tooltip-transform-y: -100% !default;
+$tooltip-transition-duration: core.$linear-duration !default;
+
+$inline-shadow-outer-width: 0.125em !default;
+$inline-shadow-inner-width: calc(
+  get-var(inline-shadow-outer-width) + 0.0625em
+) !default;
+$tooltip-shadow-outer-width: 0.25em !default;
+$tooltip-shadow-inner-width: calc(
+  get-var(tooltip-shadow-outer-width) + 0.0625em
 ) !default;
 
 @mixin use-light-theme {
   @if not $disable-everything {
-    --color-preview-background-color: #{$black};
-    --color-preview-border-color: #{$white};
+    @include set-var(background-color, $light-theme-background-color);
+    @include set-var(shadow-color, $light-theme-shadow-color);
   }
 }
 
 @mixin use-dark-theme {
   @if not $disable-everything {
-    --color-preview-background-color: #{$white};
-    --color-preview-border-color: #{$black};
+    @include set-var(background-color, $dark-theme-background-color);
+    @include set-var(shadow-color, $dark-theme-shadow-color);
   }
 }
 
 @mixin variables {
   @if not $disable-everything {
-    --color-preview-size: #{$display-size};
-    --color-preview-large-offset: #{$large-offset};
-    --color-preview-border-radius: #{$border-radius};
-    --color-preview-inline-size: #{$inline-size};
-    --color-preview-offset: #{$offset};
-    --color-preview-outer-width: #{$outer-width};
-    --color-preview-border-width: #{$border-width};
-    --color-preview-inline-offset: #{calc(
-        var(--color-preview-inline-size) + var(--color-preview-offset) * 2
-      )};
-    --color-preview-popup-offset: negate-var(var(--color-preview-size))
-      --color-preview-popup-transform: #{calc(
-        var(--color-preview-inline-size) - var(--color-preview-large-offset)
-      )};
-    --color-preview-popup-transform-rtl: #{calc(
-        var(--color-preview-large-offset) - var(--color-preview-inline-size)
-      )};
+    @include set-var(background-color, $background-color);
+    @include set-var(shadow-color, $shadow-color);
+
+    @if not $disable-inline-shadowed {
+      @include set-var(inline-shadow-outer-width, $inline-shadow-outer-width);
+      @include set-var(inline-shadow-inner-width, $inline-shadow-inner-width);
+    }
+
+    @include set-var(border-radius, $border-radius);
+    @include set-var(inline-size, $inline-size);
+    @include set-var(inline-margin-x, $inline-margin-x);
+    @include set-var(inline-margin-y, $inline-margin-y);
+
+    @if not $disable-icon {
+      @include set-var(icon-margin-x, $icon-margin-x);
+      @include set-var(icon-margin-y, $icon-margin-y);
+    }
+
+    @if not $disable-tooltip {
+      @include set-var(tooltip-shadow-outer-width, $tooltip-shadow-outer-width);
+      @include set-var(tooltip-shadow-inner-width, $tooltip-shadow-inner-width);
+      @include set-var(tooltip-size, $tooltip-size);
+      @include set-var(tooltip-x, $tooltip-x);
+      @include set-var(tooltip-y, $tooltip-y);
+      @include set-var(tooltip-transform-x, $tooltip-transform-x);
+      @include set-var(tooltip-transform-y, $tooltip-transform-y);
+      @if not core.$disable-rtl {
+        @include set-var(tooltip-transform-x-rtl, $tooltip-transform-x-rtl);
+      }
+    }
   }
 }
 
-@mixin color-preview-box-shadow {
-  @if not $disable-everything {
-    box-shadow:
-      inset
-        0
-        0
-        0
-        var(--color-preview-outer-width)
-        var(--color-preview-background-color),
-      inset
-        0
-        0
-        0
-        var(--color-preview-border-width)
-        var(--color-preview-border-color);
-  }
+@mixin _color-preview-box-shadow($prefix) {
+  box-shadow:
+    inset 0 0 0 get-var($prefix + "-shadow-outer-width")
+      get-var(background-color),
+    inset 0 0 0 get-var($prefix + "-shadow-inner-width") get-var(shadow-color);
+}
+
+@mixin _pseudo-element-preview {
+  @include use-var(background, color);
+  @include use-var(border-radius);
+
+  content: "";
+  display: inline-block;
+  z-index: 2;
 }
 
 @mixin styles($disable-layer: false) {
   @if not $disable-everything {
-    @include optional-layer(color-preview, $disable-layer) {
+    @include core.optional-layer(color-preview, $disable-layer) {
       .color-preview {
-        display: inline-block;
+        align-items: center;
+        display: inline-flex;
+        position: relative;
+
+        &::before {
+          @include _pseudo-element-preview;
+          @include use-var(height, inline-size);
+          @include use-var(width, inline-size);
+
+          margin: get-var(inline-margin-y) get-var(inline-margin-x);
+        }
 
         @if not $disable-icon {
           &--icon {
-            @include icon-use-var(height, size);
-            @include icon-use-var(width, size);
-
-            background: var(--color-preview-color);
-            border-radius: var(--color-preview-border-radius);
+            @include set-var(inline-size, core.icon-get-var(size));
+            @include set-var(inline-margin-x, $icon-margin-x);
+            @include set-var(inline-margin-y, $icon-margin-y);
           }
         }
 
-        @if not $disable-textless {
-          &--color-only {
-            --color-preview-popup-transform: #{calc(
-                -50% - var(--color-preview-offset) / 2
-              )};
+        @if not $disable-inline-shadowed {
+          &--shadowed::before {
+            @include _color-preview-box-shadow(inline);
           }
         }
 
-        @if not $disable-text {
-          &--text {
-            padding-left: var(--color-preview-inline-offset);
-            position: relative;
-
-            &::before,
+        @if not $disable-tooltip {
+          &--tooltip {
             &::after {
-              background: var(--color);
-              border-radius: var(--color-preview-border-radius);
-              content: "";
-              display: inline-block;
-              height: var(--color-preview-inline-size);
-              pointer-events: none;
-              position: absolute;
-              top: 50%;
-              transform: translateY(-50%);
-              width: var(--color-preview-inline-size);
-              z-index: 2;
-            }
+              @include _pseudo-element-preview;
+              @include _color-preview-box-shadow(tooltip);
+              @include use-var(left, tooltip-x);
+              @include use-var(top, tooltip-y);
+              @include use-var(height, tooltip-size);
+              @include use-var(width, tooltip-size);
 
-            &::before {
-              left: var(--color-preview-offset);
-            }
-
-            &::after {
-              @include color-preview-box-shadow;
-
-              height: var(--color-preview-size);
-              left: var(--color-preview-large-offset);
               opacity: 0;
-              pointer-events: none;
               position: absolute;
-              top: var(--color-preview-popup-offset);
               transform: translate3d(
-                var(--color-preview-popup-transform),
-                -100%,
+                get-var(tooltip-transform-x),
+                get-var(tooltip-transform-y),
                 0
               );
-              transition: opacity $linear-duration;
-              width: var(--color-preview-size);
+              transition: opacity $tooltip-transition-duration;
             }
 
             &:hover::after {
@@ -153,29 +226,16 @@ $border-color: theme-get-default-color(
           }
         }
 
-        @include rtl {
-          --color-preview-popup-transform: var(
-            --color-preview-popup-transform-rtl
-          );
+        @include core.rtl {
+          @if not $disable-tooltip {
+            &--tooltip::after {
+              @include use-var(right, tooltip-x);
+              @include set-var(
+                tooltip-transform-x,
+                get-var(tooltip-transform-x-rtl)
+              );
 
-          &--color-only {
-            --color-preview-popup-transform-rtl: #{calc(
-                50% + var(--color-preview-offset) / 2
-              )};
-          }
-
-          &--text {
-            padding-left: 0;
-            padding-right: var(--color-preview-inline-offset);
-
-            &::before {
               left: auto;
-              right: var(--color-preview-offset);
-            }
-
-            &::after {
-              left: auto;
-              right: var(--color-preview-large-offset);
             }
           }
         }

@@ -15,7 +15,7 @@ const noop = (): void => {
   // do nothing
 };
 
-export function useDangerouslyRunnableCode(
+export function useDangerousCodeRunner(
   options: DangerouslyRunCodeOptions
 ): DangerouslyRunCodeResult {
   const { code, scope, onRendered = noop } = options;

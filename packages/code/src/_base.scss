@@ -2,6 +2,8 @@
 /// @group code.base
 ////
 
+@use "@react-md/core";
+
 @use "code-block/code-block";
 @use "color-preview/color-preview";
 @use "inline-code/inline-code";
@@ -20,9 +22,7 @@
 }
 
 @mixin variables {
-  @include code-block.variables;
   @include color-preview.variables;
-  @include inline-code.variables;
 }
 
 @mixin styles($disable-layer: false) {
@@ -30,4 +30,19 @@
   @include color-preview.styles($disable-layer);
   @include inline-code.styles($disable-layer);
   @include shiki.styles($disable-layer);
+
+  @if not core.$disable-default-root-theme {
+    :root {
+      @include variables;
+
+      @if core.$color-scheme ==
+        system and not
+        core.$disable-default-system-theme
+      {
+        @media (prefers-color-scheme: dark) {
+          @include use-dark-theme;
+        }
+      }
+    }
+  }
 }

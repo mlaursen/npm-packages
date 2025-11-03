@@ -1,16 +1,24 @@
-import { bem } from "@react-md/core/utils/bem";
-import { cnb } from "cnbuilder";
 import { type HTMLAttributes, type ReactElement } from "react";
 
-const styles = bem("inline-code");
+import { type InlineCodeClassNameOptions, inlineCode } from "./styles.js";
 
-export interface InlineCodeProps extends HTMLAttributes<HTMLElement> {
+export interface InlineCodeProps
+  extends HTMLAttributes<HTMLElement>,
+    InlineCodeClassNameOptions {
   as?: "kbd" | "code";
-  disableTicks?: boolean;
 }
 
 /**
  * This is used to render inline code that is surrounded by backticks.
+ *
+ * @example Simple Example
+ * ```tsx
+ * <InlineCode>pnpm add @mlaursen/code</InlineCode>
+ * <InlineCode disableTicks>pnpm add @mlaursen/code</InlineCode>
+ *
+ * <InlineCode as="kbd">Enter</InlineCode>
+ * <InlineCode as="kbd" disableTicks>Enter</InlineCode>
+ * ```
  */
 export function InlineCode(props: InlineCodeProps): ReactElement {
   const {
@@ -23,7 +31,7 @@ export function InlineCode(props: InlineCodeProps): ReactElement {
   return (
     <Component
       {...remaining}
-      className={cnb(styles({ ticked: !disableTicks }), className)}
+      className={inlineCode({ className, disableTicks })}
     />
   );
 }

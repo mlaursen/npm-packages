@@ -36,17 +36,9 @@ $light-mode-class: null !default;
 
 @mixin styles($disable-layer: false) {
   @if not $disable-everything {
-    @if core.$color-scheme == system and not core.$disable-default-root-theme {
-      :root {
-        @media (prefers-color-scheme: dark) {
-          @include use-dark-theme;
-        }
-      }
-
-      @if $light-mode-class {
-        #{$light-mode-element + ":where(:not(.#{$light-mode-class}))"} {
-          @include use-light-theme;
-        }
+    @if core.$color-scheme == system and $light-mode-class {
+      #{$light-mode-element + ":where(:not(.#{$light-mode-class}))"} {
+        @include use-light-theme;
       }
     }
   }

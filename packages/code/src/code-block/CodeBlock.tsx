@@ -1,25 +1,14 @@
 import { type HTMLAttributes, type ReactElement, type ReactNode } from "react";
 
-import { DangerousHtmlOrChildren } from "./DangerousHtmlOrChildren.js";
 import {
-  codeBlock,
-  codeBlockPre,
-  codeBlockPreContainer,
-  codeBlockScrollContainer,
-} from "./styles.js";
+  CodeBlockScrollWrappers,
+  type ConfigurableCodeBlockScrollWrappersProps,
+} from "./CodeBlockScrollWrappers.js";
+import { type CodeBlockPreClassNameOptions, codeBlockPre } from "./styles.js";
 
-declare module "react" {
-  interface CSSProperties {
-    "--code-margin"?: number | string;
-    "--code-padding"?: number | string;
-    "--code-max-height"?: number | string;
-    "--code-tablet-max-height"?: number | string;
-    "--code-pre-margin"?: number | string;
-    "--code-pre-padding"?: number | string;
-  }
-}
-
-export interface CodeBlockConfigurableProps {
+export interface CodeBlockConfigurableProps
+  extends ConfigurableCodeBlockScrollWrappersProps,
+    CodeBlockPreClassNameOptions {
   preContainerProps?: HTMLAttributes<HTMLDivElement>;
   preWrapperProps?: HTMLAttributes<HTMLDivElement>;
   scrollContainerProps?: HTMLAttributes<HTMLDivElement>;
@@ -37,12 +26,6 @@ export interface CodeBlockConfigurableProps {
   disableMarginTop?: boolean;
 
   /**
-   * This is mostly for the material icon/symbols copy/paste code. Allow line
-   * wrapping there due to limited space and show all the code at once
-   */
-  lineWrap?: boolean;
-
-  /**
    * Any children that should be fixed within the code block even after
    * scrolling the code. These elements should have `position: absolute`.
    */
@@ -55,9 +38,9 @@ export interface CodeBlockProps
   preProps?: HTMLAttributes<HTMLPreElement>;
 
   /**
-   * This should be the `<code>` content.
+   * This should be the `<code>` content that has already been highlighted.
    */
-  children?: ReactElement;
+  children: ReactElement;
 }
 
 /**
@@ -65,42 +48,17 @@ export interface CodeBlockProps
  * with elements fixed within that scrollable area.
  */
 export function CodeBlock(props: CodeBlockProps): ReactElement {
-  const {
-    children,
-    preProps,
-    className,
-    lineWrap,
-    preContainerProps,
-    scrollContainerProps,
-    afterPreElement,
-    disableMarginTop,
-    fixedChildren,
-    preWrapperProps,
-    ...remaining
-  } = props;
+  const { children, preProps, lineWrap, afterPreElement, ...remaining } = props;
 
   return (
-    <div {...remaining} className={codeBlock({ className, disableMarginTop })}>
-      <div
-        {...scrollContainerProps}
-        className={codeBlockScrollContainer(scrollContainerProps)}
+    <CodeBlockScrollWrappers {...remaining}>
+      <pre
+        {...preProps}
+        className={codeBlockPre({ className: preProps?.className, lineWrap })}
       >
-        <div
-          {...preContainerProps}
-          className={codeBlockPreContainer(preContainerProps)}
-        >
-          <DangerousHtmlOrChildren as="div" {...preWrapperProps}>
-            <pre
-              {...preProps}
-              className={codeBlockPre({ className, lineWrap })}
-            >
-              {children}
-            </pre>
-          </DangerousHtmlOrChildren>
-          {afterPreElement}
-        </div>
-      </div>
-      {fixedChildren}
-    </div>
+        {children}
+      </pre>
+      {afterPreElement}
+    </CodeBlockScrollWrappers>
   );
 }

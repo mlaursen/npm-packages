@@ -1,6 +1,6 @@
 import { type ReactElement } from "react";
 
-import { CodeBlock } from "../code-block/CodeBlock.js";
+import { CodeBlockScrollWrappers } from "../code-block/CodeBlockScrollWrappers.js";
 import type { HighlightedCodeBlockProps } from "./types.js";
 import { useCodeHighlight } from "./useCodeHighlight.client.js";
 
@@ -16,6 +16,7 @@ export function HighlightedCodeBlock(
     defaultColor,
     transformers,
     lineWrap,
+    preWrapperProps,
     ...remaining
   } = props;
 
@@ -37,13 +38,14 @@ export function HighlightedCodeBlock(
   };
 
   return (
-    <CodeBlock
-      {...remaining}
-      preWrapperProps={{
-        ...props.preWrapperProps,
-        ...attrs,
-        dangerouslySetInnerHTML: { __html: html },
-      }}
-    />
+    <CodeBlockScrollWrappers {...remaining}>
+      <div
+        {...preWrapperProps}
+        {...attrs}
+        dangerouslySetInnerHTML={{
+          __html: html,
+        }}
+      />
+    </CodeBlockScrollWrappers>
   );
 }

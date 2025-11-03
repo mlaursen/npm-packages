@@ -14,7 +14,20 @@ const noop = (): void => {
 
 export interface CopyToClipboardProps extends TooltippedButtonProps {
   onCopied?: (text: string) => void;
+  onCopyFailed?: (error: unknown) => void;
+
+  /**
+   * Either this or the {@link getCopyText} are required.
+   *
+   * @defaultValue `""`
+   */
   copyText?: string;
+
+  /**
+   * Either this or the {@link copyText} are required.
+   *
+   * @defaultValue `() =>  ""`
+   */
   getCopyText?: (button: HTMLButtonElement) => string;
 }
 
@@ -23,6 +36,14 @@ export type CopyToClipboardStrictProps = RequireAtLeastOne<
   "copyText" | "getCopyText"
 >;
 
+/**
+ * @example Simple Example
+ * ```tsx
+ * <CopyToClipboard copyText="Here is some text to copy!" />
+ *
+ * <CopyToClipboard getCopyText={() => "Here is some text to copy!"} />
+ * ```
+ */
 export function CopyToClipboard(
   props: Readonly<CopyToClipboardStrictProps>
 ): ReactElement {
@@ -36,6 +57,7 @@ export function CopyToClipboard(
     onCopied = noop,
     copyText = "",
     getCopyText = () => copyText,
+    onCopyFailed = noop,
     ...remaining
   } = props;
 
@@ -53,9 +75,15 @@ export function CopyToClipboard(
       }}
       onClick={async (event) => {
         const text = getCopyText(event.currentTarget);
-        if (text) {
+        if (!text) {
+          return;
+        }
+
+        try {
           await navigator.clipboard.writeText(text);
           onCopied(text);
+        } catch (e) {
+          onCopyFailed(e);
         }
       }}
     >

@@ -1,7 +1,7 @@
 import { type ReactElement } from "react";
 import { codeToHtml } from "shiki";
 
-import { CodeBlock } from "../code-block/CodeBlock.js";
+import { CodeBlockScrollWrappers } from "../code-block/CodeBlockScrollWrappers.js";
 import { DEFAULT_SHIKI_COLOR, DEFAULT_SHIKI_THEMES } from "./constants.js";
 import { createShikiTransformers } from "./createShikiTransformers.js";
 import type { HighlightedCodeBlockProps } from "./types.js";
@@ -23,11 +23,10 @@ export async function HighlightedCodeBlock(
   } = props;
 
   return (
-    <CodeBlock
-      {...remaining}
-      preWrapperProps={{
-        ...preWrapperProps,
-        dangerouslySetInnerHTML: {
+    <CodeBlockScrollWrappers {...remaining}>
+      <div
+        {...preWrapperProps}
+        dangerouslySetInnerHTML={{
           __html: await codeToHtml(code, {
             lang,
             themes,
@@ -36,8 +35,8 @@ export async function HighlightedCodeBlock(
             defaultColor,
             transformers: createShikiTransformers({ lineWrap, transformers }),
           }),
-        },
-      }}
-    />
+        }}
+      />
+    </CodeBlockScrollWrappers>
   );
 }

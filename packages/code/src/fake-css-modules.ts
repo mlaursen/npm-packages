@@ -1,3 +1,7 @@
+/**
+ * This is mostly internal, but this is how the "unique" class name is generated
+ * when using fake css modules
+ */
 export function getFakeCssModuleClassName(
   fileName: string,
   key: string
@@ -7,6 +11,9 @@ export function getFakeCssModuleClassName(
   return `${prefix}__${hash}`;
 }
 
+/**
+ * This is a way to create fake css modules with the `useDangerousCodeRunner`
+ */
 export function createFakeCssModules(fileName: string): Record<string, string> {
   return new Proxy(
     {},

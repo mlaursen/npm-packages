@@ -40,9 +40,9 @@
     "typecheck": "tsc --noEmit",
     "typecheck-watch": "pnpm typecheck --watch",
     "build-esm": "swc -d ./dist --strip-leading-paths src",
-    "build-esm-watch": "pnpm run build-esm --watch",
+    "build-esm-watch": "pnpm build-esm --watch",
     "build-types": "tsc -P tsconfig.types.json",
-    "build-types-watch": "pnpm run build-types --watch",
+    "build-types-watch": "pnpm build-types --watch",
     "build-scss": "mlaursen-cli copy-scss-files",
     "build-scss-watch": "mlaursen-cli copy-scss-files --watch",
     "build": "concurrently 'pnpm build-esm' 'pnpm build-types' 'pnpm build-scss'",
@@ -50,7 +50,7 @@
     "test-snapshot": "vitest run -u",
     "test-run": "vitest run",
     "test-coverage": "vitest run --coverage",
-    "dev": "concurrently 'pnpm build-types-watch' 'pnpm build-dist-watch'"
+    "dev": "concurrently 'pnpm build-esm-watch' 'pnpm build-types-watch' 'pnpm build-scss-watch'"
   },
   "author": "Mikkel Laursen <mlaursen03@gmail.com>",
   "repository": {
