@@ -17,6 +17,7 @@ export function HighlightedCodeBlock(
     transformers,
     lineWrap,
     preWrapperProps,
+    getInitialDangerousHtml,
     ...remaining
   } = props;
 
@@ -29,6 +30,7 @@ export function HighlightedCodeBlock(
     defaultColor,
     transformers,
     lineWrap,
+    getInitialDangerousHtml,
   });
 
   // moved here so they can bypass the `data-*` is not an HTMLAttribute

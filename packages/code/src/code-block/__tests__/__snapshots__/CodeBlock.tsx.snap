@@ -1,0 +1,109 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`CodeBlock > should allow an element to be placed after the pre and after the scroll containers 1`] = `
+<div
+  class="code-block rmd-text-primary-color rmd-dark-surface"
+  data-testid="container"
+>
+  <div
+    class="code-block__scroll-container"
+    data-testid="scrollContainer"
+  >
+    <div
+      class="code-block__pre-container"
+    >
+      <pre
+        class="code-block__pre"
+        data-testid="pre"
+      >
+        <code>
+          I am code!
+        </code>
+      </pre>
+      <span
+        data-testid="afterPre"
+      />
+    </div>
+  </div>
+  <span
+    data-testid="fixed"
+  />
+</div>
+`;
+
+exports[`CodeBlock > should expect a code element as children and pass props to the root 1`] = `
+<div
+  class="code-block rmd-text-primary-color rmd-dark-surface"
+  data-testid="container"
+>
+  <div
+    class="code-block__scroll-container"
+  >
+    <div
+      class="code-block__pre-container"
+    >
+      <pre
+        class="code-block__pre"
+      >
+        <code>
+          I am code!
+        </code>
+      </pre>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`CodeBlock > should expect a code element as children and pass props to the root 2`] = `
+<div
+  class="code-block rmd-text-primary-color rmd-dark-surface custom-class-name"
+  data-testid="container"
+  style="color: red;"
+>
+  <div
+    class="code-block__scroll-container"
+  >
+    <div
+      class="code-block__pre-container"
+    >
+      <pre
+        class="code-block__pre"
+      >
+        <code>
+          I am code!
+        </code>
+      </pre>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`CodeBlock > should render all the wrappers and allow props to be passed 1`] = `
+<div
+  class="code-block rmd-text-primary-color rmd-dark-surface container"
+  data-testid="container"
+  style="margin: 0px auto;"
+>
+  <div
+    class="code-block__scroll-container scrollContainer"
+    data-testid="scroll-container"
+    style="color: rgb(0, 0, 0);"
+  >
+    <div
+      class="code-block__pre-container preContainer"
+      data-testid="pre-container"
+      style="font-weight: bold;"
+    >
+      <pre
+        class="code-block__pre pre"
+        data-testid="pre"
+        style="font-size: 3rem;"
+      >
+        <code>
+          This is some code
+        </code>
+      </pre>
+    </div>
+  </div>
+</div>
+`;

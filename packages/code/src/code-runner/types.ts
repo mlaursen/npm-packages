@@ -31,14 +31,40 @@ export type LocalCodeScope = Record<string, unknown>;
  */
 export type RunnableCodeScope = GlobalCodeScope & { import?: LocalCodeScope };
 
-export interface DangerouslyEvalCodeOptions {
+export interface RequireDynamicModuleOptions {
+  /**
+   * This function can be used to dynamically determine imports for more
+   * advanced dependencies like fake css modules. This is still a synchronous
+   * callback so you can't dynamically import things to get it to work.
+   *
+   * If this returns `undefined`, the result will be ignored and the default
+   * import behavior will continue where it must exist in the `imports`
+   * LocalCodeScope.
+   *
+   * @defaultValue `tryRequiringCssModule`
+   * @see {@link tryRequiringCssModule}
+   */
+  getDynamicModule?: (module: string) => unknown | undefined;
+}
+
+export interface CreateRequireOptions extends RequireDynamicModuleOptions {
+  imports?: LocalCodeScope;
+}
+
+export interface DangerouslyEvalCodeOptions
+  extends RequireDynamicModuleOptions {
   code: string;
+  /** @see {@link RunnableCodeScope} */
   scope?: RunnableCodeScope;
 }
 
-export interface DangerouslyRunCodeOptions extends DangerouslyEvalCodeOptions {
+export interface DangerouslyRunCodeRenderedOptions {
   onRendered?: (error: Error | null) => void;
 }
+
+export interface DangerouslyRunCodeOptions
+  extends DangerouslyEvalCodeOptions,
+    DangerouslyRunCodeRenderedOptions {}
 
 export interface DangerouslyRunCodeResult {
   error: Error | null;

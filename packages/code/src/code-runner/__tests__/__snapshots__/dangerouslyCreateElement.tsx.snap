@@ -1,0 +1,59 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`dangerouslyCreateElement > scope > should allow for custom imports 2`] = `
+<div>
+  Example Import
+</div>
+`;
+
+exports[`dangerouslyCreateElement > scope > should allow for custom relative imports 2`] = `
+<div>
+  Example Import
+</div>
+`;
+
+exports[`dangerouslyCreateElement > simple rendering > should allow React to be global 2`] = `
+<div>
+  <div>
+    0
+  </div>
+  <button>
+    Increment
+  </button>
+  <button>
+    Decrement
+  </button>
+</div>
+`;
+
+exports[`dangerouslyCreateElement > simple rendering > should support a class component 2`] = `
+<div>
+  <div>
+    Hello, world!
+  </div>
+</div>
+`;
+
+exports[`dangerouslyCreateElement > simple rendering > should support a function component 2`] = `
+<div>
+  <div>
+    Hello, world!
+  </div>
+</div>
+`;
+
+exports[`dangerouslyCreateElement > simple rendering > should support an inline element 1`] = `
+<React.Fragment>
+  <div>
+    Hello, world!
+  </div>
+</React.Fragment>
+`;
+
+exports[`dangerouslyCreateElement > simple rendering > should support unnamed default export arrow functions 2`] = `
+<div>
+  <div>
+    Hello, world!
+  </div>
+</div>
+`;

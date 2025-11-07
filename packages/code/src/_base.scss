@@ -22,6 +22,7 @@
 }
 
 @mixin variables {
+  @include code-block.variables;
   @include color-preview.variables;
 }
 

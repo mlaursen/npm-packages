@@ -4,13 +4,12 @@ import {
   CodeBlockScrollWrappers,
   type ConfigurableCodeBlockScrollWrappersProps,
 } from "./CodeBlockScrollWrappers.js";
-import { type CodeBlockPreClassNameOptions, codeBlockPre } from "./styles.js";
+import { type CodeBlockPreLineWrapOptions, codeBlockPre } from "./styles.js";
 
 export interface CodeBlockConfigurableProps
   extends ConfigurableCodeBlockScrollWrappersProps,
-    CodeBlockPreClassNameOptions {
+    CodeBlockPreLineWrapOptions {
   preContainerProps?: HTMLAttributes<HTMLDivElement>;
-  preWrapperProps?: HTMLAttributes<HTMLDivElement>;
   scrollContainerProps?: HTMLAttributes<HTMLDivElement>;
 
   /**
@@ -18,18 +17,6 @@ export interface CodeBlockConfigurableProps
    * scroll container
    */
   afterPreElement?: ReactNode;
-
-  /**
-   * This should be enabled if the header or preview exists above the code
-   * block.
-   */
-  disableMarginTop?: boolean;
-
-  /**
-   * Any children that should be fixed within the code block even after
-   * scrolling the code. These elements should have `position: absolute`.
-   */
-  fixedChildren?: ReactNode;
 }
 
 export interface CodeBlockProps

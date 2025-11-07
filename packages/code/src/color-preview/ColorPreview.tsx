@@ -1,5 +1,4 @@
-import { cnb } from "cnbuilder";
-import { type HTMLAttributes, type ReactElement, type ReactNode } from "react";
+import { type HTMLAttributes, type ReactElement } from "react";
 
 import { InlineCode, type InlineCodeProps } from "../inline-code/InlineCode.js";
 import { type ColorPreviewClassNameOptions, colorPreview } from "./styles.js";
@@ -23,8 +22,6 @@ declare module "react" {
   }
 }
 
-const NBSP = "\u00A0";
-
 export interface ColorPreviewProps
   extends Omit<HTMLAttributes<HTMLSpanElement>, "children">,
     ColorPreviewClassNameOptions {
@@ -40,29 +37,10 @@ export interface ColorPreviewProps
   color: string;
 
   /**
-   * Set to `true` to render without text and with an icon size.
-   *
-   * NOTE: This will always be `true` if {@link disableCode} is `true`.
-   *
-   * @defaultValue `false`
-   */
-  icon?: boolean;
-
-  /**
    * Optional props to pass to the {@link InlineCode} element that wraps the
    * {@link color}. Will not be used if {@link disableCode} is `true`.
    */
   codeProps?: InlineCodeProps;
-
-  /**
-   * Set to `true` to disable the color from being rendered within a
-   * {@link InlineCode}.
-   *
-   * @defaultValue `false`
-   */
-  disableCode?: boolean;
-
-  v2?: boolean;
 }
 
 /**
@@ -72,64 +50,37 @@ export interface ColorPreviewProps
  * @example Simple Example
  * ```tsx
  * <ColorPreview color="#faf" />
- * <ColorPreview color="rgba(255, 12, 32, 0.3)" icon />
- * <ColorPreview color="#0F0F0F" disableCode />
+ * <ColorPreview color="rgba(255, 12, 32, 0.3)" variant="icon" />
+ * <ColorPreview color="#0F0F0F" shadowed />
+ * <ColorPreview color="#0F0F0F" variant="icon" shadowed />
  * ```
  */
 export function ColorPreview(props: ColorPreviewProps): ReactElement {
   const {
-    icon,
     color,
     style,
     className,
     codeProps,
-    disableCode,
-    v2,
     variant = "inline-code",
     shadowed,
     disableTooltip,
     ...remaining
   } = props;
 
-  if (v2) {
-    const isIcon = variant === "icon";
-    return (
-      <span
-        role={(isIcon && "presentation") || undefined}
-        {...remaining}
-        style={{ "--color-preview-color": color, ...style }}
-        className={colorPreview({
-          className,
-          variant,
-          shadowed,
-          disableTooltip,
-        })}
-      >
-        {!isIcon && <InlineCode {...codeProps}>{color}</InlineCode>}
-      </span>
-    );
-  }
-
-  let content: ReactNode;
-  if (disableCode) {
-    content = NBSP;
-  } else if (!icon) {
-    content = <InlineCode {...codeProps}>{color}</InlineCode>;
-  }
-
+  const icon = variant === "icon";
   return (
     <span
+      role={(icon && "presentation") || undefined}
       {...remaining}
       style={{ "--color-preview-color": color, ...style }}
-      className={cnb(
-        "color-preview",
-        !icon && "color-preview--text",
-        icon && "color-preview--icon",
-        !icon && disableCode && "color-preview--color-only",
-        className
-      )}
+      className={colorPreview({
+        className,
+        variant,
+        shadowed,
+        disableTooltip,
+      })}
     >
-      {content}
+      {!icon && <InlineCode {...codeProps}>{color}</InlineCode>}
     </span>
   );
 }

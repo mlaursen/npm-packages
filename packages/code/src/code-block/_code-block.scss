@@ -1,6 +1,54 @@
-@use "@react-md/core" as *;
+@use "sass:map";
+@use "@react-md/core";
 
 $disable-everything: false !default;
+$disable-code-block: false !default;
+$disable-wrappable: false !default;
+$disable-app-bar: false !default;
+
+$var-prefix: "--code-block-" !default;
+
+/// The available configurable css variables and mostly used internally for the
+/// `get-var`, `set-var`, and `use-var` utils.
+/// @type List
+$variables: (
+  margin,
+  padding,
+  pre-margin,
+  pre-padding,
+  max-height,
+  tablet-max-height
+);
+
+/// @param {String} name - The supported variable name
+/// @param {any} fallback [null] - An optional fallback value
+/// @returns {String} a `var()` statement
+@function get-var($name, $fallback: null) {
+  $var: $var-prefix + core.validate($variables, $name, "code-block var");
+  @if $fallback {
+    @return var(#{$var}, #{$fallback});
+  }
+
+  @return var(#{$var});
+}
+
+/// @param {String} name - The supported variable name
+/// @param {any} value - The value to set the variable to. Supports `null` which
+/// will just be a no-op.
+@mixin set-var($name, $value) {
+  @if $value {
+    #{$var-prefix + core.validate($variables, $name, "code-block var")}: #{$value};
+  }
+}
+
+/// @param {String} property - The css property to apply the variable to
+/// @param {String} name [$property] - The supported variable name
+/// @param {any} fallback [null] - An optional fallback value if the variable
+/// has not been set
+@mixin use-var($property, $name: $property, $fallback: null) {
+  #{$property}: get-var($name, $fallback);
+}
+
 $margin: 2rem 0 !default;
 $padding: null !default;
 $pre-margin: 0 !default;
@@ -8,54 +56,61 @@ $pre-padding: 1em !default;
 $max-height: 50rem !default;
 $tablet-max-height: min(60vh, $max-height) !default;
 
-@function maybe-var($name, $value) {
-  @return if($value, var(#{$name}, #{$value}), var(#{$name}));
+@mixin variables {
+  @if not $disable-everything {
+    @include set-var(margin, $margin);
+    @include set-var(padding, $padding);
+    @include set-var(pre-margin, $pre-margin);
+    @include set-var(pre-padding, $pre-padding);
+
+    @include set-var(max-height, $max-height);
+    @include set-var(tablet-max-height, $tablet-max-height);
+  }
 }
 
-@mixin styles($disable-layer: false) {
-  @if not $disable-everything {
-    @include optional-layer(code-block, $disable-layer) {
-      .code-block {
-        margin: maybe-var(--code-margin, $margin);
-        padding: maybe-var(--code-padding, $padding);
+@mixin _code-block {
+  @if not $disable-code-block {
+    .code-block {
+      @include use-var(margin);
+      @include use-var(padding);
+
+      position: relative;
+      width: 100%;
+
+      &--no-mt {
+        margin-top: 0;
+      }
+
+      &__scroll-container {
+        @include core.interaction-outline($outline-offset: false);
+        @include use-var(max-height);
+
+        overflow: auto;
+
+        &:focus-visible,
+        &:has(:focus-visible) {
+          @include core.interaction-focus-styles($disable-background: true);
+        }
+
+        @include core.tablet-media {
+          @include set-var(max-height, get-var(tablet-max-height));
+        }
+      }
+
+      &__pre-container {
+        float: left;
+        min-width: 100%;
+        overflow: hidden;
         position: relative;
-        width: 100%;
+      }
 
-        &--no-tm {
-          margin-top: 0;
-        }
+      &__pre {
+        @include use-var(margin, pre-margin);
+        @include use-var(padding, pre-padding);
 
-        &__scroll-container {
-          @include interaction-outline($outline-offset: false);
+        white-space: pre;
 
-          max-height: maybe-var(--code-max-height, $max-height);
-          overflow: auto;
-
-          &:focus-visible,
-          &:has(:focus-visible) {
-            @include interaction-focus-styles($disable-background: true);
-          }
-
-          @include tablet-media {
-            --code-max-height: maybe-var(
-              --code-tablet-max-height,
-              $tablet-max-height
-            );
-          }
-        }
-
-        &__pre-container {
-          float: left;
-          min-width: 100%;
-          overflow: hidden;
-          position: relative;
-        }
-
-        &__pre {
-          margin: maybe-var(--code-pre-margin, $pre-margin);
-          padding: maybe-var(--code-pre-padding, $pre-padding);
-          white-space: pre;
-
+        @if not $disable-wrappable {
           &--wrap {
             overflow-wrap: anywhere;
             white-space: pre-wrap;
@@ -63,6 +118,34 @@ $tablet-max-height: min(60vh, $max-height) !default;
           }
         }
       }
+    }
+  }
+}
+
+@mixin _app-bar {
+  @if not $disable-code-block {
+    .code-block-app-bar {
+      @include core.interaction-use-dark-surface;
+      @include core.theme-set-var(
+        text-primary-color,
+        core.$dark-theme-text-primary-color
+      );
+      @include core.theme-set-var(
+        text-secondary-color,
+        core.$dark-theme-text-secondary-color
+      );
+      @include core.theme-use-var(color, text-primary-color);
+
+      background-color: map.get(core.$dark-elevation-colors, 10);
+    }
+  }
+}
+
+@mixin styles($disable-layer: false) {
+  @if not $disable-everything {
+    @include core.optional-layer(code-block, $disable-layer) {
+      @include _code-block;
+      @include _app-bar;
     }
   }
 }

@@ -2,14 +2,14 @@ import { useEffect, useState } from "react";
 
 import { DEFAULT_SHIKI_COLOR, DEFAULT_SHIKI_THEMES } from "./constants.js";
 import { createShikiTransformers } from "./createShikiTransformers.js";
-import type { CodeHighlightOptions, CodeHighlightState } from "./types.js";
-
-function getInitialHtml(code: string): string {
-  return `<pre class="shiki"><code>${code}</code></pre>`;
-}
+import { getInitialDangerousHtml as defaultGetInitialDangerousHtml } from "./getInitialDangerousHtml.js";
+import type {
+  CodeHighlightDangerousHtmlOptions,
+  CodeHighlightState,
+} from "./types.js";
 
 export function useCodeHighlight(
-  options: CodeHighlightOptions
+  options: CodeHighlightDangerousHtmlOptions
 ): Readonly<CodeHighlightState> {
   const {
     code,
@@ -20,10 +20,11 @@ export function useCodeHighlight(
     cssVariablePrefix,
     defaultColor = DEFAULT_SHIKI_COLOR,
     transformers,
+    getInitialDangerousHtml = defaultGetInitialDangerousHtml,
   } = options;
 
   const [state, setState] = useState<CodeHighlightState>(() => ({
-    html: getInitialHtml(code),
+    html: getInitialDangerousHtml(options),
     highlighted: false,
     highlighting: false,
   }));
@@ -41,7 +42,10 @@ export function useCodeHighlight(
         defaultColor,
         colorsRendering,
         cssVariablePrefix,
-        transformers: createShikiTransformers({ lineWrap, transformers }),
+        transformers: createShikiTransformers({
+          lineWrap,
+          transformers,
+        }),
       });
 
       if (!canceled) {

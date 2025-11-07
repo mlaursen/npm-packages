@@ -1,0 +1,18 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`useDangerousCodeRunner > should be able to render valid react code 1`] = `
+<div
+  data-testid="container"
+>
+  <div
+    data-testid="error"
+  />
+  <div
+    data-testid="element"
+  >
+    <div>
+      Hello, world!
+    </div>
+  </div>
+</div>
+`;

@@ -3,8 +3,9 @@ import {
   type AppBarHeight,
   type AppBarTheme,
 } from "@react-md/core/app-bar/styles";
-import { cnb } from "cnbuilder";
 import { type ReactElement } from "react";
+
+import { codeBlockAppBar } from "./styles.js";
 
 export interface CodeBlockAppBarProps extends AppBarProps {
   /** @defaultValue "clear" */
@@ -13,6 +14,9 @@ export interface CodeBlockAppBarProps extends AppBarProps {
   height?: AppBarHeight;
 }
 
+/**
+ * This is just a small wrapper around the {@link AppBar} with default styles
+ */
 export function CodeBlockAppBar(props: CodeBlockAppBarProps): ReactElement {
   const {
     theme = "clear",
@@ -27,7 +31,7 @@ export function CodeBlockAppBar(props: CodeBlockAppBarProps): ReactElement {
       {...remaining}
       theme={theme}
       height={height}
-      className={cnb("code-block-app-bar", className)}
+      className={codeBlockAppBar({ className })}
     >
       {children}
     </AppBar>

@@ -1,11 +1,14 @@
 import type { ShikiTransformer } from "shiki";
 
-import { codeBlockPre } from "../code-block/styles.js";
+import {
+  type CodeBlockPreLineWrapOptions,
+  codeBlockPre,
+} from "../code-block/styles.js";
 
 const EMPTY_LIST = [] as const;
 
-export interface CreateShikiTransformerOptions {
-  lineWrap?: boolean;
+export interface CreateShikiTransformerOptions
+  extends CodeBlockPreLineWrapOptions {
   transformers?: readonly ShikiTransformer[];
 }
 

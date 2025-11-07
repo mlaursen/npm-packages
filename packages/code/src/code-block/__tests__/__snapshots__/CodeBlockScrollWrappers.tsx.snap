@@ -1,0 +1,70 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`CodeBlockScrollWrappers > should allow for fixed children to be placed around the scroll blocks 1`] = `
+<div
+  class="code-block rmd-text-primary-color rmd-dark-surface"
+  data-testid="container"
+>
+  <div
+    class="code-block__scroll-container"
+  >
+    <div
+      class="code-block__pre-container"
+    >
+      Hello, world!
+    </div>
+  </div>
+  <button
+    aria-label="Copy"
+    class="rmd-button rmd-button--icon rmd-button--small rmd-interaction-surface"
+    id="_r_0_"
+    type="button"
+  >
+    <span
+      aria-hidden="true"
+      class="rmd-icon rmd-icon--symbol material-symbols-outlined"
+    >
+      content_copy
+    </span>
+  </button>
+</div>
+`;
+
+exports[`CodeBlockScrollWrappers > should render all the wrappers and allow props to be passed 1`] = `
+<div
+  class="code-block rmd-text-primary-color rmd-dark-surface"
+  data-testid="container"
+>
+  <div
+    class="code-block__scroll-container"
+  >
+    <div
+      class="code-block__pre-container"
+    >
+      Hello, world!
+    </div>
+  </div>
+</div>
+`;
+
+exports[`CodeBlockScrollWrappers > should render all the wrappers and allow props to be passed 2`] = `
+<div
+  class="code-block rmd-text-primary-color rmd-dark-surface container"
+  data-testid="container"
+  style="margin: 0px auto;"
+>
+  <div
+    class="code-block__scroll-container scrollContainer"
+    data-testid="scroll-container"
+    style="color: rgb(0, 0, 0);"
+  >
+    <div
+      class="code-block__pre-container preContainer"
+      data-testid="pre-container"
+      style="font-weight: bold;"
+    >
+      Hello, world!
+    </div>
+  </div>
+</div>
+`;

@@ -1,20 +1,21 @@
-"use client";
-
 // https://github.com/nihgwu/react-runner/tree/974ebc932db7b7c7d59f1b50a79aed705efbf75a
 // This is pretty much everything from there except using the new JSX transform
 // and I wanted to understand why things were implemented the way they were
 import { Component, type ReactElement } from "react";
 
-import { dangerouslyCreateElement } from "./dangerousCodeUtils.js";
-import type { DangerouslyRunCodeOptions, RunnableCodeScope } from "./types.js";
+import { dangerouslyCreateElement } from "./dangerouslyCreateElement.js";
+import type {
+  DangerouslyEvalCodeOptions,
+  DangerouslyRunCodeRenderedOptions,
+  DangerouslyRunCodeResult,
+  RunnableCodeScope,
+} from "./types.js";
 
-export interface DangerousCodeRunnerProps extends DangerouslyRunCodeOptions {
-  onRendered: (error: Error | null) => void;
-}
+export interface DangerousCodeRunnerProps
+  extends DangerouslyEvalCodeOptions,
+    Required<DangerouslyRunCodeRenderedOptions> {}
 
-export interface DangerousCodeRunnerState {
-  error: Error | null;
-  element: ReactElement | null;
+export interface DangerousCodeRunnerState extends DangerouslyRunCodeResult {
   prevCode: string;
   prevScope?: RunnableCodeScope;
 }

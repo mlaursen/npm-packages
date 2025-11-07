@@ -1,0 +1,65 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`CodePreview > should be able to render without the box styling 1`] = `
+<div
+  class="code-preview code-preview--padding code-preview--no-bb"
+  data-testid="container"
+>
+  Hello, world!
+</div>
+`;
+
+exports[`CodePreview > should render a simple alert if an error is provided 1`] = `
+<div
+  class="code-preview code-preview--padding code-preview--no-bb rmd-box rmd-box--gap rmd-box--wrap rmd-box--padded rmd-box--justify-center"
+  data-testid="container"
+>
+  <span>
+    Hello, world!
+  </span>
+</div>
+`;
+
+exports[`CodePreview > should render a simple alert if an error is provided 2`] = `
+<div
+  class="code-preview code-preview--padding code-preview--no-bb rmd-box rmd-box--gap rmd-box--wrap rmd-box--padded rmd-box--justify-center"
+  data-testid="container"
+>
+  <span>
+    Hello, world!
+  </span>
+  <div
+    class="code-preview__error rmd-error-color rmd-align-right"
+    data-testid="error"
+    id="_r_2_"
+    role="alert"
+  >
+    <p
+      class="rmd-typography rmd-typography--caption"
+    >
+      <span>
+        Something broke!
+      </span>
+    </p>
+  </div>
+</div>
+`;
+
+exports[`CodePreview > should render with some sensible defaults and box styling 1`] = `
+<div
+  class="code-preview code-preview--padding code-preview--no-bb rmd-box rmd-box--gap rmd-box--wrap rmd-box--padded rmd-box--justify-center"
+  data-testid="container"
+>
+  Hello, world!
+</div>
+`;
+
+exports[`CodePreview > should render with some sensible defaults and box styling 2`] = `
+<div
+  class="code-preview code-preview--padding code-preview--no-bb rmd-box rmd-box--gap rmd-box--wrap rmd-box--padded rmd-box--full-width rmd-box--justify-start custom-container"
+  data-testid="container"
+  style="font-weight: bold;"
+>
+  Hello, world!
+</div>
+`;

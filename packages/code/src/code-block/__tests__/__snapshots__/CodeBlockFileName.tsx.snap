@@ -1,0 +1,11 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`CodeBlockFileName > should render witht he correct defaults 1`] = `
+<div>
+  <span
+    class="rmd-typography rmd-typography--subtitle-2 rmd-nowrap rmd-ellipsis rmd-app-bar-title"
+  >
+    CodeBlock.tsx
+  </span>
+</div>
+`;
