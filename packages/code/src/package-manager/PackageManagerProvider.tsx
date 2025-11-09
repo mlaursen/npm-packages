@@ -1,44 +1,23 @@
 "use client";
 
 import { type UseStateInitializer } from "@react-md/core/types";
-import {
-  type ReactElement,
-  type ReactNode,
-  createContext,
-  useContext,
-  useMemo,
-  useState,
-} from "react";
+import { type ReactElement, type ReactNode, useMemo, useState } from "react";
 
+import { _PackageManagerContext } from "./PackageManagerContext.js";
 import { DEFAULT_PACKAGE_MANAGERS } from "./constants.js";
-import type { PackageManager } from "./types.js";
+import type { PackageManager, PackageManagerContext } from "./types.js";
 
 const noop = (): void => {
   // do nothing
 };
 
-export interface PackageManagerContext {
-  packageManager: PackageManager;
-  packageManagers: readonly PackageManager[];
-  setPackageManager: (packageManager: PackageManager) => void;
-}
-
-const context = createContext<PackageManagerContext | null>(null);
-context.displayName = "PackageManager";
-const { Provider } = context;
-
-export function usePackageManagerContext(): PackageManagerContext {
-  const value = useContext(context);
-  if (!value) {
-    throw new Error("PackageManagerProvider is not mounted");
-  }
-
-  return value;
-}
-
 export interface PackageManagerProviderProps {
   children: ReactNode;
+
+  /** @defaultValue `"npm"` */
   defaultValue?: UseStateInitializer<PackageManager>;
+
+  /** @defaultValue `DEFAULT_PACKAGE_MANAGERS` */
   packageManagers?: readonly PackageManager[];
   onPackageManagerChange?: (nextPackageManager: PackageManager) => void;
 }
@@ -66,5 +45,9 @@ export function PackageManagerProvider(
     [onPackageManagerChange, packageManager, packageManagers]
   );
 
-  return <Provider value={value}>{children}</Provider>;
+  return (
+    <_PackageManagerContext.Provider value={value}>
+      {children}
+    </_PackageManagerContext.Provider>
+  );
 }
