@@ -19,3 +19,5 @@ export const TEST_FILES = [
 ];
 
 export const JSX_FILES = ["**/*.{js,mjs,cjs,jsx,mjsx,ts,tsx,mtsx}"];
+
+export const VITE_MAIN_FILES = ["**/main.tsx"];

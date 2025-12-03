@@ -52,7 +52,7 @@ export function materialSymbolPlugin(
   } = options;
   const symbolNames = new Set<string>(staticSymbolNames ?? defaultSymbolNames);
 
-  const variant = family.charAt(0).toUpperCase() + family.substring(1);
+  const variant = family.charAt(0).toUpperCase() + family.slice(1);
   const fill = getValue(options.fill, MATERIAL_CONFIG.fill);
   const grade = getValue(options.grade, MATERIAL_CONFIG.grade);
   const weight = getValue(options.weight, MATERIAL_CONFIG.weight);
@@ -91,7 +91,7 @@ export function materialSymbolPlugin(
     },
 
     transformIndexHtml() {
-      if (!symbolNames.size) {
+      if (symbolNames.size === 0) {
         return [];
       }
 

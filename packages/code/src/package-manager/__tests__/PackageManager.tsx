@@ -30,7 +30,7 @@ function Test() {
 
 describe("PackageManagerProvider", () => {
   afterEach(() => {
-    window.localStorage.clear();
+    globalThis.localStorage.clear();
   });
 
   it("should allow child components to control the package manager behavior", () => {
@@ -83,13 +83,13 @@ describe("PackageManagerProvider", () => {
       );
     }
 
-    window.localStorage.setItem("packageManager", "fake");
+    globalThis.localStorage.setItem("packageManager", "fake");
     const user = userEvent.setup();
     render(<StorageTest />);
 
-    expect(window.localStorage.getItem("packageManager")).toBe("npm");
+    expect(globalThis.localStorage.getItem("packageManager")).toBe("npm");
 
     await user.click(screen.getByRole("radio", { name: "pnpm" }));
-    expect(window.localStorage.getItem("packageManager")).toBe("pnpm");
+    expect(globalThis.localStorage.getItem("packageManager")).toBe("pnpm");
   });
 });

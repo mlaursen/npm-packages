@@ -1,7 +1,12 @@
 import { type Linter } from "eslint";
 import tseslint from "typescript-eslint";
 import { base } from "./base.js";
-import { BASE_NAME, TEST_FILES, TS_FILES } from "./constants.js";
+import {
+  BASE_NAME,
+  TEST_FILES,
+  TS_FILES,
+  VITE_MAIN_FILES,
+} from "./constants.js";
 
 const customTypescript: Linter.Config[] = [
   {
@@ -62,6 +67,15 @@ const customTypescript: Linter.Config[] = [
       "@typescript-eslint/no-explicit-any": "off",
       "@typescript-eslint/no-object-literal-type-assertion": "off",
       "@typescript-eslint/no-var-requires": "off",
+    },
+  },
+  {
+    name: `${BASE_NAME}/typescript/vite`,
+    files: VITE_MAIN_FILES,
+    rules: {
+      // allow `createRoot(document.getElementById("root")).render(...)` for
+      // `vite` without disabling eslint
+      "@typescript-eslint/no-non-null-assertion": "off",
     },
   },
 ];

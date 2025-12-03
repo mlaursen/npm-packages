@@ -8,5 +8,5 @@ export function transformCode(code: string): string {
     transforms: ["jsx", "typescript", "imports"],
     production: true,
     jsxRuntime: "automatic",
-  }).code.substring(13); // remove leading `"use strict";`
+  }).code.slice(13); // remove leading `"use strict";`
 }

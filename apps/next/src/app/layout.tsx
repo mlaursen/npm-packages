@@ -27,7 +27,7 @@ const sourceCodePro = Source_Code_Pro({
 function getMaterialSymbolsUrl(): string {
   const variant =
     MATERIAL_CONFIG.family.charAt(0).toUpperCase() +
-    MATERIAL_CONFIG.family.substring(1);
+    MATERIAL_CONFIG.family.slice(1);
   const { fill, grade, weight, opticalSize } = MATERIAL_CONFIG;
   const specs = `:opsz,wght,FILL,GRAD@${opticalSize},${weight},${fill},${grade}`;
   const baseUrl = `https://fonts.googleapis.com/css2?family=Material+Symbols+${variant}${specs}`;
