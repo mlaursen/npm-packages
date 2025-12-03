@@ -23,7 +23,8 @@ declare module "react" {
 }
 
 export interface ColorPreviewProps
-  extends Omit<HTMLAttributes<HTMLSpanElement>, "children">,
+  extends
+    Omit<HTMLAttributes<HTMLSpanElement>, "children">,
     ColorPreviewClassNameOptions {
   /**
    * The color to use. Should be any valid CSS color string.

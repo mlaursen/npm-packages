@@ -2,3 +2,4 @@ CHANGELOG.md
 pnpm-lock.yaml
 /dist
 /types
+/coverage

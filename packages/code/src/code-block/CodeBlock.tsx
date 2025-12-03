@@ -7,7 +7,8 @@ import {
 import { type CodeBlockPreLineWrapOptions, codeBlockPre } from "./styles.js";
 
 export interface CodeBlockConfigurableProps
-  extends ConfigurableCodeBlockScrollWrappersProps,
+  extends
+    ConfigurableCodeBlockScrollWrappersProps,
     CodeBlockPreLineWrapOptions {
   preContainerProps?: HTMLAttributes<HTMLDivElement>;
   scrollContainerProps?: HTMLAttributes<HTMLDivElement>;
@@ -20,8 +21,7 @@ export interface CodeBlockConfigurableProps
 }
 
 export interface CodeBlockProps
-  extends HTMLAttributes<HTMLDivElement>,
-    CodeBlockConfigurableProps {
+  extends HTMLAttributes<HTMLDivElement>, CodeBlockConfigurableProps {
   preProps?: HTMLAttributes<HTMLPreElement>;
 
   /**

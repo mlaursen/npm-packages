@@ -51,8 +51,7 @@ export interface CreateRequireOptions extends RequireDynamicModuleOptions {
   imports?: LocalCodeScope;
 }
 
-export interface DangerouslyEvalCodeOptions
-  extends RequireDynamicModuleOptions {
+export interface DangerouslyEvalCodeOptions extends RequireDynamicModuleOptions {
   code: string;
   /** @see {@link RunnableCodeScope} */
   scope?: RunnableCodeScope;
@@ -63,8 +62,7 @@ export interface DangerouslyRunCodeRenderedOptions {
 }
 
 export interface DangerouslyRunCodeOptions
-  extends DangerouslyEvalCodeOptions,
-    DangerouslyRunCodeRenderedOptions {}
+  extends DangerouslyEvalCodeOptions, DangerouslyRunCodeRenderedOptions {}
 
 export interface DangerouslyRunCodeResult {
   error: Error | null;

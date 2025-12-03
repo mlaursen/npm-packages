@@ -7,8 +7,7 @@ import {
   codeBlockScrollContainer,
 } from "./styles.js";
 
-export interface ConfigurableCodeBlockScrollWrappersProps
-  extends CodeBlockClassNameOptions {
+export interface ConfigurableCodeBlockScrollWrappersProps extends CodeBlockClassNameOptions {
   preContainerProps?: HTMLAttributes<HTMLDivElement>;
   scrollContainerProps?: HTMLAttributes<HTMLDivElement>;
 
@@ -20,7 +19,8 @@ export interface ConfigurableCodeBlockScrollWrappersProps
 }
 
 export interface CodeBlockScrollWrappersProps
-  extends HTMLAttributes<HTMLDivElement>,
+  extends
+    HTMLAttributes<HTMLDivElement>,
     ConfigurableCodeBlockScrollWrappersProps {
   children: ReactNode;
 }

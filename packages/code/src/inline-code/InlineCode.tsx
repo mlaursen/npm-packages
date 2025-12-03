@@ -3,8 +3,7 @@ import { type HTMLAttributes, type ReactElement } from "react";
 import { type InlineCodeClassNameOptions, inlineCode } from "./styles.js";
 
 export interface InlineCodeProps
-  extends HTMLAttributes<HTMLElement>,
-    InlineCodeClassNameOptions {
+  extends HTMLAttributes<HTMLElement>, InlineCodeClassNameOptions {
   as?: "kbd" | "code";
 }
 

@@ -13,8 +13,7 @@ import {
 } from "./styles.js";
 
 export interface CodePreviewProps
-  extends CodePreviewClassNameOptions,
-    HTMLAttributes<HTMLDivElement> {
+  extends CodePreviewClassNameOptions, HTMLAttributes<HTMLDivElement> {
   error?: ReactNode;
   errorProps?: HTMLAttributes<HTMLDivElement>;
 }

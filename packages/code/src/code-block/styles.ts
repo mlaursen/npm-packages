@@ -71,8 +71,7 @@ export interface CodeBlockPreLineWrapOptions {
   lineWrap?: boolean;
 }
 
-export interface CodeBlockPreClassNameOptions
-  extends CodeBlockPreLineWrapOptions {
+export interface CodeBlockPreClassNameOptions extends CodeBlockPreLineWrapOptions {
   className?: string;
 }
 

@@ -12,7 +12,8 @@ import type {
 } from "./types.js";
 
 export interface DangerousCodeRunnerProps
-  extends DangerouslyEvalCodeOptions,
+  extends
+    DangerouslyEvalCodeOptions,
     Required<DangerouslyRunCodeRenderedOptions> {}
 
 export interface DangerousCodeRunnerState extends DangerouslyRunCodeResult {

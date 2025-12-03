@@ -9,7 +9,8 @@ import type { ConfigurableCodeBlockScrollWrappersProps } from "../code-block/Cod
 import type { CodeBlockPreLineWrapOptions } from "../code-block/styles.js";
 
 export interface CodeHighlightOptions
-  extends Partial<CodeOptionsMultipleThemes<BundledTheme>>,
+  extends
+    Partial<CodeOptionsMultipleThemes<BundledTheme>>,
     CodeBlockPreLineWrapOptions,
     TransformerOptions {
   code: string;
@@ -23,8 +24,7 @@ export interface CodeHighlightOptions
   lang?: string;
 }
 
-export interface CodeHighlightDangerousHtmlOptions
-  extends CodeHighlightOptions {
+export interface CodeHighlightDangerousHtmlOptions extends CodeHighlightOptions {
   /**
    * This function is used to generate the initial HTML when using client side
    * highlighting with shiki. This should generally just return something
@@ -39,7 +39,8 @@ export interface CodeHighlightDangerousHtmlOptions
 }
 
 export interface HighlightedCodeBlockProps
-  extends ConfigurableCodeBlockScrollWrappersProps,
+  extends
+    ConfigurableCodeBlockScrollWrappersProps,
     CodeHighlightDangerousHtmlOptions {
   /**
    * Shiki does not have a nice way to render to react elements without complex

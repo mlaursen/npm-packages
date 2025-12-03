@@ -7,8 +7,7 @@ import {
 
 const EMPTY_LIST = [] as const;
 
-export interface CreateShikiTransformerOptions
-  extends CodeBlockPreLineWrapOptions {
+export interface CreateShikiTransformerOptions extends CodeBlockPreLineWrapOptions {
   transformers?: readonly ShikiTransformer[];
 }
 
