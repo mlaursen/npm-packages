@@ -1,9 +1,4 @@
-import {
-  fireEvent,
-  render,
-  screen,
-  userEvent,
-} from "@react-md/core/test-utils";
+import { fireEvent, render, screen } from "@react-md/core/test-utils";
 import type { ReactElement } from "react";
 import { describe, expect, it, vi } from "vitest";
 
