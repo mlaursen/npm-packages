@@ -19,7 +19,7 @@ describe("ColorPreview", () => {
       </ColorPreview>
     );
 
-    expect(() => screen.getByText("Ignored!")).toThrow();
+    expect(() => screen.getByText("Ignored!")).toThrowError();
     const color = screen.getByTestId("color");
     expect(color).toMatchSnapshot();
   });

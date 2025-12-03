@@ -49,13 +49,13 @@ describe("CodePreview", () => {
     const { rerender } = render(<CodePreview {...props} />);
 
     const container = screen.getByTestId("container");
-    expect(() => screen.getByTestId("error")).toThrow();
+    expect(() => screen.getByTestId("error")).toThrowError();
     expect(container).toMatchSnapshot();
 
     rerender(<CodePreview {...props} error={<span>Something broke!</span>} />);
 
-    expect(() => screen.getByRole("alert")).not.toThrow();
-    expect(() => screen.getByTestId("error")).not.toThrow();
+    expect(() => screen.getByRole("alert")).not.toThrowError();
+    expect(() => screen.getByTestId("error")).not.toThrowError();
     expect(container).toMatchSnapshot();
   });
 });

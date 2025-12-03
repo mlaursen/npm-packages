@@ -6,6 +6,6 @@ import App from "../App.jsx";
 
 describe("App", () => {
   it("should render without crashing", () => {
-    expect(() => render(<App />)).not.toThrow();
+    expect(() => render(<App />)).not.toThrowError();
   });
 });

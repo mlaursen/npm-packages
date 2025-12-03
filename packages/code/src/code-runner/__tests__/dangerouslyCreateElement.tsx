@@ -32,7 +32,7 @@ describe("dangerouslyCreateElement", () => {
 </>
 `,
       })
-    ).toThrow("value is not defined");
+    ).toThrowError("value is not defined");
   });
 
   describe("simple rendering", () => {
@@ -247,7 +247,7 @@ render(<Example />);
 render(<Example  />);
 `,
         })
-      ).toThrow("Module not found: example");
+      ).toThrowError("Module not found: example");
     });
 
     it("should support fake css modules out of the box", () => {

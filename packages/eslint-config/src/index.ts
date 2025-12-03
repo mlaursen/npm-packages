@@ -3,6 +3,7 @@ import { base } from "./base.js";
 import { frontend, frontendTypeChecking } from "./frontend.js";
 import { gitignore } from "./gitignore.js";
 import { jsxA11y } from "./jsxA11y.js";
+import { minimal } from "./minimal.js";
 import { react } from "./react.js";
 import { scripts } from "./scripts.js";
 import { testingLibraryDom, testingLibraryReact } from "./testing-library.js";
@@ -14,6 +15,7 @@ import {
   vitest,
 } from "./testing.js";
 import { typescript, typescriptTypeChecking } from "./typescript.js";
+import { unicorn } from "./unicorn.js";
 
 export * from "./constants.js";
 export { gitignore };
@@ -38,10 +40,16 @@ interface EslintConfigs {
     reactCompiler?: boolean
   ) => readonly Linter.Config[];
 
+  minimal: (
+    testFramework: TestFramework,
+    tsconfigRootDir?: string
+  ) => readonly Linter.Config[];
+
   scripts: readonly Linter.Config[];
   jsxA11y: readonly Linter.Config[];
   testing: (framework: TestFramework) => readonly Linter.Config[];
   vitest: readonly Linter.Config[];
+  unicorn: readonly Linter.Config[];
 }
 
 export const configs: Readonly<EslintConfigs> = {
@@ -53,10 +61,12 @@ export const configs: Readonly<EslintConfigs> = {
   typescriptTypeChecking,
   testingLibraryDom,
   testingLibraryReact,
+  minimal,
   frontend,
   frontendTypeChecking,
   scripts,
   jsxA11y,
   testing,
   vitest,
+  unicorn,
 };

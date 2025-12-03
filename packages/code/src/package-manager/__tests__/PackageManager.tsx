@@ -34,11 +34,11 @@ describe("PackageManagerProvider", () => {
   });
 
   it("should allow child components to control the package manager behavior", () => {
-    expect(() => render(<Test />)).toThrow();
+    expect(() => render(<Test />)).toThrowError();
 
     expect(() =>
       render(<Test />, { wrapper: PackageManagerProvider })
-    ).not.toThrow();
+    ).not.toThrowError();
   });
 
   it("should default to npm, yarn, and pnpm package managers", async () => {

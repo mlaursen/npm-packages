@@ -1,9 +1,25 @@
 import { type Linter } from "eslint";
 import { jsxA11y } from "./jsxA11y.js";
+import { minimal } from "./minimal.js";
 import { react } from "./react.js";
 import { testingLibraryReact } from "./testing-library.js";
-import { type TestFramework, testing } from "./testing.js";
-import { typescript, typescriptTypeChecking } from "./typescript.js";
+import { type TestFramework } from "./testing.js";
+
+interface FrontendOptions {
+  testFramework: TestFramework;
+  reactCompiler?: boolean;
+  tsconfigRootDir?: string;
+}
+
+const _frontend = (options: FrontendOptions): Linter.Config[] => {
+  const { testFramework, reactCompiler, tsconfigRootDir } = options;
+  return [
+    ...minimal(testFramework, tsconfigRootDir),
+    ...react(reactCompiler),
+    ...jsxA11y,
+    ...testingLibraryReact,
+  ];
+};
 
 /**
  * @example
@@ -23,13 +39,7 @@ import { typescript, typescriptTypeChecking } from "./typescript.js";
 export const frontend = (
   testFramework: TestFramework,
   reactCompiler?: boolean
-): Linter.Config[] => [
-  ...typescript,
-  ...react(reactCompiler),
-  ...jsxA11y,
-  ...testing(testFramework),
-  ...testingLibraryReact,
-];
+): Linter.Config[] => _frontend({ testFramework, reactCompiler });
 
 /**
  * @example
@@ -50,10 +60,5 @@ export const frontendTypeChecking = (
   tsconfigRootDir: string,
   testFramework: TestFramework,
   reactCompiler?: boolean
-): Linter.Config[] => [
-  ...typescriptTypeChecking(tsconfigRootDir),
-  ...react(reactCompiler),
-  ...jsxA11y,
-  ...testing(testFramework),
-  ...testingLibraryReact,
-];
+): Linter.Config[] =>
+  _frontend({ testFramework, reactCompiler, tsconfigRootDir });

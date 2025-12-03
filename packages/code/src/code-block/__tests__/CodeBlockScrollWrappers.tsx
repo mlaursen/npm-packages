@@ -75,7 +75,9 @@ describe("CodeBlockScrollWrappers", () => {
       </CodeBlockScrollWrappers>
     );
 
-    expect(() => screen.getByRole("button", { name: "Copy" })).not.toThrow();
+    expect(() =>
+      screen.getByRole("button", { name: "Copy" })
+    ).not.toThrowError();
     expect(screen.getByTestId("container")).toMatchSnapshot();
   });
 });

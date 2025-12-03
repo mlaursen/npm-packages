@@ -25,7 +25,7 @@ describe("InlineCode", () => {
       </InlineCode>
     );
 
-    expect(() => screen.getByRole("code")).toThrow();
+    expect(() => screen.getByRole("code")).toThrowError();
 
     const kbd = screen.getByTestId("kbd");
     expect(kbd).toMatchSnapshot();

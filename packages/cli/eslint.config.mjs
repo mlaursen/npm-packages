@@ -4,5 +4,5 @@ import { defineConfig } from "eslint/config";
 
 export default defineConfig(
   gitignore(import.meta.url),
-  ...configs.frontend("vitest", true)
+  ...configs.minimal("vitest")
 );

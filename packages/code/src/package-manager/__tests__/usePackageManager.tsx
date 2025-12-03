@@ -11,7 +11,7 @@ describe("usePackageManager", () => {
       return null;
     }
 
-    expect(() => render(<Test />)).toThrow(
+    expect(() => render(<Test />)).toThrowError(
       "PackageManagerProvider is not mounted"
     );
   });

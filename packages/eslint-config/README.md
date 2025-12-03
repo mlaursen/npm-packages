@@ -149,11 +149,12 @@ pnpm add -D @eslint/eslintrc @next/eslint-plugin-next
 
 ## Configs
 
-I normally just use the `frontend` or `frontendTypeChecking` configs, but the
-others can be used individually if needed.
+I normally just use the `frontend`, `frontendTypeChecking`, or `minimal`
+configs, but the others can be used individually if needed.
 
 <!-- toc -->
 
+- [minimal](#minimal)
 - [base](#base)
 - [scripts](#scripts)
 - [typescript](#typescript)
@@ -171,11 +172,57 @@ others can be used individually if needed.
 
 <!-- tocstop -->
 
+### minimal
+
+The minimal config should be used when not using [frontend](#frontend) or
+[frontendTypeChecking](#frontendtypechecking) since it adds everything except
+for the frontend only portions.
+
+```js
+// @ts-check
+import { configs, gitignore } from "@mlaursen/eslint-config";
+import { defineConfig } from "eslint/config";
+
+export default defineConfig([
+  gitignore(import.meta.dirname),
+  ...configs.minimal({ testFramework: "jest" }),
+]);
+
+// or with strict type checking
+export default defineConfig([
+  gitignore(import.meta.dirname),
+  ...configs.minimal({
+    testFramework: "jest",
+    tsconfigRootDir: import.meta.dirname,
+  }),
+]);
+
+// or with the react compiler rules enabled
+export default defineConfig([
+  gitignore(import.meta.dirname),
+  ...configs.minimal({ testFramework: "jest", reactCompiler: true }),
+]);
+
+// or with vitest
+export default defineConfig([
+  gitignore(import.meta.dirname),
+  ...configs.minimal({ testFramework: "vitest" }),
+]);
+
+// or with the react compiler rules enabled
+export default defineConfig([
+  gitignore(import.meta.dirname),
+  ...configs.minimal({ testFramework: "vitest", reactCompiler: true }),
+]);
+```
+
 ### base
 
-The base config is automatically used by the [typescript](#typescript) config and is just the `eslint.configs.recommended` and a few other stylistic changes.
+The base config is automatically used by the [typescript](#typescript) config
+and is just the `eslint.configs.recommended` and a few other stylistic changes.
 
-> This should not be used if the [typescript](#typescript) or [typescriptTypeChecking](#typescripttypechecking) configs are used.
+> This should not be used if the [typescript](#typescript) or
+> [typescriptTypeChecking](#typescripttypechecking) configs are used.
 
 ```js
 // @ts-check
