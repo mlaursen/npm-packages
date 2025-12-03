@@ -35,30 +35,29 @@ export default function App(): ReactElement {
             <ColorPreview color="#ffaaff" />
           </Box>
           <Box stacked>
-            Default (v2)
-            <ColorPreview color="#FFAAFF" v2 />
+            Default ()
+            <ColorPreview color="#FFAAFF" />
           </Box>
           <Box stacked>
             Icon
-            <ColorPreview color="#55FF33" v2 variant="icon" />
+            <ColorPreview color="#55FF33" variant="icon" />
           </Box>
           <Box stacked>
             shadowed
-            <ColorPreview color="#55FF33" v2 shadowed />
+            <ColorPreview color="#55FF33" shadowed />
           </Box>
           <Box stacked>
             disable tooltip
-            <ColorPreview color="#55FF33" v2 disableTooltip />
+            <ColorPreview color="#55FF33" disableTooltip />
           </Box>
           <Box stacked>
             icon disable tooltip
-            <ColorPreview color="#55FF33" v2 variant="icon" disableTooltip />
+            <ColorPreview color="#55FF33" variant="icon" disableTooltip />
           </Box>
           <Box stacked>
             icon-bordered disable tooltip
             <ColorPreview
               color="#55FF33"
-              v2
               variant="icon"
               shadowed
               disableTooltip

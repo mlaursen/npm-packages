@@ -34,20 +34,20 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "@eslint/compat": "^1.4.1",
-    "@eslint/core": "^0.17.0",
+    "@eslint/compat": "^2.0.0",
+    "@eslint/core": "^1.0.0",
     "@eslint/js": "^9.39.0",
     "@types/eslint-plugin-jsx-a11y": "^6.10.1",
-    "@typescript-eslint/utils": "^8.46.2",
-    "@vitest/eslint-plugin": "^1.4.0",
+    "@typescript-eslint/utils": "^8.48.1",
+    "@vitest/eslint-plugin": "^1.5.1",
     "eslint": "^9.39.1",
-    "eslint-plugin-jest": "^29.0.1",
+    "eslint-plugin-jest": "^29.2.1",
     "eslint-plugin-jest-dom": "^5.5.0",
     "eslint-plugin-jsx-a11y": "^6.10.2",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^7.0.1",
-    "eslint-plugin-testing-library": "^7.13.3",
-    "typescript-eslint": "^8.46.2"
+    "eslint-plugin-testing-library": "^7.13.5",
+    "typescript-eslint": "^8.48.1"
   },
   "devDependencies": {
     "@mlaursen/release-script": "workspace:*",

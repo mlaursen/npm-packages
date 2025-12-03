@@ -24,8 +24,8 @@
   },
   "dependencies": {
     "@mlaursen/copy-scss-files": "workspace:*",
-    "chokidar": "^4.0.3",
-    "glob": "^11.0.3"
+    "chokidar": "^5.0.0",
+    "glob": "^13.0.0"
   },
   "devDependencies": {
     "@mlaursen/eslint-config": "workspace:*",

@@ -34,10 +34,10 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "@changesets/cli": "^2.29.7",
-    "@inquirer/confirm": "^5.1.19",
-    "@inquirer/input": "^4.2.5",
-    "@inquirer/rawlist": "^4.1.9",
+    "@changesets/cli": "^2.29.8",
+    "@inquirer/confirm": "^6.0.2",
+    "@inquirer/input": "^5.0.2",
+    "@inquirer/rawlist": "^5.0.2",
     "@octokit/core": "^7.0.6",
     "dotenv": "^17.2.3"
   },
