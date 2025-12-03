@@ -1,5 +1,11 @@
 # @mlaursen/eslint-config
 
+## 10.1.0
+
+### Minor Changes
+
+- d3e43ce: Added a new `minimal` config and support for `unicorn`
+
 ## 10.0.2
 
 ### Patch Changes
