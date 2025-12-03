@@ -12,7 +12,10 @@
     "lint": "eslint .",
     "lint-fix": "pnpm lint --fix",
     "test": "vitest",
-    "test-coverage": "vitest run --coverage",
+    "test-coverage": "vitest --coverage",
+    "test-run": "vitest run",
+    "test-run-snapshot": "vitest run -u",
+    "test-run-coverage": "vitest run --coverage",
     "dev": "next dev",
     "build": "next build",
     "start": "next start"

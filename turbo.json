@@ -21,9 +21,14 @@
     "test": {
       "cache": false
     },
+    "test-run": {},
     "test-coverage": {
       "outputs": ["coverage/**"]
     },
+    "test-run-coverage": {
+      "outputs": ["coverage/**"]
+    },
+    "test-run-snapshot": {},
     "format": {},
     "check-format": {},
     "clean": {
