@@ -17,83 +17,42 @@ Then create an `eslint.config.mjs` with one of the following:
 import { configs, gitignore } from "@mlaursen/eslint-config";
 import { defineConfig } from "eslint/config";
 
-// somewhat strict type checking
 export default defineConfig([
   gitignore(import.meta.url),
-  ...configs.frontend("jest"),
+  ...configs.recommendedFrontend({
+    // Optional: enable additional react-refresh eslint rules
+    reactRefresh: "vite",
+    // reactRefresh: "next",
+    // reactRefresh: "recommended",
+
+    // Optional: enable additional react-compiler eslint rules
+    reactCompiler: true,
+
+    // Optional: defaults to `"vitest"`
+    testFramework: "jest",
+
+    // Optional: enables strict type checking with tsc (slower)
+    tsconfigRootDir:
+      process.env.STRICT_TYPING === "true" ? import.meta.dirname : undefined,
+  }),
 ]);
-
-// somewhat strict type checking with react compiler
-export default defineConfig([
-  gitignore(import.meta.url),
-  ...configs.frontend("jest", true),
-]);
-
-// or with vitest
-// export default defineConfig(
-//   gitignore(import.meta.url),
-//   ...configs.frontend("vitest")
-// );
-
-// or with vitest and react compiler
-// export default defineConfig(
-//   gitignore(import.meta.url),
-//   ...configs.frontend("vitest", true)
-// );
 ```
 
 ```js
-// @ts-check
 import { configs, gitignore } from "@mlaursen/eslint-config";
 import { defineConfig } from "eslint/config";
 
-// strict type checking
 export default defineConfig([
   gitignore(import.meta.url),
-  ...configs.frontendTypeChecking(import.meta.dirname, "jest"),
+  ...configs.recommended({
+    // Optional: defaults to `"vitest"`
+    testFramework: "jest",
+
+    // Optional: enables strict type checking with tsc (slower)
+    tsconfigRootDir:
+      process.env.STRICT_TYPING === "true" ? import.meta.dirname : undefined,
+  }),
 ]);
-
-// strict type checking with react compiler
-export default defineConfig([
-  gitignore(import.meta.url),
-  ...configs.frontendTypeChecking(import.meta.dirname, "jest", true),
-]);
-
-// or with vitest
-// export default defineConfig(
-//   gitignore(import.meta.url),
-//   ...configs.frontendTypeChecking(import.meta.dirname, "vitest")
-// );
-
-// or with vitest and react compiler
-// export default defineConfig(
-//   gitignore(import.meta.url),
-//   ...configs.frontendTypeChecking(import.meta.dirname, "vitest", true)
-// );
-```
-
-```js
-// @ts-check
-import { configs, gitignore } from "@mlaursen/eslint-config";
-import { defineConfig } from "eslint/config";
-
-// NOTE: This is recommended for strict type checking. Callable as:
-// `cross-env STRICT_TYPING=true eslint "**/*.{ts,tsx,mts,mtsx,js,jsx,mjs,cjs}`
-//
-// strict type checking with an environment variable. uncomment the following
-// line to enable it in your editor
-// const strict = true || process.env.STRICT_TYPING === 'true';
-const strict = process.env.STRICT_TYPING === "true";
-const reactCompiler = false;
-const frontend = strict
-  ? configs.frontendTypeChecking(import.meta.dirname, "jest", reactCompiler)
-  : configs.frontend("jest", reactCompiler);
-
-// or with vitest
-// const frontend = strict
-//   ? configs.frontendTypeChecking(import.meta.dirname, "vitest", reactCompiler)
-//   : configs.frontend("vitest", reactCompiler);
-export default defineConfig([gitignore(import.meta.url), ...frontend]);
 ```
 
 ## Next.js Setup
@@ -102,9 +61,9 @@ This is no longer included in this eslint-config since it requires the eslint
 plugin to be installed in the project to work. Here are the setup steps:
 
 ```sh
-npm install -D @eslint/eslintrc @next/eslint-plugin-next
-yarn add -D @eslint/eslintrc @next/eslint-plugin-next
-pnpm add -D @eslint/eslintrc @next/eslint-plugin-next
+npm install -D @next/eslint-plugin-next
+yarn add -D @next/eslint-plugin-next
+pnpm add -D @next/eslint-plugin-next
 ```
 
 ### Next.js >= 16
@@ -118,7 +77,7 @@ pnpm add -D @eslint/eslintrc @next/eslint-plugin-next
  export default defineConfig([
 +  nextPlugin.configs["core-web-vitals"],
    gitignore(import.meta.url),
-   ...configs.frontend("jest"),
+   ...configs.recommendedFrontend(),
  ]);
 ```
 
@@ -143,22 +102,22 @@ pnpm add -D @eslint/eslintrc @next/eslint-plugin-next
 +    // or with core-web-vitals
 +    // extends: ["plugin:@next/next/core-web-vitals"],
 +  }),
-   ...configs.frontend("jest"),
+   ...configs.recommendedFrontend(),
  ]);
 ```
 
 ## Configs
 
-I normally just use the `frontend`, `frontendTypeChecking`, or `minimal`
-configs, but the others can be used individually if needed.
+I normally just use the `recommended` or `recommendedFrontend` configs, but the
+others can be used individually if needed.
 
 <!-- toc -->
 
-- [minimal](#minimal)
+- [recommended](#recommended)
+- [recommendedFrontend](#recommendedfrontend)
 - [base](#base)
 - [scripts](#scripts)
 - [typescript](#typescript)
-- [typescriptTypeChecking](#typescripttypechecking)
 - [testing](#testing)
 - [jest](#jest)
 - [jestDom](#jestdom)
@@ -167,16 +126,11 @@ configs, but the others can be used individually if needed.
 - [testingLibraryDom](#testinglibrarydom)
 - [react](#react)
 - [jsxA11y](#jsxa11y)
-- [frontend](#frontend)
-- [frontendTypeChecking](#frontendtypechecking)
+- [unicorn](#unicorn)
 
 <!-- tocstop -->
 
-### minimal
-
-The minimal config should be used when not using [frontend](#frontend) or
-[frontendTypeChecking](#frontendtypechecking) since it adds everything except
-for the frontend only portions.
+### recommended
 
 ```js
 // @ts-check
@@ -185,34 +139,44 @@ import { defineConfig } from "eslint/config";
 
 export default defineConfig([
   gitignore(import.meta.dirname),
-  ...configs.minimal({ testFramework: "jest" }),
+  ...configs.recommended({ testFramework: "jest" }),
 ]);
 
 // or with strict type checking
 export default defineConfig([
   gitignore(import.meta.dirname),
-  ...configs.minimal({
+  ...configs.recommended({
     testFramework: "jest",
     tsconfigRootDir: import.meta.dirname,
   }),
 ]);
+```
 
-// or with the react compiler rules enabled
+### recommendedFrontend
+
+```js
+// @ts-check
+import { configs, gitignore } from "@mlaursen/eslint-config";
+import { defineConfig } from "eslint/config";
+
 export default defineConfig([
   gitignore(import.meta.dirname),
-  ...configs.minimal({ testFramework: "jest", reactCompiler: true }),
+  ...configs.recommendedFrontend({
+    reactRefresh: "next",
+    reactCompiler: true,
+    testFramework: "jest",
+  }),
 ]);
 
-// or with vitest
+// or with strict type checking
 export default defineConfig([
   gitignore(import.meta.dirname),
-  ...configs.minimal({ testFramework: "vitest" }),
-]);
-
-// or with the react compiler rules enabled
-export default defineConfig([
-  gitignore(import.meta.dirname),
-  ...configs.minimal({ testFramework: "vitest", reactCompiler: true }),
+  ...configs.recommendedFrontend({
+    reactRefresh: "next",
+    reactCompiler: true,
+    testFramework: "jest",
+    tsconfigRootDir: import.meta.dirname,
+  }),
 ]);
 ```
 
@@ -221,8 +185,7 @@ export default defineConfig([
 The base config is automatically used by the [typescript](#typescript) config
 and is just the `eslint.configs.recommended` and a few other stylistic changes.
 
-> This should not be used if the [typescript](#typescript) or
-> [typescriptTypeChecking](#typescripttypechecking) configs are used.
+> This should not be used if the [typescript](#typescript) config is used.
 
 ```js
 // @ts-check
@@ -246,32 +209,20 @@ export default defineConfig([...configs.base, ...configs.scripts]);
 
 ### typescript
 
-This extends the [base](#base) config and the `tseslint.configs.strict` config. It also includes a few stylistic choices for type
-behavior and disabled strict rules in test files.
-
-> Only this rule or [typescripttypechecking](#typescripttypechecking) should be used. They should not be used together.
-
-```js
-// @ts-check
-import { configs } from "@mlaursen/eslint-config";
-import { defineConfig } from "eslint/config";
-
-export default defineConfig(configs.typescript);
-```
-
-### typescriptTypeChecking
-
-This is the same as the [typescript](#typescript) config but also includes the `tseslint.configs.strictTypeCheckedOnly` config.
-
-> Only this rule or [typescript](#typescript) should be used. They should not be used together.
+This extends the [base](#base) config and the `tseslint.configs.strict` config.
+It also includes a few stylistic choices for type behavior and disabled strict
+rules in test files.
 
 ```js
 // @ts-check
 import { configs } from "@mlaursen/eslint-config";
 import { defineConfig } from "eslint/config";
 
+export default defineConfig(configs.typescript());
+
+// or with strict type checking
 export default defineConfig(
-  configs.typescriptTypeChecking(import.meta.dirname)
+  configs.typescript({ tsconfigRootDir: import.meta.dirname })
 );
 ```
 
@@ -284,15 +235,16 @@ This enables the [jest](#jest) or [vitest](#vitest) rules along with [jestDom](#
 import { configs } from "@mlaursen/eslint-config";
 import { defineConfig } from "eslint/config";
 
-export default defineConfig(configs.testing("jest"));
+export default defineConfig(configs.testing({ testFramework: "jest" }));
 
 // or vitest
-export default defineConfig(configs.testing("vitest"));
+export default defineConfig(configs.testing({ testFramework: "vitest" }));
 ```
 
 ### jest
 
-This only enables the `eslint-plugin-jest.configs['flat/recommended]` rules on tests files and should not be used if using [testing](#testing).
+This only enables the `eslint-plugin-jest.configs["flat/recommended"]` rules on
+tests files and should not be used if using [testing](#testing).
 
 ```js
 // @ts-check
@@ -304,7 +256,8 @@ export default defineConfig(configs.jest);
 
 ### jestDom
 
-This only enables the `eslint-plugin-jest-dom.configs['flat/recommended]` rules on tests files and should not be used if using [testing](#testing).
+This only enables the `eslint-plugin-jest-dom.configs["flat/recommended"]` rules
+on tests files and should not be used if using [testing](#testing).
 
 ```js
 // @ts-check
@@ -316,11 +269,13 @@ export default defineConfig(configs.jestDom);
 
 ### vitest
 
-This only enables the `@vitest/eslint-plugin` rules on test files and should not be used if using [testing](#testing).
+This only enables the `@vitest/eslint-plugin` rules on test files and should not
+be used if using [testing](#testing).
 
 ### testingLibraryReact
 
-This enables the `eslint-plugin-testing-library/.configs["flat/react]` plugin and rules on test files.
+This enables the `eslint-plugin-testing-library/.configs["flat/react"]` plugin
+and rules on test files.
 
 ```js
 // @ts-check
@@ -340,9 +295,11 @@ export default defineConfig(configs.testingLibraryReact);
 
 ### testingLibraryDom
 
-This enables the `eslint-plugin-testing-library/.configs["flat/dom]` plugin and rules on test files.
+This enables the `eslint-plugin-testing-library/.configs["flat/dom"]` plugin and
+rules on test files.
 
-> This should **not** be used with the [testingLibraryReact](#testinglibraryreact) rules
+> This should **not** be used with the
+> [testingLibraryReact](#testinglibraryreact) rules
 
 ```js
 // @ts-check
@@ -379,54 +336,14 @@ import { defineConfig } from "eslint/config";
 export default defineConfig(configs.jsxA11y);
 ```
 
-### frontend
+### unicorn
 
-This is my normal frontend repo setup with `react`, `jsxA11y`, `jest` or
-`vitest`, `jest-dom`, `typescript`, `testing-library/react`.
+This enables some rules from `eslint-plugin-unicorn`:
 
 ```js
 // @ts-check
 import { configs } from "@mlaursen/eslint-config";
 import { defineConfig } from "eslint/config";
 
-export default defineConfig(configs.frontend("jest"));
-
-// or with the react compiler rules enabled
-export default defineConfig(configs.frontend("jest", true));
-
-// or with vitest
-export default defineConfig(configs.frontend("vitest"));
-
-// or with the react compiler rules enabled
-export default defineConfig(configs.frontend("vitest", true));
-```
-
-### frontendTypeChecking
-
-Same as the [frontend](#frontend), but enables the strict type checking.
-
-```ts
-// @ts-check
-import { configs } from "@mlaursen/eslint-config";
-import { defineConfig } from "eslint/config";
-
-export default defineConfig(
-  configs.frontendTypeChecking(import.meta.dirname, "jest")
-);
-
-// or with the react compiler rules enabled
-export default defineConfig(
-  configs.frontendTypeChecking(import.meta.dirname, "jest"),
-  true
-);
-
-// or with vitest
-export default defineConfig(
-  configs.frontendTypeChecking(import.meta.dirname, "vitest")
-);
-// or with the react compiler rules enabled
-export default defineConfig(
-  configs.frontendTypeChecking(import.meta.dirname, "vitest"),
-  true
-);
+export default defineConfig(configs.unicorn);
 ```

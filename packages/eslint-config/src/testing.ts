@@ -6,6 +6,13 @@ import { BASE_NAME, DEV_OFF_PROD_ERROR, TEST_FILES } from "./constants.js";
 
 export type TestFramework = "jest" | "vitest";
 
+export interface TestOptions {
+  /**
+   * @defaultValue `"vitest"`
+   */
+  testFramework?: TestFramework;
+}
+
 /**
  * @example
  * ```ts
@@ -79,15 +86,17 @@ export const jestDom: Linter.Config[] = [
  * import { configs } from "@mlaursen/eslint-config";
  * import { defineConfig } from "eslint/config";
  *
- * export default defineConfig(configs.testing("jest"));
+ * export default defineConfig(configs.testing({ testFramework: "jest" }));
  *
  * // or
- * export default defineConfig(configs.testing("vitest"));
+ * export default defineConfig(configs.testing({ testFramework: "vitest" }));
  * ```
  */
-export const testing = (framework: TestFramework): Linter.Config[] => {
+export const testing = (options: TestOptions = {}): Linter.Config[] => {
+  const { testFramework = "vitest" } = options;
+
   let config: Linter.Config[];
-  switch (framework) {
+  switch (testFramework) {
     case "jest":
       config = jest;
       break;

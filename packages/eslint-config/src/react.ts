@@ -1,7 +1,23 @@
 import { type Linter } from "eslint";
 import reactPlugin from "eslint-plugin-react";
 import reactHooksPlugin from "eslint-plugin-react-hooks";
+import reactRefreshPlugin from "eslint-plugin-react-refresh";
 import { BASE_NAME, JSX_FILES } from "./constants.js";
+
+export type ReactRefreshConfig = keyof typeof reactRefreshPlugin.configs;
+
+export interface ReactOptions {
+  /**
+   * Set to one of the `eslint-plugin-react-refresh` config names to enable.
+   */
+  reactRefresh?: ReactRefreshConfig;
+
+  /**
+   * Set to `true` to enable the react compiler eslint rules
+   * @defaultValue `false`
+   */
+  reactCompiler?: boolean;
+}
 
 /**
  * @example
@@ -22,10 +38,10 @@ import { BASE_NAME, JSX_FILES } from "./constants.js";
  * - `eslint-plugin-react-hooks` with:
  *   - recommended rules
  *   - compiler rules (if `true` is provided)
- *
- * @param reactCompiler enable the react compiler eslint rules
  */
-export const react = (reactCompiler?: boolean): Linter.Config[] => {
+export const react = (options: ReactOptions = {}): Linter.Config[] => {
+  const { reactRefresh, reactCompiler } = options;
+
   return [
     {
       ...reactPlugin.configs.flat.recommended,
@@ -55,5 +71,6 @@ export const react = (reactCompiler?: boolean): Linter.Config[] => {
         ],
       },
     },
+    ...(reactRefresh ? [reactRefreshPlugin.configs[reactRefresh]] : []),
   ];
 };
