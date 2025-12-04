@@ -432,9 +432,6 @@ importers:
         specifier: ^8.48.1
         version: 8.48.1(eslint@9.39.1)(typescript@5.9.3)
     devDependencies:
-      '@mlaursen/release-script':
-        specifier: workspace:*
-        version: link:../release-script
       '@types/node':
         specifier: ^24.10.1
         version: 24.10.1

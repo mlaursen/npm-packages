@@ -1,5 +1,5 @@
 import { base } from "./base.js";
-import { gitignore } from "./gitignore.js";
+
 import { jsxA11y } from "./jsxA11y.js";
 import { react } from "./react.js";
 import { recommended } from "./recommended.js";
@@ -11,7 +11,6 @@ import { typescript } from "./typescript.js";
 import { unicorn } from "./unicorn.js";
 
 export * from "./constants.js";
-export { gitignore };
 
 interface EslintConfigs {
   recommended: typeof recommended;
@@ -48,3 +47,5 @@ export const configs: Readonly<EslintConfigs> = {
   vitest,
   unicorn,
 };
+
+export { gitignore } from "./gitignore.js";

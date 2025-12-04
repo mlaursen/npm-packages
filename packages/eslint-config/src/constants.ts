@@ -1,5 +1,5 @@
 export const DEV_WARNING_PROD_ERROR =
-  process.env.NODE_ENV !== "production" ? "warn" : "error";
+  process.env.NODE_ENV === "production" ? "error" : "warn";
 
 /**
  * This is a "temporary" workaround until autofixable rules can be disabled with
@@ -7,7 +7,7 @@ export const DEV_WARNING_PROD_ERROR =
  * should be something closer to `DEV_WARN_PROD_ERROR_AND_FIX`
  */
 export const DEV_OFF_PROD_ERROR =
-  process.env.NODE_ENV !== "production" ? "off" : "error";
+  process.env.NODE_ENV === "production" ? "error" : "off";
 
 export const BASE_NAME = "@mlaursen/eslint-config";
 

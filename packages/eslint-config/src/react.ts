@@ -9,11 +9,33 @@ export type ReactRefreshConfig = keyof typeof reactRefreshPlugin.configs;
 export interface ReactOptions {
   /**
    * Set to one of the `eslint-plugin-react-refresh` config names to enable.
+   *
+   * @example Vite
+   * ```js
+   * configs.react({
+   *   reactRefresh: "vite",
+   * })
+   * ```
+   *
+   * @example Next.js
+   * ```js
+   * configs.react({
+   *   reactRefresh: "next",
+   * })
+   * ```
+   *
+   * @example Recommended
+   * ```js
+   * configs.react({
+   *   reactRefresh: "recommended",
+   * })
+   * ```
    */
   reactRefresh?: ReactRefreshConfig;
 
   /**
-   * Set to `true` to enable the react compiler eslint rules
+   * Set to `true` to enable the react compiler eslint rules.
+   *
    * @defaultValue `false`
    */
   reactCompiler?: boolean;
@@ -71,6 +93,14 @@ export const react = (options: ReactOptions = {}): Linter.Config[] => {
         ],
       },
     },
-    ...(reactRefresh ? [reactRefreshPlugin.configs[reactRefresh]] : []),
+    ...(reactRefresh
+      ? [
+          {
+            ...reactRefreshPlugin.configs[reactRefresh],
+            name: `${BASE_NAME}/react-refresh`,
+            ignores: ["**/test-utils*", "**/test-utils/**"],
+          },
+        ]
+      : []),
   ];
 };

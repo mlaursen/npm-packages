@@ -6,10 +6,7 @@ import { defineConfig } from "eslint/config";
 export default defineConfig([
   nextPlugin.configs["core-web-vitals"],
   gitignore(import.meta.url),
-  ...configs.frontend("vitest", true),
-  // {
-  //   rules: {
-  //     "@typescript-eslint/no-unused-expressions": "off",
-  //   },
-  // },
+  ...configs.recommendedFrontend({
+    reactCompiler: true,
+  }),
 ]);

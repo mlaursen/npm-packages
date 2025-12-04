@@ -9,6 +9,16 @@ import {
 } from "./constants.js";
 
 export interface TypescriptOptions {
+  /**
+   * Enables additional strict rules that require type checking.
+   *
+   * @example
+   * ```js
+   * configs.recommended({
+   *   tsconfigRootDir: import.meta.dirname,
+   * })
+   * ```
+   */
   tsconfigRootDir?: string;
 }
 
