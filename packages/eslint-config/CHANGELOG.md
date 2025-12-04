@@ -1,5 +1,11 @@
 # @mlaursen/eslint-config
 
+## 10.1.1
+
+### Patch Changes
+
+- 8e7e58b: Fixed the unicorn rules so they are actually enabled.
+
 ## 10.1.0
 
 ### Minor Changes
