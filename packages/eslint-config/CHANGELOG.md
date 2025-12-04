@@ -1,5 +1,11 @@
 # @mlaursen/eslint-config
 
+## 11.0.1
+
+### Patch Changes
+
+- Fixed the react-refresh plugin to ingore test-utils
+
 ## 11.0.0
 
 ### Major Changes
