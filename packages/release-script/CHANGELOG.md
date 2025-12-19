@@ -1,5 +1,11 @@
 # @mlaursen/release-script
 
+## 0.0.7
+
+### Patch Changes
+
+- a65f372: Updated the release flow to better support the correct changesets CLI. It no longer creates a changeset at the publish stage
+
 ## 0.0.6
 
 ### Patch Changes
