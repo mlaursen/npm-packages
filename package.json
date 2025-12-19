@@ -25,7 +25,8 @@
     "clean-dist": "pnpm turbo-s clean-dist",
     "clean-other": "pnpm turbo-s clean",
     "clean-root": "rm -rf .turbo node_modules",
-    "clean": "pnpm clean-other && pnpm clean-root"
+    "clean": "pnpm clean-other && pnpm clean-root",
+    "release": "tsx scripts/release.ts"
   },
   "devDependencies": {
     "@changesets/cli": "^2.29.8",
@@ -34,6 +35,7 @@
     "husky": "^9.1.7",
     "lint-staged": "^16.2.7",
     "prettier": "^3.7.4",
+    "tsx": "^4.21.0",
     "turbo": "^2.6.2"
   },
   "resolutions": {
