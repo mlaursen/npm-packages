@@ -1,2 +1,2 @@
+export * from "./createRelease.js";
 export * from "./release.js";
-export * from "./getLatestTag.js";

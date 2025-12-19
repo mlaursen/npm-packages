@@ -59,8 +59,8 @@ export async function createRelease(
     );
 
     console.log(`Created release: ${response.data.html_url}`);
-  } catch (e) {
-    console.error(e);
+  } catch (error) {
+    console.error(error);
 
     console.log();
     console.log(
@@ -72,7 +72,7 @@ export async function createRelease(
     if (
       !(await confirm({ message: "Try creating the Github release again?" }))
     ) {
-      process.exit(1);
+      throw new Error("Unable to create a Github release");
     }
 
     return createRelease({ ...options, override: true });

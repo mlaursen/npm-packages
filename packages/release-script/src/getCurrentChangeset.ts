@@ -1,7 +1,7 @@
 import confirm from "@inquirer/confirm";
 import rawlist from "@inquirer/rawlist";
 import { execSync } from "node:child_process";
-import { readdir, readFile } from "node:fs/promises";
+import { readFile, readdir } from "node:fs/promises";
 import { join } from "node:path";
 
 export async function getCurrentChangeset(): Promise<string> {

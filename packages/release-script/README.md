@@ -52,10 +52,6 @@ await release({
   // An optional flag if the build step should be skipped. `!buildCommand` by default
   // skipBuild: process.argv.includes("--skip-build"),
 
-  // This is useful for monorepos where only a single Github release needs to
-  // be created. Defaults to `JSON.parse(await readFile("package.json)).name`
-  // mainPackage: "{{PACKAGE_NAME}}",
-
   // If the version message needs to be customized. The following is the default
   // versionMessage: "build(version): version package",
 
@@ -63,18 +59,11 @@ await release({
   // variable.
   // envPath: ".env.local",
 
-  // An optional async function to get the next release tag name. The default
-  // is shown below:
-  // getTagName: async () => {
-  //   const latestTag = await (
-  //     await import("@react-md/release-script")
-  //   ).getLatestTag();
-  //   let tagName =
-  //     mainPackage && /@\d/.test(latestTag)
-  //       ? latestTag.replace(/.+(@\d)/, `${mainPackage}$1`)
-  //       : latestTag;
-  //
-  //   return tagName;
+  // An optional lookup of package name -> package path in the repo used to
+  // find the CHANGELOG.md for each release in a monorepo. Will default to
+  // `"."` when omitted.
+  // packagePaths: {
+  //   "@react-md/core": "./packages/core",
   // },
 });
 ```
@@ -89,7 +78,7 @@ Next, update `package.json` to include the release script:
      "format": "prettier --write .",
      "clean": "rm -rf dist",
      "build": "tsc -p tsconfig.json",
-+    "release": "tsx index.ts"
++    "release": "tsx scripts/release.ts"
    },
 ```
 
@@ -97,6 +86,16 @@ Finally, run the release script whenever a new release should go out:
 
 ```sh
 pnpm release
+```
+
+## Adding Changesets
+
+During normal development, add changesets and commit them. They will normally
+be close to my commit messages which is a bit annoying.
+
+```sh
+pnpm changeset
+git add .changeset
 ```
 
 ## Alpha Releases
