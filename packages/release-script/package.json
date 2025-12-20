@@ -4,7 +4,10 @@
   "description": "The release script I normally use for packages I publish to npm",
   "type": "module",
   "exports": {
-    ".": "./dist/index.mjs",
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.mjs"
+    },
     "./package.json": "./package.json"
   },
   "scripts": {
