@@ -1,5 +1,11 @@
 # @mlaursen/release-script
 
+## 0.0.8
+
+### Patch Changes
+
+- c1f2d4f: Fixed the incorrect type mapping
+
 ## 0.0.7
 
 ### Patch Changes

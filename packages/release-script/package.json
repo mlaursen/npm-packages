@@ -1,6 +1,6 @@
 {
   "name": "@mlaursen/release-script",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "The release script I normally use for packages I publish to npm",
   "type": "module",
   "exports": {
