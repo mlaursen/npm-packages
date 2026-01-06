@@ -10,7 +10,8 @@ import {
 
 export interface TypescriptOptions {
   /**
-   * Enables additional strict rules that require type checking.
+   * This is required when working in monorepos or when the
+   * {@link strictTypeChecked} rules are enabled.
    *
    * @example
    * ```js
@@ -20,6 +21,20 @@ export interface TypescriptOptions {
    * ```
    */
   tsconfigRootDir?: string;
+
+  /**
+   * The {@link tsconfigRootDir} must be set if this is `true`.
+   *
+   * @example
+   * ```js
+   * configs.recommended({
+   *   tsconfigRootDir: import.meta.dirname,
+   *   strictTypeChecked: process.env.STRICT_TYPING === "true",
+   * })
+   *
+   * @defaultValue `false`
+   */
+  strictTypeChecked?: boolean;
 }
 
 /**
@@ -117,17 +132,20 @@ export const typescript = (
   ];
 
   if (tsconfigRootDir) {
-    configs.push(
-      ...tseslint.configs.strictTypeCheckedOnly,
-      {
-        name: `${BASE_NAME}/typescript-type-checking-language-options`,
-        languageOptions: {
-          parserOptions: {
-            projectService: true,
-            tsconfigRootDir,
-          },
+    configs.push({
+      name: `${BASE_NAME}/typescript-type-checking-language-options`,
+      languageOptions: {
+        parserOptions: {
+          projectService: true,
+          tsconfigRootDir,
         },
       },
+    });
+  }
+
+  if (tsconfigRootDir) {
+    configs.push(
+      ...tseslint.configs.strictTypeCheckedOnly,
       {
         name: `${BASE_NAME}/typescript-type-checking`,
         files: TS_FILES,
