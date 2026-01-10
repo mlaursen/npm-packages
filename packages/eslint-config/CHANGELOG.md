@@ -1,5 +1,15 @@
 # @mlaursen/eslint-config
 
+## 12.0.0
+
+### Major Changes
+
+- 450377a: Providing the `tsconfigRootDir` option no longer automatically enables the strict typescript-eslint rules to support monorepo setups. Enable the new `strictTypeChecked` option along with providing the `tsconfigRootDir`.
+
+### Patch Changes
+
+- b321d3a: updated dependencies to latest
+
 ## 11.0.1
 
 ### Patch Changes
