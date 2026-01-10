@@ -2,6 +2,7 @@ import { release } from "../packages/release-script/src/release.js";
 
 await release({
   repo: "npm-packages",
+  buildCommand: "build-dist",
   cleanCommand: "clean-dist",
   packagePaths: {
     "@mlaursen/cli": "./packages/cli",
