@@ -9,6 +9,7 @@ export default defineConfig({
     include: ["**/__tests__/*.{ts,tsx,js,jsx}"],
     coverage: {
       include: ["src/**/*.{ts,tsx,js.jsx}"],
+      exclude: ["src/index.ts"],
     },
   },
 });
