@@ -31,12 +31,9 @@ export default defineConfig([
     // Optional: defaults to `"vitest"`
     testFramework: "jest",
 
-    // This is required if working in a monorepo or the `strictTypeChecked`
-    // option is enabled
-    tsconfigRootDir: import.meta.dirname,
-
     // Optional: enables strict type checking with tsc (slower)
-    strictTypeChecked: process.env.STRICT_TYPING === "true",
+    tsconfigRootDir:
+      process.env.STRICT_TYPING === "true" ? import.meta.dirname : undefined,
   }),
 ]);
 ```
@@ -51,12 +48,9 @@ export default defineConfig([
     // Optional: defaults to `"vitest"`
     testFramework: "jest",
 
-    // This is required if working in a monorepo or the `strictTypeChecked`
-    // option is enabled
-    tsconfigRootDir: import.meta.dirname,
-
     // Optional: enables strict type checking with tsc (slower)
-    strictTypeChecked: process.env.STRICT_TYPING === "true",
+    tsconfigRootDir:
+      process.env.STRICT_TYPING === "true" ? import.meta.dirname : undefined,
   }),
 ]);
 ```
@@ -154,7 +148,6 @@ export default defineConfig([
   ...configs.recommended({
     testFramework: "jest",
     tsconfigRootDir: import.meta.dirname,
-    strictTypeChecked: true,
   }),
 ]);
 ```
@@ -183,7 +176,6 @@ export default defineConfig([
     reactCompiler: true,
     testFramework: "jest",
     tsconfigRootDir: import.meta.dirname,
-    strictTypeChecked: true,
   }),
 ]);
 ```
@@ -230,10 +222,7 @@ export default defineConfig(configs.typescript());
 
 // or with strict type checking
 export default defineConfig(
-  configs.typescript({
-    tsconfigRootDir: import.meta.dirname,
-    strictTypeChecked: true,
-  })
+  configs.typescript({ tsconfigRootDir: import.meta.dirname })
 );
 ```
 
