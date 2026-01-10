@@ -117,7 +117,7 @@ describe("getPendingReleases", () => {
     ] satisfies PendingRelease[]);
   });
 
-  it("should allow for mapping each package to a changelog", async () => {
+  it("should allow for mapping each package to a changelog which will skip the CHANGELOG.md confirmation", async () => {
     await expect(
       getPendingReleases({
         packagePaths: {
@@ -129,10 +129,7 @@ describe("getPendingReleases", () => {
     expect(confirmMock).toHaveBeenCalledWith({
       message: "Include @mlaursen/release-script@1.0.0 in the release?",
     });
-    expect(inputMock).toHaveBeenCalledExactlyOnceWith({
-      message: `@mlaursen/release-script CHANGELOG exists at:`,
-      default: "./packages/release-script",
-    });
+    expect(inputMock).not.toHaveBeenCalled();
   });
 
   it("should support a monorepo with multiple packages", async () => {

@@ -46,11 +46,13 @@ export async function getPendingReleases(
       continue;
     }
 
-    const name = unpushedTag.replace(/@\d+.+$/, "");
-    const path = await input({
-      message: `${name} CHANGELOG exists at:`,
-      default: packagePaths[name] ?? ".",
-    });
+    let path = packagePaths[name];
+    if (!path) {
+      path = await input({
+        message: `${name} CHANGELOG exists at:`,
+        default: ".",
+      });
+    }
 
     const changelog = await readFile(
       resolve(process.cwd(), path, "CHANGELOG.md"),
