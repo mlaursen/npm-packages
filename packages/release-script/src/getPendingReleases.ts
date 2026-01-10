@@ -22,6 +22,13 @@ export interface GetPendingReleasesOptions {
    * @defaultValue `{}`
    */
   packagePaths?: Record<string, string>;
+
+  /**
+   * A set of packages that should never attempt to create a github release.
+   *
+   * @defaultValue `new Set()`
+   */
+  disableGithubReleasePackages?: ReadonlySet<string>;
 }
 
 export interface PendingRelease {
@@ -32,7 +39,10 @@ export interface PendingRelease {
 export async function getPendingReleases(
   options: GetPendingReleasesOptions
 ): Promise<readonly PendingRelease[]> {
-  const { packagePaths = {} } = options;
+  const {
+    packagePaths = {},
+    disableGithubReleasePackages = new Set<string>(),
+  } = options;
   const unpushedTags = getUnpushedTags();
   if (unpushedTags.length === 0) {
     throw new Error("Unable to find any pending releases");
@@ -40,7 +50,9 @@ export async function getPendingReleases(
 
   const pending: PendingRelease[] = [];
   for (const unpushedTag of unpushedTags) {
+    const name = unpushedTag.replace(/@\d+.+$/, "");
     if (
+      disableGithubReleasePackages.has(name) ||
       !(await confirm({ message: `Include ${unpushedTag} in the release?` }))
     ) {
       continue;

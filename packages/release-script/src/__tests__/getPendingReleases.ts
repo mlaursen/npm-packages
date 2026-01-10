@@ -167,4 +167,31 @@ ${releaseScriptChangelog}`);
       },
     ] satisfies PendingRelease[]);
   });
+
+  it("should allow automatically ignoring packages in the release", async () => {
+    getUnpushedTagsMock.mockReturnValue([
+      "@mlaursen/eslint-config@1.0.0",
+      "@mlaursen/release-script@1.0.0",
+    ]);
+
+    await expect(getPendingReleases({})).resolves.toEqual([
+      {
+        body: `## 5.1.1
+
+### Patch Changes
+
+- Fixed missing react and jsx-a11y plugins.
+`,
+
+        tagName: "@mlaursen/eslint-config@1.0.0",
+      },
+      ...DEFAULT_PENDING_RELEASES,
+    ] satisfies PendingRelease[]);
+
+    await expect(
+      getPendingReleases({
+        disableGithubReleasePackages: new Set(["@mlaursen/eslint-config"]),
+      })
+    ).resolves.toEqual(DEFAULT_PENDING_RELEASES);
+  });
 });
