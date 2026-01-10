@@ -1,5 +1,11 @@
 # @mlaursen/eslint-config
 
+## 12.0.1
+
+### Patch Changes
+
+- ee3a1db: Reverted the tsconfigRootDir changes since it doesn't work how I expected.
+
 ## 12.0.0
 
 ### Major Changes
