@@ -1,9 +1,10 @@
 import { execSync } from "node:child_process";
 
+export const LOCAL_TAGS_COMMAND = "git tag --sort=-creatordate";
+export const REMOTE_TAGS_COMMAND = "git ls-remote --tags origin";
+
 function getTags(local: boolean): Set<string> {
-  const command = local
-    ? "git tag --sort=-creatordate"
-    : "git ls-remote --tags origin";
+  const command = local ? LOCAL_TAGS_COMMAND : REMOTE_TAGS_COMMAND;
   const tags = execSync(command).toString().trim();
   const lines = tags.split(/\r?\n/);
   if (local) {

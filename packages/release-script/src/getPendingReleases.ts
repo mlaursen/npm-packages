@@ -79,5 +79,9 @@ export async function getPendingReleases(
     });
   }
 
+  if (pending.length === 0) {
+    throw new Error("No pending releases were confirmed");
+  }
+
   return pending;
 }

@@ -25,6 +25,11 @@
     "build-types": "tsc -p tsconfig.types.json",
     "build-types-watch": "pnpm build-types --watch",
     "build": "pnpm build-types && pnpm build-dist",
+    "test": "vitest",
+    "test-coverage": "vitest --coverage",
+    "test-run": "vitest run",
+    "test-run-snapshot": "vitest run -u",
+    "test-run-coverage": "vitest run --coverage",
     "dev": "concurrently 'pnpm build-types-watch' 'pnpm build-dist-watch'"
   },
   "author": "Mikkel Laursen <mlaursen03@gmail.com>",
@@ -55,13 +60,15 @@
     "@rollup/plugin-node-resolve": "^16.0.3",
     "@trivago/prettier-plugin-sort-imports": "^6.0.2",
     "@types/node": "^25.0.6",
+    "@vitest/coverage-v8": "^4.0.16",
     "concurrently": "^9.2.1",
     "eslint": "^9.39.2",
     "prettier": "^3.7.4",
     "rollup": "^4.55.1",
     "rollup-plugin-dts": "^6.3.0",
     "rollup-plugin-swc3": "^0.12.1",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.16"
   },
   "publishConfig": {
     "access": "public"
