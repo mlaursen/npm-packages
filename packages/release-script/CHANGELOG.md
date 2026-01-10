@@ -1,5 +1,16 @@
 # @mlaursen/release-script
 
+## 0.1.0
+
+### Minor Changes
+
+- e35f6f6: Allow packages to always be ignored in github releases
+
+### Patch Changes
+
+- 342e2a1: Fixed the spelling of "manager", getting the packageManager from the package.json, and requires at least one pending release before continuing.
+- 5b28005: No longer require a confirmation for packages that manually set the CHANGELOG.md path
+
 ## 0.0.8
 
 ### Patch Changes
