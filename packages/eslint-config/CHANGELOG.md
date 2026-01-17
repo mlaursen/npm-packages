@@ -1,5 +1,11 @@
 # @mlaursen/eslint-config
 
+## 12.0.2
+
+### Patch Changes
+
+- 98aa4c4: Re-enabled the tsconfigRootDir changes with strictTypeChecked option
+
 ## 12.0.1
 
 ### Patch Changes
