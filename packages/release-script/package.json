@@ -49,9 +49,9 @@
   "license": "MIT",
   "dependencies": {
     "@changesets/cli": "^2.29.8",
-    "@inquirer/confirm": "^6.0.3",
-    "@inquirer/input": "^5.0.3",
-    "@inquirer/rawlist": "^5.1.0",
+    "@inquirer/confirm": "^6.0.4",
+    "@inquirer/input": "^5.0.4",
+    "@inquirer/rawlist": "^5.2.0",
     "@octokit/core": "^7.0.6",
     "dotenv": "^17.2.3"
   },
@@ -59,16 +59,16 @@
     "@mlaursen/eslint-config": "workspace:*",
     "@rollup/plugin-node-resolve": "^16.0.3",
     "@trivago/prettier-plugin-sort-imports": "^6.0.2",
-    "@types/node": "^25.0.6",
-    "@vitest/coverage-v8": "^4.0.16",
+    "@types/node": "^25.0.9",
+    "@vitest/coverage-v8": "^4.0.17",
     "concurrently": "^9.2.1",
     "eslint": "^9.39.2",
-    "prettier": "^3.7.4",
+    "prettier": "^3.8.0",
     "rollup": "^4.55.1",
     "rollup-plugin-dts": "^6.3.0",
     "rollup-plugin-swc3": "^0.12.1",
     "typescript": "^5.9.3",
-    "vitest": "^4.0.16"
+    "vitest": "^4.0.17"
   },
   "publishConfig": {
     "access": "public"
