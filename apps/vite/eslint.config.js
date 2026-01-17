@@ -4,5 +4,9 @@ import { defineConfig } from "eslint/config";
 
 export default defineConfig(
   gitignore(import.meta.url),
-  ...configs.recommendedFrontend({ reactRefresh: "vite", reactCompiler: true })
+  ...configs.recommendedFrontend({
+    reactRefresh: "vite",
+    reactCompiler: true,
+    tsconfigRootDir: import.meta.dirname,
+  })
 );

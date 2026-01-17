@@ -8,5 +8,6 @@ export default defineConfig([
   gitignore(import.meta.url),
   ...configs.recommendedFrontend({
     reactCompiler: true,
+    tsconfigRootDir: import.meta.dirname,
   }),
 ]);

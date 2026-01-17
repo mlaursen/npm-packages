@@ -4,7 +4,9 @@ import { defineConfig } from "eslint/config";
 
 export default defineConfig(
   gitignore(import.meta.url),
-  ...configs.recommended(),
+  ...configs.recommended({
+    tsconfigRootDir: import.meta.dirname,
+  }),
   {
     rules: {
       "no-console": "off",
