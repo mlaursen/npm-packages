@@ -1,6 +1,7 @@
 import {
   type CopyScssFilesOptions,
   copyScssFiles,
+  enableLogger,
 } from "@mlaursen/copy-scss-files";
 import { Command } from "commander";
 import { basename, join } from "node:path";
@@ -9,6 +10,7 @@ interface ProgramCopyScssFilesOptions extends Required<
   Omit<CopyScssFilesOptions, "getDistPaths" | "pattern">
 > {
   copyToRoot: Set<string>;
+  verbose: boolean;
 }
 
 const program = new Command("@mlaursen/cli");
@@ -18,6 +20,7 @@ program
   .option("--src <src>", "An optional src directory", "src")
   .option("-o, --out <dir>", "An optional dist directory", "dist")
   .option("-w, --watch", "Watch mode", false)
+  .option("-v, --verbose", "Verbose logging mode", false)
   .option<Set<string>>(
     "-r, --copy-to-root <fileName>",
     "Also copy this file to the root directory",
@@ -28,7 +31,11 @@ program
     new Set()
   )
   .action((pattern: string, options: ProgramCopyScssFilesOptions) => {
-    const { copyToRoot, ...copyOptions } = options;
+    const { copyToRoot, verbose, ...copyOptions } = options;
+    if (verbose) {
+      enableLogger();
+    }
+
     return copyScssFiles({
       ...copyOptions,
       pattern,
