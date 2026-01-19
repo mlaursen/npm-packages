@@ -5,6 +5,8 @@ import { ensureParentDir } from "./ensureParentDir.js";
 import { enableLogger, log } from "./logger.js";
 import { createWatcher } from "./watcher.js";
 
+export { enableLogger, disableLogger } from "./logger.js";
+
 export interface CopyScssFilesOptions {
   /** @defaultValue `"src"` */
   src?: string;
