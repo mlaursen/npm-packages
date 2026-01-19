@@ -15,7 +15,8 @@ return {
     --- @type vim-react-snippets.SetupOptions
     opts = {
       test_framework = "vitest",
-      test_renderer_path = "@/test-utils",
+      test_renderer_path = "@react-md/core/test-utils",
+      -- test_renderer_path = "@/test-utils",
     },
   },
 }

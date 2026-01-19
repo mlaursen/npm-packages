@@ -1,7 +1,7 @@
 {
   "name": "@mlaursen/copy-scss-files",
   "type": "module",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "A small util to copy SCSS files for publishing.",
   "exports": {
     ".": {
