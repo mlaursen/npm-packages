@@ -1,5 +1,13 @@
-import { copyScssFiles } from "@mlaursen/copy-scss-files";
+import {
+  type CopyScssFilesOptions,
+  copyScssFiles,
+} from "@mlaursen/copy-scss-files";
 import { Command } from "commander";
+
+type ProgramCopyScssFilesOptions = Omit<
+  Required<CopyScssFilesOptions>,
+  "pattern" | "getDistPaths"
+>;
 
 const program = new Command("@mlaursen/cli");
 program
@@ -8,7 +16,7 @@ program
   .option("--src <src>", "An optional src directory", "src")
   .option("-o, --out <dir>", "An optional dist directory", "dist")
   .option("-w, --watch", "Watch mode", false)
-  .action((pattern, options) => {
+  .action((pattern: string, options: ProgramCopyScssFilesOptions) => {
     return copyScssFiles({
       ...options,
       pattern,
