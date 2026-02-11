@@ -1,5 +1,11 @@
 # @mlaursen/eslint-config
 
+## 12.0.3
+
+### Patch Changes
+
+- 702cdbb: Updated dependencies to lates to get latest rules
+
 ## 12.0.2
 
 ### Patch Changes

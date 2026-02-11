@@ -1,6 +1,6 @@
 {
   "name": "@mlaursen/eslint-config",
-  "version": "12.0.2",
+  "version": "12.0.3",
   "description": "An eslint config used by mlaursen for most projects.",
   "type": "module",
   "exports": {
