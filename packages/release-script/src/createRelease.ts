@@ -72,7 +72,7 @@ export async function createRelease(
     if (
       !(await confirm({ message: "Try creating the Github release again?" }))
     ) {
-      throw new Error("Unable to create a Github release");
+      throw new Error("Unable to create a Github release", { cause: error });
     }
 
     return createRelease({ ...options, override: true });
