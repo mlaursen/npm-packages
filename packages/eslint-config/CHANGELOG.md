@@ -1,5 +1,11 @@
 # @mlaursen/eslint-config
 
+## 12.0.4
+
+### Patch Changes
+
+- cd45dd0: Allow useless reassign in tests with testing-library enabled
+
 ## 12.0.3
 
 ### Patch Changes
