@@ -24,6 +24,12 @@ export const testingLibraryReact: Linter.Config[] = [
     name: `${BASE_NAME}/testing-library/react`,
     files: TEST_FILES,
     ...testingLibraryPlugin.configs["flat/react"],
+    rules: {
+      ...testingLibraryPlugin.configs["flat/react"].rules,
+      // it can be useful to reassign screen.* queries without reusing to
+      // verify it still exists
+      "no-useless-assignment": "off",
+    },
   },
 ];
 
@@ -47,5 +53,11 @@ export const testingLibraryDom: Linter.Config[] = [
     name: `${BASE_NAME}/testing-library/dom`,
     files: TEST_FILES,
     ...testingLibraryPlugin.configs["flat/dom"],
+    rules: {
+      ...testingLibraryPlugin.configs["flat/dom"].rules,
+      // it can be useful to reassign screen.* queries without reusing to
+      // verify it still exists
+      "no-useless-assignment": "off",
+    },
   },
 ];
