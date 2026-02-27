@@ -1,9 +1,0 @@
-////
-/// @group code
-////
-
-@forward "code-block/code-block" as code-block-*;
-@forward "color-preview/color-preview" as color-preview-*;
-@forward "inline-code/inline-code" as inline-code-*;
-@forward "shiki/shiki" as shiki-*;
-@forward "base";
