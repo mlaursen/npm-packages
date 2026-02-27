@@ -1,5 +1,11 @@
 # @mlaursen/eslint-config
 
+## 12.0.5
+
+### Patch Changes
+
+- 983173d: Reset @eslint/js back to v9
+
 ## 12.0.4
 
 ### Patch Changes
