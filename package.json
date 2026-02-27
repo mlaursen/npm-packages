@@ -19,7 +19,7 @@
     "typecheck": "pnpm turbo-s typecheck",
     "typecheck-watch": "pnpm turbo-s typecheck-watch",
     "build": "pnpm turbo-s build",
-    "build-dist": "pnpm build --filter=\"!vite-app\" --filter=\"!next-app\"",
+    "build-dist": "pnpm build",
     "clean-dist": "pnpm turbo-s clean-dist",
     "clean-other": "pnpm turbo-s clean",
     "clean-root": "rm -rf .turbo node_modules",
