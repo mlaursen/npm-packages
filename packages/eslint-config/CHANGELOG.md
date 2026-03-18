@@ -1,5 +1,11 @@
 # @mlaursen/eslint-config
 
+## 12.0.6
+
+### Patch Changes
+
+- ed3c032: Updated dependencies to latest
+
 ## 12.0.5
 
 ### Patch Changes
