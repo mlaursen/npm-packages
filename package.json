@@ -27,14 +27,14 @@
     "release": "tsx scripts/release.ts"
   },
   "devDependencies": {
-    "@changesets/cli": "^2.29.8",
+    "@changesets/cli": "^2.30.0",
     "@trivago/prettier-plugin-sort-imports": "^6.0.2",
     "cross-env": "^10.1.0",
     "husky": "^9.1.7",
-    "lint-staged": "^16.2.7",
+    "lint-staged": "^16.4.0",
     "prettier": "^3.8.1",
     "tsx": "^4.21.0",
-    "turbo": "^2.8.12"
+    "turbo": "^2.8.18"
   },
   "lint-staged": {
     "**/*.{scss,js,jsx,md,yml,json,ts,tsx}": [
