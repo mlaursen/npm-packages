@@ -22,6 +22,6 @@ describe("continueRelease", () => {
   it("should throw an error if the user declines", async () => {
     confirmMock.mockResolvedValue(false);
 
-    await expect(continueRelease()).rejects.toThrowError("Release cancelled");
+    await expect(continueRelease()).rejects.toThrow("Release cancelled");
   });
 });

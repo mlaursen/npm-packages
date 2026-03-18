@@ -15,7 +15,7 @@ describe("getPackageManager", () => {
   it("should throw an error if there is no root package.json", async () => {
     readFileMock.mockRejectedValue(new Error("File not found"));
 
-    await expect(getPackageManager()).rejects.toThrowError("File not found");
+    await expect(getPackageManager()).rejects.toThrow("File not found");
   });
 
   it("should attempt to read the volta property if it exists", async () => {
@@ -53,7 +53,7 @@ describe("getPackageManager", () => {
       })
     );
 
-    await expect(getPackageManager()).rejects.toThrowError(
+    await expect(getPackageManager()).rejects.toThrow(
       'Unsupported package manager "something" in package.json'
     );
   });
@@ -61,7 +61,7 @@ describe("getPackageManager", () => {
   it("should throw an error if volta and packageManager do not exist", async () => {
     readFileMock.mockResolvedValue(JSON.stringify({}));
 
-    await expect(getPackageManager()).rejects.toThrowError(
+    await expect(getPackageManager()).rejects.toThrow(
       "Unable to find a package manager"
     );
   });

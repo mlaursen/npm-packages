@@ -149,7 +149,7 @@ describe("createRelease", () => {
         repo: "example-repo",
         tagName: "example-repo@1.0.0",
       })
-    ).rejects.toThrowError("Unable to create a Github release");
+    ).rejects.toThrow("Unable to create a Github release");
     expect(octokitRequestMock).toHaveBeenCalledTimes(1);
   });
 });

@@ -63,7 +63,7 @@ beforeEach(() => {
 describe("getPendingReleases", () => {
   it("should throw an error if there are no unpushed tags", async () => {
     getUnpushedTagsMock.mockReturnValue([]);
-    await expect(getPendingReleases({})).rejects.toThrowError(
+    await expect(getPendingReleases({})).rejects.toThrow(
       "Unable to find any pending releases"
     );
 
@@ -75,7 +75,7 @@ describe("getPendingReleases", () => {
   it("should throw an error if all releases have been rejected", async () => {
     confirmMock.mockResolvedValue(false);
 
-    await expect(getPendingReleases({})).rejects.toThrowError(
+    await expect(getPendingReleases({})).rejects.toThrow(
       "No pending releases were confirmed"
     );
     expect(inputMock).not.toHaveBeenCalled();
