@@ -11,6 +11,8 @@ on:
 
 jobs:
   validate_node_lts:
+    permissions:
+      contents: read
     name: Validate Using Latest Node LTS
     runs-on: ubuntu-latest
     steps:
