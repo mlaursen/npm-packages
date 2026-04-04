@@ -15,16 +15,25 @@
     "lint": {},
     "lint-fix": {},
     "test": {
-      "cache": false
+      "cache": false,
+      "dependsOn": ["^build"],
+      "interactive": true
     },
-    "test-run": {},
+    "test-run": {
+      "dependsOn": ["^build"]
+    },
     "test-coverage": {
-      "outputs": ["coverage/**"]
+      "outputs": ["coverage/**"],
+      "dependsOn": ["^build"],
+      "interactive": true
     },
     "test-run-coverage": {
-      "outputs": ["coverage/**"]
+      "outputs": ["coverage/**"],
+      "dependsOn": ["^build"]
     },
-    "test-run-snapshot": {},
+    "test-run-snapshot": {
+      "dependsOn": ["^build"]
+    },
     "format": {},
     "check-format": {},
     "clean": {

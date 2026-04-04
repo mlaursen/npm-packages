@@ -11,8 +11,8 @@
     "dev": "pnpm turbo-s dev",
     "lint": "pnpm turbo-s lint",
     "lint-fix": "pnpm turbo-s lint-fix",
-    "test": "pnpm turbo-s test",
-    "test-coverage": "pnpm turbo-s test-coverage",
+    "test": "TURBO_UI=true pnpm turbo-s test",
+    "test-coverage": "TURBO_UI=true pnpm turbo-s test-coverage",
     "test-run": "pnpm turbo-s test-run",
     "test-run-snapshot": "pnpm turbo-s test-run-snapshot",
     "test-run-coverage": "pnpm turbo-s test-run-coverage",
@@ -34,7 +34,7 @@
     "lint-staged": "^16.4.0",
     "prettier": "^3.8.1",
     "tsx": "^4.21.0",
-    "turbo": "^2.8.18"
+    "turbo": "^2.9.3"
   },
   "lint-staged": {
     "**/*.{scss,js,jsx,md,yml,json,ts,tsx}": [
