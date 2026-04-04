@@ -35,7 +35,7 @@ export async function createRelease(
 ): Promise<void> {
   const {
     body,
-    override,
+    override = false,
     owner = "mlaursen",
     repo,
     prerelease,

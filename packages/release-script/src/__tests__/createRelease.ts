@@ -72,7 +72,7 @@ describe("createRelease", () => {
     expect(dotenvMock.config).toHaveBeenCalledExactlyOnceWith({
       path: ".env.local",
       quiet: true,
-      override: undefined,
+      override: false,
     });
     expect(consoleError).not.toHaveBeenCalled();
   });
@@ -116,7 +116,7 @@ describe("createRelease", () => {
     expect(dotenvMock.config.mock.calls[0]?.[0]).toEqual({
       path: ".env.local",
       quiet: true,
-      override: undefined,
+      override: false,
     });
     expect(dotenvMock.config.mock.calls[1]?.[0]).toEqual({
       path: ".env.local",

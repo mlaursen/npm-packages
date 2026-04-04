@@ -41,9 +41,9 @@ export interface ReleaseOptions
 
 export async function release(options: ReleaseOptions): Promise<void> {
   const {
-    owner,
+    owner = "mlaursen",
     repo,
-    envPath,
+    envPath = ".env.local",
     cleanCommand = "clean",
     buildCommand = "build",
     skipBuild = !buildCommand,

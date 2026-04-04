@@ -66,7 +66,7 @@ export const react = (options: ReactOptions = {}): Linter.Config[] => {
 
   return [
     {
-      ...reactPlugin.configs.flat.recommended,
+      ...reactPlugin.configs.flat["recommended"],
       name: `${BASE_NAME}/react`,
       files: JSX_FILES,
       settings: {
@@ -75,7 +75,7 @@ export const react = (options: ReactOptions = {}): Linter.Config[] => {
         },
       },
       rules: {
-        ...reactPlugin.configs.flat.recommended?.rules,
+        ...reactPlugin.configs.flat["recommended"]?.rules,
         ...reactPlugin.configs.flat["jsx-runtime"]?.rules,
       },
     },

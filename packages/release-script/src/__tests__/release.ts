@@ -71,6 +71,8 @@ describe("release", () => {
     expect(createReleaseMock).toHaveBeenCalledTimes(1);
     expect(createReleaseMock).toHaveBeenCalledExactlyOnceWith({
       repo: "npm-packages",
+      owner: "mlaursen",
+      envPath: ".env.local",
       ...DEFAULT_RELEASES[0],
       prerelease: false,
     });

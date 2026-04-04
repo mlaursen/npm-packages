@@ -55,7 +55,7 @@
     "@types/node": "^24.12.2",
     "concurrently": "^9.2.1",
     "prettier": "^3.8.1",
-    "typescript": "^5.9.3"
+    "typescript": "^6.0.2"
   },
   "peerDependencies": {
     "eslint": ">= 9.0.0",
