@@ -6,7 +6,6 @@
     "target": "esnext",
     "lib": ["esnext"],
     "types": ["node"],
-    "rootDir": "./src",
 
     // Other Outputs
     "sourceMap": true,
