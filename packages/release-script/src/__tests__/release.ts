@@ -1,4 +1,4 @@
-import { execSync } from "node:child_process";
+import { spawnSync } from "node:child_process";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { continueRelease } from "../continueRelease.js";
@@ -19,7 +19,7 @@ vi.mock("../getPendingReleases");
 const consoleLogSpy = vi.spyOn(console, "log");
 const getPackageManagerMock = vi.mocked(getPackageManager);
 const continueReleaseMock = vi.mocked(continueRelease);
-const execSyncMock = vi.mocked(execSync);
+const spawnSyncMock = vi.mocked(spawnSync);
 const createReleaseMock = vi.mocked(createRelease);
 const getPendingReleasesMock = vi.mocked(getPendingReleases);
 
@@ -34,6 +34,14 @@ beforeEach(() => {
   vi.resetAllMocks();
 
   consoleLogSpy.mockImplementation(() => {});
+  spawnSyncMock.mockReturnValue({
+    status: 0,
+    signal: null,
+    pid: 1,
+    output: [],
+    stdout: "",
+    stderr: "",
+  });
   getPendingReleasesMock.mockResolvedValue(DEFAULT_RELEASES);
   getPackageManagerMock.mockResolvedValue("pnpm");
 });
@@ -44,23 +52,30 @@ describe("release", () => {
       repo: "npm-packages",
     });
 
-    expect(execSyncMock).toHaveBeenCalledTimes(7);
-    expect(execSyncMock.mock.calls[0]?.[0]).toBe("pnpm clean");
-    expect(execSyncMock.mock.calls[0]?.[1]).toBeUndefined();
-    expect(execSyncMock.mock.calls[1]?.[0]).toBe("pnpm build");
-    expect(execSyncMock.mock.calls[1]?.[1]).toBeUndefined();
-    expect(execSyncMock.mock.calls[2]?.[0]).toBe("pnpm changeset version");
-    expect(execSyncMock.mock.calls[2]?.[1]).toEqual({ stdio: "inherit" });
-    expect(execSyncMock.mock.calls[3]?.[0]).toBe("git add -u");
-    expect(execSyncMock.mock.calls[3]?.[1]).toBeUndefined();
-    expect(execSyncMock.mock.calls[4]?.[0]).toBe(
-      'git commit -m "build(version): version package"'
+    expect(spawnSyncMock).toHaveBeenCalledTimes(7);
+    expect(spawnSyncMock).toHaveBeenCalledWith("pnpm", ["clean"], undefined);
+    expect(spawnSyncMock).toHaveBeenCalledWith("pnpm", ["build"], undefined);
+    expect(spawnSyncMock).toHaveBeenCalledWith(
+      "pnpm",
+      ["changeset", "version"],
+      { stdio: "inherit" }
     );
-    expect(execSyncMock.mock.calls[4]?.[1]).toBeUndefined();
-    expect(execSyncMock.mock.calls[5]?.[0]).toBe("pnpm changeset publish");
-    expect(execSyncMock.mock.calls[5]?.[1]).toEqual({ stdio: "inherit" });
-    expect(execSyncMock.mock.calls[6]?.[0]).toBe("git push --follow-tags");
-    expect(execSyncMock.mock.calls[6]?.[1]).toBeUndefined();
+    expect(spawnSyncMock).toHaveBeenCalledWith("git", ["add", "-u"], undefined);
+    expect(spawnSyncMock).toHaveBeenCalledWith(
+      "git",
+      ["commit", "-m", "build(version): version package"],
+      undefined
+    );
+    expect(spawnSyncMock).toHaveBeenCalledWith(
+      "pnpm",
+      ["changeset", "publish"],
+      { stdio: "inherit" }
+    );
+    expect(spawnSyncMock).toHaveBeenCalledWith(
+      "git",
+      ["push", "--follow-tags"],
+      undefined
+    );
 
     expect(continueReleaseMock).toHaveBeenCalledTimes(2);
 
@@ -81,9 +96,17 @@ describe("release", () => {
   it("should allow the build steps to be ignored", async () => {
     await release({ repo: "npm-packages", skipBuild: true });
 
-    expect(execSyncMock).toHaveBeenCalledTimes(5);
-    expect(execSyncMock).not.toHaveBeenCalledWith("pnpm clean", undefined);
-    expect(execSyncMock).not.toHaveBeenCalledWith("pnpm build", undefined);
+    expect(spawnSyncMock).toHaveBeenCalledTimes(5);
+    expect(spawnSyncMock).not.toHaveBeenCalledWith(
+      "pnpm",
+      ["clean"],
+      undefined
+    );
+    expect(spawnSyncMock).not.toHaveBeenCalledWith(
+      "pnpm",
+      ["build"],
+      undefined
+    );
   });
 
   it("should allow the clean and build commands to be configured", async () => {
@@ -93,8 +116,16 @@ describe("release", () => {
       cleanCommand: "clean-dist",
     });
 
-    expect(execSyncMock).toHaveBeenCalledWith("pnpm clean-dist", undefined);
-    expect(execSyncMock).toHaveBeenCalledWith("pnpm build-dist", undefined);
+    expect(spawnSyncMock).toHaveBeenCalledWith(
+      "pnpm",
+      ["clean-dist"],
+      undefined
+    );
+    expect(spawnSyncMock).toHaveBeenCalledWith(
+      "pnpm",
+      ["build-dist"],
+      undefined
+    );
   });
 
   it("should allow the version message to be changed", async () => {
@@ -103,8 +134,9 @@ describe("release", () => {
       versionMessage: "update version",
     });
 
-    expect(execSyncMock).toHaveBeenCalledWith(
-      'git commit -m "update version"',
+    expect(spawnSyncMock).toHaveBeenCalledWith(
+      "git",
+      ["commit", "-m", "update version"],
       undefined
     );
   });

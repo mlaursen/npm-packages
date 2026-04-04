@@ -1,4 +1,4 @@
-import { type ExecSyncOptions, execSync } from "node:child_process";
+import { type SpawnSyncOptions, spawnSync } from "node:child_process";
 
 import { continueRelease } from "./continueRelease.js";
 import {
@@ -11,9 +11,17 @@ import {
   getPendingReleases,
 } from "./getPendingReleases.js";
 
-const exec = (command: string, opts?: ExecSyncOptions): void => {
-  console.log(command);
-  execSync(command, opts);
+const exec = (
+  command: string,
+  args: readonly string[],
+  opts?: SpawnSyncOptions
+): void => {
+  const cmd = command + " " + args.join(" ");
+  console.log(cmd);
+  const result = spawnSync(command, args, opts);
+  if (result.status !== 0) {
+    throw new Error(`${cmd} failed with exit code: ${result.status ?? 1}`);
+  }
 };
 
 export interface ReleaseOptions
@@ -53,20 +61,20 @@ export async function release(options: ReleaseOptions): Promise<void> {
   const pkgManager = await getPackageManager();
 
   if (!skipBuild) {
-    exec(`${pkgManager} ${cleanCommand}`);
-    exec(`${pkgManager} ${buildCommand}`);
+    exec(pkgManager, [cleanCommand]);
+    exec(pkgManager, [buildCommand]);
   }
   await continueRelease();
 
-  exec("pnpm changeset version", { stdio: "inherit" });
-  exec("git add -u");
+  exec(pkgManager, ["changeset", "version"], { stdio: "inherit" });
+  exec("git", ["add", "-u"]);
   await continueRelease();
 
-  exec(`git commit -m "${versionMessage}"`);
-  exec(`${pkgManager} changeset publish`, { stdio: "inherit" });
+  exec("git", ["commit", "-m", versionMessage]);
+  exec(pkgManager, ["changeset", "publish"], { stdio: "inherit" });
   const pendingReleases = await getPendingReleases(options);
 
-  exec("git push --follow-tags");
+  exec("git", ["push", "--follow-tags"]);
 
   for (const release of pendingReleases) {
     await createRelease({
