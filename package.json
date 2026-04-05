@@ -55,6 +55,7 @@
     "packages/cli",
     "packages/copy-scss-files",
     "packages/eslint-config",
-    "packages/release-script"
+    "packages/release-script",
+    "packages/utils"
   ]
 }
