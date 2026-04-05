@@ -57,6 +57,7 @@
     "packages/eslint-config",
     "packages/node-utils",
     "packages/release-script",
+    "packages/scss",
     "packages/utils"
   ]
 }
