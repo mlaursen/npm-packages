@@ -1,11 +1,13 @@
+import {
+  copyToDist,
+  createWatcher,
+  enableLogger,
+  ensureParentDir,
+  log,
+} from "@mlaursen/node-utils";
 import { glob } from "glob";
-
-import { copyToDist } from "./copyToDist.js";
-import { ensureParentDir } from "./ensureParentDir.js";
-import { enableLogger, log } from "./logger.js";
-import { createWatcher } from "./watcher.js";
-
-export { enableLogger, disableLogger } from "./logger.js";
+import { existsSync } from "node:fs";
+import { rm } from "node:fs/promises";
 
 export interface CopyScssFilesOptions {
   /** @defaultValue `"src"` */
@@ -47,7 +49,22 @@ export async function copyScssFiles(
   if (watch) {
     createWatcher({
       watchPath: src,
-      getDistPaths: resolveDistPaths,
+      ignored: (path, stats) => !!stats?.isFile() && !path.endsWith(".scss"),
+      onRemove(path) {
+        void Promise.all(
+          resolveDistPaths(path).map(async (distPath) => {
+            if (existsSync(distPath)) {
+              await rm(distPath);
+              log(`Removed ${distPath}`);
+            }
+          })
+        );
+      },
+      onAddOrChange(path) {
+        void Promise.all(
+          resolveDistPaths(path).map((distPath) => copyToDist(path, distPath))
+        );
+      },
     });
     return;
   }

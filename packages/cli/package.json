@@ -24,6 +24,7 @@
   },
   "dependencies": {
     "@mlaursen/copy-scss-files": "workspace:*",
+    "@mlaursen/node-utils": "workspace:*",
     "chokidar": "^5.0.0",
     "glob": "^13.0.6"
   },
