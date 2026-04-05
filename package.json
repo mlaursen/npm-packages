@@ -50,5 +50,11 @@
   "volta": {
     "node": "24.14.1",
     "pnpm": "10.33.0"
-  }
+  },
+  "workspaces": [
+    "packages/cli",
+    "packages/copy-scss-files",
+    "packages/eslint-config",
+    "packages/release-script"
+  ]
 }
