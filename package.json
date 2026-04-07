@@ -58,6 +58,7 @@
     "packages/node-utils",
     "packages/release-script",
     "packages/scss",
+    "packages/simple-docs",
     "packages/utils"
   ]
 }
