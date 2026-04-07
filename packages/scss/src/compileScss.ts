@@ -17,12 +17,15 @@ export interface CompileScssOptions {
  *
  * @example Node Example
  * ```ts
+ * import { readFileSync } from "node:fs";
+ * import { compileScss } from "@mlaursen/scss";
+ *
  * // start by setting a base path for everything. using process.cwd() is
  * // usually the easiest
  * const basePath = process.cwd();
- * const code = await readFile("./some/path/to/file.scss", 'utf8');
+ * const code = readFileSync("./some/path/to/file.scss", 'utf8');
  *
- * const css = compileScss({
+ * const { css } = compileScss({
  *   code,
  *   // add a synchronous load function
  *   load: (filePath) => readFileSync(filePath, "utf8"),
@@ -30,10 +33,14 @@ export interface CompileScssOptions {
  *   // add the base path
  *   basePath,
  * });
+ *
+ * // do something with css
  * ```
  *
  * @example Browser Example
  * ```ts
+ * import { compileScss } from "@mlaursen/scss";
+ *
  * // the browser example is a bit more difficult as you need to create a
  * // lookup for all the file paths and reference them in the load function
  * // this should be any absolute path other than `/` and unique enough to be
@@ -53,7 +60,7 @@ export interface CompileScssOptions {
  *   }),
  * };
  *
- * const css = compileScss({
+ * const { css } = compileScss({
  *   code,
  *   load: filePath => {
  *     const contents = SCSS_LOOKUP[filePath];
@@ -69,6 +76,10 @@ export interface CompileScssOptions {
  *
  * @example Generating SCSS Lookup
  * ```ts
+ * import { readFileSync, writeFileSync } from "node:fs";
+ * import { format } from "prettier";
+ * import { compileScss } from "@mlaursen/scss";
+ *
  * const basePath = process.cwd();
  * const browserBasePath = "/__home__";
  * const browserOutFilePath = "./src/generated/scssLookup.ts";
@@ -100,7 +111,7 @@ export interface CompileScssOptions {
  * });
  *
  * const lookupString = JSON.stringify(lookup);
- * await writeFile(
+ * writeFileSync(
  *   browserOutFilePath,
  *   await format(`
  * export const SCSS_LOOKUP: Record<string, string> = ${lookupString}

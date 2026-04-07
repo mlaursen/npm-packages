@@ -1,4 +1,4 @@
-import postcss from "postcss";
+import postcss, { type Result } from "postcss";
 import selectorParser from "postcss-selector-parser";
 
 import { type CompileScssOptions, compileScss } from "./compileScss.js";
@@ -13,10 +13,28 @@ export interface CompileScssModuleOptions extends CompileScssOptions {
  * This can be used to create fake css modules from SCSS code which can be used
  * to create an SCSS editor in the browser.
  *
+ * @example Simple Example
+ * ```ts
+ * import { readFileSync } from "node:fs";
+ * import { basename } from "node:path";
+ * import { compileScssModule } from "@mlaursen/scss";
+ *
+ * const filePath = "./src/Example.scss"
+ * const code = readFileSync(filePath, 'utf8');
+ * const { css } = compileScssModule({
+ *   code,
+ *   load: (filePath) => readFileSync(filePath, "utf8"),
+ *   basePath: process.cwd(),
+ *   componentName: basename(filePath, ".scss"),
+ * });
+ *
+ * // do something with css
+ * ```
+ *
  * @see {@link compileScss} for setup around loading code in node or browser
  * environments
  */
-export function compileScssModule(options: CompileScssModuleOptions): string {
+export function compileScssModule(options: CompileScssModuleOptions): Result {
   const { componentName, ...compileOptions } = options;
   const result = compileScss(compileOptions);
   const parsed = postcss.parse(result.css);
@@ -53,5 +71,5 @@ export function compileScssModule(options: CompileScssModuleOptions): string {
     });
   });
 
-  return parsed.toResult().css;
+  return parsed.toResult();
 }

@@ -12,6 +12,32 @@ export interface MinifyCssOptions extends Pick<Options, "plugins"> {
   processOptions?: ProcessOptions | undefined;
 }
 
+/**
+ * @example Simple Example
+ * ```ts
+ * import { readFileSync, writeFileSync } from "node:fs"
+ * import { compileScss, minifyCss } from "@mlaursen/scss";
+ *
+ * const filePath = "./some/path/to/file.scss"
+ * const code = readFileSync(filePath, 'utf8');
+ *
+ * const compileResult = compileScss({
+ *   code,
+ *   load: (filePath) => readFileSync(filePath, "utf8"),
+ *   basePath: process.cwd(),
+ * });
+ *
+ * const minifyResult = minifyCss({
+ *   css: compileResult.css
+ *   from: filePath,
+ * });
+ *
+ * writeFileSync("example.min.css", minifyResult.css);
+ * ```
+ *
+ * @see {@link compileScss}
+ *
+ */
 export async function minifyCss(options: MinifyCssOptions): Promise<Result> {
   const {
     css,
