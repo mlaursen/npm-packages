@@ -2,6 +2,13 @@ import { upperFirst } from "./upperFirst.js";
 import { words } from "./words.js";
 
 /**
+ * @example Simple Example
+ * ```ts
+ * import { camelCase } from "@mlaursen/utils";
+ *
+ * camelCase("hello-world"); // "helloWorld"
+ * ```
+ *
  * @see https://github.com/lodash/lodash/blob/c7c70a7da5172111b99bb45e45532ed034d7b5b9/src/camelCase.ts
  *
  * @param s - The string to convert to camel case

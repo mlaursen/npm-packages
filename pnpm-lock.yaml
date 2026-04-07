@@ -417,6 +417,9 @@ importers:
       '@mlaursen/eslint-config':
         specifier: workspace:*
         version: link:../eslint-config
+      '@mlaursen/simple-docs':
+        specifier: workspace:*
+        version: link:../simple-docs
       '@rollup/plugin-node-resolve':
         specifier: ^16.0.3
         version: 16.0.3(rollup@4.60.1)

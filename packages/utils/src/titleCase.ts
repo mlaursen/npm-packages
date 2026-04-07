@@ -1,6 +1,13 @@
 import { upperFirst } from "./upperFirst.js";
 
 /**
+ * @example Simple Example
+ * ```ts
+ * import { titleCase } from "@mlaursen/utils";
+ *
+ * titleCase("hello-world"); // "Hello World"
+ * ```
+ *
  * @param s - The string to convert
  * @param splitter - An optional string or regex to use for splitting
  * @returns the title case string

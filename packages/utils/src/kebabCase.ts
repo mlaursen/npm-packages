@@ -5,6 +5,13 @@ export type KebabCase<S extends string> = S extends `${infer T}${infer U}`
   : S;
 
 /**
+ * @example Simple Example
+ * ```ts
+ * import { kebabCase } from "@mlaursen/utils";
+ *
+ * kebabCase("HelloWorld"); // "hello-world"
+ * ```
+ *
  * @param s - The string to convert
  */
 export const kebabCase = <S extends string>(s: S): KebabCase<S> =>

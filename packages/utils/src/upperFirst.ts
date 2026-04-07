@@ -1,4 +1,11 @@
 /**
+ * @example Simple Example
+ * ```ts
+ * import { upperFirst } from "@mlaursen/utils";
+ *
+ * upperFirst("hello-world"); // "Hello-world"
+ * ```
+ *
  * @param s - the string to update
  * @return the updated string
  */
