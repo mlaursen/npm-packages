@@ -10,6 +10,23 @@ export function disableLogger(): void {
   _log = false;
 }
 
+/**
+ * Used to conditionally use `console.log`/`error`/`warn`.
+ *
+ * @example Simple Example
+ * ```ts
+ * import { enableLogger, disableLogger, log } from "@mlaursen/node-utils";
+ *
+ * log("This won't be printed");
+ *
+ * enableLogger();
+ * log("This will be printed");
+ *
+ * disableLogger();
+ * log("This won't be printed");
+ * ```
+ *
+ */
 export function log(msg: string, type: "log" | "error" | "warn" = "log"): void {
   if (!_log) {
     return;
@@ -33,6 +50,22 @@ export function logFailure(message: string): void {
   log(` × ${message}`, "error");
 }
 
+/**
+ * Used to log and time an async task.
+ *
+ * @example Simple Example
+ * ```ts
+ * import { logTask, enableLogger } from "@mlaursen/node-utils";
+ *
+ * enableLogger();
+ *
+ * async function someTask(): Promise<void> {
+ *   // implementation
+ * }
+ *
+ * await logTask(someTask(), "Starting some task", "Some task complete!")
+ * ```
+ */
 export async function logTask<Result>(
   task: Promise<Result>,
   startMessage: string,

@@ -24,6 +24,7 @@
     "build-dist-watch": "pnpm build-dist --watch",
     "build-types": "tsc -p tsconfig.types.json",
     "build-types-watch": "pnpm build-types --watch",
+    "build-docs": "simple-docs",
     "build": "pnpm build-types && pnpm build-dist",
     "test": "vitest",
     "test-coverage": "vitest --coverage",
@@ -42,9 +43,11 @@
     "url": "https://github.com/mlaursen/npm-packages/issues"
   },
   "keywords": [
-    "release",
-    "script",
-    "npm"
+    "node",
+    "logging",
+    "gzip",
+    "filesize",
+    "watcher"
   ],
   "license": "MIT",
   "dependencies": {
@@ -54,6 +57,7 @@
   },
   "devDependencies": {
     "@mlaursen/eslint-config": "workspace:*",
+    "@mlaursen/simple-docs": "workspace:*",
     "@rollup/plugin-node-resolve": "^16.0.3",
     "@trivago/prettier-plugin-sort-imports": "^6.0.2",
     "@types/node": "^24.12.2",
