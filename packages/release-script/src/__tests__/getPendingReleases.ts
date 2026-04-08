@@ -194,4 +194,40 @@ ${releaseScriptChangelog}`);
       })
     ).resolves.toEqual(DEFAULT_PENDING_RELEASES);
   });
+
+  it("should allow custom publish tags instead of checking for unpushed tags", async () => {
+    const changelog = `
+## 1.1.1
+
+### Patch Changes
+
+- Fixed missing react and jsx-a11y plugins.
+`;
+    readFileMock.mockResolvedValue(changelog);
+
+    await expect(
+      getPendingReleases({
+        publishTags: ["@mlaursen/release-script@1.1.1"],
+      })
+    ).resolves.toEqual([
+      {
+        body: `## 1.1.1
+
+### Patch Changes
+
+- Fixed missing react and jsx-a11y plugins.
+`,
+        tagName: "@mlaursen/release-script@1.1.1",
+      },
+    ] satisfies PendingRelease[]);
+
+    expect(getUnpushedTagsMock).not.toHaveBeenCalled();
+    expect(confirmMock).toHaveBeenCalledWith({
+      message: "Include @mlaursen/release-script@1.1.1 in the release?",
+    });
+    expect(inputMock).toHaveBeenCalledExactlyOnceWith({
+      message: "@mlaursen/release-script CHANGELOG exists at:",
+      default: ".",
+    });
+  });
 });

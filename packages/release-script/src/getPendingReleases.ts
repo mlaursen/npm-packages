@@ -8,6 +8,20 @@ export interface GetPendingReleasesOptions extends Pick<
   "packagePaths"
 > {
   /**
+   * This is an array of tags to use to create a github releases. This was
+   * added to support cases where this stage failed due to an error being
+   * thrown or an invalid GITHUB token, or anything else.
+   *
+   * @example
+   * ```ts
+   * release({
+   *   publishTags: ["@mlaursen/release-script@1.0.0"]
+   * })
+   * ```
+   */
+  publishTags?: readonly string[];
+
+  /**
    * A set of packages that should never attempt to create a github release.
    *
    * @defaultValue `new Set()`
@@ -23,15 +37,21 @@ export interface PendingRelease {
 export async function getPendingReleases(
   options: GetPendingReleasesOptions
 ): Promise<readonly PendingRelease[]> {
-  const { packagePaths, disableGithubReleasePackages = new Set<string>() } =
-    options;
-  const unpushedTags = getUnpushedTags();
-  if (unpushedTags.length === 0) {
-    throw new Error("Unable to find any pending releases");
+  const {
+    packagePaths,
+    publishTags,
+    disableGithubReleasePackages = new Set<string>(),
+  } = options;
+  let releaseTags = publishTags ?? [];
+  if (!publishTags) {
+    releaseTags = getUnpushedTags();
+    if (releaseTags.length === 0) {
+      throw new Error("Unable to find any pending releases");
+    }
   }
 
   const pending: PendingRelease[] = [];
-  for (const unpushedTag of unpushedTags) {
+  for (const unpushedTag of releaseTags) {
     const name = unpushedTag.replace(/@\d+.+$/, "");
     if (
       disableGithubReleasePackages.has(name) ||

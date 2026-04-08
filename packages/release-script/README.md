@@ -65,6 +65,17 @@ await release({
   // packagePaths: {
   //   "@react-md/core": "./packages/core",
   // },
+
+  // An optional list of tags to publish as github releases. This should really
+  // only be used if only the github release step failed and the tags have been
+  // pushed
+  // publishTags: ["@react-md/core@1.0.0"],
+
+  // Only does the github release portion by checking for unpushed tags,
+  // getting the changelogs, and creating the releases from the tags
+  // NOTE: Defaults to `publishTags.length > 0`
+  //
+  // githubReleaseOnly: true,
 });
 ```
 

@@ -140,4 +140,30 @@ describe("release", () => {
       undefined
     );
   });
+
+  it("should allow only doing the github release steps to handle weird failures", async () => {
+    await release({
+      repo: "npm-packages",
+      publishTags: ["@mlaursen/release-script@1.1.1"],
+    });
+
+    expect(spawnSyncMock).toHaveBeenCalledTimes(1);
+    expect(spawnSyncMock).toHaveBeenCalledWith(
+      "git",
+      ["push", "--follow-tags"],
+      undefined
+    );
+    expect(getPendingReleasesMock).toHaveBeenCalledWith({
+      repo: "npm-packages",
+      publishTags: ["@mlaursen/release-script@1.1.1"],
+    });
+    expect(createReleaseMock).toHaveBeenCalledTimes(1);
+    expect(createReleaseMock).toHaveBeenCalledExactlyOnceWith({
+      repo: "npm-packages",
+      owner: "mlaursen",
+      envPath: ".env.local",
+      ...DEFAULT_RELEASES[0],
+      prerelease: false,
+    });
+  });
 });

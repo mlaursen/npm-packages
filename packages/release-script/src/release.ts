@@ -45,6 +45,11 @@ export interface ReleaseOptions
    * @defaultValue `"build(version): version package"`
    */
   versionMessage?: string;
+
+  /**
+   * @defaultValue `publishTags.length > 0`
+   */
+  githubReleaseOnly?: boolean;
 }
 
 export async function release(options: ReleaseOptions): Promise<void> {
@@ -56,24 +61,27 @@ export async function release(options: ReleaseOptions): Promise<void> {
     buildCommand = "build",
     skipBuild = !buildCommand,
     versionMessage = "build(version): version package",
+    githubReleaseOnly = (options.publishTags ?? []).length > 0,
   } = options;
 
-  const pkgManager = await getPackageManager();
+  if (!githubReleaseOnly) {
+    const pkgManager = await getPackageManager();
 
-  if (!skipBuild) {
-    exec(pkgManager, [cleanCommand]);
-    exec(pkgManager, [buildCommand]);
+    if (!skipBuild) {
+      exec(pkgManager, [cleanCommand]);
+      exec(pkgManager, [buildCommand]);
+    }
+    await continueRelease();
+
+    exec(pkgManager, ["changeset", "version"], { stdio: "inherit" });
+    exec("git", ["add", "-u"]);
+    await continueRelease();
+
+    exec("git", ["commit", "-m", versionMessage]);
+    exec(pkgManager, ["changeset", "publish"], { stdio: "inherit" });
   }
-  await continueRelease();
 
-  exec(pkgManager, ["changeset", "version"], { stdio: "inherit" });
-  exec("git", ["add", "-u"]);
-  await continueRelease();
-
-  exec("git", ["commit", "-m", versionMessage]);
-  exec(pkgManager, ["changeset", "publish"], { stdio: "inherit" });
   const pendingReleases = await getPendingReleases(options);
-
   exec("git", ["push", "--follow-tags"]);
 
   for (const release of pendingReleases) {
