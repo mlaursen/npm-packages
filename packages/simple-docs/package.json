@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "A simple package for adding @example typedoc to a README",
   "type": "module",
+  "private": true,
   "bin": {
     "simple-docs": "./dist/cli.js"
   },
