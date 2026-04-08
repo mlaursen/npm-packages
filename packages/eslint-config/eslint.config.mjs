@@ -1,6 +1,6 @@
 // @ts-check
 import { defineConfig } from "eslint/config";
-import { configs, gitignore } from "./dist/index.js";
+import { configs, gitignore } from "./dist/index.mjs";
 
 export default defineConfig([
   gitignore(import.meta.url),

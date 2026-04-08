@@ -7,7 +7,6 @@
     "mlaursen-cli": "./dist/cli.mjs"
   },
   "scripts": {
-    "prepare": "pnpm build",
     "clean-dist": "rm -rf dist types",
     "clean-cache": "rm -rf .turbo node_modules",
     "clean": "concurrently 'pnpm clean-dist' 'pnpm clean-cache'",
