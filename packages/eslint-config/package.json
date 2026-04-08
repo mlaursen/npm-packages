@@ -4,7 +4,7 @@
   "description": "An eslint config used by mlaursen for most projects.",
   "type": "module",
   "exports": {
-    ".": "./dist/index.mjs",
+    ".": "./dist/index.js",
     "./package.json": "./package.json"
   },
   "scripts": {
