@@ -32,6 +32,8 @@ const { css } = compileScss({
   // add the base path
   basePath,
 });
+
+// do something with css
 ```
 
 ### Browser Example
@@ -75,7 +77,7 @@ const { css } = compileScss({
 ### Generating SCSS Lookup
 
 ```ts
-import { compileScss } from "@mlaursen/scss";
+import { assertScssResolvePackageJson, compileScss } from "@mlaursen/scss";
 import { readFileSync, writeFileSync } from "node:fs";
 import { format } from "prettier";
 

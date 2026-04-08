@@ -78,7 +78,7 @@ export interface CompileScssOptions {
  * ```ts
  * import { readFileSync, writeFileSync } from "node:fs";
  * import { format } from "prettier";
- * import { compileScss } from "@mlaursen/scss";
+ * import { assertScssResolvePackageJson, compileScss } from "@mlaursen/scss";
  *
  * const basePath = process.cwd();
  * const browserBasePath = "/__home__";

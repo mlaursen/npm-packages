@@ -5,6 +5,7 @@
       "dependsOn": ["^build"],
       "outputs": ["dist/**", "types/**"]
     },
+    "build-docs": {},
     "typecheck": {
       "dependsOn": ["^typecheck"]
     },
