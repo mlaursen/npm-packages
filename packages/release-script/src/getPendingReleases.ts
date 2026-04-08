@@ -1,28 +1,12 @@
 import confirm from "@inquirer/confirm";
-import input from "@inquirer/input";
-import { readFile } from "node:fs/promises";
-import { resolve } from "node:path";
 
+import { type GetChangelogOptions, getChangelog } from "./getChangelog.js";
 import { getUnpushedTags } from "./getUnpushedTags.js";
 
-export interface GetPendingReleasesOptions {
-  /**
-   * This should be a record of package names to paths for monorepos.
-   *
-   * @example Monorepo Setup
-   * ```tsx
-   * packagePaths: {
-   *   "@react-md/core": "./packages/core",
-   *   "docs": "./apps/docs"
-   * },
-   * ```
-   *
-   * If this is omitted or not matched, it will default to `"."`
-   *
-   * @defaultValue `{}`
-   */
-  packagePaths?: Record<string, string>;
-
+export interface GetPendingReleasesOptions extends Pick<
+  GetChangelogOptions,
+  "packagePaths"
+> {
   /**
    * A set of packages that should never attempt to create a github release.
    *
@@ -39,10 +23,8 @@ export interface PendingRelease {
 export async function getPendingReleases(
   options: GetPendingReleasesOptions
 ): Promise<readonly PendingRelease[]> {
-  const {
-    packagePaths = {},
-    disableGithubReleasePackages = new Set<string>(),
-  } = options;
+  const { packagePaths, disableGithubReleasePackages = new Set<string>() } =
+    options;
   const unpushedTags = getUnpushedTags();
   if (unpushedTags.length === 0) {
     throw new Error("Unable to find any pending releases");
@@ -58,18 +40,10 @@ export async function getPendingReleases(
       continue;
     }
 
-    let path = packagePaths[name];
-    if (!path) {
-      path = await input({
-        message: `${name} CHANGELOG exists at:`,
-        default: ".",
-      });
-    }
-
-    const changelog = await readFile(
-      resolve(process.cwd(), path, "CHANGELOG.md"),
-      "utf8"
-    );
+    const changelog = await getChangelog({
+      name,
+      packagePaths,
+    });
 
     let body = "";
     let isTracking = false;
