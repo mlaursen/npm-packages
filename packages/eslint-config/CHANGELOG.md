@@ -1,5 +1,13 @@
 # @mlaursen/eslint-config
 
+## 12.0.7
+
+### Patch Changes
+
+- a158971: Updated dependencies to latest
+- d42cbca: Updated to use typescript@6
+- 1a41e28: Updated the build to use rollup for smaller download size
+
 ## 12.0.6
 
 ### Patch Changes

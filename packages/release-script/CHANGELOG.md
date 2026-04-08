@@ -1,5 +1,13 @@
 # @mlaursen/release-script
 
+## 0.1.1
+
+### Patch Changes
+
+- a158971: Updated dependencies to latest
+- d42cbca: Updated to use typescript@6
+- 7ef6dd3: Fixed the release script to prevent arbitrary commands on the system.
+
 ## 0.1.0
 
 ### Minor Changes
