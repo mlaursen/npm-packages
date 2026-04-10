@@ -9,7 +9,6 @@ $-configure-tokens: (
   color-scheme,
   light-theme,
   dark-theme,
-  utility-classes,
   default-system-theme
 );
 
@@ -28,7 +27,6 @@ $-configure-tokens: (
 ///
 /// @type {light-dark | light | dark | system}
 $-color-scheme: light-dark;
-$-utility-classes: true;
 $-default-system-theme: true;
 
 $-current-tokens-registered: false;
@@ -123,8 +121,8 @@ $-token-names: map.keys($-light-theme-tokens);
   $tokens: ();
   @each $token in $-token-names {
     $value: light-dark(
-      utils.get-var("palette.light.#{$token}"),
-      utils.get-var("palette.dark.#{$token}")
+      utils.get-var("light.#{$token}"),
+      utils.get-var("dark.#{$token}")
     );
     $tokens: map.merge($tokens, (#{$token}: $value));
   }
@@ -136,7 +134,6 @@ $-token-names: map.keys($-light-theme-tokens);
   $color-scheme: null,
   $light-theme: null,
   $dark-theme: null,
-  $utility-classes: null,
   $default-system-theme: null
 ) {
   @if $color-scheme {
@@ -145,10 +142,6 @@ $-token-names: map.keys($-light-theme-tokens);
       $color-scheme,
       "color-scheme"
     ) !global;
-  }
-
-  @if $utility-classes != null {
-    $-utility-classes: $utility-classes !global;
   }
 
   @if $default-system-theme != null {
@@ -177,7 +170,8 @@ $-token-names: map.keys($-light-theme-tokens);
       $-light-tokens-registered: true !global;
       @include utils.register-tokens(
         $tokens: $-light-theme-tokens,
-        $prefix: "palette.light"
+        $prefix: "light",
+        $skip-fallback-values: true
       );
     }
 
@@ -185,7 +179,8 @@ $-token-names: map.keys($-light-theme-tokens);
       $-dark-tokens-registered: true !global;
       @include utils.register-tokens(
         $tokens: $-dark-theme-tokens,
-        $prefix: "palette.dark"
+        $prefix: "dark",
+        $skip-fallback-values: true
       );
     }
 
@@ -198,7 +193,10 @@ $-token-names: map.keys($-light-theme-tokens);
     @if not $-current-tokens-registered {
       $-current-tokens-registered: true !global;
 
-      @include utils.register-tokens($tokens: $tokens, $prefix: "palette");
+      @include utils.register-tokens(
+        $tokens: $tokens,
+        $skip-fallback-values: true
+      );
     }
 
     $-tokens: map.deep-merge(
@@ -218,7 +216,6 @@ $-token-names: map.keys($-light-theme-tokens);
     $color-scheme: map.get($palette, color-scheme),
     $light-theme: map.get($palette, light-theme),
     $dark-theme: map.get($palette, dark-theme),
-    $utility-classes: map.get($palette, utility-classes),
     $default-system-theme: map.get($palette, dark-theme)
   );
 }
@@ -226,22 +223,22 @@ $-token-names: map.keys($-light-theme-tokens);
 @mixin use-light-theme($register-tokens: false) {
   @include utils.set-default-tokens(
     $tokens: $-light-theme-tokens,
-    $prefix: "palette",
-    $register-tokens: $register-tokens
+    $register-tokens: $register-tokens,
+    $skip-fallback-values: true
   );
 }
 
 @mixin use-dark-theme($register-tokens: false) {
   @include utils.set-default-tokens(
     $tokens: $-dark-theme-tokens,
-    $prefix: "palette",
-    $register-tokens: $register-tokens
+    $register-tokens: $register-tokens,
+    $skip-fallback-values: true
   );
 }
 
 @mixin use-light-dark-theme {
   @each $token, $value in -get-light-dark-tokens() {
-    @include utils.set-var("palette.#{$token}", $value);
+    @include utils.set-var($token, $value);
   }
 }
 
@@ -261,7 +258,7 @@ $-token-names: map.keys($-light-theme-tokens);
     @include utils.set-default-tokens(
       $tokens: map.remove($-tokens, "current"),
       $register-tokens: false,
-      $prefix: "palette"
+      $skip-fallback-values: true
     );
   }
 
@@ -273,7 +270,7 @@ $-token-names: map.keys($-light-theme-tokens);
   @include utils.set-default-tokens(
     $tokens: map.get($-tokens, "current"),
     $register-tokens: $register-tokens,
-    $prefix: "palette"
+    $skip-fallback-values: true
   );
 }
 
@@ -290,54 +287,52 @@ $-token-names: map.keys($-light-theme-tokens);
     surface-container-highest
   );
 
-  @include utils.library-styles {
-    @each $name in $-token-names {
-      @if not list.index($ignored, $name) {
-        $is-on-color: string.index($name, "on-") == 1;
-        $is-no-color: list.index($no-text-color, $name);
+  @each $name in $-token-names {
+    @if not list.index($ignored, $name) {
+      $is-on-color: string.index($name, "on-") == 1;
+      $is-no-color: list.index($no-text-color, $name);
 
-        &#{$name} {
-          @if $is-on-color {
-            @include utils.use-var(color, "palette.#{$name}");
-          } @else {
-            @include utils.use-var(background, "palette.#{$name}");
+      &#{$name} {
+        @if $is-on-color {
+          @include utils.use-var(color, $name);
+        } @else {
+          @include utils.use-var(background, $name);
 
-            @if not $is-no-color {
-              @include utils.use-var(color, "palette.on-#{$name}");
-            }
-          }
-        }
-
-        @if not
-          $is-no-color and not
-          $is-on-color and not
-          string.index($name, "container-")
-        {
-          &text-#{$name} {
-            @include utils.use-var(color, "palette.#{$name}");
+          @if not $is-no-color {
+            @include utils.use-var(color, "on-#{$name}");
           }
         }
       }
+
+      @if not
+        $is-no-color and not
+        $is-on-color and not
+        string.index($name, "container-")
+      {
+        &text-#{$name} {
+          @include utils.use-var(color, $name);
+        }
+      }
+    }
+  }
+
+  &current-color {
+    color: currentcolor;
+  }
+
+  @if $-color-scheme == light-dark or $-color-scheme == system {
+    &palette-light {
+      @include use-light-theme;
     }
 
-    &current-color {
-      color: currentcolor;
-    }
-
-    @if $-color-scheme == light-dark or $-color-scheme == system {
-      &palette-light {
-        @include use-light-theme;
-      }
-
-      &palette-dark {
-        @include use-dark-theme;
-      }
+    &palette-dark {
+      @include use-dark-theme;
     }
   }
 }
 
 @mixin styles {
-  @if $-utility-classes {
+  @include utils.css-styles {
     @include utility-classes;
   }
 

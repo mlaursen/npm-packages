@@ -9,7 +9,7 @@ import { compileScss } from "@mlaursen/scss";
 import browserslist from "browserslist";
 import { glob } from "glob";
 import { browserslistToTargets, transform } from "lightningcss";
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { rm, writeFile } from "node:fs/promises";
 import { format } from "prettier";
 
@@ -43,19 +43,15 @@ async function createStyles(filePath: string): Promise<void> {
       basePath,
     });
     let { css } = result;
-    let map = result.sourceMap && JSON.stringify(result.sourceMap);
     if (production) {
       const minified = transform({
         code: Buffer.from(css, "utf8"),
         minify: true,
         filename: filePath,
         targets,
-        sourceMap: true,
-        inputSourceMap: map ?? "",
       });
 
       css = minified.code.toString();
-      map = minified.map?.toString();
     }
 
     let styles = `
@@ -73,9 +69,6 @@ export default css\`${css}\`
   } catch (error) {
     enableLogger();
     logFailure(`Unable to compile ${filePath.replace(basePath, "")}.`);
-    if (!watching) {
-      throw error;
-    }
 
     const err = error instanceof Error ? error : new Error(String(error));
     const startIndex = err.message.indexOf(TOKENS_MESSAGE);
@@ -92,15 +85,22 @@ export default css\`${css}\`
         .slice(validIndex + VALID_TOKENS_MESSAGE.length, quoteIndex)
         .split(" ");
 
-      logFailure(`The following tokens are invalid:
+      const message = `The following tokens are invalid:
 ${invalid.map((token) => `   - ${token}`).join("\n")}
 
    Choose one of:
 ${valid.map((token) => `   - ${token}`).join("\n")}
 ${err.message.slice(quoteIndex + 1)}
-`);
-    } else {
+`;
+      if (watching) {
+        logFailure(message);
+      } else {
+        throw new Error(message);
+      }
+    } else if (watching) {
       logFailure(err.message);
+    } else {
+      throw error;
     }
   }
 }
@@ -112,22 +112,27 @@ if (watching) {
     watchPath: "src",
     ignored: (path, stats) => !!stats?.isFile() && !/\.scss$/.test(path),
     onRemove: async (filePath) => {
-      await rm(filePath, { recursive: true });
       log(`Removed ${filePath}`);
       rebuild.delete(filePath);
+      if (existsSync(filePath)) {
+        await rm(filePath, { recursive: true });
+      }
     },
-    onAddOrChange: (filePath, ready) => {
+    onAddOrChange: async (filePath, ready) => {
       if (isPartial(filePath)) {
         if (ready) {
+          const promises: Promise<void>[] = [];
           for (const file of rebuild) {
-            createStyles(file);
+            promises.push(createStyles(file));
           }
+
+          await Promise.all(promises);
         }
         return;
       }
 
       rebuild.add(filePath);
-      void createStyles(filePath);
+      await createStyles(filePath);
     },
   });
 } else {

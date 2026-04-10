@@ -2,13 +2,13 @@ import { LitElement, type TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { html } from "lit/static-html.js";
 
-import { MarginMixin } from "../styling/margin.js";
+import { MarginMixin } from "../margin/margin.js";
 import { type TypographySize, type TypographyVariant } from "./types.js";
 import styles from "./typography-styles.js";
 
 const BaseTypography = MarginMixin(LitElement);
 
-@customElement("mwc-typography")
+@customElement("ui-typography")
 export class Typography extends BaseTypography {
   static override styles = [...BaseTypography.styles, styles];
 
@@ -34,9 +34,9 @@ export class Typography extends BaseTypography {
     return html`<slot></slot>`;
   }
 }
-
-declare global {
-  interface HTMLElementTagNameMap {
-    "mwc-typography": Typography;
-  }
-}
+//
+// declare global {
+//   interface HTMLElementTagNameMap {
+//     "ui-typography": Typography;
+//   }
+// }

@@ -1,0 +1,251 @@
+@use "sass:list";
+@use "sass:map";
+@use "sass:meta";
+@use "sass:string";
+
+@use "../utils";
+
+$-tokens: (
+  box: (
+    gap: 1rem,
+    gap-h: "box.gap",
+    gap-v: "box.gap",
+
+    padding: 1rem,
+    padding-h: "box.padding",
+    padding-v: "box.padding",
+
+    columns: auto-fit,
+    item-min-size: 8rem,
+    auto-rows-height: 100%,
+    row-min-height: "box.item-min-size",
+    row-max-height: 1fr,
+  ),
+);
+
+$-configure-tokens: (
+  align-items,
+  justify-content,
+  base-styles,
+  gap-styles,
+  row-gap-styles,
+  column-gap-styles,
+  padded-styles,
+  flex-wrap-styles,
+  full-width-styles,
+  stacked-styles,
+  stacked-reversed-styles,
+  reversed-styles,
+  grid-styles,
+  grid-fill-styles
+);
+
+$-align-items: (start end stretch);
+$-justify-content: (
+  start center end stretch space-around space-between space-evenly
+);
+
+$-styles: (
+  base: (
+    align-items: center,
+    box-sizing: border-box,
+    display: flex,
+  ),
+  align-items: start end stretch,
+  justify-content: start center end stretch space-around space-between
+    space-evenly,
+  gap: (
+    gap: "box.gap",
+  ),
+  row-gap: (
+    row-gap: "box.gap-v",
+  ),
+  column-gap: (
+    column-gap: "box.gap-h",
+  ),
+  padded: (
+    padding: "box.padding-v" "box.padding-h",
+  ),
+  flex-wrap: (
+    flex-wrap: wrap,
+  ),
+  full-width: (
+    width: 100%,
+  ),
+  stacked: (
+    flex-direction: column,
+  ),
+  reversed: (
+    flex-direction: row-reverse,
+  ),
+  stacked-reversed: (
+    flex-direction: column-reverse,
+  ),
+  grid: (
+    display: grid,
+    grid-template-columns: repeat(
+        "box.columns",
+        minmax("box.item-min-size", 1fr)
+      ),
+  ),
+  grid-fill: (
+    "box.columns": auto-fill,
+  ),
+);
+
+@mixin -configure($name, $value) {
+  @if $value != null {
+    $-styles: map.set($-styles, $name, $value);
+  }
+}
+
+@mixin -configure-flex-property($name, $value) {
+  @if $value != null {
+    @if $value == false {
+      $-styles: map.remove($-styles, $name) !global;
+    } @else if meta.type-of($value) == string {
+      $-styles: map.set($-styles, $name, ($value)) !global;
+    } @else if meta.type-of($value) != list {
+      @error "box #{$name} must be a list, string, or boolean but #{$value} was provided.";
+    } @else {
+      $-styles: map.set($-styles, $name, $value) !global;
+    }
+  }
+}
+
+@mixin configure(
+  $align-items: null,
+  $justify-content: null,
+  $base-styles: null,
+  $gap-styles: null,
+  $row-gap-styles: null,
+  $column-gap-styles: null,
+  $padded-styles: null,
+  $flex-wrap-styles: null,
+  $full-width-styles: null,
+  $stacked-styles: null,
+  $stacked-reversed-styles: null,
+  $reversed-styles: null,
+  $grid-styles: null,
+  $grid-fill-styles: null
+) {
+  @include -configure(base, $base-styles);
+  @include -configure(gap, $gap-styles);
+  @include -configure(row-gap, $row-gap-styles);
+  @include -configure(column-gap, $column-gap-styles);
+  @include -configure(padded, $padded-styles);
+  @include -configure(flex-wrap, $flex-wrap-styles);
+  @include -configure(full-width, $full-width-styles);
+  @include -configure(stacked, $stacked-styles);
+  @include -configure(stacked-reversed, $stacked-reversed-styles);
+  @include -configure(reversed, $reversed-styles);
+  @include -configure(grid, $grid-styles);
+  @include -configure(grid-fill, $grid-fill-styles);
+  @include -configure-flex-property(align-items, $align-items);
+  @include -configure-flex-property(justify-content, $justify-content);
+
+  @include utils.register-tokens($-tokens);
+}
+
+@mixin configure-global($box: null) {
+  $box: utils.get-config-map(box, $box, $-configure-tokens);
+  @include configure(
+    $align-items: map.get($box, align-items),
+    $justify-content: map.get($box, justify-content),
+    $base-styles: map.get($box, base-styles),
+    $gap-styles: map.get($box, gap-styles),
+    $row-gap-styles: map.get($box, row-gap-styles),
+    $column-gap-styles: map.get($box, column-gap-styles),
+    $padded-styles: map.get($box, padded-styles),
+    $flex-wrap-styles: map.get($box, flex-wrap-styles),
+    $full-width-styles: map.get($box, full-width-styles),
+    $stacked-styles: map.get($box, stacked-styles),
+    $stacked-reversed-styles: map.get($box, stacked-reversed-styles),
+    $reversed-styles: map.get($box, reversed-styles),
+    $grid-styles: map.get($box, grid-styles),
+    $grid-fill-styles: map.get($box, grid-fill-styles)
+  );
+}
+
+@function -get-flex-property-styles($property, $value, $host-mode) {
+  $items: ();
+  $shorthand: list.nth(string.split($property, "-"), 1);
+  @if meta.type-of($value) == string {
+    $items: list.append($items, $value);
+  } @else if meta.type-of($value) == list {
+    $items: $value;
+  }
+
+  $styles: ();
+  @each $item in $items {
+    // prettier-ignore
+    $selector: if(
+      sass($host-mode): ":host([#{$shorthand}=#{$item}])";
+      else: "&box--#{$shorthand}-#{$item}"
+    );
+    $styles: map.set($styles, $selector, (#{$property}: $item));
+  }
+  @return $styles;
+}
+
+@mixin styles {
+  @include utils.host-styles {
+    $styles: ();
+    @each $modifier, $value in $-styles {
+      $selector: ":host";
+      @if $modifier == align-items or $modifier == justify-content {
+        $styles: map.merge(
+          $styles,
+          -get-flex-property-styles($modifier, $value, true)
+        );
+        $selector: null;
+      } @else if $modifier == gap {
+        $selector: $selector + "([gap=all])";
+      } @else if $modifier == row-gap {
+        $selector: $selector + "([gap=row])";
+      } @else if $modifier == column-gap {
+        $selector: $selector + "([gap=column])";
+      } @else if $modifier == padded {
+        $selector: $selector + "([padding=all])";
+      } @else if $modifier == flex-wrap {
+        $selector: $selector + "(:not([nowrap]))";
+      } @else if $modifier == full-width {
+        $selector: $selector + "([full-width])";
+      } @else if $modifier == stacked {
+        $selector: $selector + "([stacked]:not([reversed]))";
+      } @else if $modifier == reversed {
+        $selector: $selector + "(:not([stacked])[reversed])";
+      } @else if $modifier == stacked-reversed {
+        $selector: $selector + "([stacked][reversed])";
+      } @else if $modifier == grid {
+        $selector: $selector + "([grid])";
+      } @else if $modifier == grid-fill {
+        $selector: $selector + "([grid=fill])";
+      }
+
+      @if $selector and ($modifier == base or $selector != ":host") {
+        $styles: map.set($styles, $selector, $value);
+      }
+    }
+
+    @include utils.map-to-styles($styles);
+  }
+
+  @include utils.css-styles {
+    $styles: ();
+    @each $modifier, $value in $-styles {
+      @if $modifier == base {
+        $styles: map.set($styles, "&box", $value);
+      } @else if $modifier == align-items or $modifier == justify-content {
+        $styles: map.merge(
+          $styles,
+          -get-flex-property-styles($modifier, $value, false)
+        );
+      } @else {
+        $styles: map.set($styles, "&box--#{$modifier}", $value);
+      }
+    }
+
+    @include utils.map-to-styles($styles);
+  }
+}

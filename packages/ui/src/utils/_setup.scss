@@ -1,0 +1,116 @@
+@use "sass:meta";
+@use "sass:list";
+
+@use "validate" as *;
+@use "string" as *;
+
+/// Set to false to disable all automatic rtl styles
+/// @type {Boolean}
+$-rtl: true;
+
+/// The default behavior is to generate styles for the internal web
+/// components but setting this to `css` will generate styles with class
+/// names instead.
+/// @type {css | host}
+$-output: host;
+
+/// The var prefix to use with @mlaursen/ui
+/// @type {String}
+$-var-prefix: "--ui-";
+
+/// The selector name prefix to use with @mlaursen/ui
+/// @type {String}
+$-selector-prefix: ".ui-";
+
+@mixin configure-setup(
+  $rtl: null,
+  $output: null,
+  $var-prefix: null,
+  $selector-prefix: null
+) {
+  @if $rtl != null {
+    @if meta.type-of($rtl) != boolean {
+      @error "$rtl must be a boolean";
+    }
+
+    $-rtl: $rtl !global;
+  }
+
+  @if $output != null {
+    $-output: validate((css, host), $output, "$output") !global;
+  }
+  @if $var-prefix != null {
+    @if meta.type-of($var-prefix) != string {
+      @error "$var-prefix must be a string";
+    }
+
+    $-var-prefix: $var-prefix !global;
+  }
+
+  @if $selector-prefix != null {
+    @if meta.type-of($var-prefix) != string {
+      @error "$selector-prefix must be a string";
+    }
+
+    $-selector-prefix: $selector-prefix !global;
+  }
+}
+
+/// Used to apply styles when using rtl behavior
+///
+/// Note: This will need to be included at the end of a block with the new Sass
+/// rules or prefix styles with `& {}`
+///
+/// @example scss
+///   .selector {
+///     margin-right: 1rem;
+///
+///     // swap the margin in RTL
+///     @include rtl {
+///       margin-left: 1rem;
+///       margin-right: auto;
+///     }
+///   }
+@mixin rtl {
+  @if $-rtl {
+    [dir="rtl"] & {
+      @content;
+    }
+  }
+}
+
+/// This will only generate the content when the output mode is set to `host`
+/// for web components
+/// @content
+/// @output
+@mixin host-styles {
+  @if $-output == host {
+    @content;
+  }
+}
+
+/// This will only generate the content when the output mode is set to `css`
+/// for global class names
+/// @content
+/// @output
+@mixin css-styles {
+  @if $-output == css {
+    #{$-selector-prefix} {
+      @content;
+    }
+  }
+}
+
+/// Used to get the current CSS variable name from react-md tokens.
+///
+/// @param {String} $name - token name. i.e `"font.brand"`
+/// @returns {String} the var name. i.e. `"--mwc-font-brand"`
+@function get-var-name($name) {
+  @if not list.index($-tokens, $name) {
+    $-tokens: list.append($-tokens, $name) !global;
+    $-force-added: list.append($-force-added, $name) !global;
+  }
+
+  $hyphenated-name: str-replace($name, ".", "-");
+  @return #{$-var-prefix + $hyphenated-name};
+}

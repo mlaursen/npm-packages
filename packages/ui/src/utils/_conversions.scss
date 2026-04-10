@@ -11,10 +11,19 @@
   @return 1rem * math.div($value, 16);
 }
 
+///
+/// @param {Number} $tracking -
+/// @return {Number} -
 @function get-letter-spacing($tracking) {
   @return math.div($tracking, 16) * 1rem;
 }
 
+///
+/// @param {Number | String} $font-weight -
+/// @param {Number | String} $font-size -
+/// @param {Number | String} $line-height -
+/// @param {String} $font-family -
+/// @return {List} -
 @function get-font-shorthand(
   $font-weight,
   $font-size,

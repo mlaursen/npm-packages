@@ -131,7 +131,6 @@ $-tokens: (
 $-styles: ();
 $-variants: map.keys($-tokens);
 $-properties: map.keys(map.get($-tokens, list.nth($-variants, 1)));
-$-utility-classes: true;
 $-configure-tokens: $-variants;
 @each $variant in $-variants {
   $-configure-tokens: list.join(
@@ -139,7 +138,6 @@ $-configure-tokens: $-variants;
     ("#{$variant}-styles", "#{$variant}-prominent-styles")
   );
 }
-$-configure-tokens: list.append($-configure-tokens, "utility-classes");
 
 @mixin -configure($variant, $tokens, $styles, $prominent-styles) {
   @if $tokens != null {
@@ -183,7 +181,6 @@ $-configure-tokens: list.append($-configure-tokens, "utility-classes");
 }
 
 @mixin configure(
-  $utility-classes: null,
   $display-large: null,
   $display-large-styles: null,
   $display-large-prominent-styles: null,
@@ -230,10 +227,6 @@ $-configure-tokens: list.append($-configure-tokens, "utility-classes");
   $body-small-styles: null,
   $body-small-prominent-styles: null
 ) {
-  @if $utility-classes != null {
-    $-utility-classes: $utility-classes !global;
-  }
-
   @include -configure(
     display-large,
     $display-large,
@@ -333,7 +326,6 @@ $-configure-tokens: list.append($-configure-tokens, "utility-classes");
 @mixin configure-global($typescale: null) {
   $typescale: utils.get-config-map(typescale, $typescale, $-configure-tokens);
   @include configure(
-    $utility-classes: map.get($typescale, utility-classes),
     $display-large: map.get($typescale, display-large),
     $display-large-styles: map.get($typescale, display-large-styles),
     $display-large-prominent-styles: map.get(
@@ -499,20 +491,20 @@ $-configure-tokens: list.append($-configure-tokens, "utility-classes");
     $styles: map.set($styles, $selector, $properties);
   }
 
-  @include utils.map-to-styles($styles, font.tokens());
+  @include utils.map-to-styles($styles);
 }
 
 @mixin styles {
-  @if utils.is-host-mode() {
+  @include utils.host-styles {
     @include -host-styles;
-  } @else if $-utility-classes {
-    @include utils.library-styles {
-      $styles: ();
-      @each $variant, $properties in $-styles {
-        $styles: map.set($styles, "&typography-#{$variant}", $properties);
-      }
+  }
 
-      @include utils.map-to-styles($styles, font.tokens());
+  @include utils.css-styles {
+    $styles: ();
+    @each $variant, $properties in $-styles {
+      $styles: map.set($styles, "&typography-#{$variant}", $properties);
     }
+
+    @include utils.map-to-styles($styles);
   }
 }
