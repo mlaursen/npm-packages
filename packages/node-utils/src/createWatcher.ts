@@ -4,7 +4,7 @@ import { enableLogger, log } from "./logger.js";
 
 export interface CreateWatcherOptions extends ChokidarOptions {
   watchPath: string;
-  onAddOrChange: (path: string) => void;
+  onAddOrChange: (path: string, ready: boolean) => void;
   onRemove: (path: string) => void;
 }
 
@@ -14,13 +14,14 @@ export function createWatcher({
   onAddOrChange,
   ...options
 }: CreateWatcherOptions): FSWatcher {
+  let ready = false;
   const watcher = chokidar.watch(watchPath, options);
 
   watcher.on("all", async (eventName, path) => {
     switch (eventName) {
       case "add":
       case "change":
-        onAddOrChange(path);
+        onAddOrChange(path, ready);
         break;
       case "unlink": {
         onRemove(path);
@@ -30,6 +31,7 @@ export function createWatcher({
   });
 
   watcher.on("ready", () => {
+    ready = true;
     enableLogger();
     log("Watching changes...");
   });
