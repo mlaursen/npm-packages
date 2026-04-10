@@ -1,0 +1,15 @@
+{
+  "$schema": "https://swc.rs/schema.json",
+  "exclude": ["__tests__"],
+  "jsc": {
+    "parser": {
+      "syntax": "typescript",
+      "decorators": true
+    },
+    "transform": {
+      "useDefineForClassFields": false
+    },
+    "target": "es2021"
+  },
+  "sourceMaps": true
+}

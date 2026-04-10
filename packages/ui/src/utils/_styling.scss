@@ -1,0 +1,185 @@
+@use "sass:meta";
+@use "sass:list";
+@use "sass:map";
+@use "sass:string";
+
+@use "./rtl";
+@use "./tokens";
+
+/// The selector name prefix to use with @mlaursen/ui
+/// @type {String}
+$-selector-prefix: ".ui-";
+
+/// Used to configure the styling variables globally.
+///
+/// @param {String} $selector-prefix [null] - Override the global selector prefix
+@mixin configure-styling($selector-prefix: null) {
+  @if $selector-prefix {
+    $-selector-prefix: $selector-prefix !global;
+  }
+}
+
+@function is-host-mode() {
+  @return $-selector-prefix == ":host";
+}
+
+/// A helper mixin to apply hover styles only when the user is using a mouse. If
+/// you just use `:hover`, the styles will also be applied after touching an
+/// element on touch screens until another element is focused.
+///
+/// @example scss
+///   .selector {
+///
+///     @include mouse-hover {
+///       background-color: red;
+///     }
+///   }
+///
+/// @param {Boolean} wrap-in-hover [true] - Set this to `false` if the content
+/// should not automatically be wrapped in `&:hover`
+@mixin mouse-hover($wrap-in-hover: true) {
+  @media (hover: hover) and (pointer: fine) {
+    @if $wrap-in-hover {
+      &:hover {
+        @content;
+      }
+    } @else {
+      @content;
+    }
+  }
+}
+
+@mixin mouse-pressed() {
+  @include mouse-hover(false) {
+    &:where(:not(:focus-visible):focus) {
+      @content;
+    }
+  }
+}
+
+/// This is used to convert a Map into styles for each module. The map is a
+/// simple `property: value` pair for most cases. There are a few additions to
+/// add some more dynamic styling.
+///
+/// @example scss - Basic Styling
+///   $styles: (
+///     margin: 0,
+///     padding: 1rem,
+///     text-overflow: hidden,
+///   );
+///
+/// @example scss - Nested Selectors
+///   $styles: (
+///     position: relative,
+///
+///     "&::before": map.merge(
+///       utils.pseudo-element(),
+///       (
+///         background: #000,
+///         opacity: 0.3
+///       )
+///     ),
+///
+///     ":focus-visible &": (
+///       // ...whatever
+///     ),
+///   );
+///
+/// @example scss - Using Tokens
+///   $styles: (
+///     background: "palette.background",
+///     color: (
+///       default: "some.token.namespace",
+///       fallback: "palette.on-background",
+///     ),
+///   );
+///
+/// @example scss - Setting Tokens
+///   $styles: (
+///     "palette.background": #faf,
+///     "palette.on-background": (
+///       default: "some.token.namespace",
+///       fallback: #000,
+///     ),
+///   );
+///
+/// @example scss - Mouse Hover Styles
+///   $styles: (
+///     "mouse-hover": (
+///       cursor: pointer,
+///       opacity: 0.13,
+///     ),
+///   );
+///
+/// @example scss - RTL
+///   $styles: (
+///     margin-left: auto,
+///
+///     "rtl": (
+///       margin-left: 0,
+///       margin-right: auto,
+///     ),
+///   );
+///
+/// @example scss - Breakpoints
+///
+/// @example scss - Media Queries
+///   $styles: (
+///     "@media (prefers-reduced-motion)": (
+///       animation: none
+///     ),
+///   );
+///
+///
+/// @param {Map} styles - the map of styles to generate
+@mixin map-to-styles($styles, $tokens: null) {
+  @each $property, $value in $styles {
+    @if $property == "mouse-hover" {
+      @include mouse-hover(true) {
+        @include map-to-styles($value, $tokens);
+      }
+    } @else if $property == "rtl" {
+      @include rtl.rtl {
+        @include map-to-styles($value, $tokens);
+      }
+    } @else if $property == "font" and meta.type-of($value) == list {
+      $shorthand: ();
+      @each $part in $value {
+        // prettier-ignore
+        $expanded: if(
+          sass($tokens): tokens.get-comp-token-var($part, $tokens);
+          else: tokens.get-token-var($part)
+        );
+        $shorthand: list.append($shorthand, $expanded);
+      }
+
+      font: $shorthand;
+    } @else if string.slice($property, 1, 6) == "@media" {
+      @media #{string.slice($property, 7)} {
+        @include map-to-styles($value, $tokens);
+      }
+    } @else if string.index($property, ".") {
+      @include tokens.set-var($property, tokens.get-token-var($value));
+    } @else if meta.type-of($value) == map {
+      #{$property} {
+        @include map-to-styles($value, $tokens);
+      }
+    } @else if meta.type-of($value) != list or $property == font {
+      // prettier-ignore
+      $resolved-value: if(
+        sass($tokens): tokens.get-comp-token-var($value, $tokens);
+        else: tokens.get-token-var($value)
+      );
+
+      #{$property}: #{$resolved-value};
+    } @else if list.length($value) > 0 {
+      #{$property}: tokens.get-token-var($value);
+    }
+  }
+}
+
+@mixin library-styles() {
+  #{$-selector-prefix} {
+    @content;
+  }
+}

@@ -1,0 +1,518 @@
+@use "sass:list";
+@use "sass:map";
+@use "sass:math";
+@use "sass:string";
+
+@use "../utils";
+@use "font";
+
+$-tokens: (
+  display-large: (
+    font: "font.brand",
+    weight: "weight.regular",
+    weight-emphasized: "weight.medium",
+    size: "display-large.size",
+    line-height: "display-large.line-height",
+    tracking: "display-large.tracking",
+  ),
+  display-medium: (
+    font: "font.brand",
+    weight: "weight.regular",
+    weight-emphasized: "weight.medium",
+    size: "display-medium.size",
+    line-height: "display-medium.line-height",
+    tracking: "display-medium.tracking",
+  ),
+  display-small: (
+    font: "font.brand",
+    weight: "weight.regular",
+    weight-emphasized: "weight.medium",
+    size: "display-small.size",
+    line-height: "display-small.line-height",
+    tracking: "display-small.tracking",
+  ),
+  headline-large: (
+    font: "font.brand",
+    weight: "weight.regular",
+    weight-emphasized: "weight.medium",
+    size: "headline-large.size",
+    line-height: "headline-large.line-height",
+    tracking: "headline-large.tracking",
+  ),
+  headline-medium: (
+    font: "font.brand",
+    weight: "weight.regular",
+    weight-emphasized: "weight.medium",
+    size: "headline-medium.size",
+    line-height: "headline-medium.line-height",
+    tracking: "headline-medium.tracking",
+  ),
+  headline-small: (
+    font: "font.brand",
+    weight: "weight.regular",
+    weight-emphasized: "weight.medium",
+    size: "headline-small.size",
+    line-height: "headline-small.line-height",
+    tracking: "headline-small.tracking",
+  ),
+  title-large: (
+    font: "font.brand",
+    weight: "weight.regular",
+    weight-emphasized: "weight.medium",
+    size: "title-large.size",
+    line-height: "title-large.line-height",
+    tracking: "title-large.tracking",
+  ),
+  title-medium: (
+    font: "font.plain",
+    weight: "weight.regular",
+    weight-emphasized: "weight.medium",
+    size: "title-medium.size",
+    line-height: "title-medium.line-height",
+    tracking: "title-medium.tracking",
+  ),
+  title-small: (
+    font: "font.plain",
+    weight: "weight.regular",
+    weight-emphasized: "weight.medium",
+    size: "title-small.size",
+    line-height: "title-small.line-height",
+    tracking: "title-small.tracking",
+  ),
+  label-large: (
+    font: "font.plain",
+    weight: "weight.medium",
+    weight-emphasized: "weight.bold",
+    size: "label-large.size",
+    line-height: "label-large.line-height",
+    tracking: "label-large.tracking",
+  ),
+  label-medium: (
+    font: "font.plain",
+    weight: "weight.medium",
+    weight-emphasized: "weight.bold",
+    size: "label-medium.size",
+    line-height: "label-medium.line-height",
+    tracking: "label-medium.tracking",
+  ),
+  label-small: (
+    font: "font.plain",
+    weight: "weight.medium",
+    weight-emphasized: "weight.bold",
+    size: "label-small.size",
+    line-height: "label-small.line-height",
+    tracking: "label-small.tracking",
+  ),
+  body-large: (
+    font: "font.plain",
+    weight: "weight.regular",
+    weight-emphasized: "weight.medium",
+    size: "body-large.size",
+    line-height: "body-large.line-height",
+    tracking: "body-large.tracking",
+  ),
+  body-medium: (
+    font: "font.plain",
+    weight: "weight.regular",
+    weight-emphasized: "weight.medium",
+    size: "body-medium.size",
+    line-height: "body-medium.line-height",
+    tracking: "body-medium.tracking",
+  ),
+  body-small: (
+    font: "font.plain",
+    weight: "weight.regular",
+    weight-emphasized: "weight.medium",
+    size: "body-small.size",
+    line-height: "body-small.line-height",
+    tracking: "body-small.tracking",
+  ),
+);
+$-styles: ();
+$-variants: map.keys($-tokens);
+$-properties: map.keys(map.get($-tokens, list.nth($-variants, 1)));
+$-utility-classes: true;
+$-configure-tokens: $-variants;
+@each $variant in $-variants {
+  $-configure-tokens: list.join(
+    $-configure-tokens,
+    ("#{$variant}-styles", "#{$variant}-prominent-styles")
+  );
+}
+$-configure-tokens: list.append($-configure-tokens, "utility-classes");
+
+@mixin -configure($variant, $tokens, $styles, $prominent-styles) {
+  @if $tokens != null {
+    $-tokens: map.set(
+      $-tokens,
+      $variant,
+      map.merge(
+        map.get($-tokens, $variant),
+        utils.get-config-map($variant, $tokens, $-properties)
+      )
+    ) !global;
+  }
+
+  @if $styles != false {
+    // prettier-ignore
+    $overrides: if(sass($styles): $styles; else: ());
+    $-styles: map.set(
+      $-styles,
+      $variant,
+      typescale(
+        $variant: $variant,
+        $prominent: false,
+        $overrides: $overrides,
+      )
+    ) !global;
+  }
+
+  @if $prominent-styles != false {
+    // prettier-ignore
+    $prominent-overrides: if(sass($prominent-styles): $prominent-styles; else: ());
+    $-styles: map.set(
+      $-styles,
+      $variant + "-prominent",
+      typescale(
+        $variant: $variant,
+        $prominent: true,
+        $overrides: $prominent-overrides,
+      )
+    ) !global;
+  }
+}
+
+@mixin configure(
+  $utility-classes: null,
+  $display-large: null,
+  $display-large-styles: null,
+  $display-large-prominent-styles: null,
+  $display-medium: null,
+  $display-medium-styles: null,
+  $display-medium-prominent-styles: null,
+  $display-small: null,
+  $display-small-styles: null,
+  $display-small-prominent-styles: null,
+  $headline-large: null,
+  $headline-large-styles: null,
+  $headline-large-prominent-styles: null,
+  $headline-medium: null,
+  $headline-medium-styles: null,
+  $headline-medium-prominent-styles: null,
+  $headline-small: null,
+  $headline-small-styles: null,
+  $headline-small-prominent-styles: null,
+  $title-large: null,
+  $title-large-styles: null,
+  $title-large-prominent-styles: null,
+  $title-medium: null,
+  $title-medium-styles: null,
+  $title-medium-prominent-styles: null,
+  $title-small: null,
+  $title-small-styles: null,
+  $title-small-prominent-styles: null,
+  $label-large: null,
+  $label-large-styles: null,
+  $label-large-prominent-styles: null,
+  $label-medium: null,
+  $label-medium-styles: null,
+  $label-medium-prominent-styles: null,
+  $label-small: null,
+  $label-small-styles: null,
+  $label-small-prominent-styles: null,
+  $body-large: null,
+  $body-large-styles: null,
+  $body-large-prominent-styles: null,
+  $body-medium: null,
+  $body-medium-styles: null,
+  $body-medium-prominent-styles: null,
+  $body-small: null,
+  $body-small-styles: null,
+  $body-small-prominent-styles: null
+) {
+  @if $utility-classes != null {
+    $-utility-classes: $utility-classes !global;
+  }
+
+  @include -configure(
+    display-large,
+    $display-large,
+    $display-large-styles,
+    $display-large-prominent-styles
+  );
+  @include -configure(
+    display-medium,
+    $display-medium,
+    $display-medium-styles,
+    $display-medium-prominent-styles
+  );
+  @include -configure(
+    display-small,
+    $display-small,
+    $display-small-styles,
+    $display-small-prominent-styles
+  );
+
+  @include -configure(
+    headline-large,
+    $headline-large,
+    $headline-large-styles,
+    $headline-large-prominent-styles
+  );
+  @include -configure(
+    headline-medium,
+    $headline-medium,
+    $headline-medium-styles,
+    $headline-medium-prominent-styles
+  );
+  @include -configure(
+    headline-small,
+    $headline-small,
+    $headline-small-styles,
+    $headline-small-prominent-styles
+  );
+
+  @include -configure(
+    title-large,
+    $title-large,
+    $title-large-styles,
+    $title-large-prominent-styles
+  );
+  @include -configure(
+    title-medium,
+    $title-medium,
+    $title-medium-styles,
+    $title-medium-prominent-styles
+  );
+  @include -configure(
+    title-small,
+    $title-small,
+    $title-small-styles,
+    $title-small-prominent-styles
+  );
+
+  @include -configure(
+    label-large,
+    $label-large,
+    $label-large-styles,
+    $label-large-prominent-styles
+  );
+  @include -configure(
+    label-medium,
+    $label-medium,
+    $label-medium-styles,
+    $label-medium-prominent-styles
+  );
+  @include -configure(
+    label-small,
+    $label-small,
+    $label-small-styles,
+    $label-small-prominent-styles
+  );
+
+  @include -configure(
+    body-large,
+    $body-large,
+    $body-large-styles,
+    $body-large-prominent-styles
+  );
+  @include -configure(
+    body-medium,
+    $body-medium,
+    $body-medium-styles,
+    $body-medium-prominent-styles
+  );
+  @include -configure(
+    body-small,
+    $body-small,
+    $body-small-styles,
+    $body-small-prominent-styles
+  );
+}
+
+@mixin configure-global($typescale: null) {
+  $typescale: utils.get-config-map(typescale, $typescale, $-configure-tokens);
+  @include configure(
+    $utility-classes: map.get($typescale, utility-classes),
+    $display-large: map.get($typescale, display-large),
+    $display-large-styles: map.get($typescale, display-large-styles),
+    $display-large-prominent-styles: map.get(
+        $typescale,
+        display-large-prominent-styles
+      ),
+    $display-medium: map.get($typescale, display-medium),
+    $display-medium-styles: map.get($typescale, display-medium-styles),
+    $display-medium-prominent-styles: map.get(
+        $typescale,
+        display-medium-prominent-styles
+      ),
+    $display-small: map.get($typescale, display-small),
+    $display-small-styles: map.get($typescale, display-small-styles),
+    $display-small-prominent-styles: map.get(
+        $typescale,
+        display-small-prominent-styles
+      ),
+    $headline-large: map.get($typescale, headline-large),
+    $headline-large-styles: map.get($typescale, headline-large-styles),
+    $headline-large-prominent-styles: map.get(
+        $typescale,
+        headline-large-prominent-styles
+      ),
+    $headline-medium: map.get($typescale, headline-medium),
+    $headline-medium-styles: map.get($typescale, headline-medium-styles),
+    $headline-medium-prominent-styles: map.get(
+        $typescale,
+        headline-medium-prominent-styles
+      ),
+    $headline-small: map.get($typescale, headline-small),
+    $headline-small-styles: map.get($typescale, headline-small-styles),
+    $headline-small-prominent-styles: map.get(
+        $typescale,
+        headline-small-prominent-styles
+      ),
+    $title-large: map.get($typescale, title-large),
+    $title-large-styles: map.get($typescale, title-large-styles),
+    $title-large-prominent-styles: map.get(
+        $typescale,
+        title-large-prominent-styles
+      ),
+    $title-medium: map.get($typescale, title-medium),
+    $title-medium-styles: map.get($typescale, title-medium-styles),
+    $title-medium-prominent-styles: map.get(
+        $typescale,
+        title-medium-prominent-styles
+      ),
+    $title-small: map.get($typescale, title-small),
+    $title-small-styles: map.get($typescale, title-small-styles),
+    $title-small-prominent-styles: map.get(
+        $typescale,
+        title-small-prominent-styles
+      ),
+    $label-large: map.get($typescale, label-large),
+    $label-large-styles: map.get($typescale, label-large-styles),
+    $label-large-prominent-styles: map.get(
+        $typescale,
+        label-large-prominent-styles
+      ),
+    $label-medium: map.get($typescale, label-medium),
+    $label-medium-styles: map.get($typescale, label-medium-styles),
+    $label-medium-prominent-styles: map.get(
+        $typescale,
+        label-medium-prominent-styles
+      ),
+    $label-small: map.get($typescale, label-small),
+    $label-small-styles: map.get($typescale, label-small-styles),
+    $label-small-prominent-styles: map.get(
+        $typescale,
+        label-small-prominent-styles
+      ),
+    $body-large: map.get($typescale, body-large),
+    $body-large-styles: map.get($typescale, body-large-styles),
+    $body-large-prominent-styles: map.get(
+        $typescale,
+        body-large-prominent-styles
+      ),
+    $body-medium: map.get($typescale, body-medium),
+    $body-medium-styles: map.get($typescale, body-medium-styles),
+    $body-medium-prominent-styles: map.get(
+        $typescale,
+        body-medium-prominent-styles
+      ),
+    $body-small: map.get($typescale, body-small),
+    $body-small-styles: map.get($typescale, body-small-styles),
+    $body-small-prominent-styles: map.get(
+        $typescale,
+        body-small-prominent-styles
+      )
+  );
+}
+
+@function -get-font-and-letter-spacing(
+  $font-weight,
+  $font-size,
+  $line-height,
+  $font-family,
+  $letter-spacing: null
+) {
+  @if $letter-spacing == 0rem {
+    $letter-spacing: null;
+  }
+
+  $font: utils.get-font-shorthand(
+    $font-weight,
+    $font-size,
+    $line-height,
+    $font-family
+  );
+  @return (font: $font, letter-spacing: $letter-spacing);
+}
+
+@function typescale($variant, $prominent: false, $overrides: ()) {
+  $variant: utils.validate($-variants, $variant, "typeface variant");
+  $properties: map.get($-tokens, $variant);
+
+  @if $prominent {
+    @return map.deep-merge(
+      (
+        font-weight: map.get($properties, weight-emphasized),
+      ),
+      $overrides
+    );
+  }
+
+  $font-weight: map.get($properties, weight);
+  $font-size: map.get($properties, size);
+  $line-height: map.get($properties, line-height);
+  $font-family: map.get($properties, font);
+  $letter-spacing: map.get($properties, tracking);
+  @return map.deep-merge(
+    -get-font-and-letter-spacing(
+        $font-weight,
+        $font-size,
+        $line-height,
+        $font-family,
+        $letter-spacing
+      ),
+    $overrides
+  );
+}
+
+@mixin -host-styles() {
+  $styles: (
+    "::slotted(*)": (
+      font: inherit,
+      letter-spacing: inherit,
+    ),
+  );
+  @each $name, $properties in $-styles {
+    $parts: string.split($name, "-");
+    $variant: list.nth($parts, 1);
+    $size: list.nth($parts, 2);
+    $prominent: list.length($parts) == 3;
+
+    $selector: ":host([variant=#{$variant}][size=#{$size}])";
+
+    @if $prominent {
+      $selector: string.slice($selector, 0, string.length($selector) - 1) +
+        "[prominent])";
+    }
+    $styles: map.set($styles, $selector, $properties);
+  }
+
+  @include utils.map-to-styles($styles, font.tokens());
+}
+
+@mixin styles {
+  @if utils.is-host-mode() {
+    @include -host-styles;
+  } @else if $-utility-classes {
+    @include utils.library-styles {
+      $styles: ();
+      @each $variant, $properties in $-styles {
+        $styles: map.set($styles, "&typography-#{$variant}", $properties);
+      }
+
+      @include utils.map-to-styles($styles, font.tokens());
+    }
+  }
+}

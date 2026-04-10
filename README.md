@@ -9,6 +9,7 @@ This is a for all the packages I publish under the `@mlaursen` scope.
 - [@mlaursen/release-script](./packages/release-script)
 - [@mlaursen/scss](./packages/scss)
 - [@mlaursen/simple-docs](./packages/simple-docs)
+- [@mlaursen/ui](./packages/ui)
 - [@mlaursen/utils](./packages/utils)
 
 ## Release Flow

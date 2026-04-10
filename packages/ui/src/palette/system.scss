@@ -1,0 +1,11 @@
+@use "./index" as *;
+
+@include configure($color-scheme: system);
+
+@layer {
+  :root {
+    @include variables;
+  }
+
+  @include styles;
+}

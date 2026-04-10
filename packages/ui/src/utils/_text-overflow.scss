@@ -1,0 +1,20 @@
+/// Used to enable `text-overflow` for an element.
+///
+/// @param {String} $white-space [nowrap] - the `white-space` value.
+@function text-overflow($white-space: nowrap) {
+  @return (
+    overflow: hidden,
+    overflow-wrap: anywhere,
+    text-overflow: ellipsis,
+    white-space: $white-space
+  );
+}
+
+/// Used to enable `text-overflow` for an element.
+///
+/// @param {String} $white-space [nowrap] - the `white-space` value.
+@mixin text-overflow($white-space: nowrap) {
+  @each $property, $value in text-overflow($white-space) {
+    #{$property}: #{$value};
+  }
+}
