@@ -23,18 +23,18 @@ export class Typography extends LitElement {
       sizes.map((size) =>
         prominents.map(
           (prominent) => html`
-            <mwc-typography
+            <ui-typography
               size=${size}
               variant=${variant}
               .prominent=${prominent}
             >
               <h3>${variant} ${size} ${prominent && "Prominent"}</h3>
-            </mwc-typography>
+            </ui-typography>
           `,
         ),
       ),
     );
-    return html`${parts}`;
+    return html`<ui-box stacked>${parts}</ui-box>`;
   }
 }
 

@@ -32,7 +32,7 @@
     "build-types-watch": "pnpm build-types --watch",
     "build": "pnpm build-scss && pnpm build-types && pnpm build-dist",
     "dev-server": "wds --node-resolve --open dev/ --watch",
-    "dev": "pnpm build-scss && concurrently 'pnpm build-scss-watch' 'pnpm build-types-watch' 'pnpm build-dist-watch'"
+    "dev": "pnpm build-scss && concurrently 'pnpm build-scss-watch' 'pnpm build-types-watch' 'pnpm build-dist-watch' --kill-others"
   },
   "author": "Mikkel Laursen <mlaursen03@gmail.com>",
   "repository": {

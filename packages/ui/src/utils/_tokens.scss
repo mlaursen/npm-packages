@@ -5,39 +5,13 @@
 
 @use "string" as *;
 @use "list" as *;
-
-/// The var prefix to use with @mlaursen/ui
-/// @type {String}
-$-var-prefix: "--ui-";
+@use "setup" as *;
 
 /// @type {List}
 $-tokens: ();
+/// @type {Map}
+$-tokens-with-fallback: ();
 $-force-added: ();
-
-$configure-tokens: ("var-prefix");
-
-/// Used to configure the token variables globally.
-///
-/// @param {String} $var-prefix [null] - Override the global var prefix
-@mixin configure-tokens($var-prefix: null) {
-  @if $var-prefix {
-    $-var-prefix: $var-prefix !global;
-  }
-}
-
-/// Used to get the current CSS variable name from react-md tokens.
-///
-/// @param {String} $name - token name. i.e `"font.brand"`
-/// @returns {String} the var name. i.e. `"--mwc-font-brand"`
-@function get-var-name($name) {
-  @if not list.index($-tokens, $name) {
-    $-tokens: list.append($-tokens, $name) !global;
-    $-force-added: list.append($-force-added, $name) !global;
-  }
-
-  $hyphenated-name: str-replace($name, ".", "-");
-  @return #{$-var-prefix + $hyphenated-name};
-}
 
 /// Gets a css variable declaration.
 ///
@@ -96,32 +70,14 @@ $configure-tokens: ("var-prefix");
   }
 
   @if list.index($-tokens, $token) or -is-maybe-token-string($token) {
+    @if not $fallback {
+      $fallback: map.get($-tokens-with-fallback, $token);
+    }
+
     @return get-var($token, get-token-var($fallback));
   }
 
   @return $token;
-}
-
-/// This is used to create a `var(...)` declaration for a component's tokens.
-/// The component tokens are not set globally so the token Map is used to
-/// provide an optional fallback value.
-///
-/// @param {String} $name - the token name to use
-/// @param {Map} $tokens - the component Map of tokens with optional fallback
-/// values
-/// @returns {String} `var(--name, fallback)` or `var(--name)`
-@function get-comp-token-var($name, $tokens) {
-  @if meta.type-of($name) != string or not string.index($name, ".") {
-    @return get-token-var($name);
-  }
-
-  $parts: string.split($name, ".");
-  @if list.length($parts) > 2 {
-    $parts: list-slice($parts, 2);
-  }
-
-  $fallback: map.get($tokens, $parts...);
-  @return get-token-var($name, get-comp-token-var($fallback, $tokens));
 }
 
 /// @param {String} $name - The token name to set
@@ -161,25 +117,15 @@ $configure-tokens: ("var-prefix");
 /// for the color if it was set to a token name.
 /// @param {Number | String} $opacity-fallback [null] - An optional fallback
 /// value for the opacity if it was set to a token name.
-/// @param {Map | null} tokens [null] - optional component-level tokens which
-/// can be used to provide fallback values
 /// @return {String} - `rgb(from $color r g b / $opacity)`
 @function get-rgb-var(
   $color,
   $opacity,
   $color-fallback: null,
-  $opacity-fallback: null,
-  $tokens: null
+  $opacity-fallback: null
 ) {
-  $color-value: null;
-  $opacity-value: null;
-  @if $tokens {
-    $color-value: get-comp-token-var($color, $tokens);
-    $opacity-value: get-comp-token-var($opacity, $tokens);
-  } @else {
-    $color-value: get-token-var($color, $color-fallback);
-    $opacity-value: get-token-var($opacity, $opacity-fallback);
-  }
+  $color-value: get-token-var($color, $color-fallback);
+  $opacity-value: get-token-var($opacity, $opacity-fallback);
 
   @return rgb(from $color-value r g b / $opacity-value);
 }
@@ -190,7 +136,7 @@ $configure-tokens: ("var-prefix");
 /// @param {Map} $tokens - this should be the locally scoped tokens map for a
 /// specific module.
 /// @param {String} $prefix [null] - An optional starting prefix.
-@mixin register-tokens($tokens, $prefix: null) {
+@mixin register-tokens($tokens, $prefix: null, $skip-fallback-values: false) {
   @if meta.type-of($tokens) != map {
     @error "register-tokens() only supports maps";
   }
@@ -209,6 +155,13 @@ $configure-tokens: ("var-prefix");
       } @else {
         $-tokens: list.append($-tokens, $name) !global;
       }
+      @if $maybe-value and not $skip-fallback-values {
+        $-tokens-with-fallback: map.set(
+          $-tokens-with-fallback,
+          $name,
+          $maybe-value
+        ) !global;
+      }
     }
   }
 }
@@ -218,9 +171,14 @@ $configure-tokens: ("var-prefix");
 /// @param {String} $prefix [null] - an optional starting prefix
 /// @param {Boolean} $register-tokens [false] - set to `true` to also register
 /// these tokens immediately
-@mixin set-default-tokens($tokens, $prefix: null, $register-tokens: false) {
+@mixin set-default-tokens(
+  $tokens,
+  $prefix: null,
+  $register-tokens: false,
+  $skip-fallback-values: false
+) {
   @if $register-tokens {
-    @include register-tokens($tokens, $prefix);
+    @include register-tokens($tokens, $prefix, $skip-fallback-values);
   }
 
   // prettier-ignore
@@ -228,7 +186,7 @@ $configure-tokens: ("var-prefix");
   @each $maybe-prefix, $maybe-value in $tokens {
     $name: "#{$var-prefix}#{$maybe-prefix}";
     @if meta.type-of($maybe-value) == map {
-      @include set-default-tokens($maybe-value, $name);
+      @include set-default-tokens($maybe-value, $name, $skip-fallback-values);
     } @else {
       @include set-var($name, $maybe-value);
     }

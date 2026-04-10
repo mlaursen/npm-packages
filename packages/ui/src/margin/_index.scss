@@ -75,7 +75,7 @@ $-styles: (
 }
 
 @mixin styles {
-  @if utils.is-host-mode() {
+  @include utils.host-styles {
     $styles: ();
     @each $variant, $value in $-styles {
       $selector: ":host([margin=#{$variant}])";
@@ -84,14 +84,14 @@ $-styles: (
       }
       $styles: map.set($styles, $selector, $value);
     }
-    @include utils.map-to-styles($styles, $-tokens);
-  } @else {
-    @include utils.library-styles {
-      $styles: ();
-      @each $variant, $value in $-styles {
-        $styles: map.set($styles, "&margin-#{$variant}", $value);
-      }
-      @include utils.map-to-styles($styles, $-tokens);
+    @include utils.map-to-styles($styles);
+  }
+
+  @include utils.css-styles {
+    $styles: ();
+    @each $variant, $value in $-styles {
+      $styles: map.set($styles, "&margin-#{$variant}", $value);
     }
+    @include utils.map-to-styles($styles);
   }
 }

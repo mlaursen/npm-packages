@@ -1,0 +1,158 @@
+@use "sass:list";
+@use "sass:meta";
+@use "sass:string";
+
+@use "./mouse" as *;
+@use "./setup" as *;
+@use "./tokens" as *;
+
+@function -parse-possibly-nested-token-vars($value) {
+  @if meta.type-of($value) !=
+    string or not
+    string.index($value, ".") or not
+    string.index($value, " ")
+  {
+    @return get-token-var($value);
+  }
+
+  // right now I only support adding nested tokens within quotes
+  $quote-index: string.index($value, '"');
+  $remaining: $value;
+  $rebuilt: "";
+  @while $quote-index {
+    $prefix: string.slice($remaining, 1, $quote-index - 1);
+    $remaining: string.slice($remaining, $quote-index + 1);
+    $next-quote-index: string.index($remaining, '"');
+    @if not $next-quote-index {
+      @error "tried to parse a css token but unable to find the next double-quote. #{$remaining}";
+    }
+
+    $token-name: string.slice($remaining, 1, $next-quote-index - 1);
+    $remaining: string.slice($remaining, $next-quote-index + 1);
+    $quote-index: string.index($remaining, '"');
+
+    $rebuilt: $rebuilt + $prefix + get-token-var($token-name);
+    @if not $quote-index {
+      $rebuilt: $rebuilt + $remaining;
+      @return $rebuilt;
+    }
+  }
+
+  @return get-token-var($value);
+}
+
+/// This is used to convert a Map into styles for each module. The map is a
+/// simple `property: value` pair for most cases. There are a few additions to
+/// add some more dynamic styling.
+///
+/// @example scss - Basic Styling
+///   $styles: (
+///     margin: 0,
+///     padding: 1rem,
+///     text-overflow: hidden,
+///   );
+///
+/// @example scss - Nested Selectors
+///   $styles: (
+///     position: relative,
+///
+///     "&::before": map.merge(
+///       utils.pseudo-element(),
+///       (
+///         background: #000,
+///         opacity: 0.3
+///       )
+///     ),
+///
+///     ":focus-visible &": (
+///       // ...whatever
+///     ),
+///   );
+///
+/// @example scss - Using Tokens
+///   $styles: (
+///     background: "palette.background",
+///     color: (
+///       default: "some.token.namespace",
+///       fallback: "palette.on-background",
+///     ),
+///   );
+///
+/// @example scss - Setting Tokens
+///   $styles: (
+///     "palette.background": #faf,
+///     "palette.on-background": (
+///       default: "some.token.namespace",
+///       fallback: #000,
+///     ),
+///   );
+///
+/// @example scss - Mouse Hover Styles
+///   $styles: (
+///     "mouse-hover": (
+///       cursor: pointer,
+///       opacity: 0.13,
+///     ),
+///   );
+///
+/// @example scss - RTL
+///   $styles: (
+///     margin-left: auto,
+///
+///     "rtl": (
+///       margin-left: 0,
+///       margin-right: auto,
+///     ),
+///   );
+///
+/// @example scss - Media Queries
+///   $styles: (
+///     "@media (prefers-reduced-motion)": (
+///       animation: none
+///     ),
+///   );
+///
+///
+/// @param {Map} $styles - the map of styles to generate
+/// @output
+@mixin map-to-styles($styles) {
+  @each $property, $value in $styles {
+    $value-type: meta.type-of($value);
+    @if $property == "mouse-hover" {
+      @include mouse-hover(true) {
+        @include map-to-styles($value);
+      }
+    } @else if $property == "rtl" {
+      @include rtl {
+        @include map-to-styles($value);
+      }
+    } @else if $property == "font" and $value-type == list {
+      $shorthand: ();
+      @each $part in $value {
+        $shorthand: list.append($shorthand, get-token-var($part));
+      }
+
+      font: $shorthand;
+    } @else if string.slice($property, 1, 6) == "@media" {
+      @media #{string.slice($property, 7)} {
+        @include map-to-styles($value);
+      }
+    } @else if string.index($property, ".") {
+      @include set-var($property, get-token-var($value));
+    } @else if $value-type == map {
+      #{$property} {
+        @include map-to-styles($value);
+      }
+    } @else if $value-type != list {
+      $resolved-value: -parse-possibly-nested-token-vars($value);
+
+      #{$property}: #{$resolved-value};
+    } @else if list.length($value) > 0 {
+      $list: ();
+      @each $part in $value {
+        $list: list.append($list, get-token-var($part));
+      }
+      #{$property}: $list;
+    }
+  }
+}

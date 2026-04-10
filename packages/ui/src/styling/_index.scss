@@ -1,9 +1,0 @@
-@use "margin";
-
-@mixin configure($margin: null) {
-  @include margin.configure-global($margin);
-}
-
-@mixin styles {
-  @include margin.styles;
-}
