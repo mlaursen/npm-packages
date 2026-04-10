@@ -1,4 +1,4 @@
-import chokidar, { type ChokidarOptions } from "chokidar";
+import chokidar, { type ChokidarOptions, type FSWatcher } from "chokidar";
 
 import { enableLogger, log } from "./logger.js";
 
@@ -13,7 +13,7 @@ export function createWatcher({
   onRemove,
   onAddOrChange,
   ...options
-}: CreateWatcherOptions): void {
+}: CreateWatcherOptions): FSWatcher {
   const watcher = chokidar.watch(watchPath, options);
 
   watcher.on("all", async (eventName, path) => {
@@ -33,4 +33,6 @@ export function createWatcher({
     enableLogger();
     log("Watching changes...");
   });
+
+  return watcher;
 }
