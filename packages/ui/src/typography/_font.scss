@@ -1,0 +1,276 @@
+@use "sass:list";
+@use "sass:map";
+@use "sass:string";
+
+@use "../utils";
+
+$-tokens-registered: false;
+$-tokens: (
+  font: (
+    brand: string.unquote('"Roboto Flex", Roboto, sans-serif'),
+    plain: string.unquote('"Roboto Flex", Roboto, sans-serif'),
+    monospace: string.unquote('"Roboto Mono", Roboto, sans-serif'),
+  ),
+  weight: (
+    regular: 400,
+    medium: 500,
+    bold: 700,
+  ),
+  display-large: (
+    size: utils.to-rem(57),
+    line-height: utils.to-rem(64),
+    tracking: utils.get-letter-spacing(-0.25),
+  ),
+  display-medium: (
+    size: utils.to-rem(45),
+    line-height: utils.to-rem(52),
+    tracking: utils.get-letter-spacing(0),
+  ),
+  display-small: (
+    size: utils.to-rem(36),
+    line-height: utils.to-rem(44),
+    tracking: utils.get-letter-spacing(0),
+  ),
+  headline-large: (
+    size: utils.to-rem(28),
+    line-height: utils.to-rem(40),
+    tracking: utils.get-letter-spacing(0),
+  ),
+  headline-medium: (
+    size: utils.to-rem(28),
+    line-height: utils.to-rem(36),
+    tracking: utils.get-letter-spacing(0),
+  ),
+  headline-small: (
+    size: utils.to-rem(24),
+    line-height: utils.to-rem(32),
+    tracking: utils.get-letter-spacing(0),
+  ),
+  title-large: (
+    size: utils.to-rem(22),
+    line-height: utils.to-rem(28),
+    tracking: utils.get-letter-spacing(0),
+  ),
+  title-medium: (
+    size: utils.to-rem(16),
+    line-height: utils.to-rem(24),
+    tracking: utils.get-letter-spacing(0.25),
+  ),
+  title-small: (
+    size: utils.to-rem(14),
+    line-height: utils.to-rem(20),
+    tracking: utils.get-letter-spacing(0.1),
+  ),
+  label-large: (
+    size: utils.to-rem(14),
+    line-height: utils.to-rem(20),
+    tracking: utils.get-letter-spacing(0.1),
+  ),
+  label-medium: (
+    size: utils.to-rem(12),
+    line-height: utils.to-rem(16),
+    tracking: utils.get-letter-spacing(0.5),
+  ),
+  label-small: (
+    size: utils.to-rem(11),
+    line-height: utils.to-rem(16),
+    tracking: utils.get-letter-spacing(0.5),
+  ),
+  body-large: (
+    size: utils.to-rem(16),
+    line-height: utils.to-rem(24),
+    tracking: utils.get-letter-spacing(0.5),
+  ),
+  body-medium: (
+    size: utils.to-rem(14),
+    line-height: utils.to-rem(20),
+    tracking: utils.get-letter-spacing(0.25),
+  ),
+  body-small: (
+    size: utils.to-rem(12),
+    line-height: utils.to-rem(20),
+    tracking: utils.get-letter-spacing(0.4),
+  ),
+);
+$-utility-classes: true;
+$-font-styles: italic oblique normal;
+$-font-weights: map.keys(map.get($-tokens, weight));
+$-text-alignments: left center right;
+$-text-decorations: underline overline line-through none;
+$-text-transforms: capitalize uppercase lowercase;
+$-text-overflows: nowrap ellipsis;
+
+$-font-token-names: map.keys(map.get($-tokens, font));
+$-weight-token-names: map.keys(map.get($-tokens, weight));
+$-configure-tokens: list.append(
+  list.join($-font-token-names, $-weight-token-names),
+  "utility-classes"
+);
+
+@function tokens() {
+  @return $-tokens;
+}
+
+@mixin -update($value, $group, $name) {
+  @if $value != null {
+    $-tokens: map.set($-tokens, $group, $name, $value) !global;
+  }
+}
+
+///
+/// @param {String} $brand [null] -
+/// @param {String} $plain [null] -
+/// @param {String} $monospace [null] -
+/// @param {Number} $regular [null] -
+/// @param {Number} $medium [null] -
+/// @param {Number} $bold [null] -
+@mixin configure(
+  $brand: null,
+  $plain: null,
+  $monospace: null,
+  $regular: null,
+  $medium: null,
+  $bold: null,
+  $utility-classes: null,
+  $font-styles: null,
+  $font-weights: null,
+  $text-alignments: null,
+  $text-transforms: null,
+  $text-overflows: null
+) {
+  @include -update($brand, font, brand);
+  @include -update($plain, font, plain);
+  @include -update($monospace, font, monospace);
+
+  @include -update($regular, weight, regular);
+  @include -update($medium, weight, medium);
+  @include -update($bold, weight, bold);
+
+  @if $utility-classes !=null {
+    $-utility-classes: $utility-classes !global;
+  }
+
+  @if $font-styles !=null {
+    $-font-styles: $font-styles !global;
+  }
+
+  @if $font-weights != null {
+    $-font-weights: $font-weights !global;
+  }
+
+  @if $text-alignments != null {
+    $-text-alignments: $text-alignments !global;
+  }
+
+  @if $text-transforms != null {
+    $-text-transforms: $text-transforms !global;
+  }
+
+  @if $text-overflows != null {
+    $-text-overflows: $text-overflows !global;
+  }
+
+  @if not $-tokens-registered {
+    $-tokens-registered: true !global;
+    @include utils.register-tokens($tokens: $-tokens);
+  }
+}
+
+@mixin configure-global($font: null) {
+  $font: utils.get-config-map(font, $font, $-configure-tokens);
+  @include configure(
+    $brand: map.get($font, brand),
+    $plain: map.get($font, plain),
+    $monospace: map.get($font, monospace),
+    $regular: map.get($font, regular),
+    $medium: map.get($font, medium),
+    $bold: map.get($font, bold),
+    $utility-classes: map.get($font, utility-classes),
+    $font-styles: map.get($font, font-styles),
+    $font-weights: map.get($font, font-weights),
+    $text-alignments: map.get($font, text-alignments),
+    $text-transforms: map.get($font, text-transforms),
+    $text-overflows: map.get($font, text-overflows)
+  );
+}
+
+/// Generates the font variables
+@mixin variables {
+  $register-tokens: not $-tokens-registered;
+  @if $register-tokens {
+    $-tokens-registered: true !global;
+  }
+
+  @include utils.set-default-tokens(
+    $tokens: $-tokens,
+    $register-tokens: $register-tokens
+  );
+}
+
+@mixin styles {
+  @if $-utility-classes and not utils.is-host-mode() {
+    @include utils.library-styles {
+      @each $scope, $tokens in $-tokens {
+        // prettier-ignore
+        $property: if(
+          sass($scope == "font"): font-family;
+          else: font-weight
+        );
+
+        @each $name in map.keys($tokens) {
+          &#{$property}-#{$name} {
+            @include utils.use-var($property, "#{$scope}.#{$name}");
+          }
+        }
+
+        @each $font-style in $-font-styles {
+          &#{$font-style} {
+            font-style: $font-style;
+          }
+        }
+
+        @each $font-weight in $-font-weights {
+          &#{$font-weight} {
+            font-weight: $font-weight;
+          }
+        }
+
+        @each $text-alignment in $-text-alignments {
+          $is-left: $text-alignment == left;
+
+          &align-#{$text-alignment} {
+            text-align: $text-alignment;
+
+            @if $is-left or $text-alignment == right {
+              @include utils.rtl {
+                text-align: if(sass($is-left): right; else: left);
+              }
+            }
+          }
+        }
+
+        @each $text-decoration in $-text-decorations {
+          &#{$text-decoration} {
+            text-decoration: $text-decoration;
+          }
+        }
+
+        @each $text-transform in $-text-transforms {
+          &#{$text-transform} {
+            text-transform: $text-transform;
+          }
+        }
+
+        @each $text-overflow in $-text-overflows {
+          &#{text-overflow} {
+            @if $text-overflow == nowrap {
+              white-space: nowrap;
+            } @else if $text-overflow == ellipsis {
+              @include utils.text-overflow(null);
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,23 @@
+@use "sass:map";
+
+@use "utils";
+@use "palette";
+@use "typography";
+@use "styling";
+
+@mixin configure(
+  $disable-rtl: null,
+  $var-prefix: null,
+  $selector-prefix: null,
+  $palette: null,
+  $typography: null,
+  $margin: null
+) {
+  @include utils.configure-rtl($disable-rtl);
+  @include utils.configure-tokens($var-prefix);
+  @include utils.configure-styling($selector-prefix);
+
+  @include palette.configure-global($palette);
+  @include typography.configure-global($typography);
+  @include styling.configure($margin);
+}

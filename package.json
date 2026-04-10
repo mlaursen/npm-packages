@@ -60,6 +60,7 @@
     "packages/release-script",
     "packages/scss",
     "packages/simple-docs",
+    "packages/ui",
     "packages/utils"
   ]
 }

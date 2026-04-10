@@ -1,0 +1,97 @@
+@use "sass:list";
+@use "sass:map";
+
+@use "../utils";
+
+$-tokens: (
+  rtl: (
+    ml: 0,
+    mr: auto,
+  ),
+);
+$-configure-tokens: (
+  none-styles,
+  top-styles,
+  bottom-styles,
+  centered-styles,
+  force-end-styles
+);
+$-host-variants: (centered, force-end);
+
+$-styles: (
+  none: (
+    margin: 0,
+  ),
+  top: (
+    margin-bottom: 0,
+  ),
+  bottom: (
+    margin-top: 0,
+  ),
+  centered: (
+    margin-inline: auto,
+  ),
+  force-end: (
+    margin-left: auto,
+
+    "rtl": (
+      margin-left: "rtl.ml",
+      margin-right: "rtl.mr",
+    ),
+  ),
+);
+
+@mixin -configure($name, $value) {
+  @if $value != null {
+    $-styles: map.set($-styles, $name, $value);
+  }
+}
+
+@mixin configure(
+  $none-styles: null,
+  $top-styles: null,
+  $bottom-styles: null,
+  $centered-styles: null,
+  $force-end-styles: null
+) {
+  @include -configure(none, $none-styles);
+  @include -configure(top, $top-styles);
+  @include -configure(bottom, $bottom-styles);
+  @include -configure(centered, $centered-styles);
+  @include -configure(force-end, $force-end-styles);
+
+  @include utils.register-tokens($-tokens);
+}
+
+@mixin configure-global($margin: null) {
+  $margin: utils.get-config-map(margin, $margin, $-configure-tokens);
+  @include configure(
+    $none-styles: map.get($margin, none-styles),
+    $top-styles: map.get($margin, top-styles),
+    $bottom-styles: map.get($margin, bottom-styles),
+    $centered-styles: map.get($margin, centered-styles),
+    $force-end-styles: map.get($margin, force-end-styles)
+  );
+}
+
+@mixin styles {
+  @if utils.is-host-mode() {
+    $styles: ();
+    @each $variant, $value in $-styles {
+      $selector: ":host([margin=#{$variant}])";
+      @if not list.index($-host-variants, $variant) {
+        $selector: $selector + " ::slotted(*)";
+      }
+      $styles: map.set($styles, $selector, $value);
+    }
+    @include utils.map-to-styles($styles, $-tokens);
+  } @else {
+    @include utils.library-styles {
+      $styles: ();
+      @each $variant, $value in $-styles {
+        $styles: map.set($styles, "&margin-#{$variant}", $value);
+      }
+      @include utils.map-to-styles($styles, $-tokens);
+    }
+  }
+}

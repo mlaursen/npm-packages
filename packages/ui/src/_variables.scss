@@ -1,0 +1,7 @@
+@use "palette";
+@use "typography";
+
+@mixin variables {
+  @include palette.variables;
+  @include typography.variables;
+}
