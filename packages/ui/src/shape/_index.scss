@@ -1,0 +1,82 @@
+@use "sass:map";
+
+@use "../utils";
+
+$-tokens-registered: false;
+$-tokens: (
+  none: 0,
+  xs: utils.to-rem(4),
+  small: utils.to-rem(8),
+  medium: utils.to-rem(12),
+  lg: utils.to-rem(16),
+  li: utils.to-rem(20),
+  xl: utils.to-rem(28),
+  xli: utils.to-rem(32),
+  xxl: utils.to-rem(48),
+  full: utils.to-rem(1000),
+);
+$-configure-tokens: map.keys($-tokens);
+
+@mixin -update($value, $name) {
+  @if $value {
+    $-tokens: map.set($-tokens, $name, $value) !global;
+  }
+}
+
+@mixin configure(
+  $none: null,
+  $xs: null,
+  $sm: null,
+  $md: null,
+  $lg: null,
+  $li: null,
+  $xl: null,
+  $xli: null,
+  $xxl: null,
+  $full: null
+) {
+  @include -update($none, none);
+  @include -update($xs, xs);
+  @include -update($sm, small);
+  @include -update($md, medium);
+  @include -update($lg, lg);
+  @include -update($li, li);
+  @include -update($xl, xl);
+  @include -update($xli, xli);
+  @include -update($xxl, xxl);
+  @include -update($full, full);
+
+  @if not $-tokens-registered {
+    $-tokens-registered: true !global;
+    @include utils.register-tokens($tokens: $-tokens, $prefix: "shape.corner");
+  }
+}
+
+@mixin configure-global($shape: null) {
+  $shape: utils.get-config-map(shape, $shape, $-configure-tokens);
+  @include configure(
+    $none: map.get($shape, none),
+    $xs: map.get($shape, xs),
+    $sm: map.get($shape, sm),
+    $md: map.get($shape, md),
+    $lg: map.get($shape, lg),
+    $li: map.get($shape, li),
+    $xl: map.get($shape, xl),
+    $xli: map.get($shape, xli),
+    $xxl: map.get($shape, xxl),
+    $full: map.get($shape, full)
+  );
+}
+
+@mixin variables {
+  $register-tokens: not $-tokens-registered;
+  @if $register-tokens {
+    $-tokens-registered: true !global;
+  }
+
+  @include utils.set-default-tokens(
+    $tokens: $-tokens,
+    $prefix: "shape",
+    $register-tokens: $register-tokens
+  );
+}
