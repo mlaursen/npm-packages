@@ -14,15 +14,11 @@ $-configure-tokens: (font, typescale);
   @include typescale.configure-global($typescale);
 }
 
-@mixin configure-global($typography: null) {
-  $typography: utils.get-config-map(
-    typography,
-    $typography,
-    $-configure-tokens
-  );
+@mixin configure-global($overrides: null) {
+  $overrides: utils.get-config-map(typography, $overrides, $-configure-tokens);
   @include configure(
-    $font: map.get($typography, font),
-    $typescale: map.get($typography, typescale)
+    $font: map.get($overrides, font),
+    $typescale: map.get($overrides, typescale)
   );
 }
 

@@ -19,12 +19,12 @@ export type DefaultComponentExtraSize =
   | "extra-small"
   | "extra-large";
 
-export type StylableLitElement = Constructor<LitElement> & {
+export type LitConstructor<T = LitElement> = Constructor<T>;
+export type StylableLitElement<T = LitElement> = LitConstructor<T> & {
   styles?: CSSResultGroup;
 };
-
-export type MixedStylableLitElement<T extends StylableLitElement> = T & {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  new (...args: any[]): LitElement;
+export type StyledLitElement<T = LitElement> = LitConstructor<T> & {
   styles: CSSResultArray;
 };
+export type StyledLitElementWithProperties<P, T = LitElement> = T &
+  StyledLitElement<P>;

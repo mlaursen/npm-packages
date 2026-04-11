@@ -22,6 +22,10 @@ const configs: RollupOptions[] = [
   },
 ];
 if (process.argv.includes("--watch") || process.argv.includes("--dev-server")) {
+  while (configs.length > 0) {
+    configs.shift();
+  }
+
   configs.push({
     input: "./dev/main.ts",
     output: {

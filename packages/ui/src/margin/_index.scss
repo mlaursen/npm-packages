@@ -3,6 +3,7 @@
 
 @use "../utils";
 
+$-tokens-registered: false;
 $-tokens: (
   rtl: (
     ml: 0,
@@ -60,17 +61,20 @@ $-styles: (
   @include -configure(centered, $centered-styles);
   @include -configure(force-end, $force-end-styles);
 
-  @include utils.register-tokens($-tokens);
+  @if not $-tokens-registered {
+    $-tokens-registered: true !default;
+    @include utils.register-tokens($-tokens);
+  }
 }
 
-@mixin configure-global($margin: null) {
-  $margin: utils.get-config-map(margin, $margin, $-configure-tokens);
+@mixin configure-global($overrides: null) {
+  $overrides: utils.get-config-map(margin, $overrides, $-configure-tokens);
   @include configure(
-    $none-styles: map.get($margin, none-styles),
-    $top-styles: map.get($margin, top-styles),
-    $bottom-styles: map.get($margin, bottom-styles),
-    $centered-styles: map.get($margin, centered-styles),
-    $force-end-styles: map.get($margin, force-end-styles)
+    $none-styles: map.get($overrides, none-styles),
+    $top-styles: map.get($overrides, top-styles),
+    $bottom-styles: map.get($overrides, bottom-styles),
+    $centered-styles: map.get($overrides, centered-styles),
+    $force-end-styles: map.get($overrides, force-end-styles)
   );
 }
 

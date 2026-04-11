@@ -212,13 +212,13 @@ $-token-names: map.keys($-light-theme-tokens);
   }
 }
 
-@mixin configure-global($palette: null) {
-  $palette: utils.get-config-map(palette, $palette, $-configure-tokens);
+@mixin configure-global($overrides: null) {
+  $overrides: utils.get-config-map(palette, $overrides, $-configure-tokens);
   @include configure(
-    $color-scheme: map.get($palette, color-scheme),
-    $light-theme: map.get($palette, light-theme),
-    $dark-theme: map.get($palette, dark-theme),
-    $default-system-theme: map.get($palette, dark-theme)
+    $color-scheme: map.get($overrides, color-scheme),
+    $light-theme: map.get($overrides, light-theme),
+    $dark-theme: map.get($overrides, dark-theme),
+    $default-system-theme: map.get($overrides, dark-theme)
   );
 }
 

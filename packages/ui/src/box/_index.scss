@@ -5,22 +5,21 @@
 
 @use "../utils";
 
+$-tokens-registered: false;
 $-tokens: (
-  box: (
-    gap: 1rem,
-    gap-h: "box.gap",
-    gap-v: "box.gap",
+  gap: 1rem,
+  gap-h: "box.gap",
+  gap-v: "box.gap",
 
-    padding: 1rem,
-    padding-h: "box.padding",
-    padding-v: "box.padding",
+  padding: 1rem,
+  padding-h: "box.padding",
+  padding-v: "box.padding",
 
-    columns: auto-fit,
-    item-min-size: 8rem,
-    auto-rows-height: 100%,
-    row-min-height: "box.item-min-size",
-    row-max-height: 1fr,
-  ),
+  columns: auto-fit,
+  item-min-size: 8rem,
+  auto-rows-height: 100%,
+  row-min-height: "box.item-min-size",
+  row-max-height: 1fr,
 );
 
 $-configure-tokens: (
@@ -144,26 +143,29 @@ $-styles: (
   @include -configure-flex-property(align-items, $align-items);
   @include -configure-flex-property(justify-content, $justify-content);
 
-  @include utils.register-tokens($-tokens);
+  @if not $-tokens-registered {
+    $-tokens-registered: true !global;
+    @include utils.register-tokens($tokens: $-tokens, $prefix: "box");
+  }
 }
 
-@mixin configure-global($box: null) {
-  $box: utils.get-config-map(box, $box, $-configure-tokens);
+@mixin configure-global($overrides: null) {
+  $overrides: utils.get-config-map(box, $overrides, $-configure-tokens);
   @include configure(
-    $align-items: map.get($box, align-items),
-    $justify-content: map.get($box, justify-content),
-    $base-styles: map.get($box, base-styles),
-    $gap-styles: map.get($box, gap-styles),
-    $row-gap-styles: map.get($box, row-gap-styles),
-    $column-gap-styles: map.get($box, column-gap-styles),
-    $padded-styles: map.get($box, padded-styles),
-    $flex-wrap-styles: map.get($box, flex-wrap-styles),
-    $full-width-styles: map.get($box, full-width-styles),
-    $stacked-styles: map.get($box, stacked-styles),
-    $stacked-reversed-styles: map.get($box, stacked-reversed-styles),
-    $reversed-styles: map.get($box, reversed-styles),
-    $grid-styles: map.get($box, grid-styles),
-    $grid-fill-styles: map.get($box, grid-fill-styles)
+    $align-items: map.get($overrides, align-items),
+    $justify-content: map.get($overrides, justify-content),
+    $base-styles: map.get($overrides, base-styles),
+    $gap-styles: map.get($overrides, gap-styles),
+    $row-gap-styles: map.get($overrides, row-gap-styles),
+    $column-gap-styles: map.get($overrides, column-gap-styles),
+    $padded-styles: map.get($overrides, padded-styles),
+    $flex-wrap-styles: map.get($overrides, flex-wrap-styles),
+    $full-width-styles: map.get($overrides, full-width-styles),
+    $stacked-styles: map.get($overrides, stacked-styles),
+    $stacked-reversed-styles: map.get($overrides, stacked-reversed-styles),
+    $reversed-styles: map.get($overrides, reversed-styles),
+    $grid-styles: map.get($overrides, grid-styles),
+    $grid-fill-styles: map.get($overrides, grid-fill-styles)
   );
 }
 
