@@ -5,7 +5,6 @@
 @layer {
   :root {
     @include variables;
+    @include use-system-theme;
   }
-
-  @include styles;
 }

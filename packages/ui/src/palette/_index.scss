@@ -117,7 +117,7 @@ $-tokens: (
 );
 $-token-names: map.keys($-light-theme-tokens);
 
-@function -get-light-dark-tokens() {
+@function get-light-dark-tokens() {
   $tokens: ();
   @each $token in $-token-names {
     $value: light-dark(
@@ -157,6 +157,7 @@ $-token-names: map.keys($-light-theme-tokens);
     utils.get-config-map(dark-theme, $dark-theme, $-token-names)
   );
 
+  $is-light-dark: $color-scheme == light-dark;
   @if $-color-scheme == light {
     $-tokens: (
       current: $-light-theme-tokens,
@@ -186,8 +187,8 @@ $-token-names: map.keys($-light-theme-tokens);
 
     // prettier-ignore
     $tokens: if(
-      sass($color-scheme == system): $-light-theme-tokens;
-      else: -get-light-dark-tokens()
+      sass($is-light-dark): get-light-dark-tokens();
+      else: $-light-theme-tokens
     );
 
     @if not $-current-tokens-registered {
@@ -195,7 +196,8 @@ $-token-names: map.keys($-light-theme-tokens);
 
       @include utils.register-tokens(
         $tokens: $tokens,
-        $skip-fallback-values: true
+        $prefix: "palette",
+        $skip-fallback-values: not $is-light-dark
       );
     }
 
@@ -237,17 +239,26 @@ $-token-names: map.keys($-light-theme-tokens);
 }
 
 @mixin use-light-dark-theme {
-  @each $token, $value in -get-light-dark-tokens() {
+  @each $token, $value in get-light-dark-tokens() {
     @include utils.set-var($token, $value);
   }
 }
 
+@mixin use-system-theme {
+  @media (prefers-color-scheme: dark) {
+    :root {
+      @include use-dark-theme;
+    }
+  }
+}
+
 @mixin variables($set-color-scheme: false) {
+  $is-light-dark: $-color-scheme == light-dark;
   @if $set-color-scheme {
     $color-scheme: light;
     @if $-color-scheme == dark {
       $color-scheme: dark;
-    } @else if $-color-scheme == light-dark {
+    } @else if $is-light-dark {
       $color-scheme: light dark;
     }
 
@@ -255,6 +266,15 @@ $-token-names: map.keys($-light-theme-tokens);
   }
 
   @if map.get($-tokens, light) and map.get($-tokens, dark) {
+    @if $is-light-dark and not $-current-tokens-registered {
+      $-current-tokens-registered: true !global;
+
+      @include utils.register-tokens(
+        $tokens: map.get($-tokens, "current"),
+        $prefix: "palette"
+      );
+    }
+
     @include utils.set-default-tokens(
       $tokens: map.remove($-tokens, "current"),
       $register-tokens: false,
@@ -262,19 +282,113 @@ $-token-names: map.keys($-light-theme-tokens);
     );
   }
 
-  $register-tokens: false;
   @if not $-current-tokens-registered {
-    $register-tokens: true;
     $-current-tokens-registered: true !global;
+
+    @include utils.register-tokens(
+      $tokens: map.get($-tokens, "current"),
+      $prefix: "palette"
+    );
   }
-  @include utils.set-default-tokens(
-    $tokens: map.get($-tokens, "current"),
-    $register-tokens: $register-tokens,
-    $skip-fallback-values: true
-  );
+
+  @if not $is-light-dark {
+    @include utils.set-default-tokens(
+      $tokens: map.get($-tokens, "current"),
+      $skip-fallback-values: true
+    );
+  }
 }
 
-@mixin utility-classes {
+@function -get-styles($is-css) {
+  $ignored: (outline, outline-variant, shadow, surface-tint, scrim);
+  $no-text-color: (
+    inverse-primary,
+    surface-dim,
+    surface-bright,
+    surface-container-lowest,
+    surface-container-low,
+    surface-container,
+    surface-container-high,
+    surface-container-highest
+  );
+
+  $styles: ();
+  @each $name in $-token-names {
+    @if not list.index($ignored, $name) {
+      $is-on-color: string.index($name, "on-") == 1;
+      $is-no-color: list.index($no-text-color, $name);
+
+      $selector: "&#{$name}";
+      $inner-styles: null;
+      @if not $is-css {
+        $selector: ":host([";
+        @if $is-on-color {
+          $selector: $selector + "color=#{$name}";
+        } @else {
+          $selector: $selector + "bg=#{$name}";
+        }
+
+        $selector: $selector + "])";
+      }
+
+      @if $is-on-color {
+        $inner-styles: (
+          color: "palette.#{$name}",
+        );
+      } @else {
+        $inner-styles: (
+          background: "palette.#{$name}",
+        );
+
+        @if not $is-no-color {
+          $inner-styles: map.set($inner-styles, "color", "palette.on-#{$name}");
+        }
+      }
+
+      $styles: map.deep-merge(
+        $styles,
+        (
+          $selector: $inner-styles,
+        )
+      );
+
+      @if not
+        $is-no-color and not
+        $is-on-color and not
+        string.index($name, "container-")
+      {
+        // prettier-ignore
+        $selector: if(
+          sass($is-css): "&text-#{$name}";
+          else: ":host([color=#{$name}])"
+        );
+        $inner-styles: (
+          $selector: (
+              color: "palette.#{$name}",
+            ),
+        );
+        $styles: map.deep-merge($styles, $inner-styles);
+      }
+    }
+  }
+  // &current-color {
+  //   color: currentcolor;
+  // }
+  //
+  // @if $-color-scheme == light-dark or $-color-scheme == system {
+  //   &palette-light {
+  //     @include use-light-theme;
+  //   }
+  //
+  //   &palette-dark {
+  //     @include use-dark-theme;
+  //   }
+  // }
+
+  @return $styles;
+}
+
+@mixin css-styles {
   $ignored: (outline, outline-variant, shadow, surface-tint, scrim);
   $no-text-color: (
     inverse-primary,
@@ -331,16 +445,20 @@ $-token-names: map.keys($-light-theme-tokens);
   }
 }
 
+@mixin host-styles {
+  @include utils.map-to-styles(-get-styles(false));
+}
+
 @mixin styles {
   @include utils.css-styles {
-    @include utility-classes;
+    @include css-styles;
+
+    @if $-default-system-theme and $-color-scheme == system {
+      @include use-system-theme;
+    }
   }
 
-  @if $-default-system-theme and $-color-scheme == system {
-    @media (prefers-color-scheme: dark) {
-      :root {
-        @include use-dark-theme;
-      }
-    }
+  @include utils.host-styles {
+    @include host-styles;
   }
 }

@@ -1,9 +1,13 @@
 import {
   createWatcher,
+  disableLogger,
   enableLogger,
   log,
   logComplete,
   logFailure,
+  logPending,
+  logTask,
+  prettyFilesize,
 } from "@mlaursen/node-utils";
 import { compileScss } from "@mlaursen/scss";
 import browserslist from "browserslist";
@@ -13,14 +17,49 @@ import { existsSync, readFileSync } from "node:fs";
 import { rm, writeFile } from "node:fs/promises";
 import { format } from "prettier";
 
+import type { ColorScheme } from "../src/palette/types.js";
+
 const basePath = process.cwd();
 const watching = process.argv.includes("--watch");
-const production = process.env["NODE_ENV"] === "production";
+const production = process.argv.includes("--prod");
 const targets = browserslistToTargets(
   browserslist("last 2 versions and not dead and > 0.5%"),
 );
 
-const load = (filePath: string): string => readFileSync(filePath, "utf8");
+const colorScheme = ((): ColorScheme => {
+  if (process.argv.includes("--light")) {
+    return "light";
+  }
+
+  if (process.argv.includes("--dark")) {
+    return "dark";
+  }
+
+  if (process.argv.includes("--system")) {
+    return "system";
+  }
+
+  return "light-dark";
+})();
+
+function loadConfigureFile(): string {
+  return `@use "../src" as *;
+
+@include configure(
+  $palette: (
+    color-scheme: ${colorScheme}
+  )
+);
+`;
+}
+
+const load = (filePath: string): string => {
+  if (/scripts\/configure/.test(filePath)) {
+    return loadConfigureFile();
+  }
+
+  return readFileSync(filePath, "utf8");
+};
 
 const TOKENS_MESSAGE =
   "The following tokens do not exist and need to be removed or fixed: ";
@@ -65,7 +104,9 @@ export default css\`${css}\`
 
     const outFile = filePath.replace(".scss", "-styles.ts");
     await writeFile(outFile, styles, "utf8");
-    logComplete(`wrote "${outFile.replace(basePath, "")}`);
+    logComplete(
+      `wrote "${outFile.replace(basePath, "")}" (${prettyFilesize(styles)})`,
+    );
   } catch (error) {
     enableLogger();
     logFailure(`Unable to compile ${filePath.replace(basePath, "")}.`);
@@ -106,6 +147,10 @@ ${err.message.slice(quoteIndex + 1)}
 }
 
 if (watching) {
+  enableLogger();
+  logPending(`Using ${colorScheme} color scheme for styles`);
+  disableLogger();
+
   const isPartial = (filePath: string): boolean => filePath.includes("_");
   const rebuild = new Set<string>();
   createWatcher({
@@ -137,8 +182,16 @@ if (watching) {
   });
 } else {
   enableLogger();
-  const styles = await glob("src/**/*.scss", {
-    ignore: ["**/_*.scss"],
-  });
-  await Promise.all(styles.map((filePath) => createStyles(filePath)));
+  const run = async (): Promise<void> => {
+    const styles = await glob("src/**/*.scss", {
+      ignore: ["**/_*.scss"],
+    });
+    await Promise.all(styles.map((filePath) => createStyles(filePath)));
+  };
+
+  logTask(
+    run(),
+    `Compiling ${colorScheme} color scheme styles`,
+    `Compiled ${colorScheme} color scheme styles`,
+  );
 }

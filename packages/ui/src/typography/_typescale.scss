@@ -469,7 +469,16 @@ $-configure-tokens: $-variants;
   );
 }
 
-@mixin -host-styles() {
+@mixin css-styles {
+  $styles: ();
+  @each $variant, $properties in $-styles {
+    $styles: map.set($styles, "&typography-#{$variant}", $properties);
+  }
+
+  @include utils.map-to-styles($styles);
+}
+
+@mixin host-styles {
   $styles: (
     "::slotted(*)": (
       font: inherit,
@@ -495,16 +504,11 @@ $-configure-tokens: $-variants;
 }
 
 @mixin styles {
-  @include utils.host-styles {
-    @include -host-styles;
+  @include utils.css-styles {
+    @include css-styles;
   }
 
-  @include utils.css-styles {
-    $styles: ();
-    @each $variant, $properties in $-styles {
-      $styles: map.set($styles, "&typography-#{$variant}", $properties);
-    }
-
-    @include utils.map-to-styles($styles);
+  @include utils.host-styles {
+    @include host-styles;
   }
 }

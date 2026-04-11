@@ -207,85 +207,149 @@ $-configure-tokens: list.append(
   );
 }
 
+@function -selector($name, $attr, $is-css) {
+  @if $is-css {
+    @return "&#{$name}";
+  }
+
+  @return ":host([#{$attr}=#{$name}])";
+}
+
+@function -get-font-styles($is-css) {
+  $styles: ();
+  @each $value in $-font-styles {
+    $selector: -selector(
+      $name: $value,
+      $attr: "font-style",
+      $is-css: $is-css,
+    );
+    $inner-styles: (
+      font-style: $value,
+    );
+    $styles: map.set($styles, $selector, $inner-styles);
+  }
+
+  @return $styles;
+}
+
+@function -get-font-weights($is-css) {
+  $styles: ();
+  @each $value in $-font-weights {
+    $selector: -selector(
+      $name: $value,
+      $attr: "font-weight",
+      $is-css: $is-css,
+    );
+    $inner-styles: (
+      font-weight: $value,
+    );
+    $styles: map.set($styles, $selector, $inner-styles);
+  }
+
+  @return $styles;
+}
+
+@function -get-text-alignments($is-css) {
+  $styles: ();
+  @each $value in $-text-alignments {
+    $selector: -selector(
+      $name: "align-#{$value}",
+      $attr: "text-align",
+      $is-css: $is-css,
+    );
+    $inner-styles: (
+      text-align: $value,
+    );
+    $styles: map.set($styles, $selector, $inner-styles);
+  }
+
+  @return $styles;
+}
+
+@function -get-text-decorations($is-css) {
+  $styles: ();
+  @each $value in $-text-decorations {
+    $selector: -selector(
+      $name: $value,
+      $attr: "text-decoration",
+      $is-css: $is-css,
+    );
+    $inner-styles: (
+      text-decoration: $value,
+    );
+    $styles: map.set($styles, $selector, $inner-styles);
+  }
+
+  @return $styles;
+}
+
+@function -get-text-transforms($is-css) {
+  $styles: ();
+  @each $value in $-text-transforms {
+    $selector: -selector(
+      $name: $value,
+      $attr: "text-transform",
+      $is-css: $is-css,
+    );
+    $inner-styles: (
+      text-transform: $value,
+    );
+    $styles: map.set($styles, $selector, $inner-styles);
+  }
+
+  @return $styles;
+}
+
+@function -get-text-overflows($is-css) {
+  $styles: ();
+  @each $value in $-text-overflows {
+    $selector: -selector(
+      $name: $value,
+      $attr: "text-overflow",
+      $is-css: $is-css,
+    );
+    // prettier-ignore
+    $inner-styles: if(
+      sass($value == nowrap): (white-space: nowrap);
+      else: utils.text-overflow(null)
+    );
+    $styles: map.set($styles, $selector, $inner-styles);
+  }
+
+  @return $styles;
+}
+
+@function -get-styles($is-css) {
+  $styles: ();
+  $parts: (
+    -get-font-styles($is-css),
+    -get-font-weights($is-css),
+    -get-text-alignments($is-css),
+    -get-text-decorations($is-css),
+    -get-text-transforms($is-css),
+    -get-text-overflows($is-css)
+  );
+  @each $part in $parts {
+    $styles: map.merge($styles, $part);
+  }
+
+  @return $styles;
+}
+
+@mixin css-styles {
+  @include utils.map-to-styles(-get-styles(true));
+}
+
+@mixin host-styles {
+  @include utils.map-to-styles(-get-styles(false));
+}
+
 @mixin styles {
   @include utils.css-styles {
-    $styles: ();
-    @each $value in $-font-styles {
-      $styles: map.set(
-        $styles,
-        "&#{$value}",
-        (
-          font-style: $value,
-        )
-      );
-    }
-    @each $value in $-font-weights {
-      $styles: map.set(
-        $styles,
-        "&#{$value}",
-        (
-          font-weight: $value,
-        )
-      );
-    }
+    @include css-styles;
+  }
 
-    @each $value in $-text-alignments {
-      $styles: map.set(
-        $styles,
-        "&align-#{$value}",
-        (
-          text-align: $value,
-        )
-      );
-      @if $value == left or $value == right {
-        $reversed: if(
-          sass($value == left): mr; else: ml,
-        );
-
-        $styles: map.set(
-          $styles,
-          "&align-#{$value}",
-          "rtl",
-          (
-            text-align: "rtl.#{$reversed}",
-          )
-        );
-      }
-      // $is-left: $text-alignment == left;
-      //
-      // &align-#{$text-alignment} {
-      //   text-align: $text-alignment;
-      //
-      //   @if $is-left or $text-alignment == right {
-      //     @include utils.rtl {
-      //       text-align: if(sass($is-left): right; else: left);
-      //     }
-      //   }
-      // }
-    }
-
-    @each $text-decoration in $-text-decorations {
-      // &#{$text-decoration} {
-      //   text-decoration: $text-decoration;
-      // }
-    }
-
-    @each $text-transform in $-text-transforms {
-      // &#{$text-transform} {
-      //   text-transform: $text-transform;
-      // }
-    }
-
-    @each $text-overflow in $-text-overflows {
-      // &#{text-overflow} {
-      //   @if $text-overflow == nowrap {
-      //     white-space: nowrap;
-      //   } @else if $text-overflow == ellipsis {
-      //     @include utils.text-overflow(null);
-      //   }
-      // }
-    }
-
-    @include utils.map-to-styles($styles);
+  @include utils.host-styles {
+    @include host-styles;
   }
 }
