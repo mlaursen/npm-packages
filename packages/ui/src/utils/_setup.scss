@@ -1,5 +1,6 @@
-@use "sass:meta";
 @use "sass:list";
+@use "sass:meta";
+@use "sass:string";
 
 @use "validate" as *;
 @use "string" as *;
@@ -79,16 +80,6 @@ $-selector-prefix: ".ui-";
   }
 }
 
-/// This will only generate the content when the output mode is set to `host`
-/// for web components
-/// @content
-/// @output
-@mixin host-styles {
-  @if $-output == host {
-    @content;
-  }
-}
-
 /// This will only generate the content when the output mode is set to `css`
 /// for global class names
 /// @content
@@ -101,10 +92,20 @@ $-selector-prefix: ".ui-";
   }
 }
 
+/// This will only generate the content when the output mode is set to `host`
+/// for web components
+/// @content
+/// @output
+@mixin host-styles {
+  @if $-output == host {
+    @content;
+  }
+}
+
 /// Used to get the current CSS variable name from react-md tokens.
 ///
 /// @param {String} $name - token name. i.e `"font.brand"`
-/// @returns {String} the var name. i.e. `"--mwc-font-brand"`
+/// @returns {String} the var name. i.e. `"--ui-font-brand"`
 @function get-var-name($name) {
   @if not list.index($-tokens, $name) {
     $-tokens: list.append($-tokens, $name) !global;
@@ -112,5 +113,9 @@ $-selector-prefix: ".ui-";
   }
 
   $hyphenated-name: str-replace($name, ".", "-");
+  // I do not want to display the palette prefix
+  @if string.index($hyphenated-name, "palette-") == 1 {
+    $hyphenated-name: string.slice($hyphenated-name, 9);
+  }
   @return #{$-var-prefix + $hyphenated-name};
 }
