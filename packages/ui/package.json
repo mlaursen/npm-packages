@@ -4,6 +4,9 @@
   "description": "",
   "type": "module",
   "exports": {
+    ".": {
+      "default": "./dist/index.js"
+    },
     "./package.json": "./package.json"
   },
   "scripts": {

@@ -1,0 +1,108 @@
+@use "sass:map";
+@use "sass:meta";
+
+@use "../utils";
+
+$-tokens-registered: false;
+$-tokens: (
+  color: currentcolor,
+  size: "icon.medium.size",
+  small: (
+    size: 1.25rem,
+  ),
+  medium: (
+    size: 1.5rem,
+  ),
+  large: (
+    size: 2rem,
+  ),
+);
+
+$-styles: (
+  base: (
+    color: "icon.color",
+    flex-shrink: 0,
+    font-size: "icon.size",
+    overflow: hidden,
+    text-align: center,
+    user-select: none,
+  ),
+  small: (
+    "icon.size": "icon.small.size",
+  ),
+  medium: (
+    "icon.size": "icon.medium.size",
+  ),
+  large: (
+    "icon.size": "icon.large.size",
+  ),
+);
+$-configure-tokens: (base-styles, small-styles, medium-styles, large-styles);
+
+@mixin configure(
+  $base-styles: null,
+  $small-styles: null,
+  $medium-styles: null,
+  $large-styles: null
+) {
+  @if $base-styles != null {
+    $-styles: map.merge($-styles, "base", $base-styles) !global;
+  }
+
+  @if $small-styles != null {
+    $-styles: map.merge($-styles, "small", $small-styles) !global;
+  }
+
+  @if $medium-styles != null {
+    $-styles: map.merge($-styles, "medium", $medium-styles) !global;
+  }
+
+  @if $large-styles != null {
+    $-styles: map.merge($-styles, "large", $large-styles) !global;
+  }
+
+  @if not $-tokens-registered {
+    $-tokens-registered: true !global;
+    @include utils.register-tokens($-tokens, $prefix: "icon");
+  }
+}
+
+@mixin configure-global($overrides: null) {
+  $overrides: utils.get-config-map(icon, $overrides, $-configure-tokens);
+  @include configure(
+    $base-styles: map.get($overrides, base-styles),
+    $small-styles: map.get($overrides, small-styles),
+    $medium-styles: map.get($overrides, medium-styles),
+    $large-styles: map.get($overrides, large-styles)
+  );
+}
+
+@mixin styles {
+  @include utils.host-styles {
+    $styles: ();
+    @each $variant, $properties in $-styles {
+      $selector: ":host";
+      @if $variant != base {
+        $selector: $selector + "([size=#{$variant}])";
+      }
+
+      $styles: map.set($styles, $selector, $properties);
+    }
+
+    @include utils.map-to-styles($styles);
+  }
+
+  @include utils.css-styles {
+    $styles: ();
+    @each $variant, $styles in $-styles {
+      $selector: "&icon";
+      @if $variant != base {
+        $selector: $selector + "--#{$variant}";
+      }
+
+      $styles: map.set($styles, $selector, $styles);
+    }
+
+    @include utils.map-to-styles($styles);
+  }
+}

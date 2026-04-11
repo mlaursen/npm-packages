@@ -13,22 +13,18 @@ return {
     trig = "lit",
     desc = "create lit component",
   }, {
-    t({ 'import { html, LitElement, type TemplateResult } from "lit";', "" }),
+    t({ 'import { LitElement, html, type TemplateResult } from "lit";', "" }),
     t({ 'import { customElement, property } from "lit/decorators.js";', "" }),
     t({ "", "" }),
-    t("import { "),
-    d(1, function()
-      return sn(nil, {
-        t(util.camel_case(vim.fn.expand("%:t:r")) .. "Styles"),
-      })
-    end),
-    t({ ' } from "./styles.js";', "" }),
+    t('import styles from "./'),
+    util.current_filename(1),
+    t({ '-styles.js";', "" }),
     t({ "", "" }),
 
     t({ '@customElement("' }),
     d(2, function()
       return sn(nil, {
-        t("mwc-" .. vim.fn.expand("%:t:r")),
+        t("ui-" .. vim.fn.expand("%:t:r")),
       })
     end),
     t({ '")', "" }),
@@ -39,9 +35,7 @@ return {
       })
     end),
     t({ " extends LitElement {", "" }),
-    t("\tstatic override styles = "),
-    util.mirror_node(1),
-    t({ ";", "" }),
+    t({ "\tstatic override styles = styles;", "" }),
     t({ "", "" }),
     t({ "\toverride render(): TemplateResult {", "" }),
     t({ "\t\treturn html`<slot></slot>`;", "" }),

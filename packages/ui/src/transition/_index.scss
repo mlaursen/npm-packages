@@ -99,37 +99,33 @@ $-configure-tokens: utils.list-concat(
   }
 }
 
-@mixin configure-global($transition: null) {
-  $transition: utils.get-config-map(
-    transition,
-    $transition,
-    $-configure-tokens
-  );
+@mixin configure-global($overrides: null) {
+  $overrides: utils.get-config-map(transition, $overrides, $-configure-tokens);
 
   @include configure(
-    $extra-long-1: map.get($transition, extra-long-1),
-    $extra-long-2: map.get($transition, extra-long-2),
-    $extra-long-3: map.get($transition, extra-long-3),
-    $extra-long-4: map.get($transition, extra-long-4),
-    $long-1: map.get($transition, long-1),
-    $long-2: map.get($transition, long-2),
-    $long-3: map.get($transition, long-3),
-    $long-4: map.get($transition, long-4),
-    $medium-1: map.get($transition, medium-1),
-    $medium-2: map.get($transition, medium-2),
-    $medium-3: map.get($transition, medium-3),
-    $medium-4: map.get($transition, medium-4),
-    $short-1: map.get($transition, short-1),
-    $short-2: map.get($transition, short-2),
-    $short-3: map.get($transition, short-3),
-    $short-4: map.get($transition, short-4),
-    $emphasized: map.get($transition, emphasized),
-    $emphasized-accelerate: map.get($transition, emphasized-accelerate),
-    $emphasized-decelerate: map.get($transition, emphasized-decelerate),
-    $linear: map.get($transition, linear),
-    $standard: map.get($transition, standard),
-    $standard-accelerate: map.get($transition, standard-accelerate),
-    $standard-decelerate: map.get($transition, standard-decelerate)
+    $extra-long-1: map.get($overrides, extra-long-1),
+    $extra-long-2: map.get($overrides, extra-long-2),
+    $extra-long-3: map.get($overrides, extra-long-3),
+    $extra-long-4: map.get($overrides, extra-long-4),
+    $long-1: map.get($overrides, long-1),
+    $long-2: map.get($overrides, long-2),
+    $long-3: map.get($overrides, long-3),
+    $long-4: map.get($overrides, long-4),
+    $medium-1: map.get($overrides, medium-1),
+    $medium-2: map.get($overrides, medium-2),
+    $medium-3: map.get($overrides, medium-3),
+    $medium-4: map.get($overrides, medium-4),
+    $short-1: map.get($overrides, short-1),
+    $short-2: map.get($overrides, short-2),
+    $short-3: map.get($overrides, short-3),
+    $short-4: map.get($overrides, short-4),
+    $emphasized: map.get($overrides, emphasized),
+    $emphasized-accelerate: map.get($overrides, emphasized-accelerate),
+    $emphasized-decelerate: map.get($overrides, emphasized-decelerate),
+    $linear: map.get($overrides, linear),
+    $standard: map.get($overrides, standard),
+    $standard-accelerate: map.get($overrides, standard-accelerate),
+    $standard-decelerate: map.get($overrides, standard-decelerate)
   );
 }
 

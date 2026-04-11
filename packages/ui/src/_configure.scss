@@ -6,6 +6,8 @@
 @use "margin";
 @use "transition";
 @use "typography";
+@use "icon";
+@use "material-symbol";
 
 @use "box";
 
@@ -19,6 +21,8 @@
   $margin: null,
   $transition: null,
   $typography: null,
+  $icon: null,
+  $material-symbol: null,
   $box: null
 ) {
   @include utils.configure-setup(
@@ -33,5 +37,7 @@
   @include margin.configure($margin);
   @include transition.configure-global($transition);
   @include typography.configure-global($typography);
+  @include icon.configure-global($icon);
+  @include material-symbol.configure-global($material-symbol);
   @include box.configure-global($box);
 }

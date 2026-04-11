@@ -52,19 +52,19 @@ $-configure-tokens: map.keys($-tokens);
   }
 }
 
-@mixin configure-global($shape: null) {
-  $shape: utils.get-config-map(shape, $shape, $-configure-tokens);
+@mixin configure-global($overrides: null) {
+  $overrides: utils.get-config-map(shape, $overrides, $-configure-tokens);
   @include configure(
-    $none: map.get($shape, none),
-    $xs: map.get($shape, xs),
-    $sm: map.get($shape, sm),
-    $md: map.get($shape, md),
-    $lg: map.get($shape, lg),
-    $li: map.get($shape, li),
-    $xl: map.get($shape, xl),
-    $xli: map.get($shape, xli),
-    $xxl: map.get($shape, xxl),
-    $full: map.get($shape, full)
+    $none: map.get($overrides, none),
+    $xs: map.get($overrides, xs),
+    $sm: map.get($overrides, sm),
+    $md: map.get($overrides, md),
+    $lg: map.get($overrides, lg),
+    $li: map.get($overrides, li),
+    $xl: map.get($overrides, xl),
+    $xli: map.get($overrides, xli),
+    $xxl: map.get($overrides, xxl),
+    $full: map.get($overrides, full)
   );
 }
 

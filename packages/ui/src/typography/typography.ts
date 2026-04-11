@@ -3,10 +3,11 @@ import { customElement, property } from "lit/decorators.js";
 import { html } from "lit/static-html.js";
 
 import { MarginMixin } from "../margin/margin.js";
+import { PaletteMixin } from "../palette/palette.js";
 import { type TypographySize, type TypographyVariant } from "./types.js";
 import styles from "./typography-styles.js";
 
-const BaseTypography = MarginMixin(LitElement);
+const BaseTypography = PaletteMixin(MarginMixin(LitElement));
 
 @customElement("ui-typography")
 export class Typography extends BaseTypography {
@@ -34,9 +35,9 @@ export class Typography extends BaseTypography {
     return html`<slot></slot>`;
   }
 }
-//
-// declare global {
-//   interface HTMLElementTagNameMap {
-//     "ui-typography": Typography;
-//   }
-// }
+
+declare global {
+  interface HTMLElementTagNameMap {
+    "ui-typography": Typography;
+  }
+}

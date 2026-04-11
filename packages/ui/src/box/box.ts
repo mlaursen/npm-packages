@@ -6,6 +6,7 @@ import {
 } from "lit";
 import { customElement, property } from "lit/decorators.js";
 
+import { UI_CONFIG } from "../config.js";
 import { MarginMixin } from "../margin/margin.js";
 import boxStyles from "./box-styles.js";
 import {
@@ -50,10 +51,11 @@ export class Box extends BaseBox {
   padding?: BoxPadding;
 
   #updateGridColumns(): void {
+    const property = `${UI_CONFIG.varPrefix}-box-columns`;
     if (typeof this.grid === "string" && /^\d+$/.test(this.grid)) {
-      this.style.setProperty("--ui-box-columns", this.grid);
+      this.style.setProperty(property, this.grid);
     } else {
-      this.style.removeProperty("--ui-box-columns");
+      this.style.removeProperty(property);
     }
   }
 
@@ -74,8 +76,8 @@ export class Box extends BaseBox {
   }
 }
 
-// declare global {
-//   interface HTMLElementTagNameMap {
-//     "ui-box": Box;
-//   }
-// }
+declare global {
+  interface HTMLElementTagNameMap {
+    "ui-box": Box;
+  }
+}

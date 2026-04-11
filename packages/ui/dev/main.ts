@@ -1,8 +1,9 @@
 import { LitElement, type TemplateResult, html } from "lit";
 import { customElement } from "lit/decorators.js";
 
-import "../dist/index.js";
-import lightDarkStyles from "../dist/palette/light-dark-styles.js";
+import "../src/index.js";
+import lightDarkStyles from "../src/palette/light-dark-styles.js";
+import "./material-symbols.js";
 import "./typography.js";
 
 const stylesheet = new CSSStyleSheet();
@@ -12,7 +13,10 @@ document.adoptedStyleSheets.push(stylesheet);
 @customElement("mwc-main")
 export class Main extends LitElement {
   override render(): TemplateResult {
-    return html`<app-typography></app-typography>`;
+    return html`
+      <app-material-symbols></app-material-symbols>
+      <app-typography></app-typography>
+    `;
   }
 }
 

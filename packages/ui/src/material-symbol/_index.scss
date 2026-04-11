@@ -1,0 +1,90 @@
+@use "sass:list";
+@use "sass:map";
+
+@use "../utils";
+
+$-tokens-registered: false;
+$-tokens: (
+  family: "Material Symbols Outlined",
+  fill: 0,
+  weight: 400,
+  grade: 0,
+  opsz: 48,
+);
+$-configure-tokens: list.append(map.keys($-tokens), base-styles);
+
+$-styles: (
+  // default .material-symbols-* styles from Google fonts API
+  direction: ltr,
+  display: inline-block,
+  font-style: normal,
+  font-weight: normal,
+  letter-spacing: normal,
+  line-height: 1,
+  text-transform: none,
+  white-space: nowrap,
+  word-wrap: normal,
+  -moz-font-feature-settings: "liga",
+  -moz-osx-font-smoothing: grayscale,
+
+  // overrides
+  font-family: "icon.symbol.family",
+  font-variation-settings:
+    '"FILL" "icon.symbol.fill", "wght" "icon.symbol.weight", "GRAD" "icon.symbol.grade", "opsz" "icon.symbol.opsz"'
+);
+
+@mixin configure(
+  $family: null,
+  $weight: null,
+  $fill: null,
+  $grade: null,
+  $opsz: null,
+  $base-styles: null
+) {
+  @if not $-tokens-registered {
+    $-tokens-registered: true !global;
+    @include utils.register-tokens($tokens: $-tokens, $prefix: "icon.symbol");
+  }
+}
+
+@mixin configure-global($overrides: null) {
+  $overrides: utils.get-config-map(
+    material-symbol,
+    $overrides,
+    $-configure-tokens
+  );
+  @include configure(
+    $family: map.get($overrides, family),
+    $weight: map.get($overrides, weight),
+    $fill: map.get($overrides, fill),
+    $grade: map.get($overrides, grade),
+    $opsz: map.get($overrides, opsz),
+    $base-styles: map.get($overrides, base-styles)
+  );
+}
+
+@mixin css-styles {
+  @include utils.map-to-styles(
+    (
+      "&material-symbol": $-styles,
+    )
+  );
+}
+
+@mixin host-styles {
+  @include utils.map-to-styles(
+    (
+      ":host": $-styles,
+    )
+  );
+}
+
+@mixin styles {
+  @include utils.css-styles {
+    @include css-styles;
+  }
+
+  @include utils.host-styles {
+    @include host-styles;
+  }
+}
