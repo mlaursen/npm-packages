@@ -2,6 +2,7 @@
 
 @use "utils";
 @use "palette";
+@use "shape";
 @use "margin";
 @use "transition";
 @use "typography";
@@ -14,6 +15,7 @@
   $var-prefix: null,
   $selector-prefix: null,
   $palette: null,
+  $shape: null,
   $margin: null,
   $transition: null,
   $typography: null,
@@ -27,6 +29,7 @@
   );
 
   @include palette.configure-global($palette);
+  @include shape.configure-global($shape);
   @include margin.configure($margin);
   @include transition.configure-global($transition);
   @include typography.configure-global($typography);
