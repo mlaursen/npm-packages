@@ -2,8 +2,9 @@
 
 @use "utils";
 @use "palette";
-@use "typography";
 @use "margin";
+@use "transition";
+@use "typography";
 
 @use "box";
 
@@ -13,8 +14,9 @@
   $var-prefix: null,
   $selector-prefix: null,
   $palette: null,
-  $typography: null,
   $margin: null,
+  $transition: null,
+  $typography: null,
   $box: null
 ) {
   @include utils.configure-setup(
@@ -25,7 +27,8 @@
   );
 
   @include palette.configure-global($palette);
-  @include typography.configure-global($typography);
   @include margin.configure($margin);
+  @include transition.configure-global($transition);
+  @include typography.configure-global($typography);
   @include box.configure-global($box);
 }

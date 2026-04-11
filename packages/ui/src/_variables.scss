@@ -1,7 +1,9 @@
 @use "palette";
 @use "typography";
+@use "transition";
 
 @mixin variables {
   @include palette.variables;
+  @include transition.variables;
   @include typography.variables;
 }
