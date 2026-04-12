@@ -1,0 +1,272 @@
+@use "sass:list";
+@use "sass:map";
+@use "sass:string";
+
+@use "../utils";
+
+$-tokens-registered: false;
+// the base container variables are overwritten by the other states
+$-tokens: (
+  container: (
+    color: null,
+    opacity: null,
+  ),
+  hovered: (
+    container: (
+      color: "palette.on-surface",
+      opacity: 0.1,
+    ),
+  ),
+  focused: (
+    container: (
+      color: "palette.on-surface",
+      opacity: 0.08,
+      elevation: null,
+    ),
+
+    color: "palette.secondary",
+    duration: "transition.duration.extra-long-1",
+    active-width: utils.to-rem(8),
+    width: utils.to-rem(2),
+    inward-offset: 0,
+    outward-offset: utils.to-rem(2),
+  ),
+  pressed: (
+    container: (
+      opacity: 0.1,
+    ),
+  ),
+  dragged: (
+    container: (
+      opacity: 0.16,
+    ),
+  ),
+  disabled: (
+    container: (
+      opacity: 0.38,
+    ),
+  ),
+);
+$-focused-animation: true;
+
+$-configure-tokens: (
+  focused-color,
+  focused-opacity,
+  focused-width,
+  focused-animation,
+  focused-active-width,
+  focused-inward-offset,
+  focused-outward-offset,
+  hovered-opacity,
+  pressed-opacity,
+  dragged-opacity,
+  disabled-opacity
+);
+
+$-base-styles: (
+  cursor: pointer,
+  position: relative,
+
+  "&::before": map.merge(
+      utils.pseudo-element(),
+      (
+        background: utils.get-rgb-var(
+            "interaction.container.color",
+            "interaction.container.opacity"
+          ),
+        box-sizing: border-box,
+        transition:
+          '"transition.duration.short-3" background "transition.easing.linear"',
+      )
+    ),
+);
+$-clickable-styles: (
+  cursor: pointer,
+);
+$-clickable-hovered-styles: (
+  "interaction.container.color": "interaction.hovered.container.color",
+  "interaction.container.opacity": "interaction.hovered.container.opacity",
+);
+$-focusable-styles: (
+  "&::before": (
+    // use new transition behavior
+    transition: null,
+    animation-delay: '0s, calc("interaction.focused.duration" * 0.25)',
+    animation-duration:
+      'calc("interaction.focused.duration" * 0.25), calc("interaction.focused.duration" * 0.75)',
+    animation-timing-function: "transition.easing.emphasized",
+    "@media (prefers-reduced-motion)": (
+      "&": (
+        animation: none,
+      ),
+    ),
+  ),
+);
+$-focusable-focused-styles: (
+  "&::before": (
+    background: utils.get-rgb-var(
+        "interaction.focused.container.color",
+        "interaction.focused.container.opacity"
+      ),
+    color: "interaction.focused.color",
+  ),
+);
+$-focusable-outward-styles: (
+  "&::before": (
+    animation-name: "outward-grow, outward-shrink",
+    inset: 'calc(-1 * "interaction.focused.outward-offset")',
+    outline: '"interaction.focused.width" solid currentcolor',
+  ),
+);
+$-focusable-inward-styles: (
+  "&::before": (
+    animation-name: "inward-grow, inward-shrink",
+    border: '"interaction.focused.width" solid currentcolor',
+    inset: "interaction.focused.inward-offset",
+  ),
+);
+$-disabled-styles: (
+  "interaction.container.opacity": 0,
+  cursor: auto,
+);
+$-keyframes: (
+  "inward-grow": (
+    from: (
+      border-width: 0,
+    ),
+    to: (
+      border-width: "interaction.focused.active-width",
+    ),
+  ),
+  "inward-shrink": (
+    from: (
+      border-width: "interaction.focused.active-width",
+    ),
+  ),
+  "outward-grow": (
+    from: (
+      outline-width: 0,
+    ),
+    to: (
+      outline-width: "interaction.focused.active-width",
+    ),
+  ),
+  "outward-shrink": (
+    from: (
+      outline-width: "interaction.focused.active-width",
+    ),
+  ),
+);
+
+@mixin configure(
+  $focused-animation: null,
+  $focused-width: null,
+  $focused-active-width: null,
+  $focused-color: null,
+  $focused-inward-offset: null,
+  $focused-outward-offset: null,
+  $focused-opacity: null,
+  $hovered-opacity: null,
+  $pressed-opacity: null,
+  $dragged-opacity: null,
+  $disabled-opacity: null
+) {
+  @if $focused-animation == false or $focused-animation == true {
+    $-focused-animation: $focused-animation !global;
+
+    // TODO: Eventually
+    @if not $-focused-animation {
+      $-focusable-styles: map.deep-remove(
+        $-focusable-styles,
+        "&::before",
+        "animation-delay"
+      ) !global;
+      $-focusable-styles: map.deep-remove(
+        $-focusable-styles,
+        "&::before",
+        "animation-duration"
+      ) !global;
+      $-focusable-styles: map.deep-remove(
+        $-focusable-styles,
+        "&::before",
+        "animation-timing-function"
+      ) !global;
+      $-focusable-inward-styles: map.deep-remove(
+        $-focusable-inward-styles,
+        "&::before",
+        "animation-name"
+      ) !global;
+      $-focusable-outward-styles: map.deep-remove(
+        $-focusable-outward-styles,
+        "&::before",
+        "animation-name"
+      ) !global;
+    }
+  }
+
+  @if not $-tokens-registered {
+    $-tokens-registered: true !global;
+    @include utils.register-tokens($tokens: $-tokens, $prefix: "interaction");
+  }
+}
+
+@mixin configure-global($overrides: null) {
+  $overrides: utils.get-config-map(interaction, $overrides, $-configure-tokens);
+  @include configure(
+    $focused-color: map.get($overrides, focused-color),
+    $focused-opacity: map.get($overrides, focused-opacity),
+    $focused-width: map.get($overrides, focused-width),
+    $focused-animation: map.get($overrides, focused-animation),
+    $focused-active-width: map.get($overrides, focused-active-width),
+    $focused-inward-offset: map.get($overrides, focused-inward-offset),
+    $focused-outward-offset: map.get($overrides, focused-outward-offset),
+    $hovered-opacity: map.get($overrides, hovered-opacity),
+    $pressed-opacity: map.get($overrides, pressed-opacity),
+    $dragged-opacity: map.get($overrides, dragged-opacity),
+    $disabled-opacity: map.get($overrides, disabled-opacity)
+  );
+}
+
+@mixin css-styles {
+  $clickable-styles: map.merge(
+    $-clickable-styles,
+    (
+      "mouse-hover": $-clickable-hovered-styles,
+    )
+  );
+  $focusable-styles: map.merge(
+    $-focusable-styles,
+    (
+      "&:focus-visible": $-focusable-styles,
+      "&-outward": $-focusable-outward-styles,
+      "&-inward": $-focusable-inward-styles,
+    )
+  );
+  $styles: (
+    "&interaction": $-base-styles,
+    "&interaction--clickable": $clickable-styles,
+    "&interaction--focusable": $focusable-styles,
+    "&:disabled, &[aria-disabled=true], &interaction--disabled":
+      $-disabled-styles,
+  );
+  @include utils.css-styles($styles, $keyframes: $-keyframes);
+}
+
+@mixin host-styles {
+  $base-styles: map.deep-merge($-base-styles, $-clickable-styles);
+  $base-styles: map.deep-merge($base-styles, $-focusable-styles);
+  $styles: (
+    ":host": $base-styles,
+    "host-hover": $-clickable-hovered-styles,
+    ":host([focus-visible])": $-focusable-focused-styles,
+    ":host([focus-visible][interaction=inward])": $-focusable-inward-styles,
+    ":host([focus-visible][interaction=outward])": $-focusable-outward-styles,
+    ":host([disabled], [soft-disabled])": $-disabled-styles,
+  );
+  @include utils.host-styles($styles, $keyframes: $-keyframes);
+}
+
+@mixin styles {
+  @include css-styles;
+  @include host-styles;
+}

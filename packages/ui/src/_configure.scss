@@ -6,6 +6,7 @@
 @use "margin";
 @use "transition";
 @use "elevation";
+@use "interaction";
 @use "typography";
 @use "icon";
 @use "material-symbol";
@@ -20,6 +21,7 @@
   $palette: null,
   $shape: null,
   $margin: null,
+  $interaction: null,
   $elevation: null,
   $transition: null,
   $typography: null,
@@ -39,6 +41,7 @@
   @include margin.configure($margin);
   @include transition.configure-global($transition);
   @include elevation.configure-global($elevation);
+  @include interaction.configure-global($interaction);
   @include typography.configure-global($typography);
   @include icon.configure-global($icon);
   @include material-symbol.configure-global($material-symbol);
