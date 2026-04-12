@@ -44,7 +44,7 @@ $-styles: (
 
 @mixin -configure($name, $value) {
   @if $value != null {
-    $-styles: map.set($-styles, $name, $value);
+    $-styles: map.set($-styles, $name, $value) !global;
   }
 }
 

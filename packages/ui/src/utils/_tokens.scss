@@ -98,14 +98,6 @@ $-force-added: ();
   #{$property}: get-var($name, $fallback);
 }
 
-/// Used to negate a number or a variable that might be a `var` statement.
-///
-/// @param {String} css-variable - The token name, `var()`, or number to negate.
-/// @returns {String} the calc string
-@function negate-var($css-variable, $fallback: null) {
-  @return calc(-1 * #{get-token-var($css-variable, $fallback)});
-}
-
 /// This function is used to convert any color value (including custom
 /// properties) into an rgb value with opacity.
 ///
@@ -118,16 +110,8 @@ $-force-added: ();
 /// @param {Number | String} $opacity-fallback [null] - An optional fallback
 /// value for the opacity if it was set to a token name.
 /// @return {String} - `rgb(from $color r g b / $opacity)`
-@function get-rgb-var(
-  $color,
-  $opacity,
-  $color-fallback: null,
-  $opacity-fallback: null
-) {
-  $color-value: get-token-var($color, $color-fallback);
-  $opacity-value: get-token-var($opacity, $opacity-fallback);
-
-  @return rgb(from $color-value r g b / $opacity-value);
+@function get-rgb-var($color, $opacity) {
+  @return rgb(from $color r g b / $opacity);
 }
 
 /// This mixin is used to register tokens so that the `verify-tokens` mixin

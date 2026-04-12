@@ -113,9 +113,12 @@ $-selector-prefix: ".ui-";
   }
 
   $hyphenated-name: str-replace($name, ".", "-");
+
   // I do not want to display the palette prefix
   @if string.index($hyphenated-name, "palette-") == 1 {
     $hyphenated-name: string.slice($hyphenated-name, 9);
+  } @else if string.index($hyphenated-name, "transition-") == 1 {
+    $hyphenated-name: string.slice($hyphenated-name, 12);
   }
   @return #{$-var-prefix + $hyphenated-name};
 }

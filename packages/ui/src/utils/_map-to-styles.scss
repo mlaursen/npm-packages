@@ -24,14 +24,20 @@
     $remaining: string.slice($remaining, $quote-index + 1);
     $next-quote-index: string.index($remaining, '"');
     @if not $next-quote-index {
-      @error "tried to parse a css token but unable to find the next double-quote. #{$remaining}";
+      @error "tried to parse a css token but unable to find the next double-quote. original: '#{$value}'. remaining: '#{$remaining}'";
     }
 
     $token-name: string.slice($remaining, 1, $next-quote-index - 1);
     $remaining: string.slice($remaining, $next-quote-index + 1);
     $quote-index: string.index($remaining, '"');
 
-    $rebuilt: $rebuilt + $prefix + get-token-var($token-name);
+    $renamed: get-token-var($token-name);
+    // if it was really not a token, ensure the quotes remain
+    @if $renamed == $token-name {
+      $renamed: '"#{$renamed}"';
+    }
+
+    $rebuilt: $rebuilt + $prefix + $renamed;
     @if not $quote-index {
       $rebuilt: $rebuilt + $remaining;
       @return $rebuilt;
@@ -116,43 +122,57 @@
 /// @param {Map} $styles - the map of styles to generate
 /// @output
 @mixin map-to-styles($styles) {
-  @each $property, $value in $styles {
-    $value-type: meta.type-of($value);
-    @if $property == "mouse-hover" {
-      @include mouse-hover(true) {
-        @include map-to-styles($value);
-      }
-    } @else if $property == "rtl" {
-      @include rtl {
-        @include map-to-styles($value);
-      }
-    } @else if $property == "font" and $value-type == list {
-      $shorthand: ();
-      @each $part in $value {
-        $shorthand: list.append($shorthand, get-token-var($part));
-      }
+  @if $styles {
+    @each $property, $value in $styles {
+      $value-type: meta.type-of($value);
+      @if $property == "mouse-hover" {
+        @include mouse-hover(true) {
+          @include map-to-styles($value);
+        }
+      } @else if $property == "host-hover" {
+        @include mouse-hover(false) {
+          :host(:hover) {
+            @include map-to-styles($value);
+          }
+        }
+      } @else if $property == "rtl" {
+        @include rtl {
+          @include map-to-styles($value);
+        }
+      } @else if $property == "font" and $value-type == list {
+        $shorthand: ();
+        @each $part in $value {
+          $shorthand: list.append($shorthand, get-token-var($part));
+        }
 
-      font: $shorthand;
-    } @else if string.slice($property, 1, 6) == "@media" {
-      @media #{string.slice($property, 7)} {
+        font: $shorthand;
+      } @else if $property == "font" and $value-type == map {
         @include map-to-styles($value);
-      }
-    } @else if string.index($property, ".") {
-      @include set-var($property, get-token-var($value));
-    } @else if $value-type == map {
-      #{$property} {
-        @include map-to-styles($value);
-      }
-    } @else if $value-type != list {
-      $resolved-value: -parse-possibly-nested-token-vars($value);
+      } @else if string.slice($property, 1, 6) == "@media" {
+        @media #{string.slice($property, 7)} {
+          @include map-to-styles($value);
+        }
+      } @else if string.slice($property, 1, 10) == "@keyframes" {
+        @keyframes #{string.slice($property, 11)} {
+          @include map-to-styles($value);
+        }
+      } @else if string.index($property, ".") {
+        @include set-var($property, get-token-var($value));
+      } @else if $value-type == map {
+        #{$property} {
+          @include map-to-styles($value);
+        }
+      } @else if $value-type != list {
+        $resolved-value: -parse-possibly-nested-token-vars($value);
 
-      #{$property}: #{$resolved-value};
-    } @else if list.length($value) > 0 {
-      $list: ();
-      @each $part in $value {
-        $list: list.append($list, get-token-var($part));
+        #{$property}: #{$resolved-value};
+      } @else if list.length($value) > 0 {
+        $list: ();
+        @each $part in $value {
+          $list: list.append($list, get-token-var($part));
+        }
+        #{$property}: $list;
       }
-      #{$property}: $list;
     }
   }
 }

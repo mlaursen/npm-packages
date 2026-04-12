@@ -95,7 +95,7 @@ $-configure-tokens: utils.list-concat(
 
   @if not $-tokens-registered {
     $-tokens-registered: true !global;
-    @include utils.register-tokens($-tokens);
+    @include utils.register-tokens($tokens: $-tokens, $prefix: "transition");
   }
 }
 
