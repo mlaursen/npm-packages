@@ -1,0 +1,1245 @@
+@use "sass:map";
+
+@use "../utils";
+@use "../interaction";
+@use "../typography";
+
+$-tokens-registered: false;
+$-extra-small-tokens: (
+  container: (
+    height: 2rem,
+  ),
+  leading-space: 0.75rem,
+  trailing-space: 0.75rem,
+  icon-label-space: 0.5rem,
+  outlined: (
+    outline: (
+      width: 1px,
+    ),
+  ),
+  icon: (
+    size: 1.25rem,
+  ),
+  shape: (
+    round: "shape.corner.full",
+    square: "shape.corner.medium",
+  ),
+  selected: (
+    container: (
+      shape: (
+        round: "shape.corner.full",
+        square: "shape.corner.medium",
+      ),
+    ),
+  ),
+);
+$-small-tokens: (
+  container: (
+    height: 2.5rem,
+  ),
+  leading-space: 1rem,
+  trailing-space: 1rem,
+  icon-label-space: 0.5rem,
+  outlined: (
+    outline: (
+      width: 1px,
+    ),
+  ),
+  icon: (
+    size: 1.25rem,
+  ),
+  shape: (
+    round: "shape.corner.full",
+    square: "shape.corner.medium",
+  ),
+  selected: (
+    container: (
+      shape: (
+        round: "shape.corner.full",
+        square: "shape.corner.medium",
+      ),
+    ),
+  ),
+);
+$-medium-tokens: (
+  container: (
+    height: 3.5rem,
+  ),
+  leading-space: 1.5rem,
+  trailing-space: 1.5rem,
+  icon-label-space: 0.5rem,
+  outlined: (
+    outline: (
+      width: 1px,
+    ),
+  ),
+  icon: (
+    size: 1.5rem,
+  ),
+  shape: (
+    round: "shape.corner.full",
+    square: "shape.corner.large",
+  ),
+  selected: (
+    container: (
+      shape: (
+        round: "shape.corner.full",
+        square: "shape.corner.large",
+      ),
+    ),
+  ),
+);
+$-large-tokens: (
+  container: (
+    height: 6rem,
+  ),
+  leading-space: 3rem,
+  trailing-space: 3rem,
+  icon-label-space: 0.75rem,
+  outlined: (
+    outline: (
+      width: 2px,
+    ),
+  ),
+  icon: (
+    size: 2rem,
+  ),
+  shape: (
+    round: "shape.corner.full",
+    square: "shape.corner.extra-large",
+  ),
+  selected: (
+    container: (
+      shape: (
+        round: "shape.corner.full",
+        square: "shape.corner.large",
+      ),
+    ),
+  ),
+);
+$-extra-large-tokens: (
+  container: (
+    height: 8.5rem,
+  ),
+  leading-space: 4rem,
+  trailing-space: 4rem,
+  icon-label-space: 1rem,
+  outlined: (
+    outline: (
+      width: 3px,
+    ),
+  ),
+  icon: (
+    size: 2.5rem,
+  ),
+  shape: (
+    round: "shape.corner.full",
+    square: "shape.corner.extra-large",
+  ),
+  selected: (
+    container: (
+      shape: (
+        round: "shape.corner.full",
+        square: "shape.corner.large",
+      ),
+    ),
+  ),
+);
+$-filled-tokens: (
+  container: (
+    color: "palette.primary",
+    shadow-color: "palette.shadow",
+    elevation: 0,
+  ),
+  label-text: (
+    color: "palette.on-primary",
+  ),
+  icon: (
+    color: "palette.on-primary",
+  ),
+  unselected: (
+    label-text: (
+      color: "palette.on-surface-variant",
+    ),
+    icon: (
+      color: "palette.on-surface-variant",
+    ),
+  ),
+  selected: (
+    label-text: (
+      color: "palette.on-primary",
+    ),
+    icon: (
+      color: "palette.on-primary",
+    ),
+  ),
+);
+$-outlined-tokens: (
+  outline: (
+    color: "palette.outline-variant",
+    width: 0.0625rem,
+  ),
+  state-layer: (
+    color: "palette.on-surface-variant",
+    opacity: 0.08,
+  ),
+  label-text: (
+    color: "palette.on-surface-variant",
+  ),
+  icon: (
+    color: "palette.on-surface-variant",
+  ),
+  unselected: (
+    state-layer: (
+      color: "palette.on-surface-variant",
+    ),
+    label-text: (
+      color: "palette.on-surface-variant",
+    ),
+    icon: (
+      color: "palette.on-surface-variant",
+    ),
+    disabled: (
+      outline: (
+        color: "palette.outline-variant",
+      ),
+    ),
+    hovered: (
+      outline: (
+        color: "palette.outline-variant",
+      ),
+      state-layer: (
+        color: "palette.on-surface-variant",
+      ),
+      label-text: (
+        color: "palette.on-surface-variant",
+      ),
+      icon: (
+        color: "palette.on-surface-variant",
+      ),
+    ),
+    focused: (
+      outline: (
+        color: "palette.outline-variant",
+      ),
+      state-layer: (
+        color: "palette.on-surface-variant",
+      ),
+      label-text: (
+        color: "palette.on-surface-variant",
+      ),
+      icon: (
+        color: "palette.on-surface-variant",
+      ),
+    ),
+    pressed: (
+      state-layer: (
+        color: "palette.outline-variant",
+      ),
+      label-text: (
+        color: "palette.on-surface-variant",
+      ),
+      icon: (
+        color: "palette.on-surface-variant",
+      ),
+    ),
+  ),
+  selected: (
+    container: (
+      color: "palette.inverse-surface",
+    ),
+    label-text: (
+      color: "palette.inverse-on-surface",
+    ),
+    icon: (
+      color: "palette.inverse-on-surface",
+    ),
+    state-layer: (
+      color: "palette.inverse-on-surface",
+    ),
+    disabled: (
+      container: (
+        color: "palette.on-surface",
+      ),
+    ),
+    hovered: (
+      state-layer: (
+        color: "palette.inverse-on-surface",
+      ),
+      label-text: (
+        color: "palette.inverse-on-surface",
+      ),
+      icon: (
+        color: "palette.inverse-on-surface",
+      ),
+    ),
+    focused: (
+      state-layer: (
+        color: "palette.inverse-on-surface",
+      ),
+      label-text: (
+        color: "palette.inverse-on-surface",
+      ),
+      icon: (
+        color: "palette.inverse-on-surface",
+      ),
+    ),
+    pressed: (
+      state-layer: (
+        color: "palette.inverse-on-surface",
+      ),
+      label-text: (
+        color: "palette.inverse-on-surface",
+      ),
+      icon: (
+        color: "palette.inverse-on-surface",
+      ),
+    ),
+  ),
+  disabled: (
+    container: (
+      opacity: 0.1,
+    ),
+    outline: (
+      color: "palette.outline-variant",
+    ),
+    label-text: (
+      color: "palette.on-surface",
+      opacity: 0.38,
+    ),
+    icon: (
+      color: "palette.on-surface",
+      opacity: 0.38,
+    ),
+  ),
+  hovered: (
+    outline: (
+      color: "palette.outline-variant",
+    ),
+    state-layer: (
+      color: "palette.on-surface-variant",
+      opacity: 0.08,
+    ),
+    label-text: (
+      color: "palette.on-surface-variant",
+    ),
+    icon: (
+      color: "palette.on-surface-variant",
+    ),
+  ),
+  focused: (
+    outline: (
+      color: "palette.outline-variant",
+    ),
+    state-layer: (
+      color: "palette.on-surface-variant",
+      opacity: 0.1,
+    ),
+    label-text: (
+      color: "palette.on-surface-variant",
+    ),
+    icon: (
+      color: "palette.on-surface-variant",
+    ),
+  ),
+  pressed: (
+    outline: (
+      color: "palette.outline-variant",
+    ),
+    state-layer: (
+      color: "palette.outline-variant",
+      opacity: 0.1,
+    ),
+    label-text: (
+      color: "palette.on-surface-variant",
+    ),
+    icon: (
+      color: "palette.on-surface-variant",
+    ),
+  ),
+);
+$-text-tokens: (
+  label-text: (
+    color: "palette.primary",
+    opacity: null,
+  ),
+  icon: (
+    color: "palette.primary",
+    opacity: null,
+  ),
+  disabled: (
+    container: (
+      color: "palette.on-surface",
+      opacity: 0.1,
+    ),
+    label-text: (
+      color: "palette.on-surface",
+      opacity: 0.38,
+    ),
+    icon: (
+      color: "palette.on-surface",
+      opacity: 0.38,
+    ),
+  ),
+  hovered: (
+    state-layer: (
+      color: "palette.primary",
+      opacity: 0.08,
+    ),
+    label-text: (
+      color: "palette.primary",
+    ),
+    icon: (
+      color: "palette.primary",
+    ),
+  ),
+  focused: (
+    state-layer: (
+      color: "palette.primary",
+      opacity: 0.1,
+    ),
+    label-text: (
+      color: "palette.primary",
+    ),
+    icon: (
+      color: "palette.primary",
+    ),
+  ),
+  pressed: (
+    state-layer: (
+      color: "palette.primary",
+      opacity: 0.1,
+    ),
+    label-text: (
+      color: "palette.primary",
+    ),
+    icon: (
+      color: "palette.primary",
+    ),
+  ),
+);
+$-tonal-tokens: (
+  container: (
+    color: "palette.secondary-container",
+    shadow-color: "palette.shadow",
+    elevation: 0,
+  ),
+  unselected: (
+    container: (
+      color: "palette.secondary-container",
+    ),
+    label-text: (
+      color: "palette.on-secondary-container",
+    ),
+    icon: (
+      color: "palette.on-secondary-container",
+    ),
+    hovered: (
+      state-layer: (
+        color: "palette.on-secondary-container",
+      ),
+      label-text: (
+        color: "palette.on-secondary-container",
+      ),
+      icon: (
+        color: "palette.on-secondary-container",
+      ),
+    ),
+    focused: (
+      state-layer: (
+        color: "palette.on-secondary-container",
+      ),
+      label-text: (
+        color: "palette.on-secondary-container",
+      ),
+      icon: (
+        color: "palette.on-secondary-container",
+      ),
+    ),
+    pressed: (
+      state-layer: (
+        color: "palette.on-secondary-container",
+      ),
+      label-text: (
+        color: "palette.on-secondary-container",
+      ),
+      icon: (
+        color: "palette.on-secondary-container",
+      ),
+    ),
+  ),
+  selected: (
+    container: (
+      color: "palette.secondary",
+    ),
+    label-text: (
+      color: "palette.on-secondary",
+    ),
+    icon: (
+      color: "palette.on-secondary",
+    ),
+    hovered: (
+      state-layer: (
+        color: "palette.on-secondary",
+      ),
+      label-text: (
+        color: "palette.on-secondary",
+      ),
+      icon: (
+        color: "palette.on-secondary",
+      ),
+    ),
+    focused: (
+      state-layer: (
+        color: "palette.on-secondary",
+      ),
+      label-text: (
+        color: "palette.on-secondary",
+      ),
+      icon: (
+        color: "palette.on-secondary",
+      ),
+    ),
+    pressed: (
+      state-layer: (
+        color: "palette.on-secondary",
+      ),
+      label-text: (
+        color: "palette.on-secondary",
+      ),
+      icon: (
+        color: "palette.on-secondary",
+      ),
+    ),
+  ),
+  label-text: (
+    color: "palette.on-secondary-container",
+  ),
+  icon: (
+    color: "palette.on-secondary-container",
+  ),
+  disabled: (
+    container: (
+      color: "palette.on-surface",
+      opacity: 0.1,
+      elevation: 0,
+    ),
+    label-text: (
+      color: "palette.on-surface",
+      opacity: 0.38,
+    ),
+    icon: (
+      color: "palette.on-surface",
+      opacity: 0.38,
+    ),
+  ),
+  hovered: (
+    state-layer: (
+      color: "palette.on-secondary-container",
+      opacity: 0.08,
+    ),
+    label-text: (
+      color: "palette.on-secondary-container",
+    ),
+    icon: (
+      color: "palette.on-secondary-container",
+    ),
+  ),
+  focused: (
+    state-layer: (
+      color: "palette.on-secondary-container",
+      opacity: 0.1,
+      elevation: 0,
+    ),
+    label-text: (
+      color: "palette.on-secondary-container",
+    ),
+    icon: (
+      color: "palette.on-secondary-container",
+    ),
+  ),
+  pressed: (
+    state-layer: (
+      color: "palette.on-secondary-container",
+      opacity: 0.1,
+      elevation: 0,
+    ),
+    label-text: (
+      color: "palette.on-secondary-container",
+    ),
+    icon: (
+      color: "palette.on-secondary-container",
+    ),
+  ),
+);
+$-elevated-tokens: (
+  container: (
+    color: "palette.surface-container-low",
+    shadow-color: "palette.shadow",
+    elevation: 1,
+  ),
+  unselected: (
+    container: (
+      color: "palette.surface-container-low",
+    ),
+    label-text: (
+      color: "palette.primary",
+    ),
+    icon: (
+      color: "palette.primary",
+    ),
+    disabled: (
+      state-layer: (
+        color: "palette.primary",
+      ),
+      label-text: (
+        color: "palette.primary",
+      ),
+      icon: (
+        color: "palette.primary",
+      ),
+    ),
+    hovered: (
+      state-layer: (
+        color: "palette.primary",
+      ),
+      label-text: (
+        color: "palette.primary",
+      ),
+      icon: (
+        color: "palette.primary",
+      ),
+    ),
+    pressed: (
+      state-layer: (
+        color: "palette.primary",
+      ),
+      label-text: (
+        color: "palette.primary",
+      ),
+      icon: (
+        color: "palette.primary",
+      ),
+    ),
+  ),
+  selected: (
+    container: (
+      color: "palette.primary",
+    ),
+    label-text: (
+      color: "palette.on-primary",
+    ),
+    icon: (
+      color: "palette.on-primary",
+    ),
+    disabled: (
+      state-layer: (
+        color: "palette.on-primary",
+      ),
+      label-text: (
+        color: "palette.on-primary",
+      ),
+      icon: (
+        color: "palette.on-primary",
+      ),
+    ),
+    hovered: (
+      state-layer: (
+        color: "palette.on-primary",
+      ),
+      label-text: (
+        color: "palette.on-primary",
+      ),
+      icon: (
+        color: "palette.on-primary",
+      ),
+    ),
+    pressed: (
+      state-layer: (
+        color: "palette.on-primary",
+      ),
+      label-text: (
+        color: "palette.on-primary",
+      ),
+      icon: (
+        color: "palette.on-primary",
+      ),
+    ),
+  ),
+  label-text: (
+    color: "palette.primary",
+  ),
+  icon: (
+    color: "palette.primary",
+  ),
+  disabled: (
+    container: (
+      color: "palette.on-surface",
+      elevation: 0,
+      opacity: 0.1,
+    ),
+    label-text: (
+      color: "palette.on-surface",
+      opacity: 0.38,
+    ),
+    icon: (
+      color: "palette.on-surface",
+      opacity: 0.38,
+    ),
+  ),
+  hovered: (
+    state-layer: (
+      color: "palette.primary",
+      opacity: 0.08,
+    ),
+    label-text: (
+      color: "palette.primary",
+    ),
+    icon: (
+      color: "palette.primary",
+    ),
+  ),
+  focused: (
+    container: (
+      elevation: 1,
+    ),
+    state-layer: (
+      color: "palette.primary",
+      opacity: 0.1,
+    ),
+    label-text: (
+      color: "palette.primary",
+    ),
+    icon: (
+      color: "palette.primary",
+    ),
+  ),
+  pressed: (
+    container: (
+      elevation: 1,
+    ),
+    state-layer: (
+      color: "palette.primary",
+      opacity: 0.1,
+    ),
+    label-text: (
+      color: "palette.primary",
+    ),
+    icon: (
+      color: "palette.primary",
+    ),
+  ),
+);
+$-base-unselected-tokens: (
+  container: (
+    color: "palette.surface-container",
+  ),
+  icon: (
+    color: null,
+  ),
+  hovered: (
+    state-layer: (
+      color: "palette.on-surface-variant",
+    ),
+    label-text: (
+      color: "palette.on-surface-variant",
+    ),
+    icon: (
+      color: "palette.on-surface-variant",
+    ),
+  ),
+  focused: (
+    state-layer: (
+      color: "palette.on-surface-variant",
+    ),
+    label-text: (
+      color: "palette.on-surface-variant",
+    ),
+    icon: (
+      color: "palette.on-surface-variant",
+    ),
+  ),
+  pressed: (
+    state-layer: (
+      color: "palette.on-surface-variant",
+    ),
+    label-text: (
+      color: "palette.on-surface-variant",
+    ),
+    icon: (
+      color: "palette.on-surface-variant",
+    ),
+  ),
+);
+$-base-selected-tokens: (
+  container: (
+    color: "palette.primary",
+    shape: (
+      round: "shape.container.medium",
+      square: "shape.container.full",
+    ),
+  ),
+  icon: (
+    color: null,
+  ),
+  hovered: (
+    state-layer: (
+      color: "palette.on-primary",
+    ),
+    label-text: (
+      color: "palette.on-primary",
+    ),
+    icon: (
+      color: "palette.on-primary",
+    ),
+  ),
+  focused: (
+    state-layer: (
+      color: "palette.on-primary",
+    ),
+    label-text: (
+      color: "palette.on-primary",
+    ),
+    icon: (
+      color: "palette.on-primary",
+    ),
+  ),
+  pressed: (
+    state-layer: (
+      color: "palette.on-primary",
+    ),
+    label-text: (
+      color: "palette.on-primary",
+    ),
+    icon: (
+      color: "palette.on-primary",
+    ),
+  ),
+);
+$-tokens: (
+  container: (
+    color: "palette.primary",
+    opacity: 1,
+    shadow-color: "palette.shadow",
+    elevation: 0,
+    height: 2.5rem,
+    shape: (
+      round: "shape.corner.full",
+      square: "shape.corner.medium",
+    ),
+  ),
+  leading-space: 1.5rem,
+  trailing-space: 1.5rem,
+  icon-label-space: 0.5rem,
+  unselected: $-base-unselected-tokens,
+  selected: $-base-selected-tokens,
+  label-text: (
+    color: "palette.on-primary",
+    opacity: 1,
+    unselected: (
+      color: "palette.on-surface-variant",
+    ),
+    selected: (
+      color: "palette.on-primary",
+    ),
+  ),
+  icon: (
+    color: "palette.on-primary",
+    opacity: 1,
+    size: 1.25rem,
+    unselected: (
+      color: "palette.on-surface-variant",
+    ),
+    selected: (
+      color: "palette.on-primary",
+    ),
+  ),
+  extra-small: $-extra-small-tokens,
+  small: $-small-tokens,
+  medium: $-medium-tokens,
+  large: $-large-tokens,
+  extra-large: $-extra-large-tokens,
+  filled: $-filled-tokens,
+  outlined: $-outlined-tokens,
+  text: $-text-tokens,
+  tonal: $-tonal-tokens,
+  elevated: $-elevated-tokens,
+  disabled: (
+    container: (
+      color: "palette.on-surface",
+      opacity: 0.1,
+      elevation: 0,
+    ),
+    label-text: (
+      color: "palette.on-surface",
+      opacity: 0.38,
+    ),
+    icon: (
+      color: "palette.on-surface",
+      opacity: 0.38,
+    ),
+  ),
+  hovered: (
+    state-layer: (
+      color: "palette.on-primary",
+      opacity: 0.08,
+    ),
+    label-text: (
+      color: "palette.on-primary",
+    ),
+    icon: (
+      color: "palette.on-primary",
+    ),
+  ),
+  focused: (
+    container: (
+      elevation: 0,
+    ),
+    state-layer: (
+      color: "palette.on-primary",
+      opacity: 0.1,
+    ),
+    label-text: (
+      color: "palette.on-primary",
+    ),
+    icon: (
+      color: "palette.on-primary",
+    ),
+  ),
+  pressed: (
+    container: (
+      shape: "shape.corner.small",
+    ),
+    state-layer: (
+      color: "palette.on-primary",
+      opacity: 0.1,
+      elevation: 0,
+    ),
+    label-text: (
+      color: "palette.on-primary",
+    ),
+    icon: (
+      color: "palette.on-primary",
+    ),
+  ),
+);
+
+$-base-styles: (
+  "elevation.level": "button.container.elevation",
+  "elevation.shadow-color": "button.container.shadow-color",
+  "interaction.hovered.container.color": "button.hovered.state-layer.color",
+  "interaction.hovered.container.opacity": "button.hovered.state-layer.opacity",
+  "interaction.focused.container.color": "button.focused.state-layer.color",
+  "interaction.focused.container.opacity": "button.focused.state-layer.opacity",
+  "interaction.focused.container.elevation":
+    "button.focused.container.elevation",
+  "icon.color": utils.get-rgb-var("button.icon.color", "button.icon.opacity"),
+  "icon.size": "button.icon.size",
+  background: utils.get-rgb-var(
+      "button.container.color",
+      "button.container.opacity"
+    ),
+  color: utils.get-rgb-var(
+      "button.label-text.color",
+      "button.label-text.opacity"
+    ),
+  font: typography.typescale(label-large),
+  display: inline-flex,
+  flex-shrink: 0,
+);
+$-button-styles: (
+  align-items: center,
+  border-width: 0,
+  display: inline-flex,
+  // flex-shrink: 0,
+  gap: "button.icon-label-space",
+  height: "button.container.height",
+  justify-content: center,
+  padding-left: "button.leading-space",
+  padding-right: "button.trailing-space",
+
+  "rtl": (
+    padding-left: "button.trailing-space",
+    padding-right: "button.leading-space",
+  ),
+);
+$-host-button-styles: (
+  background: transparent,
+  border: 0,
+  border-radius: inherit,
+  color: inherit,
+  cursor: inherit,
+  font: inherit,
+  letter-spacing: inherit,
+  outline: 0,
+);
+$-base-hovered-styles: (
+  "button.label-text.color": "button.hovered.label-text.color",
+  "button.icon.color": "button.hovered.icon.color",
+);
+$-base-disabled-styles: (
+  "button.container.elevation": "button.disabled.container.elevation",
+  "button.container.color": "button.disabled.container.color",
+  "button.container.opacity": "button.disabled.container.opacity",
+  "button.label-text.color": "button.disabled.label-text.color",
+  "button.label-text.opacity": "button.disabled.label-text.opacity",
+  "button.icon.color": "button.disabled.icon.color",
+  "button.icon.opacity": "button.disabled.icon.opacity",
+);
+$-base-unselected-styles: (
+  background: "button.unselected.container.color",
+  color: "button.label-text.unselected.color",
+);
+$-base-selected-styles: (
+  background: "button.selected.container.color",
+  color: "button.label-text.selected.color",
+);
+$-icon-styles: (
+  color: currentcolor,
+);
+$-round-styles: (
+  border-radius: "button.container.shape.round",
+);
+$-square-styles: (
+  border-radius: "button.container.shape.square",
+);
+$-extra-small-styles: (
+  "button.container.height": "button.extra-small.container.height",
+  "button.container.shape.round": "button.extra-small.shape.round",
+  "button.container.shape.square": "button.extra-small.shape.square",
+  "button.leading-space": "button.extra-small.leading-space",
+  "button.trailing-space": "button.extra-small.trailing-space",
+  "button.icon-label-space": "button.extra-small.icon-label-space",
+  "button.icon.size": "button.extra-small.icon.size",
+);
+$-small-styles: (
+  "button.container.height": "button.small.container.height",
+  "button.container.shape.round": "button.small.shape.round",
+  "button.container.shape.square": "button.small.shape.square",
+  "button.leading-space": "button.small.leading-space",
+  "button.trailing-space": "button.small.trailing-space",
+  "button.icon-label-space": "button.small.icon-label-space",
+  "button.icon.size": "button.small.icon.size",
+);
+$-medium-styles: (
+  "button.container.height": "button.medium.container.height",
+  "button.container.shape.round": "button.medium.shape.round",
+  "button.container.shape.square": "button.medium.shape.square",
+  "button.leading-space": "button.medium.leading-space",
+  "button.trailing-space": "button.medium.trailing-space",
+  "button.icon-label-space": "button.medium.icon-label-space",
+  "button.icon.size": "button.medium.icon.size",
+  font-size: 1rem,
+  letter-spacing: utils.get-letter-spacing(0.15),
+  line-height: 1.5rem,
+);
+$-large-styles: (
+  "button.container.height": "button.large.container.height",
+  "button.container.shape.round": "button.large.shape.round",
+  "button.container.shape.square": "button.large.shape.square",
+  "button.leading-space": "button.large.leading-space",
+  "button.trailing-space": "button.large.trailing-space",
+  "button.icon-label-space": "button.large.icon-label-space",
+  "button.icon.size": "button.large.icon.size",
+  font-size: 1.5rem,
+  font-weight: "weight.regular",
+  letter-spacing: 0,
+  line-height: 2rem,
+);
+$-extra-large-styles: (
+  "button.container.height": "button.extra-large.container.height",
+  "button.container.shape.round": "button.extra-large.shape.round",
+  "button.container.shape.square": "button.extra-large.shape.square",
+  "button.leading-space": "button.extra-large.leading-space",
+  "button.trailing-space": "button.extra-large.trailing-space",
+  "button.icon-label-space": "button.extra-large.icon-label-space",
+  "button.icon.size": "button.extra-large.icon.size",
+  font-size: 2rem,
+  font-weight: "weight.regular",
+  letter-spacing: 0,
+  line-height: 2.5rem,
+);
+
+$-filled-styles: (
+  "button.container.color": "button.filled.container.color",
+  "button.container.shadow-color": "button.filled.container.shadow-color",
+  "button.container.elevation": "button.filled.container.elevation",
+  "button.label-text.color": "button.filled.label-text.color",
+  "button.icon.color": "button.filled.icon.color",
+);
+$-filled-unselected-styles: (
+  "button.container.color": "button.filled.unselected.container.color",
+  "button.label-text.color": "button.filled.unselected.label-text.color",
+  "button.icon.color": "button.filled.unselected.icon.color",
+);
+$-filled-selected-styles: (
+  "button.container.color": "button.filled.selected.container.color",
+  "button.label-text.color": "button.filled.selected.label-text.color",
+  "button.icon.color": "button.filled.selected.icon.color",
+);
+
+$-outlined-styles: (
+  "button.container.opacity": 0,
+  "button.label-text.color": "button.outlined.label-text.color",
+  "button.icon.color": "button.outlined.icon.color",
+  "button.disabled.container.opacity":
+    "button.outlined.disabled.container.opacity",
+  "button.disabled.label-text.color":
+    "button.outlined.disabled.label-text.color",
+  "button.disabled.icon.color": "button.outlined.disabled.icon.color",
+  "button.hovered.state-layer.color":
+    "button.outlined.hovered.state-layer.color",
+  "button.hovered.state-layer.opacity":
+    "button.outlined.hovered.state-layer.opacity",
+  "button.hovered.label-text.color": "button.outlined.hovered.label-text.color",
+  "button.hovered.icon.color": "button.outlined.hovered.icon.color",
+  "button.focused.state-layer.color":
+    "button.outlined.focused.state-layer.color",
+  "button.focused.state-layer.opacity":
+    "button.outlined.focused.state-layer.opacity",
+  "button.focused.label-text.color": "button.outlined.focused.label-text.color",
+  "button.focused.icon.color": "button.outlined.focused.icon.color",
+
+  "&::after": map.merge(
+      utils.pseudo-element(),
+      (
+        border-color: "button.outlined.outline.color",
+        border-style: solid,
+        border-width: "button.outlined.outline.width",
+        box-sizing: border-box,
+      )
+    ),
+);
+$-outlined-disabled-styles: (
+  "button.outlined.outline.color": "button.outlined.disabled.outline.color",
+);
+
+$-text-styles: (
+  "button.container.opacity": 0,
+  "button.label-text.color": "button.text.label-text.color",
+  "button.icon.color": "button.text.icon.color",
+  "button.disabled.container.color": "button.text.disabled.container.color",
+  "button.disabled.container.opacity": "button.text.disabled.container.opacity",
+  "button.disabled.label-text.color": "button.text.disabled.label-text.color",
+  "button.disabled.label-text.opacity":
+    "button.text.disabled.label-text.opacity",
+  "button.disabled.icon.color": "button.text.disabled.icon.color",
+  "button.disabled.icon.opacity": "button.text.disabled.icon.opacity",
+  "button.hovered.state-layer.color": "button.text.hovered.state-layer.color",
+  "button.hovered.state-layer.opacity":
+    "button.text.hovered.state-layer.opacity",
+  "button.hovered.label-text.color": "button.text.hovered.label-text.color",
+  "button.hovered.icon.color": "button.text.hovered.icon.color",
+  "button.focused.state-layer.color": "button.text.focused.state-layer.color",
+  "button.focused.state-layer.opacity":
+    "button.text.focused.state-layer.opacity",
+  "button.focused.label-text.color": "button.text.focused.label-text.color",
+  "button.focused.icon.color": "button.text.focused.icon.color",
+);
+$-text-unselected-styles: ();
+$-text-selected-styles: ();
+
+$-tonal-styles: (
+  "button.container.color": "button.tonal.container.color",
+  "button.container.shadow-color": "button.tonal.container.shadow-color",
+  "button.container.elevation": "button.tonal.container.elevation",
+  "button.label-text.color": "button.tonal.label-text.color",
+  "button.icon.color": "button.tonal.icon.color",
+  "button.disabled.container.color": "button.tonal.disabled.container.color",
+  "button.disabled.container.opacity": "button.tonal.disabled.container.opacity",
+  "button.disabled.container.elevation":
+    "button.tonal.disabled.container.elevation",
+  "button.disabled.label-text.color": "button.tonal.disabled.label-text.color",
+  "button.disabled.icon.color": "button.tonal.disabled.icon.color",
+  "button.hovered.state-layer.color": "button.tonal.hovered.state-layer.color",
+  "button.hovered.state-layer.opacity":
+    "button.tonal.hovered.state-layer.opacity",
+  "button.hovered.label-text.color": "button.tonal.hovered.label-text.color",
+  "button.hovered.icon.color": "button.tonal.hovered.icon.color",
+  "button.focused.state-layer.color": "button.tonal.focused.state-layer.color",
+  "button.focused.state-layer.opacity":
+    "button.tonal.focused.state-layer.opacity",
+  "button.focused.label-text.color": "button.tonal.focused.label-text.color",
+  "button.focused.icon.color": "button.tonal.focused.icon.color",
+);
+$-tonal-unselected-styles: ();
+$-tonal-selected-styles: ();
+
+$-elevated-styles: (
+  "button.container.color": "button.elevated.container.color",
+  "button.container.shadow-color": "button.elevated.container.shadow-color",
+  "button.container.elevation": "button.elevated.container.elevation",
+  "button.label-text.color": "button.elevated.label-text.color",
+  "button.icon.color": "button.elevated.icon.color",
+  "button.disabled.container.color": "button.elevated.disabled.container.color",
+  "button.disabled.container.opacity":
+    "button.elevated.disabled.container.opacity",
+  "button.disabled.container.elevation":
+    "button.elevated.disabled.container.elevation",
+  "button.disabled.label-text.color":
+    "button.elevated.disabled.label-text.color",
+  "button.disabled.icon.color": "button.elevated.disabled.icon.color",
+  "button.hovered.state-layer.color":
+    "button.elevated.hovered.state-layer.color",
+  "button.hovered.state-layer.opacity":
+    "button.elevated.hovered.state-layer.opacity",
+  "button.hovered.label-text.color": "button.elevated.hovered.label-text.color",
+  "button.hovered.icon.color": "button.elevated.hovered.icon.color",
+  "button.focused.state-layer.color":
+    "button.elevated.focused.state-layer.color",
+  "button.focused.state-layer.opacity":
+    "button.elevated.focused.state-layer.opacity",
+  "button.focused.label-text.color": "button.elevated.focused.label-text.color",
+  "button.focused.icon.color": "button.elevated.focused.icon.color",
+);
+$-elevated-unselected-styles: ();
+$-elevated-selected-styles: ();
+
+$-configure-tokens: map.keys($-tokens);
+
+@mixin configure() {
+  @if not $-tokens-registered {
+    $-tokens-registered: true !global;
+    @include utils.register-tokens($tokens: $-tokens, $prefix: "button");
+  }
+}
+
+@mixin configure-global($overrides: null) {
+  $overrides: utils.get-config-map(button, $overrides, $-configure-tokens);
+  @include configure();
+}
+
+@mixin css-styles {
+  $styles: ();
+  @include utils.map-to-styles($styles);
+}
+
+@mixin host-styles {
+  // $disabled-selector: interaction.host-disabled-selector();
+  $button-styles: map.deep-merge($-button-styles, $-host-button-styles);
+  $styles: (
+    ":host": $-base-styles,
+    "::slotted(button), slot[name=button] > *": $button-styles,
+    ":host([size=extra-small])": $-extra-small-styles,
+    ":host([size=small])": $-small-styles,
+    ":host([size=medium])": $-medium-styles,
+    ":host([size=large])": $-large-styles,
+    ":host([size=extra-large])": $-extra-large-styles,
+    ":host([shape=round])": $-round-styles,
+    ":host([shape=square])": $-square-styles,
+    ":host([variant=text])": $-text-styles,
+    ":host([variant=outlined])": $-outlined-styles,
+    ":host([variant=outlined][disabled]), :host([variant=outlined]:has(:disabled, [aria-disabled=true]))":
+      $-outlined-disabled-styles,
+    ":host([variant=tonal])": $-tonal-styles,
+    ":host([variant=filled])": $-filled-styles,
+    ":host([variant=elevated])": $-elevated-styles,
+    "host-hover": $-base-hovered-styles, // $disabled-selector: $-base-disabled-styles,
+  );
+  @include utils.host-styles($styles);
+}
+
+@mixin styles {
+  @include css-styles;
+  @include host-styles;
+}
