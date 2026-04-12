@@ -93,6 +93,12 @@ async function createStyles(filePath: string): Promise<void> {
       css = minified.code.toString();
     }
 
+    css = await format(css, {
+      parser: "css",
+      plugins: ["prettier-plugin-css-order"],
+      cssDeclarationSorterOrder: "alphabetical",
+    });
+
     let styles = `
 import { css } from "lit";
 
