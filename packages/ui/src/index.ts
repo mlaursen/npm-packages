@@ -1,4 +1,5 @@
 import "./box/box.js";
+import "./button/button.js";
 import "./elevation/elevation.js";
 import "./interaction/interaction.js";
 import "./material-symbol/material-symbol.js";

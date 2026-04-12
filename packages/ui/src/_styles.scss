@@ -4,6 +4,7 @@
 @use "interaction";
 @use "typography";
 @use "box";
+@use "button";
 
 @mixin styles {
   @include palette.styles;
@@ -13,4 +14,5 @@
   @include typography.styles;
 
   @include box.styles;
+  @include button.styles;
 }

@@ -12,6 +12,7 @@
 @use "material-symbol";
 
 @use "box";
+@use "button";
 
 @mixin configure(
   $rtl: null,
@@ -27,7 +28,8 @@
   $typography: null,
   $icon: null,
   $material-symbol: null,
-  $box: null
+  $box: null,
+  $button: null
 ) {
   @include utils.configure-setup(
     $rtl: $rtl,
@@ -46,4 +48,5 @@
   @include icon.configure-global($icon);
   @include material-symbol.configure-global($material-symbol);
   @include box.configure-global($box);
+  @include button.configure-global($button);
 }
