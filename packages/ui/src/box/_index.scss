@@ -190,64 +190,67 @@ $-styles: (
   @return $styles;
 }
 
+@mixin css-styles {
+  $styles: ();
+  @each $modifier, $value in $-styles {
+    @if $modifier == base {
+      $styles: map.set($styles, "&box", $value);
+    } @else if $modifier == align-items or $modifier == justify-content {
+      $styles: map.merge(
+        $styles,
+        -get-flex-property-styles($modifier, $value, false)
+      );
+    } @else {
+      $styles: map.set($styles, "&box--#{$modifier}", $value);
+    }
+  }
+
+  @include utils.css-styles($styles);
+}
+
+@mixin host-styles {
+  $styles: ();
+  @each $modifier, $value in $-styles {
+    $selector: ":host";
+    @if $modifier == align-items or $modifier == justify-content {
+      $styles: map.merge(
+        $styles,
+        -get-flex-property-styles($modifier, $value, true)
+      );
+      $selector: null;
+    } @else if $modifier == gap {
+      $selector: $selector + "([gap=all])";
+    } @else if $modifier == row-gap {
+      $selector: $selector + "([gap=row])";
+    } @else if $modifier == column-gap {
+      $selector: $selector + "([gap=column])";
+    } @else if $modifier == padded {
+      $selector: $selector + "([padding=all])";
+    } @else if $modifier == flex-wrap {
+      $selector: $selector + "(:not([nowrap]))";
+    } @else if $modifier == full-width {
+      $selector: $selector + "([full-width])";
+    } @else if $modifier == stacked {
+      $selector: $selector + "([stacked]:not([reversed]))";
+    } @else if $modifier == reversed {
+      $selector: $selector + "(:not([stacked])[reversed])";
+    } @else if $modifier == stacked-reversed {
+      $selector: $selector + "([stacked][reversed])";
+    } @else if $modifier == grid {
+      $selector: $selector + "([grid])";
+    } @else if $modifier == grid-fill {
+      $selector: $selector + "([grid=fill])";
+    }
+
+    @if $selector and ($modifier == base or $selector != ":host") {
+      $styles: map.set($styles, $selector, $value);
+    }
+  }
+
+  @include utils.host-styles($styles);
+}
+
 @mixin styles {
-  @include utils.host-styles {
-    $styles: ();
-    @each $modifier, $value in $-styles {
-      $selector: ":host";
-      @if $modifier == align-items or $modifier == justify-content {
-        $styles: map.merge(
-          $styles,
-          -get-flex-property-styles($modifier, $value, true)
-        );
-        $selector: null;
-      } @else if $modifier == gap {
-        $selector: $selector + "([gap=all])";
-      } @else if $modifier == row-gap {
-        $selector: $selector + "([gap=row])";
-      } @else if $modifier == column-gap {
-        $selector: $selector + "([gap=column])";
-      } @else if $modifier == padded {
-        $selector: $selector + "([padding=all])";
-      } @else if $modifier == flex-wrap {
-        $selector: $selector + "(:not([nowrap]))";
-      } @else if $modifier == full-width {
-        $selector: $selector + "([full-width])";
-      } @else if $modifier == stacked {
-        $selector: $selector + "([stacked]:not([reversed]))";
-      } @else if $modifier == reversed {
-        $selector: $selector + "(:not([stacked])[reversed])";
-      } @else if $modifier == stacked-reversed {
-        $selector: $selector + "([stacked][reversed])";
-      } @else if $modifier == grid {
-        $selector: $selector + "([grid])";
-      } @else if $modifier == grid-fill {
-        $selector: $selector + "([grid=fill])";
-      }
-
-      @if $selector and ($modifier == base or $selector != ":host") {
-        $styles: map.set($styles, $selector, $value);
-      }
-    }
-
-    @include utils.map-to-styles($styles);
-  }
-
-  @include utils.css-styles {
-    $styles: ();
-    @each $modifier, $value in $-styles {
-      @if $modifier == base {
-        $styles: map.set($styles, "&box", $value);
-      } @else if $modifier == align-items or $modifier == justify-content {
-        $styles: map.merge(
-          $styles,
-          -get-flex-property-styles($modifier, $value, false)
-        );
-      } @else {
-        $styles: map.set($styles, "&box--#{$modifier}", $value);
-      }
-    }
-
-    @include utils.map-to-styles($styles);
-  }
+  @include css-styles;
+  @include host-styles;
 }

@@ -1,4 +1,5 @@
 @use "sass:list";
+@use "sass:map";
 @use "sass:meta";
 @use "sass:string";
 
@@ -23,11 +24,16 @@ $-var-prefix: "--ui-";
 /// @type {String}
 $-selector-prefix: ".ui-";
 
+/// The keyframes name prefix to use with @mlaursen/ui
+/// @type {String}
+$-keyframes-prefix: "ui-";
+
 @mixin configure-setup(
   $rtl: null,
   $output: null,
   $var-prefix: null,
-  $selector-prefix: null
+  $selector-prefix: null,
+  $keyframes-prefix: null
 ) {
   @if $rtl != null {
     @if meta.type-of($rtl) != boolean {
@@ -40,20 +46,23 @@ $-selector-prefix: ".ui-";
   @if $output != null {
     $-output: validate((css, host), $output, "$output") !global;
   }
-  @if $var-prefix != null {
-    @if meta.type-of($var-prefix) != string {
-      @error "$var-prefix must be a string";
-    }
 
-    $-var-prefix: $var-prefix !global;
+  @if $var-prefix != null {
+    $-var-prefix: assert-string($var-prefix, "var-prefix") !global;
   }
 
   @if $selector-prefix != null {
-    @if meta.type-of($var-prefix) != string {
-      @error "$selector-prefix must be a string";
-    }
+    $-selector-prefix: assert-string(
+      $selector-prefix,
+      "selector-prefix"
+    ) !global;
+  }
 
-    $-selector-prefix: $selector-prefix !global;
+  @if $keyframes-prefix != null {
+    $-keyframes-prefix: assert-string(
+      $keyframes-prefix,
+      "keyframes-prefix"
+    ) !global;
   }
 }
 
@@ -80,26 +89,23 @@ $-selector-prefix: ".ui-";
   }
 }
 
-/// This will only generate the content when the output mode is set to `css`
-/// for global class names
-/// @content
-/// @output
-@mixin css-styles {
-  @if $-output == css {
-    #{$-selector-prefix} {
-      @content;
-    }
-  }
-}
+///
+/// @param {rtl | css | host | var-prefix | selector-prefix | keyframes-prefix} $name -
+/// @return {String | Boolean} -
+@function get-setup-config($name) {
+  $config: (
+    rtl: $-rtl,
+    css: $-output == css,
+    host: $-output == host,
+    var-prefix: $-var-prefix,
+    selector-prefix: $-selector-prefix,
+    keyframes-prefix: $-keyframes-prefix,
+  );
 
-/// This will only generate the content when the output mode is set to `host`
-/// for web components
-/// @content
-/// @output
-@mixin host-styles {
-  @if $-output == host {
-    @content;
-  }
+  @return map.get(
+    $config,
+    validate(map.keys($config), $name, "setup config name")
+  );
 }
 
 /// Used to get the current CSS variable name from react-md tokens.

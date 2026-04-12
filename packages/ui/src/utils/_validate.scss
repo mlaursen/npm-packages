@@ -44,6 +44,18 @@
   @return map.get($options, $key-or-value);
 }
 
+///
+/// @param {unknown} $value -
+/// @param {String} $name -
+/// @return {String} -
+@function assert-string($value, $name) {
+  @if meta.type-of($value) != string {
+    @error "$#{$name} must be a string";
+  }
+
+  @return $value;
+}
+
 /// This is used for the `configure` mixins to ensure the overrides have been
 /// provided correctly.
 ///

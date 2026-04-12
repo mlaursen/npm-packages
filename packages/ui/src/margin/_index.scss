@@ -78,24 +78,26 @@ $-styles: (
   );
 }
 
-@mixin styles {
-  @include utils.host-styles {
-    $styles: ();
-    @each $variant, $value in $-styles {
-      $selector: ":host([margin=#{$variant}])";
-      @if not list.index($-host-variants, $variant) {
-        $selector: $selector + " ::slotted(*)";
-      }
-      $styles: map.set($styles, $selector, $value);
-    }
-    @include utils.map-to-styles($styles);
+@mixin css-styles {
+  $styles: ();
+  @each $variant, $value in $-styles {
+    $styles: map.set($styles, "&margin-#{$variant}", $value);
   }
+  @include utils.css-styles($styles);
+}
 
-  @include utils.css-styles {
-    $styles: ();
-    @each $variant, $value in $-styles {
-      $styles: map.set($styles, "&margin-#{$variant}", $value);
+@mixin host-styles {
+  $styles: ();
+  @each $variant, $value in $-styles {
+    $selector: ":host([margin=#{$variant}])";
+    @if not list.index($-host-variants, $variant) {
+      $selector: $selector + " ::slotted(*)";
     }
-    @include utils.map-to-styles($styles);
+    $styles: map.set($styles, $selector, $value);
   }
+  @include utils.host-styles($styles);
+}
+
+@mixin styles {
+  @include host-styles;
 }
