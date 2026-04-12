@@ -337,19 +337,14 @@ $-configure-tokens: list.append(
 }
 
 @mixin css-styles {
-  @include utils.map-to-styles(-get-styles(true));
+  @include utils.css-styles(-get-styles(true));
 }
 
 @mixin host-styles {
-  @include utils.map-to-styles(-get-styles(false));
+  @include utils.host-styles(-get-styles(false));
 }
 
 @mixin styles {
-  @include utils.css-styles {
-    @include css-styles;
-  }
-
-  @include utils.host-styles {
-    @include host-styles;
-  }
+  @include css-styles;
+  @include host-styles;
 }

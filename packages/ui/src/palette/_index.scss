@@ -389,76 +389,18 @@ $-token-names: map.keys($-light-theme-tokens);
 }
 
 @mixin css-styles {
-  $ignored: (outline, outline-variant, shadow, surface-tint, scrim);
-  $no-text-color: (
-    inverse-primary,
-    surface-dim,
-    surface-bright,
-    surface-container-lowest,
-    surface-container-low,
-    surface-container,
-    surface-container-high,
-    surface-container-highest
-  );
+  @include utils.css-styles(-get-styles(true));
 
-  @each $name in $-token-names {
-    @if not list.index($ignored, $name) {
-      $is-on-color: string.index($name, "on-") == 1;
-      $is-no-color: list.index($no-text-color, $name);
-
-      &#{$name} {
-        @if $is-on-color {
-          @include utils.use-var(color, $name);
-        } @else {
-          @include utils.use-var(background, $name);
-
-          @if not $is-no-color {
-            @include utils.use-var(color, "on-#{$name}");
-          }
-        }
-      }
-
-      @if not
-        $is-no-color and not
-        $is-on-color and not
-        string.index($name, "container-")
-      {
-        &text-#{$name} {
-          @include utils.use-var(color, $name);
-        }
-      }
-    }
-  }
-
-  &current-color {
-    color: currentcolor;
-  }
-
-  @if $-color-scheme == light-dark or $-color-scheme == system {
-    &palette-light {
-      @include use-light-theme;
-    }
-
-    &palette-dark {
-      @include use-dark-theme;
-    }
+  @if $-default-system-theme and $-color-scheme == system {
+    @include use-system-theme;
   }
 }
 
 @mixin host-styles {
-  @include utils.map-to-styles(-get-styles(false));
+  @include utils.host-styles(-get-styles(false));
 }
 
 @mixin styles {
-  @include utils.css-styles {
-    @include css-styles;
-
-    @if $-default-system-theme and $-color-scheme == system {
-      @include use-system-theme;
-    }
-  }
-
-  @include utils.host-styles {
-    @include host-styles;
-  }
+  @include css-styles;
+  @include host-styles;
 }

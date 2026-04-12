@@ -176,3 +176,39 @@
     }
   }
 }
+
+@mixin css-styles($styles, $keyframes: null) {
+  @if get-setup-config("css") {
+    $selector-prefix: get-setup-config("selector-prefix");
+    @include map-to-styles(
+      (
+        $selector-prefix: $styles,
+      )
+    );
+
+    @if $keyframes {
+      $keyframes-prefix: get-setup-config(keyframes-prefix);
+      @each $name, $styles in $keyframes {
+        @keyframes #{$keyframes-prefix + $name} {
+          @include map-to-styles($styles);
+        }
+      }
+    }
+  }
+}
+
+@mixin host-styles($styles, $keyframes: null) {
+  $host-mode: get-setup-config("host");
+  @debug "host-mode: #{$host-mode}";
+  @if $host-mode {
+    @include map-to-styles($styles);
+
+    @if $keyframes {
+      @each $name, $styles in $keyframes {
+        @keyframes #{$name} {
+          @include map-to-styles($styles);
+        }
+      }
+    }
+  }
+}

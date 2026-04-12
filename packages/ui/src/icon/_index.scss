@@ -77,32 +77,35 @@ $-configure-tokens: (base-styles, small-styles, medium-styles, large-styles);
   );
 }
 
+@mixin css-styles {
+  $styles: ();
+  @each $variant, $styles in $-styles {
+    $selector: "&icon";
+    @if $variant != base {
+      $selector: $selector + "--#{$variant}";
+    }
+
+    $styles: map.set($styles, $selector, $styles);
+  }
+
+  @include utils.css-styles($styles);
+}
+
+@mixin host-styles {
+  $styles: ();
+  @each $variant, $properties in $-styles {
+    $selector: ":host";
+    @if $variant != base {
+      $selector: $selector + "([size=#{$variant}])";
+    }
+
+    $styles: map.set($styles, $selector, $properties);
+  }
+
+  @include utils.host-styles($styles);
+}
+
 @mixin styles {
-  @include utils.host-styles {
-    $styles: ();
-    @each $variant, $properties in $-styles {
-      $selector: ":host";
-      @if $variant != base {
-        $selector: $selector + "([size=#{$variant}])";
-      }
-
-      $styles: map.set($styles, $selector, $properties);
-    }
-
-    @include utils.map-to-styles($styles);
-  }
-
-  @include utils.css-styles {
-    $styles: ();
-    @each $variant, $styles in $-styles {
-      $selector: "&icon";
-      @if $variant != base {
-        $selector: $selector + "--#{$variant}";
-      }
-
-      $styles: map.set($styles, $selector, $styles);
-    }
-
-    @include utils.map-to-styles($styles);
-  }
+  @include css-styles;
+  @include host-styles;
 }

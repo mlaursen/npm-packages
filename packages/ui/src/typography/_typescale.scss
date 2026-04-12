@@ -475,7 +475,7 @@ $-configure-tokens: $-variants;
     $styles: map.set($styles, "&typography-#{$variant}", $properties);
   }
 
-  @include utils.map-to-styles($styles);
+  @include utils.css-styles($styles);
 }
 
 @mixin host-styles {
@@ -500,15 +500,10 @@ $-configure-tokens: $-variants;
     $styles: map.set($styles, $selector, $properties);
   }
 
-  @include utils.map-to-styles($styles);
+  @include utils.host-styles($styles);
 }
 
 @mixin styles {
-  @include utils.css-styles {
-    @include css-styles;
-  }
-
-  @include utils.host-styles {
-    @include host-styles;
-  }
+  @include css-styles;
+  @include host-styles;
 }
