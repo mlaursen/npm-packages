@@ -1,9 +1,9 @@
-import { type CSSResultArray } from "lit";
+import { type CSSResultArray, type PropertyValues } from "lit";
 import { property } from "lit/decorators.js";
 
-import type {
-  StylableLitElement,
-  StyledLitElementWithProperties,
+import {
+  type StylableLitElement,
+  type StyledLitElementWithProperties,
 } from "../types.js";
 import interactionStyles from "./interaction-styles.js";
 import {
@@ -22,43 +22,18 @@ export function InteractionMixin<T extends StylableLitElement>(
 
   class InteractionElement extends Base {
     static override styles = styles;
-    static override shadowRootOptions: ShadowRootInit = {
-      mode: "open",
-      ...Base.shadowRootOptions,
-      delegatesFocus: true,
-    };
 
     @property({ reflect: true })
     interaction: InteractionDirection = "outward";
 
-    override connectedCallback(): void {
-      super.connectedCallback();
+    @property({ reflect: true, type: Boolean })
+    disabled = false;
 
-      this.addEventListener("focusin", this.#handleFocusIn);
-      this.addEventListener("focusout", this.#handleFocusOut);
-    }
-
-    override disconnectedCallback(): void {
-      super.disconnectedCallback();
-      this.removeEventListener("focusin", this.#handleFocusIn);
-      this.removeEventListener("focusout", this.#handleFocusOut);
-    }
-
-    focusTarget?: Element | null;
-
-    #handleFocusIn(event: FocusEvent): void {
-      const target = event.target;
-      if (
-        target instanceof Element &&
-        (target.matches(":focus-visible") ||
-          this.focusTarget?.matches(":focus-visible"))
-      ) {
-        this.setAttribute("focus-visible", "");
+    protected override willUpdate(changed: PropertyValues): void {
+      if (changed.has("disabled")) {
+        const tabIndex = this.disabled ? "-1" : "0";
+        this.setAttribute("tabIndex", tabIndex);
       }
-    }
-
-    #handleFocusOut(): void {
-      this.removeAttribute("focus-visible");
     }
   }
 

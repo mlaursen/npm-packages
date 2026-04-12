@@ -935,23 +935,20 @@ $-base-styles: (
     "button.focused.container.elevation",
   "icon.color": utils.get-rgb-var("button.icon.color", "button.icon.opacity"),
   "icon.size": "button.icon.size",
+
+  align-items: center,
   background: utils.get-rgb-var(
       "button.container.color",
       "button.container.opacity"
     ),
+  border-width: 0,
   color: utils.get-rgb-var(
       "button.label-text.color",
       "button.label-text.opacity"
     ),
-  font: typography.typescale(label-large),
   display: inline-flex,
   flex-shrink: 0,
-);
-$-button-styles: (
-  align-items: center,
-  border-width: 0,
-  display: inline-flex,
-  // flex-shrink: 0,
+  font: typography.typescale(label-large),
   gap: "button.icon-label-space",
   height: "button.container.height",
   justify-content: center,
@@ -962,16 +959,6 @@ $-button-styles: (
     padding-left: "button.trailing-space",
     padding-right: "button.leading-space",
   ),
-);
-$-host-button-styles: (
-  background: transparent,
-  border: 0,
-  border-radius: inherit,
-  color: inherit,
-  cursor: inherit,
-  font: inherit,
-  letter-spacing: inherit,
-  outline: 0,
 );
 $-base-hovered-styles: (
   "button.label-text.color": "button.hovered.label-text.color",
@@ -1215,11 +1202,8 @@ $-configure-tokens: map.keys($-tokens);
 }
 
 @mixin host-styles {
-  // $disabled-selector: interaction.host-disabled-selector();
-  $button-styles: map.deep-merge($-button-styles, $-host-button-styles);
   $styles: (
     ":host": $-base-styles,
-    "::slotted(button), slot[name=button] > *": $button-styles,
     ":host([size=extra-small])": $-extra-small-styles,
     ":host([size=small])": $-small-styles,
     ":host([size=medium])": $-medium-styles,
@@ -1229,12 +1213,13 @@ $-configure-tokens: map.keys($-tokens);
     ":host([shape=square])": $-square-styles,
     ":host([variant=text])": $-text-styles,
     ":host([variant=outlined])": $-outlined-styles,
-    ":host([variant=outlined][disabled]), :host([variant=outlined]:has(:disabled, [aria-disabled=true]))":
+    ":host([variant=outlined]:is([disabled], [soft-disabled]))":
       $-outlined-disabled-styles,
     ":host([variant=tonal])": $-tonal-styles,
     ":host([variant=filled])": $-filled-styles,
     ":host([variant=elevated])": $-elevated-styles,
-    "host-hover": $-base-hovered-styles, // $disabled-selector: $-base-disabled-styles,
+    "host-hover": $-base-hovered-styles,
+    ":host(:is([disabled], [soft-disabled]))": $-base-disabled-styles,
   );
   @include utils.host-styles($styles);
 }

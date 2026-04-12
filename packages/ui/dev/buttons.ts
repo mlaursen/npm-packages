@@ -42,14 +42,9 @@ export class Buttons extends LitElement {
       white-space: nowrap;
     }
   `;
-  @state()
-  _slots = false;
 
   @state()
   _visible = true;
-
-  @state()
-  _passThrough = false;
 
   _renderEverything(): TemplateResult | null {
     if (!this._visible) {
@@ -91,7 +86,6 @@ export class Buttons extends LitElement {
                           size=${size}
                           variant=${variant}
                           shape=${shape}
-                          .passThrough=${this._passThrough}
                         >
                           Label text
                         </ui-button>
@@ -101,7 +95,6 @@ export class Buttons extends LitElement {
                           size=${size}
                           variant=${variant}
                           shape=${shape}
-                          .passThrough=${this._passThrough}
                         >
                           <material-symbol>favorite</material-symbol>
                           Label text
@@ -112,7 +105,6 @@ export class Buttons extends LitElement {
                           size=${size}
                           variant=${variant}
                           shape=${shape}
-                          .passThrough=${this._passThrough}
                         >
                           Label text
                           <material-symbol>favorite</material-symbol>
@@ -124,7 +116,6 @@ export class Buttons extends LitElement {
                           variant=${variant}
                           shape=${shape}
                           disabled
-                          .passThrough=${this._passThrough}
                         >
                           Disabled
                         </ui-button>
@@ -135,7 +126,6 @@ export class Buttons extends LitElement {
                           variant=${variant}
                           shape=${shape}
                           disabled
-                          .passThrough=${this._passThrough}
                         >
                           <material-symbol>favorite</material-symbol>
                           Label text
@@ -147,7 +137,6 @@ export class Buttons extends LitElement {
                           variant=${variant}
                           shape=${shape}
                           disabled
-                          .passThrough=${this._passThrough}
                         >
                           Label text
                           <material-symbol>favorite</material-symbol>
@@ -172,38 +161,18 @@ export class Buttons extends LitElement {
           <h3>Buttons</h3>
         </ui-typography>
         <ui-box>
-          <ui-button>
-            <button
-              slot="button"
-              @click=${() => {
-                this._visible = !this._visible;
-              }}
-            >
-              ${this._visible ? "Hide" : "Show"}
-            </button>
-          </ui-button>
           <ui-button
             @click=${() => {
-              this._passThrough = !this._passThrough;
+              this._visible = !this._visible;
             }}
           >
-            ${this._passThrough ? "Slots" : "Pass Through"}
-          </ui-button>
-          <ui-button>
-            <button
-              slot="button"
-              @click=${() => {
-                this._slots = !this._slots;
-              }}
-            >
-              ${this._slots ? "Show Normal" : "Show Slots"}
-            </button>
+            ${this._visible ? "Hide" : "Show"}
           </ui-button>
         </ui-box>
         ${this._renderEverything()}
-        <ui-button aria-label="Hello!"
-          ><material-symbol>favorite</material-symbol></ui-button
-        >
+        <ui-button aria-label="Hello!">
+          <material-symbol>favorite</material-symbol>
+        </ui-button>
       </ui-box>
     `;
   }

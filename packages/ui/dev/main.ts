@@ -18,9 +18,7 @@ export class Main extends LitElement {
   override render(): TemplateResult {
     return html`
       <color-scheme></color-scheme>
-      <ui-form-test>
-        <ui-button slot="submit" type="reset">Reset</ui-button>
-      </ui-form-test>
+      <form-test></form-test>
       <app-buttons></app-buttons>
       <app-material-symbols></app-material-symbols>
       <app-typography></app-typography>
