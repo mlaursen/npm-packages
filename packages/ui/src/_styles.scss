@@ -1,11 +1,15 @@
 @use "palette";
-@use "typography";
 @use "margin";
+@use "elevation";
+@use "typography";
 @use "box";
 
 @mixin styles {
   @include palette.styles;
-  @include typography.styles;
   @include margin.styles;
+  @include elevation.styles;
+  @include interaction.styles;
+  @include typography.styles;
+
   @include box.styles;
 }
