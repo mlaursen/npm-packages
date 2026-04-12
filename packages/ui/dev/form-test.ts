@@ -1,28 +1,34 @@
 import { LitElement, type TemplateResult, html } from "lit";
 import { customElement } from "lit/decorators.js";
 
-@customElement("ui-form-test")
-export class FormTest extends LitElement {
+@customElement("form-test")
+class FormTest extends LitElement {
+  protected override createRenderRoot(): HTMLElement | DocumentFragment {
+    return this;
+  }
+
   override render(): TemplateResult {
     return html`
-      <form name="main" .onsubmit=${this.handleSubmit}>
+      <form @submit=${this.#handleSubmit}>
         <label>
-          Name
-          <input type="text" name="name" />
+          <ui-typography variant="label">Name</ui-typography>
+          <input type="text" name="name" required />
         </label>
-        <slot name="submit"><button type="submit">Submit</button></slot>
+        <ui-button type="submit">Submit</ui-button>
+        <ui-button type="reset">Reset</ui-button>
       </form>
     `;
   }
 
-  handleSubmit(event: Event): void {
-    console.log("submit");
+  #handleSubmit(event: SubmitEvent): void {
+    console.log("submitted!");
+
     event.preventDefault();
   }
 }
 
 declare global {
   interface HTMLElementTagNameMap {
-    "ui-form-test": FormTest;
+    "form-test": FormTest;
   }
 }

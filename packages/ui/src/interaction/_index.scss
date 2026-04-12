@@ -64,7 +64,6 @@ $-configure-tokens: (
 );
 
 $-base-styles: (
-  cursor: pointer,
   position: relative,
 
   "&::before": map.merge(
@@ -88,6 +87,8 @@ $-clickable-hovered-styles: (
   "interaction.container.opacity": "interaction.hovered.container.opacity",
 );
 $-focusable-styles: (
+  outline: 0,
+
   "&::before": (
     // use new transition behavior
     transition: null,
@@ -258,10 +259,10 @@ $-keyframes: (
   $styles: (
     ":host": $base-styles,
     "host-hover": $-clickable-hovered-styles,
-    ":host([focus-visible])": $-focusable-focused-styles,
-    ":host([focus-visible][interaction=inward])": $-focusable-inward-styles,
-    ":host([focus-visible][interaction=outward])": $-focusable-outward-styles,
-    ":host([disabled], [soft-disabled])": $-disabled-styles,
+    ":host(:focus-visible)": $-focusable-focused-styles,
+    ":host([interaction=inward]:focus-visible)": $-focusable-inward-styles,
+    ":host([interaction=outward]:focus-visible)": $-focusable-outward-styles,
+    ":host(:is([disabled], [aria-disabled=true]))": $-disabled-styles,
   );
   @include utils.host-styles($styles, $keyframes: $-keyframes);
 }

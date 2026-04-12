@@ -198,9 +198,7 @@
 }
 
 @mixin host-styles($styles, $keyframes: null) {
-  $host-mode: get-setup-config("host");
-  @debug "host-mode: #{$host-mode}";
-  @if $host-mode {
+  @if get-setup-config("host") {
     @include map-to-styles($styles);
 
     @if $keyframes {
