@@ -22,6 +22,7 @@ export type DefaultComponentExtraSize =
 export type LitConstructor<T = LitElement> = Constructor<T>;
 export type StylableLitElement<T = LitElement> = LitConstructor<T> & {
   styles?: CSSResultGroup;
+  shadowRootOptions?: ShadowRootInit;
 };
 export type StyledLitElement<T = LitElement> = LitConstructor<T> & {
   styles: CSSResultArray;
