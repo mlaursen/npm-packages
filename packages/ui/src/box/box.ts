@@ -47,8 +47,8 @@ export class Box extends BaseBox {
   @property({ type: Boolean })
   nowrap?: boolean;
 
-  @property()
-  padding?: BoxPadding;
+  @property({ reflect: true })
+  padding: BoxPadding = "all";
 
   #updateGridColumns(): void {
     const property = `${UI_CONFIG.varPrefix}-box-columns`;
