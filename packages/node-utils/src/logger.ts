@@ -69,7 +69,7 @@ export function logFailure(message: string): void {
 export async function logTask<Result>(
   task: Promise<Result>,
   startMessage: string,
-  endMessage: string
+  endMessage: string,
 ): Promise<Result> {
   if (!_log || (!startMessage && !endMessage)) {
     return task;

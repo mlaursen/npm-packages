@@ -27,12 +27,12 @@ export interface CopyScssFilesOptions {
    */
   getDistPaths?: (
     path: string,
-    renameDist: (path: string) => string
+    renameDist: (path: string) => string,
   ) => readonly string[];
 }
 
 export async function copyScssFiles(
-  options: CopyScssFilesOptions
+  options: CopyScssFilesOptions,
 ): Promise<void> {
   const {
     src = "src",
@@ -57,12 +57,12 @@ export async function copyScssFiles(
               await rm(distPath);
               log(`Removed ${distPath}`);
             }
-          })
+          }),
         );
       },
       onAddOrChange(path) {
         void Promise.all(
-          resolveDistPaths(path).map((distPath) => copyToDist(path, distPath))
+          resolveDistPaths(path).map((distPath) => copyToDist(path, distPath)),
         );
       },
     });

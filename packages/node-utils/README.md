@@ -21,7 +21,7 @@ import { readFile } from "node:fs/promises";
 const contents = await readFile("README.md", "utf8");
 console.log(`README.md is ${filesize(contents)} bytes`);
 console.log(
-  `README.md is ${filesize(contents, { gzip: true })} bytes when gzipped`
+  `README.md is ${filesize(contents, { gzip: true })} bytes when gzipped`,
 );
 ```
 
@@ -68,7 +68,7 @@ import { readFile } from "node:fs/promises";
 const contents = await readFile("README.md", "utf8");
 console.log(`README.md is ${prettyFilesize(contents)}`);
 console.log(
-  `README.md is ${prettyFilesize(contents, { gzip: true })} when gzipped`
+  `README.md is ${prettyFilesize(contents, { gzip: true })} when gzipped`,
 );
 ```
 

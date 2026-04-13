@@ -19,7 +19,7 @@ export interface RecommendedOptions extends TypescriptOptions, TestOptions {}
  * ```
  */
 export const recommended = (
-  options: RecommendedOptions = {}
+  options: RecommendedOptions = {},
 ): readonly Linter.Config[] => {
   return [...typescript(options), ...scripts, ...testing(options), ...unicorn];
 };

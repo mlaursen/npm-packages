@@ -20,18 +20,18 @@ describe("getPackageManager", () => {
 
   it("should attempt to read the volta property if it exists", async () => {
     readFileMock.mockResolvedValue(
-      JSON.stringify({ volta: { node: "24.0.0", pnpm: "10.0.0" } })
+      JSON.stringify({ volta: { node: "24.0.0", pnpm: "10.0.0" } }),
     );
 
     await expect(getPackageManager()).resolves.toBe("pnpm");
 
     readFileMock.mockResolvedValue(
-      JSON.stringify({ volta: { node: "24.0.0", yarn: "4.0.0" } })
+      JSON.stringify({ volta: { node: "24.0.0", yarn: "4.0.0" } }),
     );
     await expect(getPackageManager()).resolves.toBe("yarn");
 
     readFileMock.mockResolvedValue(
-      JSON.stringify({ volta: { node: "24.0.0", npm: "19.0.0" } })
+      JSON.stringify({ volta: { node: "24.0.0", npm: "19.0.0" } }),
     );
     await expect(getPackageManager()).resolves.toBe("npm");
   });
@@ -40,7 +40,7 @@ describe("getPackageManager", () => {
     readFileMock.mockResolvedValue(
       JSON.stringify({
         packageManager: "pnpm@10.24.0",
-      })
+      }),
     );
 
     await expect(getPackageManager()).resolves.toBe("pnpm");
@@ -50,11 +50,11 @@ describe("getPackageManager", () => {
     readFileMock.mockResolvedValue(
       JSON.stringify({
         packageManager: "something@4.3.3",
-      })
+      }),
     );
 
     await expect(getPackageManager()).rejects.toThrow(
-      'Unsupported package manager "something" in package.json'
+      'Unsupported package manager "something" in package.json',
     );
   });
 
@@ -62,7 +62,7 @@ describe("getPackageManager", () => {
     readFileMock.mockResolvedValue(JSON.stringify({}));
 
     await expect(getPackageManager()).rejects.toThrow(
-      "Unable to find a package manager"
+      "Unable to find a package manager",
     );
   });
 });

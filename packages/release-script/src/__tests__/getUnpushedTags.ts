@@ -13,7 +13,7 @@ const execSyncMock = vi.mocked(execSync);
 
 const fakeCommitSha = (): string =>
   Array.from({ length: 40 }, () =>
-    Math.floor(Math.random() * 16).toString(16)
+    Math.floor(Math.random() * 16).toString(16),
   ).join("");
 
 beforeEach(() => {

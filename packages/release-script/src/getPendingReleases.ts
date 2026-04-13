@@ -35,7 +35,7 @@ export interface PendingRelease {
 }
 
 export async function getPendingReleases(
-  options: GetPendingReleasesOptions
+  options: GetPendingReleasesOptions,
 ): Promise<readonly PendingRelease[]> {
   const {
     packagePaths,

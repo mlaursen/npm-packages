@@ -57,7 +57,7 @@ ${example.content}
     "README.md",
     await format(
       readme.slice(0, startIndex) + content + readme.slice(endIndex),
-      config
-    )
+      config,
+    ),
   );
 }

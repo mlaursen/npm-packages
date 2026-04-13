@@ -41,7 +41,7 @@ describe("getCurrentChangeset", () => {
     await expect(getCurrentChangeset()).resolves.toBe(FAKE_CHANGELOG);
 
     expect(execSyncMock).toHaveBeenCalledWith(
-      "git diff --name-only @{upstream} .changeset/*.md"
+      "git diff --name-only @{upstream} .changeset/*.md",
     );
     expect(confirmMock).toHaveBeenCalledWith({
       message:
@@ -52,7 +52,7 @@ describe("getCurrentChangeset", () => {
     expect(rawlistMock).not.toHaveBeenCalled();
     expect(readFileMock).toHaveBeenCalledWith(
       ".changeset/amazing-changeset-name.md",
-      "utf8"
+      "utf8",
     );
   });
 
@@ -60,7 +60,7 @@ describe("getCurrentChangeset", () => {
     execSyncMock.mockReturnValue("");
     readdirMock.mockResolvedValue(
       // @ts-expect-error bad mocking
-      ["changelog-1.md", "changelog-2.md", "this-should-be-ignored.txt"]
+      ["changelog-1.md", "changelog-2.md", "this-should-be-ignored.txt"],
     );
     rawlistMock.mockResolvedValue("changelog-1.md");
 
@@ -72,7 +72,7 @@ describe("getCurrentChangeset", () => {
     });
     expect(readFileMock).toHaveBeenCalledWith(
       ".changeset/changelog-1.md",
-      "utf8"
+      "utf8",
     );
   });
 });

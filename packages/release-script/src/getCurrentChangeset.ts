@@ -6,7 +6,7 @@ import { join } from "node:path";
 
 export async function getCurrentChangeset(): Promise<string> {
   let changesetName = execSync(
-    "git diff --name-only @{upstream} .changeset/*.md"
+    "git diff --name-only @{upstream} .changeset/*.md",
   )
     .toString()
     .trim();

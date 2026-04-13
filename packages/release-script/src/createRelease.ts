@@ -31,7 +31,7 @@ export interface CreateReleaseOptions extends ConfigurableCreateReleaseOptions {
 }
 
 export async function createRelease(
-  options: CreateReleaseOptions
+  options: CreateReleaseOptions,
 ): Promise<void> {
   const {
     body,
@@ -55,7 +55,7 @@ export async function createRelease(
         tag_name: tagName,
         body,
         prerelease,
-      }
+      },
     );
 
     console.log(`Created release: ${response.data.html_url}`);
@@ -64,10 +64,10 @@ export async function createRelease(
 
     console.log();
     console.log(
-      "The npm token is most likely expired or never created. Update the `.env.local` to include the latest GITHUB_TOKEN"
+      "The npm token is most likely expired or never created. Update the `.env.local` to include the latest GITHUB_TOKEN",
     );
     console.log(
-      "Regenerate the token: https://github.com/settings/personal-access-tokens"
+      "Regenerate the token: https://github.com/settings/personal-access-tokens",
     );
     if (
       !(await confirm({ message: "Try creating the Github release again?" }))

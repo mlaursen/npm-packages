@@ -64,7 +64,7 @@ describe("getPendingReleases", () => {
   it("should throw an error if there are no unpushed tags", async () => {
     getUnpushedTagsMock.mockReturnValue([]);
     await expect(getPendingReleases({})).rejects.toThrow(
-      "Unable to find any pending releases"
+      "Unable to find any pending releases",
     );
 
     expect(confirmMock).not.toHaveBeenCalled();
@@ -76,7 +76,7 @@ describe("getPendingReleases", () => {
     confirmMock.mockResolvedValue(false);
 
     await expect(getPendingReleases({})).rejects.toThrow(
-      "No pending releases were confirmed"
+      "No pending releases were confirmed",
     );
     expect(inputMock).not.toHaveBeenCalled();
     expect(readFileMock).not.toHaveBeenCalled();
@@ -84,7 +84,7 @@ describe("getPendingReleases", () => {
 
   it("should confirm the release, prompt for a changelog location, find the next release log, and add to the list of available releases", async () => {
     await expect(getPendingReleases({})).resolves.toEqual(
-      DEFAULT_PENDING_RELEASES
+      DEFAULT_PENDING_RELEASES,
     );
 
     expect(confirmMock).toHaveBeenCalledExactlyOnceWith({
@@ -123,7 +123,7 @@ describe("getPendingReleases", () => {
         packagePaths: {
           "@mlaursen/release-script": "./packages/release-script",
         },
-      })
+      }),
     ).resolves.toEqual(DEFAULT_PENDING_RELEASES);
 
     expect(confirmMock).toHaveBeenCalledWith({
@@ -191,7 +191,7 @@ ${releaseScriptChangelog}`);
     await expect(
       getPendingReleases({
         disableGithubReleasePackages: new Set(["@mlaursen/eslint-config"]),
-      })
+      }),
     ).resolves.toEqual(DEFAULT_PENDING_RELEASES);
   });
 
@@ -208,7 +208,7 @@ ${releaseScriptChangelog}`);
     await expect(
       getPendingReleases({
         publishTags: ["@mlaursen/release-script@1.1.1"],
-      })
+      }),
     ).resolves.toEqual([
       {
         body: `## 1.1.1

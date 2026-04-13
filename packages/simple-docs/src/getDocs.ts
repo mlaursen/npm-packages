@@ -15,7 +15,7 @@ export interface GetDocsOptions {
 }
 
 export async function getDocs(
-  options: TypeDocOptions = {}
+  options: TypeDocOptions = {},
 ): Promise<readonly SimpleDoc[]> {
   const app = await Application.bootstrapWithPlugins({
     ...options,
@@ -29,7 +29,7 @@ export async function getDocs(
 
   const docs = new Map<string, Example[]>();
   for (const { name, signatures = [] } of project.getChildrenByKind(
-    ReflectionKind.Function
+    ReflectionKind.Function,
   )) {
     for (const signature of signatures) {
       const examples = signature.comment?.getTags("@example") ?? [];

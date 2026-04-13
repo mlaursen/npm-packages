@@ -14,7 +14,7 @@ import {
 const exec = (
   command: string,
   args: readonly string[],
-  opts?: SpawnSyncOptions
+  opts?: SpawnSyncOptions,
 ): void => {
   const cmd = command + " " + args.join(" ");
   console.log(cmd);

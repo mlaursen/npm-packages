@@ -12,7 +12,7 @@ function getTags(local: boolean): Set<string> {
   }
 
   return new Set(
-    lines.map((line) => line.replace(/^.+refs\/tags\//, "").replace("^{}", ""))
+    lines.map((line) => line.replace(/^.+refs\/tags\//, "").replace("^{}", "")),
   );
 }
 

@@ -41,7 +41,7 @@ describe("createRelease", () => {
         prerelease: false,
         repo: "example-repo",
         tagName: "example-repo@1.0.0",
-      })
+      }),
     ).resolves.toBeUndefined();
 
     expect(octokitRequestMock).toHaveBeenCalledExactlyOnceWith(
@@ -52,11 +52,11 @@ describe("createRelease", () => {
         tag_name: "example-repo@1.0.0",
         body: "Example changelog",
         prerelease: false,
-      }
+      },
     );
 
     expect(consoleLog).toHaveBeenCalledWith(
-      `Created release: https://github.com/release-url`
+      `Created release: https://github.com/release-url`,
     );
     expect(consoleError).not.toHaveBeenCalled();
   });
@@ -94,7 +94,7 @@ describe("createRelease", () => {
         tag_name: "example-repo@1.0.0",
         body: "Example changelog",
         prerelease: false,
-      }
+      },
     );
   });
 
@@ -128,10 +128,10 @@ describe("createRelease", () => {
 
     expect(consoleError).toHaveBeenCalledWith("Auth token expired");
     expect(consoleLog).toHaveBeenCalledWith(
-      "The npm token is most likely expired or never created. Update the `.env.local` to include the latest GITHUB_TOKEN"
+      "The npm token is most likely expired or never created. Update the `.env.local` to include the latest GITHUB_TOKEN",
     );
     expect(consoleLog).toHaveBeenCalledWith(
-      "Regenerate the token: https://github.com/settings/personal-access-tokens"
+      "Regenerate the token: https://github.com/settings/personal-access-tokens",
     );
     expect(confirmMock).toHaveBeenCalledExactlyOnceWith({
       message: "Try creating the Github release again?",
@@ -148,7 +148,7 @@ describe("createRelease", () => {
         prerelease: false,
         repo: "example-repo",
         tagName: "example-repo@1.0.0",
-      })
+      }),
     ).rejects.toThrow("Unable to create a Github release");
     expect(octokitRequestMock).toHaveBeenCalledTimes(1);
   });

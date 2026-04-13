@@ -10,7 +10,7 @@ interface PartialPackageJson {
 export async function getPackageManager(): Promise<PackageManager> {
   const rawPackageJson = await readFile(
     resolve(process.cwd(), "package.json"),
-    "utf8"
+    "utf8",
   );
   const packageJson = JSON.parse(rawPackageJson) as PartialPackageJson;
 

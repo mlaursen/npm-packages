@@ -28,7 +28,7 @@ program
       previous.add(value);
       return previous;
     },
-    new Set()
+    new Set(),
   )
   .action((pattern: string, options: ProgramCopyScssFilesOptions) => {
     const { copyToRoot, verbose, ...copyOptions } = options;

@@ -8,7 +8,7 @@ export interface SassResolvePackageJson {
 }
 
 export function assertSassResolvePackageJson(
-  packageJson: unknown
+  packageJson: unknown,
 ): asserts packageJson is SassResolvePackageJson {
   if (
     typeof packageJson !== "object" ||

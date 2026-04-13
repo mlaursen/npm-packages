@@ -43,7 +43,7 @@ export interface GetChangelogOptions {
 }
 
 export async function getChangelog(
-  options: GetChangelogOptions
+  options: GetChangelogOptions,
 ): Promise<string> {
   const { name, packagePaths = {} } = options;
 

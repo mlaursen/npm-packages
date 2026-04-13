@@ -21,7 +21,7 @@ export interface RecommendedFrontendOptions
  * ```
  */
 export const recommendedFrontend = (
-  options: RecommendedFrontendOptions = {}
+  options: RecommendedFrontendOptions = {},
 ): readonly Linter.Config[] => {
   return [
     ...recommended(options),

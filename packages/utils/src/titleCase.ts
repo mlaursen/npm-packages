@@ -14,7 +14,7 @@ import { upperFirst } from "./upperFirst.js";
  */
 export const titleCase = (
   s: string,
-  splitter: RegExp | string = /(?=[A-Z])/
+  splitter: RegExp | string = /(?=[A-Z])/,
 ): string =>
   s.split(splitter).reduce((result, part, i) => {
     return result + (i ? " " : "") + upperFirst(part);

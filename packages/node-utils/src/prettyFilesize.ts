@@ -20,7 +20,7 @@ export interface PrettyFilesizeOptions
  */
 export function prettyFilesize(
   contents: string,
-  options: FilesizeOptions = {}
+  options: FilesizeOptions = {},
 ): string {
   const { gzip, ...prettyOptions } = options;
 

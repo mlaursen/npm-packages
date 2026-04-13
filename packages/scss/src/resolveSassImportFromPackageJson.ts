@@ -7,7 +7,7 @@ import { getPossiblePaths } from "./getPossiblePaths.js";
 const SCOPED_MODULE_REGEX = /^(@[^/]+\/[^/]+)(?:\/(.*))?$/;
 
 function getSassExports(
-  packageJson: SassResolvePackageJson
+  packageJson: SassResolvePackageJson,
 ): { main: string; others: Record<string, string> } | undefined {
   let main = "";
   const others: Record<string, string> = {};
@@ -46,7 +46,7 @@ export interface ResolveSassImportFromPackageJsonOptions {
 }
 
 export function resolveSassImportFromPackageJson(
-  options: ResolveSassImportFromPackageJsonOptions
+  options: ResolveSassImportFromPackageJsonOptions,
 ): string | null {
   const { url, load, basePath } = options;
 

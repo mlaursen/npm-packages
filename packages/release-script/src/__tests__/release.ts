@@ -58,23 +58,23 @@ describe("release", () => {
     expect(spawnSyncMock).toHaveBeenCalledWith(
       "pnpm",
       ["changeset", "version"],
-      { stdio: "inherit" }
+      { stdio: "inherit" },
     );
     expect(spawnSyncMock).toHaveBeenCalledWith("git", ["add", "-u"], undefined);
     expect(spawnSyncMock).toHaveBeenCalledWith(
       "git",
       ["commit", "-m", "build(version): version package"],
-      undefined
+      undefined,
     );
     expect(spawnSyncMock).toHaveBeenCalledWith(
       "pnpm",
       ["changeset", "publish"],
-      { stdio: "inherit" }
+      { stdio: "inherit" },
     );
     expect(spawnSyncMock).toHaveBeenCalledWith(
       "git",
       ["push", "--follow-tags"],
-      undefined
+      undefined,
     );
 
     expect(continueReleaseMock).toHaveBeenCalledTimes(2);
@@ -100,12 +100,12 @@ describe("release", () => {
     expect(spawnSyncMock).not.toHaveBeenCalledWith(
       "pnpm",
       ["clean"],
-      undefined
+      undefined,
     );
     expect(spawnSyncMock).not.toHaveBeenCalledWith(
       "pnpm",
       ["build"],
-      undefined
+      undefined,
     );
   });
 
@@ -119,12 +119,12 @@ describe("release", () => {
     expect(spawnSyncMock).toHaveBeenCalledWith(
       "pnpm",
       ["clean-dist"],
-      undefined
+      undefined,
     );
     expect(spawnSyncMock).toHaveBeenCalledWith(
       "pnpm",
       ["build-dist"],
-      undefined
+      undefined,
     );
   });
 
@@ -137,7 +137,7 @@ describe("release", () => {
     expect(spawnSyncMock).toHaveBeenCalledWith(
       "git",
       ["commit", "-m", "update version"],
-      undefined
+      undefined,
     );
   });
 
@@ -151,7 +151,7 @@ describe("release", () => {
     expect(spawnSyncMock).toHaveBeenCalledWith(
       "git",
       ["push", "--follow-tags"],
-      undefined
+      undefined,
     );
     expect(getPendingReleasesMock).toHaveBeenCalledWith({
       repo: "npm-packages",

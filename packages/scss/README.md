@@ -118,9 +118,9 @@ writeFileSync(
     `
 export const SCSS_LOOKUP: Record<string, string> = ${lookupString}
 `,
-    { parser: "typescript" }
+    { parser: "typescript" },
   ),
-  "utf8"
+  "utf8",
 );
 ```
 

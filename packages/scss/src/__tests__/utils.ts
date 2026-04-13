@@ -6,11 +6,11 @@ describe("fake-css-modules", () => {
   describe("getFakeCssModuleClassName", () => {
     it("should just combine the fileName and the provided key to create a simple hash so it can be static", () => {
       expect(getFakeCssModuleClassName("CodeBlock", "container")).toBe(
-        "CodeBlock_container__Q29kZ"
+        "CodeBlock_container__Q29kZ",
       );
 
       expect(
-        getFakeCssModuleClassName("AnotherFileName", "andAnotherClass")
+        getFakeCssModuleClassName("AnotherFileName", "andAnotherClass"),
       ).toBe("AnotherFileName_andAnotherClass__QW5vd");
     });
   });
@@ -25,7 +25,7 @@ describe("fake-css-modules", () => {
       expect(styles1["another"]).toBe("CodeBlock_another__Q29kZ");
 
       expect(styles2["andAnotherClass"]).toBe(
-        "AnotherFileName_andAnotherClass__QW5vd"
+        "AnotherFileName_andAnotherClass__QW5vd",
       );
     });
 

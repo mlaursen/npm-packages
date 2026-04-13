@@ -26,7 +26,7 @@ export function getPossiblePaths(name: string | undefined): readonly string[] {
       name + ".scss",
       name,
       name + "/_index.scss",
-      name + "/index.scss"
+      name + "/index.scss",
     );
   }
 

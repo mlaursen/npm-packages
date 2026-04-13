@@ -13,7 +13,7 @@
  */
 export function getFakeCssModuleClassName(
   fileName: string,
-  key: string
+  key: string,
 ): string {
   const prefix = `${fileName}_${key}`;
   const hash = btoa(prefix).slice(0, 5);
@@ -49,6 +49,6 @@ export function createFakeCssModules(fileName: string): Record<string, string> {
 
         return "";
       },
-    }
+    },
   );
 }

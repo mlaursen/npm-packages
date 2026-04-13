@@ -25,7 +25,7 @@ export interface FilesizeOptions {
  */
 export function filesize(
   contents: string,
-  options: FilesizeOptions = {}
+  options: FilesizeOptions = {},
 ): number {
   const { gzip } = options;
 

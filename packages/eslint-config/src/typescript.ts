@@ -50,7 +50,7 @@ export interface TypescriptOptions {
  * ```
  */
 export const typescript = (
-  options: TypescriptOptions = {}
+  options: TypescriptOptions = {},
 ): Linter.Config[] => {
   const { tsconfigRootDir, strictTypeChecked } = options;
 
@@ -183,7 +183,7 @@ export const typescript = (
           "@typescript-eslint/no-unsafe-assignment": "off",
           "@typescript-eslint/restrict-template-expressions": "off",
         },
-      }
+      },
     );
   }
 
