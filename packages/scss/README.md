@@ -163,29 +163,41 @@ const styles = createFakeCssModules("./ExampleFile.scss");
 getFakeCssModuleClassName("./ExampleFile.scss", "container");
 ```
 
-## minifyCss
+<!-- examples-end -->
 
-### Simple Example
+## Minifying CSS
+
+This is no longer part of this package, but it can be easily done using
+[lightningcss](https://github.com/parcel-bundler/lightningcss):
 
 ```ts
-import { readFileSync, writeFileSync } from "node:fs"
-import { compileScss, minifyCss } from "@mlaursen/scss";
+import { compileScss } from "@mlaursen/scss";
+import browserslist from "browserslist";
+import { browserslistToTargets, transform } from "lightningcss";
+import { readFileSync } from "node:fs";
 
-const filePath = "./some/path/to/file.scss"
-const code = readFileSync(filePath, 'utf8');
+const basePath = process.cwd();
+const fileName = "./some/path/to/file.scss";
+const load = (filePath: string): string => readFileSync(filePath, "utf8");
+const code = load(fileName);
 
-const compileResult = compileScss({
+const compiled = compileScss({
   code,
-  load: (filePath) => readFileSync(filePath, "utf8"),
-  basePath: process.cwd(),
+  load,
+  basePath,
 });
 
-const minifyResult = minifyCss({
-  css: compileResult.css
-  from: filePath,
+const minified = transform({
+  code: Buffer.from(compiled.css, "utf8"),
+  minify: true,
+  filename: fileName,
+  targets: browserslistToTargets(
+    browserslist("last 2 versions and not dead and > 0.5%"),
+  ),
+  sourceMap: true,
+  inputSourceMap: compiled.sourceMap && JSON.stringify(compiled.sourceMap),
 });
 
-writeFileSync("example.min.css", minifyResult.css);
+const css = minified.code.toString();
+const map = minified.map?.toString();
 ```
-
-<!-- examples-end -->

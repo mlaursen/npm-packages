@@ -49,9 +49,6 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "autoprefixer": "^10.4.27",
-    "cssnano": "^7.1.4",
-    "cssnano-preset-default": "^7.0.12",
     "postcss": "^8.5.8",
     "postcss-selector-parser": "^7.1.1",
     "sass": "^1.99.0"
