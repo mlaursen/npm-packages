@@ -1,3 +1,4 @@
+import { type CamelCase } from "./types.js";
 import { upperFirst } from "./upperFirst.js";
 import { words } from "./words.js";
 
@@ -14,9 +15,12 @@ import { words } from "./words.js";
  * @param s - The string to convert to camel case
  * @param separator - An optional separator for each "word" in the string
  */
-export const camelCase = (s: string, separator = ""): string =>
+export const camelCase = <S extends string>(
+  s: S,
+  separator = "",
+): CamelCase<S> =>
   // eslint-disable-next-line unicorn/no-array-reduce
   words(s).reduce((result, word, i) => {
     const w = word.toLowerCase();
     return result + (i ? separator : "") + (i ? upperFirst(w) : w);
-  }, "");
+  }, "") as CamelCase<S>;

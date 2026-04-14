@@ -1,8 +1,4 @@
-export type KebabCase<S extends string> = S extends `${infer T}${infer U}`
-  ? U extends Uncapitalize<U>
-    ? `${Lowercase<T>}${KebabCase<U>}`
-    : `${Lowercase<T>}-${KebabCase<Uncapitalize<U>>}`
-  : S;
+import { type KebabCase } from "./types.js";
 
 /**
  * @example Simple Example
