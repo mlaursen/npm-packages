@@ -9,17 +9,12 @@ export type OverridableStringUnion<
       [K in keyof Overrides]: Overrides[K] extends false ? never : K;
     }[keyof Overrides];
 
-export type PrefixKeys<
-  T extends Record<string, unknown>,
-  Prefix extends string,
-> = {
-  [Key in keyof T & string as `${Prefix}${Key}`]?: T[Key];
-};
-
-export type CamelCase<S extends string> =
-  S extends `${infer Head}_${infer Tail}`
-    ? `${Lowercase<Head>}${Capitalize<CamelCase<Tail>>}`
-    : Lowercase<S>;
+export type CamelCase<
+  S extends string,
+  Separator extends string = "-" | "_" | " ",
+> = S extends `${infer Head}${Separator}${infer Tail}`
+  ? `${Lowercase<Head>}${Capitalize<CamelCase<Tail, Separator>>}`
+  : Lowercase<S>;
 
 export type CamelCaseKeys<T extends Record<string, unknown>> = {
   [Key in keyof T as CamelCase<string & Key>]: T[Key];
