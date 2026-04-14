@@ -1,4 +1,5 @@
 @use "sass:string";
+@use "sass:meta";
 
 /// Replace `$search` with `$replace` in `$string`
 ///
@@ -22,4 +23,49 @@
   }
 
   @return $string;
+}
+
+///
+/// @param {String} $char -
+/// @return {Boolean} -
+@function -is-letter($char) {
+  $letters: "abcdefghijklmnopqrstuvwxyz";
+  @return string.index($letters, $char) != null;
+}
+
+///
+/// @param {String} $token -
+/// @return {Boolean} -
+@function has-letter-dot-letter($token) {
+  $length: string.length($token);
+  @if $length < 8 {
+    @return false;
+  }
+
+  @for $i from 1 through $length - 2 {
+    $char-1: string.slice($token, $i, $i);
+    $char-2: string.slice($token, $i + 1, $i + 1);
+    $char-3: string.slice($token, $i + 2, $i + 2);
+
+    @if is-letter($char-1) and $char-2 == "." and is-letter($char-3) {
+      @return true;
+    }
+  }
+  @return false;
+}
+
+///
+/// @param {unknown} $token -
+/// @return {Boolean} -
+@function is-maybe-token-string($token) {
+  @if (meta.type-of($token) != string) or string.index($token, " ") {
+    @return false;
+  }
+
+  $dot-index: string.index($token, ".");
+  @if not $dot-index or $dot-index == 1 {
+    @return false;
+  }
+
+  @return has-letter-dot-letter($token);
 }

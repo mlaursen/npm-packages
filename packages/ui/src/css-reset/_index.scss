@@ -1,0 +1,37 @@
+@use "sass:map";
+@use "sass:meta";
+
+@use "../utils";
+@use "../typography";
+
+$-colors: (
+  background: "palette.background",
+  color: "palette.on-background",
+);
+$-typescale: typography.typescale(
+  body-large,
+  $overrides: (
+    letter-spacing: null,
+  )
+);
+$-styles: (
+  "html": (
+    color-scheme: "palette.color-scheme",
+  ),
+  "html,body": (
+    height: 100%,
+    margin: 0,
+    padding: 0,
+  ),
+  "body": map.merge($-colors, $-typescale),
+);
+
+@mixin configure($styles: null) {
+  @if meta.type-of($styles) == map {
+    $-styles: map.deep-merge($-styles, $styles) !global;
+  }
+}
+
+@mixin styles {
+  @include utils.map-to-styles($-styles);
+}

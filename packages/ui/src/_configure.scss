@@ -2,6 +2,7 @@
 
 @use "utils";
 @use "palette";
+@use "css-reset";
 @use "shape";
 @use "margin";
 @use "transition";
@@ -20,6 +21,7 @@
   $var-prefix: null,
   $selector-prefix: null,
   $palette: null,
+  $css-reset: null,
   $shape: null,
   $margin: null,
   $interaction: null,
@@ -39,6 +41,8 @@
   );
 
   @include palette.configure-global($palette);
+  @include css-reset.configure($css-reset);
+
   @include shape.configure-global($shape);
   @include margin.configure($margin);
   @include transition.configure-global($transition);

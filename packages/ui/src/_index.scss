@@ -1,4 +1,6 @@
 @forward "utils" hide configure-rtl, configure-tokens;
+@forward "typography" show typescale;
+@forward "css-reset";
 @forward "configure";
 @forward "variables";
 @forward "styles";

@@ -25,38 +25,6 @@ $-force-added: ();
   @return var(#{$var});
 }
 
-/// @access private
-@function -is-letter($char) {
-  $letters: "abcdefghijklmnopqrstuvwxyz";
-  @return string.index($letters, $char) != null;
-}
-
-/// @access private
-@function -has-letter-dot-letter($token) {
-  $length: string.length($token);
-  @if $length < 8 {
-    @return false;
-  }
-
-  @for $i from 1 through $length - 2 {
-    $char-1: string.slice($token, $i, $i);
-    $char-2: string.slice($token, $i + 1, $i + 1);
-    $char-3: string.slice($token, $i + 2, $i + 2);
-
-    @if is-letter($char-1) and $char-2 == "." and is-letter($char-3) {
-      @return true;
-    }
-  }
-  @return false;
-}
-
-/// @access private
-@function -is-maybe-token-string($token) {
-  $result: meta.type-of($token) == string and not string.index($token, " ")
-    and -has-letter-dot-letter($token);
-  @return $result;
-}
-
 /// This is used to create a `var(...)` declaration from a token name
 ///
 /// @param {any} $token - An optional token name or any value. This
@@ -69,7 +37,7 @@ $-force-added: ();
     @return $token;
   }
 
-  @if list.index($-tokens, $token) or -is-maybe-token-string($token) {
+  @if list.index($-tokens, $token) or is-maybe-token-string($token) {
     @if not $fallback {
       $fallback: map.get($-tokens-with-fallback, $token);
     }

@@ -4,6 +4,7 @@
 
 @use "./mouse" as *;
 @use "./setup" as *;
+@use "./string" as *;
 @use "./tokens" as *;
 
 @function -parse-possibly-nested-token-vars($value) {
@@ -152,11 +153,7 @@
         @media #{string.slice($property, 7)} {
           @include map-to-styles($value);
         }
-      } @else if string.slice($property, 1, 10) == "@keyframes" {
-        @keyframes #{string.slice($property, 11)} {
-          @include map-to-styles($value);
-        }
-      } @else if string.index($property, ".") {
+      } @else if is-maybe-token-string($property) {
         @include set-var($property, get-token-var($value));
       } @else if $value-type == map {
         #{$property} {
