@@ -1,5 +1,11 @@
 # @mlaursen/eslint-config
 
+## 12.0.8
+
+### Patch Changes
+
+- c39ef2f: Fixed the type definitions after creating a smaller bundle
+
 ## 12.0.7
 
 ### Patch Changes

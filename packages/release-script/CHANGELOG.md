@@ -1,5 +1,16 @@
 # @mlaursen/release-script
 
+## 0.2.0
+
+### Minor Changes
+
+- 7f9f591: Added support for manually defining the tags to publish and only creating the github release instead of the full publish flow
+
+### Patch Changes
+
+- 64f1e35: Try to find the CHANGELOG.md without crashing
+- aebd7a9: Fixed a possible security issue if you somehow create a tag with a lot of numbers.
+
 ## 0.1.1
 
 ### Patch Changes

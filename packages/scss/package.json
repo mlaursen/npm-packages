@@ -1,6 +1,6 @@
 {
   "name": "@mlaursen/scss",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Common utils for compiling sass",
   "type": "module",
   "exports": {

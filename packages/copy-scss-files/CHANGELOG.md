@@ -1,5 +1,13 @@
 # @mlaursen/copy-scss-files
 
+## 0.1.2
+
+### Patch Changes
+
+- Updated dependencies [ca975c4]
+- Updated dependencies [c7412e8]
+  - @mlaursen/node-utils@0.1.0
+
 ## 0.1.1
 
 ### Patch Changes
