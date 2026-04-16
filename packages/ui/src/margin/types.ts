@@ -1,4 +1,4 @@
-import type { OverridableStringUnion } from "../types.js";
+import { type OverridableStringUnion } from "@mlaursen/utils";
 
 export interface MarginOverrides {}
 export type DefaultMargin =

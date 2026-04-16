@@ -3,4 +3,5 @@ import "./button/button.js";
 import "./elevation/elevation.js";
 import "./interaction/interaction.js";
 import "./material-symbol/material-symbol.js";
+import "./palette/update-palette.js";
 import "./typography/typography.js";

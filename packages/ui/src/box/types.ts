@@ -1,4 +1,4 @@
-import { type OverridableStringUnion } from "../types.js";
+import { type OverridableStringUnion } from "@mlaursen/utils";
 
 export interface BoxAlignItemsOverrides {}
 export interface BoxJustifyContentOverrides {}

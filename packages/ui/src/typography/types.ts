@@ -1,7 +1,6 @@
-import {
-  type DefaultComponentSize,
-  type OverridableStringUnion,
-} from "../types.js";
+import { type OverridableStringUnion } from "@mlaursen/utils";
+
+import { type DefaultComponentSize } from "../types.js";
 
 export interface TypographySizeOverrides {}
 
