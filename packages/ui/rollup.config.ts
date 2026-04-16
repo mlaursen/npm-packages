@@ -1,3 +1,4 @@
+import json from "@rollup/plugin-json";
 import { nodeResolve } from "@rollup/plugin-node-resolve";
 import { type RollupOptions } from "rollup";
 import summary from "rollup-plugin-summary";
@@ -34,6 +35,7 @@ if (process.argv.includes("--watch") || process.argv.includes("--dev-server")) {
     },
     external,
     plugins: [
+      json(),
       nodeResolve(),
       swc(),
       // @ts-expect-error bad type definition

@@ -59,12 +59,14 @@
   "dependencies": {
     "@mlaursen/utils": "workspace:*",
     "@open-wc/form-control": "^1.0.0",
+    "@open-wc/lit-helpers": "^0.7.0",
     "lit": "^3.3.2"
   },
   "devDependencies": {
     "@mlaursen/eslint-config": "workspace:*",
     "@mlaursen/node-utils": "workspace:*",
     "@mlaursen/scss": "workspace:*",
+    "@rollup/plugin-json": "^6.1.0",
     "@rollup/plugin-node-resolve": "^16.0.3",
     "@swc/cli": "^0.8.1",
     "@swc/core": "^1.15.32",

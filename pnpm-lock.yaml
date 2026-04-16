@@ -426,6 +426,9 @@ importers:
       '@open-wc/form-control':
         specifier: ^1.0.0
         version: 1.0.0
+      '@open-wc/lit-helpers':
+        specifier: ^0.7.0
+        version: 0.7.0(lit@3.3.2)
       lit:
         specifier: ^3.3.2
         version: 3.3.2
@@ -439,6 +442,9 @@ importers:
       '@mlaursen/scss':
         specifier: workspace:*
         version: link:../scss
+      '@rollup/plugin-json':
+        specifier: ^6.1.0
+        version: 6.1.0(rollup@4.60.2)
       '@rollup/plugin-node-resolve':
         specifier: ^16.0.3
         version: 16.0.3(rollup@4.60.2)
@@ -1242,6 +1248,11 @@ packages:
   '@open-wc/form-control@1.0.0':
     resolution: {integrity: sha512-4QW7FZcq1r7vKzs+ULAqc8vcjs+15kiGksoLiNMi1lbHX52MC+jonveEhvzX1rs0QUXv57V7F6rGt/q+UZh61Q==}
 
+  '@open-wc/lit-helpers@0.7.0':
+    resolution: {integrity: sha512-4NBlx5ve0EvZplCRJbESm0MdMbRCw16alP2y76KAAAwzmFFXXrUj5hFwhw55+sSg5qaRRx6sY+s7usKgnNo3TQ==}
+    peerDependencies:
+      lit: ^2.0.0 || ^3.0.0
+
   '@oxc-project/types@0.123.0':
     resolution: {integrity: sha512-YtECP/y8Mj1lSHiUWGSRzy/C6teUKlS87dEfuVKT09LgQbUsBW1rNg+MiJ4buGu3yuADV60gbIvo9/HplA56Ew==}
 
@@ -1430,6 +1441,15 @@ packages:
 
   '@rolldown/pluginutils@1.0.0-rc.13':
     resolution: {integrity: sha512-3ngTAv6F/Py35BsYbeeLeecvhMKdsKm4AoOETVhAA+Qc8nrA2I0kF7oa93mE9qnIurngOSpMnQ0x2nQY2FPviA==}
+
+  '@rollup/plugin-json@6.1.0':
+    resolution: {integrity: sha512-EGI2te5ENk1coGeADSIwZ7G2Q8CJS2sF120T7jLw4xFw9n7wIOXHo+kIYRAoVpJAN+kmqZSoO3Fp4JtoNF4ReA==}
+    engines: {node: '>=14.0.0'}
+    peerDependencies:
+      rollup: ^1.20.0||^2.0.0||^3.0.0||^4.0.0
+    peerDependenciesMeta:
+      rollup:
+        optional: true
 
   '@rollup/plugin-node-resolve@15.3.1':
     resolution: {integrity: sha512-tgg6b91pAybXHJQMAAwW9VuWBO6Thi+q7BCNARLwSqlmsHz0XYURtGvh/AuwSADXSI4h/2uHbs7s4FzlZDGSGA==}
@@ -5851,6 +5871,10 @@ snapshots:
 
   '@open-wc/form-control@1.0.0': {}
 
+  '@open-wc/lit-helpers@0.7.0(lit@3.3.2)':
+    dependencies:
+      lit: 3.3.2
+
   '@oxc-project/types@0.123.0': {}
 
   '@parcel/watcher-android-arm64@2.5.6':
@@ -5964,6 +5988,12 @@ snapshots:
     optional: true
 
   '@rolldown/pluginutils@1.0.0-rc.13': {}
+
+  '@rollup/plugin-json@6.1.0(rollup@4.60.2)':
+    dependencies:
+      '@rollup/pluginutils': 5.3.0(rollup@4.60.2)
+    optionalDependencies:
+      rollup: 4.60.2
 
   '@rollup/plugin-node-resolve@15.3.1(rollup@4.60.2)':
     dependencies:

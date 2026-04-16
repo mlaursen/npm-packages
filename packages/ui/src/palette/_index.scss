@@ -252,18 +252,8 @@ $-token-names: map.keys($-light-theme-tokens);
   }
 }
 
-@mixin variables($set-color-scheme: false) {
+@mixin variables {
   $is-light-dark: $-color-scheme == light-dark;
-  @if $set-color-scheme {
-    $color-scheme: light;
-    @if $-color-scheme == dark {
-      $color-scheme: dark;
-    } @else if $is-light-dark {
-      $color-scheme: light dark;
-    }
-
-    color-scheme: $color-scheme;
-  }
 
   @if map.get($-tokens, light) and map.get($-tokens, dark) {
     @if $is-light-dark and not $-current-tokens-registered {
@@ -297,6 +287,22 @@ $-token-names: map.keys($-light-theme-tokens);
       $skip-fallback-values: true
     );
   }
+
+  $color-scheme: light;
+  @if $-color-scheme == dark {
+    $color-scheme: dark;
+  } @else if $is-light-dark {
+    $color-scheme: light dark;
+  }
+  @include utils.set-default-tokens(
+    $tokens: (
+      color: (
+        scheme: $color-scheme,
+      ),
+    ),
+    $prefix: "palette",
+    $skip-fallback-values: true
+  );
 }
 
 @function -get-styles($is-css) {
