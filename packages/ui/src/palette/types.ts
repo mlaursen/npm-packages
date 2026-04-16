@@ -6,10 +6,8 @@ export type PaletteBackground = "background";
 
 export type BasePaletteTheme = "primary" | "secondary" | "tertiary" | "error";
 
-export type BasePaletteSurface =
-  | "surface"
-  | "surface-variant"
-  | "inverse-surface";
+export type BasePaletteSurface = "surface" | "surface-variant";
+export type PaletteInverseSurface = "inverse-surface" | "inverse-on-surface";
 
 export type BasePaletteContainer =
   | PaletteBackground
@@ -54,6 +52,7 @@ export type DarkRemainingPalette = `dark-${RemainingPalette}`;
 
 export type PaletteTokenName =
   | PaletteContainer
+  | PaletteInverseSurface
   | ExtraPaletteSurface
   | RemainingPalette;
 export type LightPaletteTokenName = `light-${PaletteTokenName}`;
