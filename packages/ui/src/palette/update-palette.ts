@@ -215,12 +215,12 @@ export class UpdatePalette
   @property({ attribute: "dark-inverse-surface" })
   darkInverseSurface?: string;
 
-  @property({ attribute: "on-inverse-surface" })
-  onInverseSurface?: string;
-  @property({ attribute: "light-on-inverse-surface" })
-  lightOnInverseSurface?: string;
-  @property({ attribute: "dark-on-inverse-surface" })
-  darkOnInverseSurface?: string;
+  @property({ attribute: "inverse-on-surface" })
+  inverseOnSurface?: string;
+  @property({ attribute: "light-inverse-on-surface" })
+  lightInverseOnSurface?: string;
+  @property({ attribute: "dark-inverse-on-surface" })
+  darkInverseOnSurface?: string;
 
   @property()
   background?: string;
