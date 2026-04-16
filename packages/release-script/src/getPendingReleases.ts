@@ -52,7 +52,16 @@ export async function getPendingReleases(
 
   const pending: PendingRelease[] = [];
   for (const unpushedTag of releaseTags) {
-    const name = unpushedTag.replace(/@\d+.+$/, "");
+    let name = unpushedTag.trim();
+
+    // remove the version number and just keep the scope. i.e.
+    // @mlaursen/release-script@1.1.1 -> @mlaursen/release-script
+    // package-name@1.0.0             -> package-name
+    const atIndex = name.indexOf("@", 1);
+    if (atIndex > 0) {
+      name = name.slice(0, atIndex);
+    }
+
     if (
       disableGithubReleasePackages.has(name) ||
       !(await confirm({ message: `Include ${unpushedTag} in the release?` }))
