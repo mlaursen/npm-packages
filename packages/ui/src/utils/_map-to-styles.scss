@@ -153,6 +153,10 @@
         @media #{string.slice($property, 7)} {
           @include map-to-styles($value);
         }
+      } @else if string.index($property, "@starting-style") {
+        @starting-style {
+          @include map-to-styles($value);
+        }
       } @else if is-maybe-token-string($property) {
         @include set-var($property, get-token-var($value));
       } @else if $value-type == map {

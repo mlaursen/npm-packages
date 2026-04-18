@@ -1,0 +1,293 @@
+@use "sass:map";
+
+@use "../utils";
+
+$-tokens-registered: false;
+$-tokens: (
+  background: "palette.inverse-surface",
+  color: "palette.inverse-on-surface",
+
+  top: auto,
+  right: auto,
+  bottom: auto,
+  left: auto,
+
+  offset-x: 0%,
+  offset-y: 0%,
+  z-index: 50,
+
+  fallbacks: "flip-inline, flip-block",
+  spacing: 0%,
+  spacing-x: "popover.spacing",
+  spacing-y: "popover.spacing",
+
+  opacity: 0,
+  open: (
+    opacity: 1,
+    transform: null,
+  ),
+  closed: (
+    opacity: 0,
+    transform: null,
+  ),
+  // using a small value so that the base transform applies
+  transform: "scale(1)",
+  transition-property: "opacity, transform",
+  transition-duration: "transition.duration.short-4",
+);
+
+$-configure-tokens: (
+  target-styles,
+  popover-styles,
+  popover-left-styles,
+  popover-inner-left-styles,
+  popover-center-x-styles,
+  popover-inner-right-styles,
+  popover-right-styles,
+  popover-above-styles,
+  popover-top-styles,
+  popover-center-y-styles,
+  popover-bottom-styles,
+  popover-below-styles
+);
+
+$-target-styles: (
+  anchor-name: --popover-target,
+);
+$-popover-styles: (
+  background: transparent,
+  border: 0,
+  box-sizing: border-box,
+  inset: '"popover.top" "popover.right" "popover.bottom" "popover.left"',
+  margin: 0,
+  padding: '"popover.spacing-y" "popover.spacing-x"',
+  position-anchor: --popover-target,
+  position-try-fallbacks: "popover.fallbacks",
+  opacity: "popover.opacity",
+  transform:
+    'translate("popover.offset-x", "popover.offset-y") "popover.transform"',
+  transition-behavior: allow-discrete,
+  transition-duration: "popover.transition-duration",
+  transition-property: 'display, overlay, "popover.transition-property"',
+  transition-timing-function: "transition.easing.emphasized-accelerate",
+  z-index: "popover.z-index",
+
+  "&:popover-open": (
+    "popover.opacity": "popover.open.opacity",
+    "popover.transform": "popover.open.transform",
+
+    "@starting-style": (
+      "popover.opacity": "popover.closed.opacity",
+      "popover.transform": "popover.closed.transform",
+    ),
+  ),
+);
+$-popover-content-styles: (
+  background: "popover.background",
+  border: 0,
+  box-sizing: border-box,
+  color: "popover.color",
+  display: flex,
+);
+$-popover-left-styles: (
+  "popover.right": anchor(left),
+  "popover.multiplier-x": -1,
+);
+$-popover-inner-left-styles: (
+  "popover.left": anchor(left),
+  "popover.multiplier-x": -1,
+);
+$-popover-center-x-styles: (
+  "popover.left": anchor(center),
+  "popover.fallbacks": "flip-y",
+  "popover.offset-x": -50%,
+);
+$-popover-inner-right-styles: (
+  "popover.right": anchor(right),
+  "popover.multiplier-x": 1,
+);
+$-popover-right-styles: (
+  "popover.left": anchor(right),
+  "popover.multiplier-x": 1,
+);
+$-popover-above-styles: (
+  "popover.bottom": anchor(top),
+  "popover.multiplier-y": -1,
+);
+$-popover-top-styles: (
+  "popover.top": anchor(top),
+  "popover.multiplier-y": -1,
+);
+$-popover-center-y-styles: (
+  "popover.top": anchor(center),
+  "popover.fallbacks": "flip-x",
+  "popover.offset-y": -50%,
+);
+$-popover-bottom-styles: (
+  "popover.bottom": anchor(bottom),
+  "popover.multiplier-y": 1,
+);
+$-popover-below-styles: (
+  "popover.top": anchor(bottom),
+  "popover.multiplier-y": 1,
+);
+
+@mixin configure(
+  $target-styles: null,
+  $popover-styles: null,
+  $popover-left-styles: null,
+  $popover-inner-left-styles: null,
+  $popover-center-x-styles: null,
+  $popover-inner-right-styles: null,
+  $popover-right-styles: null,
+  $popover-above-styles: null,
+  $popover-top-styles: null,
+  $popover-center-y-styles: null,
+  $popover-bottom-styles: null,
+  $popover-below-styles: null
+) {
+  @if $target-styles != null {
+    $-target-styles: map.merge($-target-styles, $target-styles) !global;
+  }
+
+  @if $popover-styles != null {
+    $-popover-styles: map.merge($-popover-styles, $popover-styles) !global;
+  }
+
+  @if $popover-left-styles != null {
+    $-popover-left-styles: map.merge(
+      $-popover-left-styles,
+      $popover-left-styles
+    ) !global;
+  }
+
+  @if $popover-inner-left-styles != null {
+    $-popover-inner-left-styles: map.merge(
+      $-popover-inner-left-styles,
+      $popover-inner-left-styles
+    ) !global;
+  }
+
+  @if $popover-center-x-styles != null {
+    $-popover-center-x-styles: map.merge(
+      $-popover-center-x-styles,
+      $popover-center-x-styles
+    ) !global;
+  }
+
+  @if $popover-inner-right-styles != null {
+    $-popover-inner-right-styles: map.merge(
+      $-popover-inner-right-styles,
+      $popover-inner-right-styles
+    ) !global;
+  }
+
+  @if $popover-right-styles != null {
+    $-popover-right-styles: map.merge(
+      $-popover-right-styles,
+      $popover-right-styles
+    ) !global;
+  }
+
+  @if $popover-above-styles != null {
+    $-popover-above-styles: map.merge(
+      $-popover-above-styles,
+      $popover-above-styles
+    ) !global;
+  }
+
+  @if $popover-top-styles != null {
+    $-popover-top-styles: map.merge(
+      $-popover-top-styles,
+      $popover-top-styles
+    ) !global;
+  }
+
+  @if $popover-center-y-styles != null {
+    $-popover-center-y-styles: map.merge(
+      $-popover-center-y-styles,
+      $popover-center-y-styles
+    ) !global;
+  }
+
+  @if $popover-bottom-styles != null {
+    $-popover-bottom-styles: map.merge(
+      $-popover-bottom-styles,
+      $popover-bottom-styles
+    ) !global;
+  }
+
+  @if $popover-below-styles != null {
+    $-popover-below-styles: map.merge(
+      $-popover-below-styles,
+      $popover-below-styles
+    ) !global;
+  }
+
+  @if not $-tokens-registered {
+    $-tokens-registered: true !global;
+    @include utils.register-tokens($tokens: $-tokens, $prefix: "popover");
+  }
+}
+
+@mixin configure-global($overrides: null) {
+  $overrides: utils.get-config-map(popover, $overrides, $-configure-tokens);
+  @include configure(
+    $target-styles: map.get($overrides, target-styles),
+    $popover-styles: map.get($overrides, popover-styles),
+    $popover-left-styles: map.get($overrides, popover-left-styles),
+    $popover-inner-left-styles: map.get($overrides, popover-inner-left-styles),
+    $popover-center-x-styles: map.get($overrides, popover-center-x-styles),
+    $popover-inner-right-styles: map.get($overrides, popover-inner-right-styles),
+    $popover-right-styles: map.get($overrides, popover-right-styles),
+    $popover-above-styles: map.get($overrides, popover-above-styles),
+    $popover-top-styles: map.get($overrides, popover-top-styles),
+    $popover-center-y-styles: map.get($overrides, popover-center-y-styles),
+    $popover-bottom-styles: map.get($overrides, popover-bottom-styles),
+    $popover-below-styles: map.get($overrides, popover-below-styles)
+  );
+}
+
+@mixin css-styles {
+  $styles: (
+    "&popover": $-popover-styles,
+    "&popover-target": $-target-styles,
+    "&popover--left": $-popover-left-styles,
+    "&popover--inner-left": $-popover-inner-left-styles,
+    "&popover--center-x": $-popover-center-x-styles,
+    "&popover--inner-right": $-popover-inner-right-styles,
+    "&popover--right": $-popover-right-styles,
+
+    "&popover--above": $-popover-above-styles,
+    "&popover--top": $-popover-top-styles,
+    "&popover--center-y": $-popover-center-y-styles,
+    "&popover--bottom": $-popover-bottom-styles,
+    "&popover--below": $-popover-below-styles,
+  );
+  @include utils.css-styles($styles);
+}
+
+@mixin host-styles {
+  $styles: (
+    "::slotted([slot=target])": $-target-styles,
+    "#popover": $-popover-styles,
+    ".content": $-popover-content-styles,
+    ":host([anchor-x=left])": $-popover-left-styles,
+    ":host([anchor-x=inner-left])": $-popover-inner-left-styles,
+    ":host([anchor-x=center])": $-popover-center-x-styles,
+    ":host([anchor-x=inner-right])": $-popover-inner-right-styles,
+    ":host([anchor-x=right])": $-popover-right-styles,
+
+    ":host([anchor-y=above])": $-popover-above-styles,
+    ":host([anchor-y=top])": $-popover-top-styles,
+    ":host([anchor-y=center])": $-popover-center-y-styles,
+    ":host([anchor-y=bottom])": $-popover-bottom-styles,
+    ":host([anchor-y=below])": $-popover-below-styles,
+  );
+  @include utils.host-styles($styles);
+}
+
+@mixin styles {
+  @include css-styles;
+  @include host-styles;
+}

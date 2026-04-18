@@ -8,6 +8,8 @@
 @use "transition";
 @use "elevation";
 @use "interaction";
+@use "popover";
+
 @use "typography";
 @use "icon";
 @use "material-symbol";
@@ -28,6 +30,7 @@
   $elevation: null,
   $transition: null,
   $typography: null,
+  $popover: null,
   $icon: null,
   $material-symbol: null,
   $box: null,
@@ -48,6 +51,8 @@
   @include transition.configure-global($transition);
   @include elevation.configure-global($elevation);
   @include interaction.configure-global($interaction);
+  @include popover.configure-global($popover);
+
   @include typography.configure-global($typography);
   @include icon.configure-global($icon);
   @include material-symbol.configure-global($material-symbol);
