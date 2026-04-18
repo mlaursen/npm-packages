@@ -361,7 +361,10 @@ export class UpdatePalette
       } else if (isRemainingPaletteProperty(property)) {
         this.#toggleProperty(getRemainingVar(property), this[property]);
       } else if (property === "colorScheme") {
-        this.#toggleProperty("color-scheme", this.colorScheme);
+        this.#toggleProperty(
+          "color-scheme",
+          this.colorScheme?.replace("-", " "),
+        );
       }
     }
   }

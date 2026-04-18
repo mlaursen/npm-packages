@@ -5,14 +5,14 @@
 $-tokens-registered: false;
 $-tokens: (
   none: 0,
-  xs: utils.to-rem(4),
+  extra-small: utils.to-rem(4),
   small: utils.to-rem(8),
   medium: utils.to-rem(12),
-  lg: utils.to-rem(16),
-  li: utils.to-rem(20),
-  xl: utils.to-rem(28),
-  xli: utils.to-rem(32),
-  xxl: utils.to-rem(48),
+  large: utils.to-rem(16),
+  large-increased: utils.to-rem(20),
+  extra-large: utils.to-rem(28),
+  extra-large-increased: utils.to-rem(32),
+  extra-extra-large: utils.to-rem(48),
   full: utils.to-rem(1000),
 );
 $-configure-tokens: map.keys($-tokens);
@@ -25,25 +25,25 @@ $-configure-tokens: map.keys($-tokens);
 
 @mixin configure(
   $none: null,
-  $xs: null,
-  $sm: null,
-  $md: null,
-  $lg: null,
-  $li: null,
-  $xl: null,
-  $xli: null,
-  $xxl: null,
+  $extra-small: null,
+  $small: null,
+  $medium: null,
+  $large: null,
+  $large-increased: null,
+  $extra-large: null,
+  $extra-extra-increased: null,
+  $extra-extra-large: null,
   $full: null
 ) {
   @include -update($none, none);
-  @include -update($xs, xs);
-  @include -update($sm, small);
-  @include -update($md, medium);
-  @include -update($lg, lg);
-  @include -update($li, li);
-  @include -update($xl, xl);
-  @include -update($xli, xli);
-  @include -update($xxl, xxl);
+  @include -update($extra-small, extra-small);
+  @include -update($small, small);
+  @include -update($medium, medium);
+  @include -update($large, large);
+  @include -update($large-increased, large-increased);
+  @include -update($extra-large, extra-large);
+  @include -update($extra-extra-increased, extra-extra-increased);
+  @include -update($extra-extra-large, extra-extra-large);
   @include -update($full, full);
 
   @if not $-tokens-registered {
@@ -56,14 +56,14 @@ $-configure-tokens: map.keys($-tokens);
   $overrides: utils.get-config-map(shape, $overrides, $-configure-tokens);
   @include configure(
     $none: map.get($overrides, none),
-    $xs: map.get($overrides, xs),
-    $sm: map.get($overrides, sm),
-    $md: map.get($overrides, md),
-    $lg: map.get($overrides, lg),
-    $li: map.get($overrides, li),
-    $xl: map.get($overrides, xl),
-    $xli: map.get($overrides, xli),
-    $xxl: map.get($overrides, xxl),
+    $extra-small: map.get($overrides, extra-small),
+    $small: map.get($overrides, small),
+    $medium: map.get($overrides, medium),
+    $large: map.get($overrides, large),
+    $large-increased: map.get($overrides, large-increased),
+    $extra-large: map.get($overrides, extra-large),
+    $extra-extra-increased: map.get($overrides, extra-extra-increased),
+    $extra-extra-large: map.get($overrides, extra-extra-large),
     $full: map.get($overrides, full)
   );
 }

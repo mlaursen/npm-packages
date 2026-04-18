@@ -1,6 +1,6 @@
 import { kebabCase, upperFirst } from "@mlaursen/utils";
 import { spread } from "@open-wc/lit-helpers";
-import { LitElement, type TemplateResult, html, nothing } from "lit";
+import { LitElement, type TemplateResult, html } from "lit";
 import { customElement, state } from "lit/decorators.js";
 import { ifDefined } from "lit/directives/if-defined.js";
 import { map } from "lit/directives/map.js";
