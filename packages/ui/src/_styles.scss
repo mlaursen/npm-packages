@@ -2,6 +2,7 @@
 @use "margin";
 @use "elevation";
 @use "interaction";
+@use "popover";
 @use "typography";
 @use "box";
 @use "button";
@@ -12,6 +13,7 @@
   @include elevation.styles;
   @include interaction.styles;
   @include typography.styles;
+  @include popover.styles;
 
   @include box.styles;
   @include button.styles;
