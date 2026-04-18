@@ -51,7 +51,7 @@ export class Box extends BaseBox {
   padding: BoxPadding = "all";
 
   #updateGridColumns(): void {
-    const property = `${UI_CONFIG.varPrefix}-box-columns`;
+    const property = `${UI_CONFIG.varPrefix}box-columns`;
     if (typeof this.grid === "string" && /^\d+$/.test(this.grid)) {
       this.style.setProperty(property, this.grid);
     } else {

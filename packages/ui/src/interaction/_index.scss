@@ -90,8 +90,6 @@ $-focusable-styles: (
   outline: 0,
 
   "&::before": (
-    // use new transition behavior
-    transition: null,
     animation-delay: '0s, calc("interaction.focused.duration" * 0.25)',
     animation-duration:
       'calc("interaction.focused.duration" * 0.25), calc("interaction.focused.duration" * 0.75)',

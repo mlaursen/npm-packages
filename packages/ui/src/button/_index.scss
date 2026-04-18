@@ -942,6 +942,7 @@ $-base-styles: (
       "button.container.opacity"
     ),
   border-width: 0,
+  box-sizing: border-box,
   color: utils.get-rgb-var(
       "button.label-text.color",
       "button.label-text.opacity"

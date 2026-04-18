@@ -48,24 +48,19 @@ return {
 
     t({ "@mixin css-styles {", "" }),
     t({ "\t$styles: ();", "" }),
-    t({ "\t@include utils.map-to-styles($styles);", "" }),
+    t({ "\t@include utils.css-styles($styles);", "" }),
     t({ "}", "" }),
     t({ "", "" }),
 
     t({ "@mixin host-styles {", "" }),
     t({ "\t$styles: ();", "" }),
-    t({ "\t@include utils.map-to-styles($styles);", "" }),
+    t({ "\t@include utils.host-styles($styles);", "" }),
     t({ "}", "" }),
     t({ "", "" }),
 
     t({ "@mixin styles {", "" }),
-    t({ "\t@include utils.css-styles {", "" }),
-    t({ "\t\t@include css-styles;", "" }),
-    t({ "\t}", "" }),
-    t({ "", "" }),
-    t({ "\t@include utils.host-styles {", "" }),
-    t({ "\t\t@include host-styles;", "" }),
-    t({ "\t}", "" }),
+    t({ "\t@include css-styles;", "" }),
+    t({ "\t@include host-styles;", "" }),
     t({ "}", "" }),
   }),
 }
