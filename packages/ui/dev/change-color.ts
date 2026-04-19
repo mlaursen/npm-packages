@@ -1,7 +1,7 @@
 import { kebabCase, upperFirst } from "@mlaursen/utils";
 import { spread } from "@open-wc/lit-helpers";
 import { LitElement, type TemplateResult, html } from "lit";
-import { customElement, state } from "lit/decorators.js";
+import { customElement, property, state } from "lit/decorators.js";
 import { ifDefined } from "lit/directives/if-defined.js";
 import { map } from "lit/directives/map.js";
 
@@ -20,6 +20,9 @@ type RootMode = (typeof roots)[number];
 
 @customElement("change-color")
 export class ChangeColor extends LitElement {
+  @property({ type: Boolean, attribute: "no-config" })
+  noConfig = false;
+
   @state()
   _mode: ColorMode = "none";
 
@@ -48,78 +51,88 @@ export class ChangeColor extends LitElement {
         ${spread(this.#getProperties())}
       >
         <ui-update-palette root color-scheme=${ifDefined(rootColorScheme)}>
-          <ui-box stacked>
-            <ui-typography variant="display">
-              <h2>Change Color</h2>
-            </ui-typography>
-            <ui-typography variant="title">Material Colors</ui-typography>
-            <ui-box>
-              ${map(modes, (mode) => {
-                const active = this._mode === mode;
-                return html`
-                  <ui-button
-                    variant=${active ? "filled" : "outlined"}
-                    @click=${() => this.#changeMode(mode)}
-                    .disabled=${active}
-                  >
-                    ${mode}
-                  </ui-button>
-                `;
-              })}
-            </ui-box>
-            <ui-typography variant="title">Contrast</ui-typography>
-            <ui-box>
-              ${map(contrasts, (contrast) => {
-                const active = this._contrast === contrast;
-                return html`
-                  <ui-button
-                    variant=${active ? "filled" : "outlined"}
-                    @click=${() => this.#changeContrast(contrast)}
-                    .disabled=${active}
-                  >
-                    ${contrast}
-                  </ui-button>
-                `;
-              })}
-            </ui-box>
-            <ui-typography variant="title">Color Schemes</ui-typography>
-            <ui-box>
-              ${map(colorSchemes, (colorScheme) => {
-                const active = this._colorScheme === colorScheme;
-                return html`
-                  <ui-button
-                    variant=${active ? "filled" : "outlined"}
-                    @click=${() => {
-                      this._colorScheme = colorScheme;
-                    }}
-                    .disabled=${active}
-                  >
-                    ${colorScheme}
-                  </ui-button>
-                `;
-              })}
-            </ui-box>
-            <ui-typography variant="title">Root</ui-typography>
-            <ui-box>
-              ${map(roots, (root) => {
-                const active = root === this._root;
-                return html`
-                  <ui-button
-                    variant=${active ? "filled" : "outlined"}
-                    @click=${() => {
-                      this._root = root;
-                    }}
-                    .disabled=${active}
-                  >
-                    ${root}
-                  </ui-button>
-                `;
-              })}
-            </ui-box>
-          </ui-box>
+          ${this.renderEverything()}
           <slot></slot>
         </ui-update-palette>
       </ui-update-palette>
+    `;
+  }
+
+  renderEverything(): TemplateResult | null {
+    if (this.noConfig) {
+      return null;
+    }
+
+    return html`
+      <ui-box stacked>
+        <ui-typography variant="display">
+          <h2>Change Color</h2>
+        </ui-typography>
+        <ui-typography variant="title">Material Colors</ui-typography>
+        <ui-box>
+          ${map(modes, (mode) => {
+            const active = this._mode === mode;
+            return html`
+              <ui-button
+                variant=${active ? "filled" : "outlined"}
+                @click=${() => this.#changeMode(mode)}
+                .disabled=${active}
+              >
+                ${mode}
+              </ui-button>
+            `;
+          })}
+        </ui-box>
+        <ui-typography variant="title">Contrast</ui-typography>
+        <ui-box>
+          ${map(contrasts, (contrast) => {
+            const active = this._contrast === contrast;
+            return html`
+              <ui-button
+                variant=${active ? "filled" : "outlined"}
+                @click=${() => this.#changeContrast(contrast)}
+                .disabled=${active}
+              >
+                ${contrast}
+              </ui-button>
+            `;
+          })}
+        </ui-box>
+        <ui-typography variant="title">Color Schemes</ui-typography>
+        <ui-box>
+          ${map(colorSchemes, (colorScheme) => {
+            const active = this._colorScheme === colorScheme;
+            return html`
+              <ui-button
+                variant=${active ? "filled" : "outlined"}
+                @click=${() => {
+                  this._colorScheme = colorScheme;
+                }}
+                .disabled=${active}
+              >
+                ${colorScheme}
+              </ui-button>
+            `;
+          })}
+        </ui-box>
+        <ui-typography variant="title">Root</ui-typography>
+        <ui-box>
+          ${map(roots, (root) => {
+            const active = root === this._root;
+            return html`
+              <ui-button
+                variant=${active ? "filled" : "outlined"}
+                @click=${() => {
+                  this._root = root;
+                }}
+                .disabled=${active}
+              >
+                ${root}
+              </ui-button>
+            `;
+          })}
+        </ui-box>
+      </ui-box>
     `;
   }
 

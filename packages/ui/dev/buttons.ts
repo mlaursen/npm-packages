@@ -1,5 +1,5 @@
 import { LitElement, type TemplateResult, css, html } from "lit";
-import { customElement, state } from "lit/decorators.js";
+import { customElement, property, state } from "lit/decorators.js";
 
 import {
   type ButtonShape,
@@ -170,9 +170,6 @@ export class Buttons extends LitElement {
           </ui-button>
         </ui-box>
         ${this._renderEverything()}
-        <ui-button aria-label="Hello!">
-          <material-symbol>favorite</material-symbol>
-        </ui-button>
       </ui-box>
     `;
   }
