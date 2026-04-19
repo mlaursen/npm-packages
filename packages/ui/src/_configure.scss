@@ -16,6 +16,7 @@
 
 @use "box";
 @use "button";
+@use "tooltip";
 
 @mixin configure(
   $rtl: null,
@@ -34,7 +35,8 @@
   $icon: null,
   $material-symbol: null,
   $box: null,
-  $button: null
+  $button: null,
+  $tooltip: null
 ) {
   @include utils.configure-setup(
     $rtl: $rtl,
@@ -58,4 +60,5 @@
   @include material-symbol.configure-global($material-symbol);
   @include box.configure-global($box);
   @include button.configure-global($button);
+  @include tooltip.configure-global($tooltip);
 }

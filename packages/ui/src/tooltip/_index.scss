@@ -1,0 +1,59 @@
+@use "sass:map";
+
+@use "../utils";
+@use "../typography";
+
+$-tokens-registered: false;
+$-tokens: (
+  background: "palette.inverse-surface",
+  border-radius: "shape.corner.extra-small",
+  color: "palette.inverse-on-surface",
+  padding: "0.5rem",
+  max-width: "15rem",
+  min-width: min-content,
+);
+
+$-configure-tokens: map.keys($-tokens);
+
+$-base-styles: (
+  "popover.background": "tooltip.background",
+  "popover.color": "tooltip.color",
+  "popover.spacing": "0.25rem",
+);
+$-tooltip-styles: (
+  border-radius: "tooltip.border-radius",
+  font: typography.typescale(body-small),
+  padding: "tooltip.padding",
+  width: minmax("tooltip.min-width", "tooltip.max-width"),
+  white-space: nowrap,
+);
+
+@mixin configure() {
+  @if not $-tokens-registered {
+    $-tokens-registered: true !global;
+    @include utils.register-tokens($tokens: $-tokens, $prefix: "tooltip");
+  }
+}
+
+@mixin configure-global($overrides: null) {
+  $overrides: utils.get-config-map(tooltip, $overrides, $-configure-tokens);
+  @include configure();
+}
+
+@mixin css-styles {
+  $styles: ();
+  @include utils.map-to-styles($styles);
+}
+
+@mixin host-styles {
+  $styles: (
+    ":host": $-base-styles,
+    ".content": $-tooltip-styles,
+  );
+  @include utils.map-to-styles($styles);
+}
+
+@mixin styles {
+  @include css-styles;
+  @include host-styles;
+}
