@@ -38,7 +38,7 @@
     "build-types": "tsc -p tsconfig.types.json",
     "build-types-watch": "pnpm build-types --watch",
     "build": "pnpm build-scss && pnpm build-types && pnpm build-dist",
-    "dev-server": "wds --node-resolve --open dev/ --watch",
+    "dev-server": "wds",
     "dev": "concurrently 'pnpm build-types-watch' 'pnpm build-dist-watch' --kill-others"
   },
   "author": "Mikkel Laursen <mlaursen03@gmail.com>",

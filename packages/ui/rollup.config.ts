@@ -36,7 +36,9 @@ if (process.argv.includes("--watch") || process.argv.includes("--dev-server")) {
     external,
     plugins: [
       json(),
-      nodeResolve(),
+      nodeResolve({
+        exportConditions: ["development"],
+      }),
       swc(),
       // @ts-expect-error bad type definition
       summary(),
