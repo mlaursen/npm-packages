@@ -1,0 +1,92 @@
+@use "sass:map";
+
+@use "../utils";
+
+$-tokens-registered: false;
+$-tokens: (
+  size: "button.container.height",
+  icon-size: "icon.size",
+
+  extra-small: (
+    icon-size: 1.25rem,
+    narrow-width: 1.75rem,
+    wide-width: 2.5rem,
+  ),
+  small: (
+    icon-size: 1.5rem,
+    narrow-width: 2rem,
+    wide-width: 3.25rem,
+  ),
+  medium: (
+    size: 3.5rem,
+    icon-size: 1.5rem,
+    narrow-width: 3rem,
+    wide-width: 4.5rem,
+  ),
+  large: (
+    size: 6rem,
+    icon-size: 2rem,
+    narrow-width: 4rem,
+    wide-width: 8rem,
+  ),
+  extra-large: (
+    size: 8.5rem,
+    icon-size: 2.5rem,
+    narrow-width: 6.5rem,
+    wide-width: 11.5rem,
+  ),
+);
+
+$-configure-tokens: map.keys($-tokens);
+
+$-styles: (
+  "icon.size": 1em,
+  font-size: 1.5rem,
+  height: auto,
+  padding: 'calc(("icon-button.size" - 1em) / 2)',
+  width: auto,
+);
+$-extra-small-styles: (
+  font-size: 1.25rem,
+);
+$-small-styles: ();
+$-medium-styles: ();
+// ":host([icon][size=extra-small])": (
+//   font-size: 1.25rem,
+// ),
+// // ":host([icon][size=small])": $-small-styles,
+// // ":host([icon][size=medium])": $-medium-styles,
+// ":host([icon][size=large])": (
+//     font-size: 2rem,
+//   ),
+// ":host([icon][size=extra-large])": (
+//   font-size: 2.5rem,
+// ),
+@mixin configure() {
+  @if not $-tokens-registered {
+    $-tokens-registered: true !global;
+    @include utils.register-tokens($tokens: $-tokens, $prefix: "icon-button");
+  }
+}
+
+@mixin configure-global($overrides: null) {
+  $overrides: utils.get-config-map(icon-button, $overrides, $-configure-tokens);
+  @include configure();
+}
+
+@mixin css-styles {
+  $styles: ();
+  @include utils.css-styles($styles);
+}
+
+@mixin host-styles {
+  $styles: (
+    ":host": $-styles,
+  );
+  @include utils.host-styles($styles);
+}
+
+@mixin styles {
+  @include css-styles;
+  @include host-styles;
+}

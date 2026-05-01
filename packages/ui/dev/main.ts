@@ -7,6 +7,7 @@ import lightDarkStyles from "../src/palette/light-dark-styles.js";
 import "./buttons.js";
 import "./change-color.js";
 import "./form-test.js";
+import "./icon-buttons.js";
 import "./material-symbols.js";
 import "./toggle-dir.js";
 import "./tooltips.js";
@@ -26,27 +27,32 @@ export class Main extends LitElement {
 
   @state()
   visible = new Set<string>([
+    // "change-color",
     // "toggle-dir",
     // "form-test",
     // "buttons",
+    "icon-buttons",
     // "material-symbols",
     // "typography",
-    "tooltips",
+    // "tooltips",
   ]);
 
   override render(): TemplateResult {
     return html`
-      <change-color no-config>
-        <toggle-dir .hidden=${!this.visible.has("toggle-dir")}></toggle-dir>
-        <form-test .hidden=${!this.visible.has("form-test")}></form-test>
-        <app-buttons .hidden=${!this.visible.has("buttons")}></app-buttons>
+      <change-color ?no-config=${!this.visible.has("change-color")}>
+        <toggle-dir ?hidden=${!this.visible.has("toggle-dir")}></toggle-dir>
+        <form-test ?hidden=${!this.visible.has("form-test")}></form-test>
+        <app-buttons ?hidden=${!this.visible.has("buttons")}></app-buttons>
+        <icon-buttons
+          ?hidden=${!this.visible.has("icon-buttons")}
+        ></icon-buttons>
         <app-material-symbols
-          .hidden=${!this.visible.has("material-symbols")}
+          ?hidden=${!this.visible.has("material-symbols")}
         ></app-material-symbols>
         <app-typography
-          .hidden=${!this.visible.has("typography")}
+          ?hidden=${!this.visible.has("typography")}
         ></app-typography>
-        <app-tooltips .hidden=${!this.visible.has("tooltips")}></app-tooltips>
+        <app-tooltips ?hidden=${!this.visible.has("tooltips")}></app-tooltips>
       </change-color>
     `;
   }

@@ -59,6 +59,7 @@ export class ChangeColor extends LitElement {
   }
 
   renderEverything(): TemplateResult | null {
+    console.log("this.noConfig:", this.noConfig);
     if (this.noConfig) {
       return null;
     }

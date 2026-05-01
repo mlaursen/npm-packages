@@ -13,8 +13,8 @@
 @use "typography";
 @use "icon";
 @use "material-symbol";
-
 @use "box";
+@use "icon-button";
 @use "button";
 @use "tooltip";
 
@@ -36,6 +36,7 @@
   $material-symbol: null,
   $box: null,
   $button: null,
+  $icon-button: null,
   $tooltip: null
 ) {
   @include utils.configure-setup(
@@ -60,5 +61,6 @@
   @include material-symbol.configure-global($material-symbol);
   @include box.configure-global($box);
   @include button.configure-global($button);
+  @include icon-button.configure-global($icon-button);
   @include tooltip.configure-global($tooltip);
 }

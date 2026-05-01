@@ -1,6 +1,12 @@
 import "./box/box.js";
 import "./button/button.js";
+import "./button/elevated-button.js";
+import "./button/filled-button.js";
+import "./button/outlined-button.js";
+import "./button/text-button.js";
+import "./button/tonal-button.js";
 import "./elevation/elevation.js";
+import "./icon-button/icon-button.js";
 import "./interaction/interaction.js";
 import "./material-symbol/material-symbol.js";
 import "./palette/update-palette.js";
