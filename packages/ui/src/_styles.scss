@@ -6,6 +6,7 @@
 @use "typography";
 @use "box";
 @use "button";
+@use "icon-button";
 @use "tooltip";
 
 @mixin styles {
@@ -18,5 +19,6 @@
 
   @include box.styles;
   @include button.styles;
+  @include icon-button.styles;
   @include tooltip.styles;
 }

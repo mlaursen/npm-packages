@@ -1,0 +1,78 @@
+@use "sass:map";
+
+@use "../utils";
+
+$-tokens-registered: false;
+$-tokens: (
+  background: "palette.surface-container",
+  border-radius: "shape.corner.medium",
+  color: "palette.on-surface-variant",
+  shadow-color: "palette.shadow",
+  elevation: 2,
+
+  label-text: (
+    color: "palette.primary",
+  ),
+  subhead: (
+    color: "palette.on-surface-variant",
+  ),
+
+  hovered: (),
+  focused: (),
+  pressed: (),
+);
+
+$-configure-tokens: map.keys($-tokens);
+
+$-rich-styles: (
+  "elevation.shadow-color": "tooltip.rich.shadow-color",
+  "elevation.level": "tooltip.rich.elevation",
+  "tooltip.background": "tooltip.rich.background",
+  "tooltip.border-radius": "tooltip.rich.border-radius",
+  "tooltip.color": "tooltip.rich.color",
+  font: typography.typescale(body-medium),
+);
+
+$-rich-label-styles: (
+  color: "tooltip.rich.label-text.color",
+  font: typography.typescale(label-large),
+);
+$-rich-subhead-styles: (
+  color: "tooltip.rich.subhead.color",
+  font: typography.typescale(title-small),
+);
+
+$-styles: (
+  base: (),
+);
+
+@mixin configure() {
+  @if not $-tokens-registered {
+    $-tokens-registered: true !global;
+    @include utils.register-tokens($tokens: $-tokens, $prefix: "rich-tooltip");
+  }
+}
+
+@mixin configure-global($overrides: null) {
+  $overrides: utils.get-config-map(
+    rich-tooltip,
+    $overrides,
+    $-configure-tokens
+  );
+  @include configure();
+}
+
+@mixin css-styles {
+  $styles: ();
+  @include utils.map-to-styles($styles);
+}
+
+@mixin host-styles {
+  $styles: ();
+  @include utils.map-to-styles($styles);
+}
+
+@mixin styles {
+  @include css-styles;
+  @include host-styles;
+}

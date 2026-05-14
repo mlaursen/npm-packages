@@ -1,0 +1,806 @@
+
+diff --git a/packages/core/src/_base.scss b/packages/core/src/_base.scss
+index 0fe0afe89e..4669ab08fb 100644
+--- a/packages/core/src/_base.scss
++++ b/packages/core/src/_base.scss
+@@ -22,6 +22,7 @@
+ @use "tree/tree";
+ @use "tooltip/tooltip";
+ @use "overlay/overlay";
++@use "popover/popover";
+ @use "progress/progress";
+ @use "responsive-item/responsive-item";
+ @use "tabs/tabs";
+@@ -59,6 +60,7 @@
+ /// @type Map
+ $_layer-order: (
+   typography,
++  popover,
+   transition,
+   interaction,
+   box,
+@@ -490,6 +492,7 @@ $_layer-order: (
+   @include object-fit.styles($disable-layer);
+   @include overlay.styles($disable-layer);
+   @include password.styles($disable-layer);
++  @include popover.styles($disable-layer);
+   @include progress.styles($disable-layer);
+   @include responsive-item.styles($disable-layer);
+   @include segmented-button.styles($disable-layer);
+diff --git a/packages/core/src/_core.scss b/packages/core/src/_core.scss
+index c81a770943..0f046f0c0d 100644
+--- a/packages/core/src/_core.scss
++++ b/packages/core/src/_core.scss
+@@ -14,6 +14,7 @@
+ @forward "transition/transition";
+ @forward "box-shadows";
+ @forward "interaction/interaction" as interaction-*;
++@forward "popover/popover" as popover-*;
+ @forward "draggable/draggable" as draggable-*;
+ @forward "window-splitter/window-splitter" as window-splitter-*;
+ @forward "icon/icon" as icon-*;
+diff --git a/packages/core/src/menu/MenuWidget.tsx b/packages/core/src/menu/MenuWidget.tsx
+index 578be2b1f7..8b6e698ad8 100644
+--- a/packages/core/src/menu/MenuWidget.tsx
++++ b/packages/core/src/menu/MenuWidget.tsx
+@@ -103,6 +103,15 @@ export const MenuWidget = forwardRef<HTMLDivElement, MenuWidgetProps>(
+       includeDisabled: true,
+       getDefaultFocusedIndex,
+     });
++    const fullClassName = menu({
++      className,
++      elevated: !disableElevation && !isSheet,
++      horizontal,
++    });
++    // console.log("fullClassName:", {
++    //   fullClassName,
++    //   style: { ...remaining.style },
++    // });
+
+     return (
+       <MenuWidgetKeyboardProvider disabled={isListbox} value={movementContext}>
+@@ -114,11 +123,7 @@ export const MenuWidget = forwardRef<HTMLDivElement, MenuWidgetProps>(
+             id={id}
+             ref={ref}
+             role={role}
+-            className={menu({
+-              className,
+-              elevated: !disableElevation && !isSheet,
+-              horizontal,
+-            })}
++            className={fullClassName}
+             tabIndex={isSheet && !sheetMenuFocused ? 0 : tabIndex}
+             onBlur={(event) => {
+               onBlur(event);
+diff --git a/packages/core/src/menu/styles.ts b/packages/core/src/menu/styles.ts
+index f4e8d03ac8..cde0833040 100644
+--- a/packages/core/src/menu/styles.ts
++++ b/packages/core/src/menu/styles.ts
+@@ -1,5 +1,6 @@
+ import { cnb } from "cnbuilder";
+
++import { popover } from "../popover/styles.js";
+ import { bem } from "../utils/bem.js";
+
+ const styles = bem("rmd-menu");
+@@ -20,7 +21,11 @@ export interface MenuClassNameOptions {
+ export function menu(options: MenuClassNameOptions = {}): string {
+   const { className, horizontal, elevated } = options;
+
+-  return cnb(styles({ horizontal, elevated }), className);
++  return cnb(
++    styles({ horizontal, elevated }),
++    popover({ active: true }),
++    className
++  );
+ }
+
+ /** @since 6.0.0 */
+diff --git a/packages/core/src/popover/_popover.scss b/packages/core/src/popover/_popover.scss
+new file mode 100644
+index 0000000000..2f94f0b6fc
+--- /dev/null
++++ b/packages/core/src/popover/_popover.scss
+@@ -0,0 +1,63 @@
++////
++/// @group popover
++////
++
++@use "../utils";
++
++/// @type Boolean
++$disable-everything: false !default;
++
++$variables: (x, y, transform, transform-origin);
++
++/// @param {String} name - The supported variable name
++/// @param {any} fallback [null] - An optional fallback value
++/// @returns {String} a `var()` statement
++@function get-var($name, $fallback: null) {
++  $var: utils.get-var-name($variables, $name, "popover");
++  @if $fallback {
++    @return var(#{$var}, #{$fallback});
++  }
++
++  @return var(#{$var});
++}
++
++/// @param {String} name - The supported variable name
++/// @param {any} value - The value to set the variable to. Supports `null` which
++/// will just be a no-op.
++@mixin set-var($name, $value) {
++  @if $value {
++    #{utils.get-var-name($variables, $name, "popover")}: #{$value};
++  }
++}
++
++/// @param {String} property - The css property to apply the variable to
++/// @param {String} name [$property] - The supported variable name
++/// @param {any} fallback [null] - An optional fallback value if the variable
++/// has not been set
++@mixin use-var($property, $name: $property, $fallback: null) {
++  #{$property}: get-var($name, $fallback);
++}
++
++/// Generates all the styles based on feature flags.
++///
++/// @param {Boolean} disable-layer [false] - Set this to `true` to disable the
++/// layer behavior
++@mixin styles($disable-layer: false) {
++  @if not $disable-everything {
++    @include utils.optional-layer(popover, $disable-layer) {
++      .rmd-popover {
++        inset: 0 auto auto 0;
++        margin: 0;
++        position: absolute;
++
++        &--active {
++          @include set-var(transform, translate(get-var(x), get-var(y)));
++
++          @include use-var(transform);
++
++          transform-origin: get-var(transform-origin);
++        }
++      }
++    }
++  }
++}
+diff --git a/packages/core/src/popover/createHorizontalPosition.ts b/packages/core/src/popover/createHorizontalPosition.ts
+new file mode 100644
+index 0000000000..9ba3946cd9
+--- /dev/null
++++ b/packages/core/src/popover/createHorizontalPosition.ts
+@@ -0,0 +1,55 @@
++import { type CreateHorizontalPositionOptions } from "../positioning/createHorizontalPosition.js";
++import { type HorizontalPosition } from "../positioning/types.js";
++
++/**
++ * @internal
++ */
++interface XPosition {
++  x: number;
++  width?: string | number;
++  minWidth?: number;
++  actualX: HorizontalPosition;
++}
++
++export function createHorizontalPosition(
++  options: CreateHorizontalPositionOptions
++): XPosition {
++  const {
++    x: position,
++    vw,
++    vwMargin,
++    xMargin,
++    width,
++    elWidth,
++    initialX,
++    containerRect,
++    disableSwapping,
++  } = options;
++
++  const screenRight = vw - vwMargin;
++  if (width !== "equal" && elWidth > screenRight - vwMargin) {
++    return {
++      x: vwMargin,
++      width: "calc(100dvw - var(--rmd-popover-x))",
++      actualX: position,
++    };
++  }
++
++  console.log("x:", position);
++  switch (position) {
++    case "left":
++    case "inner-left":
++    case "center":
++
++    case "right":
++      return {
++        x: 0,
++        actualX: position,
++      };
++    case "inner-right": {
++      const coord =
++        initialX ?? containerRect.left + containerRect.width - elWidth;
++      return createAnchoredInnerRight();
++    }
++  }
++}
+diff --git a/packages/core/src/popover/getPosition.ts b/packages/core/src/popover/getPosition.ts
+new file mode 100644
+index 0000000000..9263f2c2d0
+--- /dev/null
++++ b/packages/core/src/popover/getPosition.ts
+@@ -0,0 +1,129 @@
++import { type CSSProperties } from "react";
++
++import { BELOW_CENTER_ANCHOR } from "../positioning/constants.js";
++import {
++  type FixedPositionOptions,
++  type HorizontalPosition,
++  type VerticalPosition,
++} from "../positioning/types.js";
++import {
++  findSizingContainer,
++  getElementRect,
++  getTransformOrigin,
++} from "../positioning/utils.js";
++import { getScrollbarWidth } from "../scroll/getScrollbarWidth.js";
++import { createHorizontalPosition } from "./createHorizontalPosition.js";
++
++/**
++ * This is used when there is no `container` element so that some styles can
++ * still be created. The main use-case for this is context menus and when the
++ * `initialX` and `initialY` options have been provided.
++ *
++ * @internal
++ * @since 5.0.0
++ */
++const FALLBACK_DOM_RECT: DOMRect = {
++  x: 0,
++  y: 0,
++  height: 0,
++  width: 0,
++  left: 0,
++  right: 0,
++  top: 0,
++  bottom: 0,
++  toJSON() {
++    // do nothing
++  },
++};
++
++export function getPosition(options: FixedPositionOptions): {
++  style: CSSProperties | undefined;
++  actualX: HorizontalPosition;
++  actualY: VerticalPosition;
++} {
++  const {
++    element,
++    anchor = BELOW_CENTER_ANCHOR,
++    initialX,
++    vwMargin = 16,
++    vhMargin = 16,
++    xMargin = 0,
++    yMargin = 0,
++    width: widthType = "auto",
++    preventOverlap = false,
++    transformOrigin = false,
++    disableSwapping = false,
++  } = options;
++  const { initialY } = options;
++  const container = findSizingContainer(options.container);
++  const containerRect = container?.getBoundingClientRect() ?? FALLBACK_DOM_RECT;
++
++  if (!element) {
++    let x = initialX ?? containerRect.x;
++    let y = initialY ?? containerRect.y;
++    x += window.scrollX;
++    y += window.scrollY;
++    return {
++      actualX: anchor.x,
++      actualY: anchor.y,
++      style: {
++        "--rmd-popover-x": `${x}px`,
++        "--rmd-popover-y": `${y}px`,
++        "--rmd-popover-transform-origin": transformOrigin
++          ? getTransformOrigin({ x: anchor.x, y: anchor.y })
++          : undefined,
++      } as CSSProperties,
++    };
++  }
++
++  const { minWidth: elMinWidth } = element.style;
++  // Note: This makes it "min-content" or "min-container-width"
++  if (widthType === "min") {
++    element.style.overflow = "visible";
++    element.style.minWidth = "";
++  }
++  const elementRect = getElementRect(element);
++  const { height } = elementRect;
++  let elWidth = elementRect.width;
++  if (widthType === "min") {
++    elWidth += getScrollbarWidth();
++    element.style.overflow = "";
++    element.style.minWidth = elMinWidth;
++  }
++
++  const { x, width, minWidth, actualX } = createHorizontalPosition({
++    x: anchor.x,
++    vw: window.innerWidth,
++    vwMargin,
++    xMargin,
++    width: widthType,
++    elWidth,
++    initialX,
++    containerRect,
++    disableSwapping,
++  });
++
++  // eslint-disable-next-line prefer-const
++  let actualY = anchor.y;
++  let transformOriginY: number | undefined;
++  // x = initialX ?? containerRect.x; // - elWidth / 2;
++  // y = initialY ?? containerRect.y - containerRect.height + height; // - height / 2;
++  // x += window.scrollX;
++  // y += window.scrollY;
++  let y = initialY ?? containerRect.y;
++  y += window.scrollY;
++
++  return {
++    actualX,
++    actualY,
++    style: {
++      "--rmd-popover-x": `${x}px`,
++      "--rmd-popover-y": `${y}px`,
++      "--rmd-popover-width": width,
++      "--rmd-popover-min-width": minWidth,
++      "--rmd-popover-transform-origin": transformOrigin
++        ? getTransformOrigin({ x: actualX, y: actualY, transformOriginY })
++        : undefined,
++    } as CSSProperties,
++  };
++}
+diff --git a/packages/core/src/popover/styles.ts b/packages/core/src/popover/styles.ts
+new file mode 100644
+index 0000000000..28191e9874
+--- /dev/null
++++ b/packages/core/src/popover/styles.ts
+@@ -0,0 +1,22 @@
++import { cnb } from "cnbuilder";
++
++import { bem } from "../utils/bem.js";
++
++const styles = bem("rmd-popover");
++
++/**
++ * @since 6.0.0
++ */
++export interface PopoverClassNameOptions {
++  className?: string;
++  active: boolean;
++}
++
++/**
++ * @since 6.0.0
++ */
++export function popover(options: PopoverClassNameOptions): string {
++  const { className, active } = options;
++
++  return cnb(styles({ active }), className);
++}
+diff --git a/packages/core/src/popover/types.ts b/packages/core/src/popover/types.ts
+new file mode 100644
+index 0000000000..e69de29bb2
+diff --git a/packages/core/src/popover/usePopover.ts b/packages/core/src/popover/usePopover.ts
+new file mode 100644
+index 0000000000..0ab6b7d055
+--- /dev/null
++++ b/packages/core/src/popover/usePopover.ts
+@@ -0,0 +1,271 @@
++"use client";
++
++import {
++  type CSSProperties,
++  type Ref,
++  type RefCallback,
++  type RefObject,
++  useCallback,
++  useRef,
++  useState,
++} from "react";
++
++import { BELOW_CENTER_ANCHOR } from "../positioning/constants.js";
++import { type CalculateFixedPositionOptions } from "../positioning/types.js";
++import {
++  type TransitionCallbacks,
++  // eslint-disable-next-line @typescript-eslint/no-unused-vars
++  type TransitionOptions,
++} from "../transition/types.js";
++import { useEnsuredRef } from "../useEnsuredRef.js";
++import { useIsomorphicLayoutEffect } from "../useIsomorphicLayoutEffect.js";
++import { getPosition } from "./getPosition.js";
++
++const noop = (): void => {
++  // do nothing
++};
++
++/**
++ * @since 6.0.0
++ */
++export type PopoverTransitionCallbacks = Pick<
++  TransitionCallbacks,
++  "onEnter" | "onEntering" | "onEntered" | "onExited"
++>;
++
++/**
++ * This options should be passed to the {@link useCSSTransition} for the styling
++ * and positioning to work correctly.
++ *
++ * @typeParam E - An HTMLElement type used for the ref required for the
++ * transition.
++ * @since 4.0.0
++ */
++export interface PopoverTransitionOptions<E extends HTMLElement>
++  extends PopoverTransitionCallbacks {
++  /** {@inheritDoc TransitionOptions.nodeRef} */
++  nodeRef?: Ref<E>;
++}
++
++/**
++ * @since 6.0.0
++ */
++export interface PopoverOptions<
++  FixedToElement extends HTMLElement,
++  FixedElement extends HTMLElement,
++> extends PopoverTransitionOptions<FixedElement>,
++    CalculateFixedPositionOptions {
++  /**
++   * An optional style that will be merged with the fixed positioning required
++   * styles.
++   *
++   * @see {@link FixedPositionStyle}
++   */
++  style?: CSSProperties;
++
++  /**
++   * A ref pointing to an element that another element should be fixed to. This
++   * **must** be provided for the positioning to work.
++   */
++  fixedTo: RefObject<FixedToElement>;
++
++  /**
++   * Set this to `true` to disable the fixed positioning behavior so it can be
++   * customized within CSS or manually instead. This was added mostly to just
++   * support rendering menus inline with other content (like autocompletes
++   * within a dialog).
++   *
++   * @defaultValue `false`
++   * @since 6.0.0
++   */
++  disabled?: boolean;
++}
++
++export interface PopoverImplementation<FixedElement extends HTMLElement> {
++  /**
++   * A ref that should be passed to a component for the fixed positioning
++   * behavior to work correctly.
++   *
++   * This should really only be used if the {@link TransitionOptions} is not
++   * being used.
++   */
++  ref: RefCallback<FixedElement>;
++
++  /**
++   * This is the {@link FixedPositionStyle} merged with the
++   * {@link FixedPositioningOptions.style}. This will only return `undefined`
++   * when {@link FixedPositioningOptions.disabled} is `true` and no `style` was
++   * provided.
++   */
++  style: CSSProperties | undefined;
++
++  /**
++   * This should really only be used if the {@link transitionOptions} is not
++   * being used.
++   */
++  callbacks: Readonly<Required<PopoverTransitionCallbacks>>;
++
++  /**
++   * A function that can be called to update the style for the fixed element.
++   */
++  updateStyle: () => void;
++
++  /** {@inheritDoc FixedPositioningTransitionOptions} */
++  transitionOptions: Readonly<Required<PopoverTransitionOptions<FixedElement>>>;
++}
++
++/**
++ * @since 6.0.0
++ */
++export function usePopover<
++  FixedToElement extends HTMLElement,
++  FixedElement extends HTMLElement,
++>(
++  options: Readonly<PopoverOptions<FixedToElement, FixedElement>>
++): Readonly<PopoverImplementation<FixedElement>> {
++  const {
++    style: propStyle,
++    nodeRef,
++    fixedTo,
++    disabled,
++    onEnter = noop,
++    onEntered = noop,
++    onEntering = noop,
++    onExited = noop,
++
++    anchor = BELOW_CENTER_ANCHOR,
++    disableSwapping,
++    disableVHBounds,
++    initialX,
++    initialY,
++    preventOverlap,
++    transformOrigin,
++    vhMargin,
++    vwMargin,
++    width,
++    xMargin,
++    yMargin,
++  } = options;
++  const [ref, refHandler] = useEnsuredRef(nodeRef);
++  const optionsRef = useRef({
++    ref,
++    fixedTo,
++    anchor,
++    disableSwapping,
++    disableVHBounds,
++    preventOverlap,
++    transformOrigin,
++    vhMargin,
++    vwMargin,
++    width,
++    xMargin,
++    yMargin,
++    // getFixedPositionOptions,
++  } as const);
++  useIsomorphicLayoutEffect(() => {
++    optionsRef.current = {
++      ref,
++      fixedTo,
++      anchor,
++      disableSwapping,
++      disableVHBounds,
++      preventOverlap,
++      transformOrigin,
++      vhMargin,
++      vwMargin,
++      width,
++      xMargin,
++      yMargin,
++      // getFixedPositionOptions,
++    };
++  }, [
++    ref,
++    fixedTo,
++    anchor,
++    disableSwapping,
++    disableVHBounds,
++    preventOverlap,
++    transformOrigin,
++    vhMargin,
++    vwMargin,
++    width,
++    xMargin,
++    yMargin,
++    // getFixedPositionOptions,
++  ]);
++  const [active, setActive] = useState(false);
++  const [style, setStyle] = useState<CSSProperties | undefined>();
++  const updateStyle = useCallback(() => {
++    if (disabled) {
++      return;
++    }
++
++    const {
++      ref,
++      fixedTo,
++      anchor,
++      disableSwapping,
++      disableVHBounds,
++      preventOverlap,
++      transformOrigin,
++      vhMargin,
++      vwMargin,
++      width,
++      xMargin,
++      yMargin,
++      // getFixedPositionOptions,
++    } = optionsRef.current;
++    const element = ref.current;
++    const container = fixedTo.current;
++    const { style } = getPosition({
++      container,
++      element,
++      anchor,
++      disableSwapping,
++      disableVHBounds,
++      initialX,
++      initialY,
++      preventOverlap,
++      transformOrigin,
++      vhMargin,
++      vwMargin,
++      width,
++      xMargin,
++      yMargin,
++      // ...getFixedPositionOptions(),
++    });
++
++    setStyle(style);
++    setActive(!!element && !element.hidden);
++  }, [disabled, initialX, initialY]);
++
++  const callbacks: Required<PopoverTransitionCallbacks> = {
++    onEnter(appearing) {
++      onEnter(appearing);
++      updateStyle();
++    },
++    onEntering(appearing) {
++      onEntering(appearing);
++      updateStyle();
++    },
++    onEntered(appearing) {
++      onEntered(appearing);
++      updateStyle();
++    },
++    onExited() {
++      onExited();
++      setActive(false);
++    },
++  };
++
++  return {
++    ref: refHandler,
++    style: disabled ? propStyle : { ...style, ...propStyle },
++    callbacks,
++    updateStyle,
++    transitionOptions: {
++      ...callbacks,
++      nodeRef: refHandler,
++    },
++  };
++}
+diff --git a/packages/core/src/positioning/useFixedPositioning.ts b/packages/core/src/positioning/useFixedPositioning.ts
+index b8737907f9..8d916a7509 100644
+--- a/packages/core/src/positioning/useFixedPositioning.ts
++++ b/packages/core/src/positioning/useFixedPositioning.ts
+@@ -12,6 +12,7 @@ import {
+ } from "react";
+
+ import { delegateEvent } from "../delegateEvent.js";
++import { usePopover } from "../popover/usePopover.js";
+ import { type TransitionCallbacks } from "../transition/types.js";
+ import { useEnsuredRef } from "../useEnsuredRef.js";
+ import { useIsomorphicLayoutEffect } from "../useIsomorphicLayoutEffect.js";
+@@ -434,6 +435,10 @@ export function useFixedPositioning<
+       setActive(false);
+     },
+   };
++  const hack = usePopover(options);
++  if (true) {
++    return hack;
++  }
+
+   return {
+     ref: refHandler,
+diff --git a/packages/core/src/positioning/utils.ts b/packages/core/src/positioning/utils.ts
+index a5db84bb3d..b412a49fe6 100644
+--- a/packages/core/src/positioning/utils.ts
++++ b/packages/core/src/positioning/utils.ts
+@@ -215,11 +215,11 @@ export interface TransformOriginOptions extends PositionAnchor {
+ export function getTransformOrigin(options: TransformOriginOptions): string {
+   const { transformOriginY: yPosition } = options;
+
+-  let x = "0";
++  let x = "0px";
+   switch (options.x) {
+     case "right":
+     case "inner-left":
+-      x = "0";
++      x = "0px";
+       break;
+     case "center":
+       x = "50%";
+@@ -229,10 +229,10 @@ export function getTransformOrigin(options: TransformOriginOptions): string {
+       x = "100%";
+       break;
+     default:
+-      x = "0";
++      x = "0px";
+   }
+
+-  let y = "0";
++  let y = "0px";
+   if (typeof yPosition === "number") {
+     y = `${yPosition}px`;
+   } else {
+@@ -246,14 +246,14 @@ export function getTransformOrigin(options: TransformOriginOptions): string {
+         break;
+       case "below":
+       case "top":
+-        y = "0";
++        y = "0px";
+         break;
+       default:
+-        y = "0";
++        y = "0px";
+     }
+   }
+
+-  return `${x} ${y}`;
++  return `${x} ${y} 0px`;
+ }
+
+ /**
+diff --git a/packages/core/src/transition/_transition.scss b/packages/core/src/transition/_transition.scss
+index d8bdcf4c1d..524e51ca1f 100644
+--- a/packages/core/src/transition/_transition.scss
++++ b/packages/core/src/transition/_transition.scss
+@@ -293,12 +293,12 @@ $transition-variables: (
+ @mixin scale-transition {
+   .rmd-scale-transition--enter {
+     opacity: 0;
+-    transform: scale(0);
++    transform: var(--rmd-popover-transform) scale(0);
+   }
+
+   .rmd-scale-transition--enter-active {
+     opacity: 1;
+-    transform: scale(1);
++    transform: var(--rmd-popover-transform) scale(1);
+     transition-duration: $scale-transition-enter-duration;
+     transition-property: opacity, transform;
+     transition-timing-function: $deceleration-timing-function;
+@@ -306,12 +306,12 @@ $transition-variables: (
+
+   .rmd-scale-transition--exit {
+     opacity: 1;
+-    transform: scale(1);
++    transform: var(--rmd-popover-transform) scale(1);
+   }
+
+   .rmd-scale-transition--exit-active {
+     opacity: 0;
+-    transform: scale(0);
++    transform: var(--rmd-popover-transform) scale(0);
+     transition-duration: $scale-transition-leave-duration;
+     transition-property: opacity, transform;
+     transition-timing-function: $acceleration-timing-function;
+@@ -323,24 +323,24 @@ $transition-variables: (
+ /// @see {mixin} transition-styles
+ @mixin scale-y-transition {
+   .rmd-scale-transition--y-enter {
+-    transform: scaleY(0);
++    transform: var(--rmd-popover-transform) scaleY(0);
+     transform-origin: 0 0;
+   }
+
+   .rmd-scale-transition--y-enter-active {
+-    transform: scaleY(1);
++    transform: var(--rmd-popover-transform) scaleY(1);
+     @if $scale-y-transition-enter-duration != $scale-transition-enter-duration {
+       transition-duration: $scale-y-transition-enter-duration;
+     }
+   }
+
+   .rmd-scale-transition--y-exit {
+-    transform: scaleY(1);
++    transform: var(--rmd-popover-transform) scaleY(1);
+     transform-origin: 0 0;
+   }
+
+   .rmd-scale-transition--y-exit-active {
+-    transform: scaleY(0);
++    transform: var(--rmd-popover-transform) scaleY(0);
+     @if $scale-y-transition-leave-duration != $scale-transition-leave-duration {
+       transition-duration: $scale-y-transition-leave-duration;
+     }
