@@ -166,4 +166,93 @@ describe("release", () => {
       prerelease: false,
     });
   });
+
+  it("should allow running an additional command after the `changeset version`", async () => {
+    expect(spawnSyncMock).not.toHaveBeenCalled();
+    await release({
+      repo: "npm-packages",
+      postVersionCommand: "echo",
+      postVersionCommandArgs: ['"hello world"'],
+    });
+
+    expect(spawnSyncMock).toHaveBeenCalledTimes(8);
+    expect(spawnSyncMock).toHaveBeenCalledWith("pnpm", ["clean"], undefined);
+    expect(spawnSyncMock).toHaveBeenCalledWith("pnpm", ["build"], undefined);
+    expect(spawnSyncMock).toHaveBeenCalledWith(
+      "pnpm",
+      ["changeset", "version"],
+      { stdio: "inherit" },
+    );
+    expect(spawnSyncMock).toHaveBeenCalledWith(
+      "echo",
+      ['"hello world"'],
+      undefined,
+    );
+    expect(spawnSyncMock.mock.calls[3]).toEqual([
+      "echo",
+      ['"hello world"'],
+      undefined,
+    ]);
+    expect(spawnSyncMock.mock.calls[4]).toEqual([
+      "git",
+      ["add", "-u"],
+      undefined,
+    ]);
+    expect(spawnSyncMock).toHaveBeenCalledWith("git", ["add", "-u"], undefined);
+    expect(spawnSyncMock).toHaveBeenCalledWith(
+      "git",
+      ["commit", "-m", "build(version): version package"],
+      undefined,
+    );
+    expect(spawnSyncMock).toHaveBeenCalledWith(
+      "pnpm",
+      ["changeset", "publish"],
+      { stdio: "inherit" },
+    );
+    expect(spawnSyncMock).toHaveBeenCalledWith(
+      "git",
+      ["push", "--follow-tags"],
+      undefined,
+    );
+
+    expect(continueReleaseMock).toHaveBeenCalledTimes(2);
+
+    expect(getPendingReleasesMock).toHaveBeenCalledWith({
+      repo: "npm-packages",
+      postVersionCommand: "echo",
+      postVersionCommandArgs: ['"hello world"'],
+    });
+
+    expect(createReleaseMock).toHaveBeenCalledTimes(1);
+    expect(createReleaseMock).toHaveBeenCalledExactlyOnceWith({
+      repo: "npm-packages",
+      owner: "mlaursen",
+      envPath: ".env.local",
+      ...DEFAULT_RELEASES[0],
+      prerelease: false,
+    });
+  });
+
+  it("should throw a type error if the postVersionCommand is not a string", async () => {
+    await expect(
+      release({
+        repo: "npm-packages",
+        postVersionCommand: 3 as unknown as string,
+      }),
+    ).rejects.toThrow(
+      new TypeError("postVersionCommand must be a string without spaces"),
+    );
+  });
+
+  it("should throw a type error if the postVersionCommandArgs is not an array of strings", async () => {
+    await expect(
+      release({
+        repo: "npm-packages",
+        postVersionCommand: "hello",
+        postVersionCommandArgs: [3 as unknown as string],
+      }),
+    ).rejects.toThrow(
+      new TypeError("postVersionCommandArgs must be an array of strings"),
+    );
+  });
 });

@@ -50,6 +50,24 @@ export interface ReleaseOptions
    * @defaultValue `publishTags.length > 0`
    */
   githubReleaseOnly?: boolean;
+
+  /**
+   * This was added so that the lockfile can be updated or any other scripts
+   * can be run after:
+   *
+   * ```sh
+   * changeset version
+   * ```
+   *
+   * This must be a string without spaces. Any additional args should be passed
+   * through {@link postVersionCommandArgs}
+   */
+  postVersionCommand?: string;
+
+  /**
+   * Any additional args to pass to {@link postVersionCommand}
+   */
+  postVersionCommandArgs?: readonly string[];
 }
 
 export async function release(options: ReleaseOptions): Promise<void> {
@@ -62,7 +80,20 @@ export async function release(options: ReleaseOptions): Promise<void> {
     skipBuild = !buildCommand,
     versionMessage = "build(version): version package",
     githubReleaseOnly = (options.publishTags ?? []).length > 0,
+    postVersionCommand = "",
+    postVersionCommandArgs = [],
   } = options;
+
+  if (
+    typeof postVersionCommand !== "string" ||
+    postVersionCommand.includes(" ")
+  ) {
+    throw new TypeError("postVersionCommand must be a string without spaces");
+  }
+
+  if (postVersionCommandArgs.some((arg) => typeof arg !== "string")) {
+    throw new TypeError("postVersionCommandArgs must be an array of strings");
+  }
 
   if (!githubReleaseOnly) {
     const pkgManager = await getPackageManager();
@@ -74,6 +105,10 @@ export async function release(options: ReleaseOptions): Promise<void> {
     await continueRelease();
 
     exec(pkgManager, ["changeset", "version"], { stdio: "inherit" });
+    if (postVersionCommand) {
+      exec(postVersionCommand, postVersionCommandArgs);
+    }
+
     exec("git", ["add", "-u"]);
     await continueRelease();
 
