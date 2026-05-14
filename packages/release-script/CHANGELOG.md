@@ -1,5 +1,15 @@
 # @mlaursen/release-script
 
+## 0.3.0
+
+### Minor Changes
+
+- 8042932: Added postVersionCommand and postVersionCommandArgs options to allow updating lockfiles before committing
+
+### Patch Changes
+
+- a9418f8: Bumped dependencies to latest
+
 ## 0.2.0
 
 ### Minor Changes
