@@ -1,5 +1,11 @@
 # @mlaursen/release-script
 
+## 0.4.0
+
+### Minor Changes
+
+- 961edb8: Added postVersionCommandOpts to support shell and stdio.
+
 ## 0.3.0
 
 ### Minor Changes
