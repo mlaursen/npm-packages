@@ -1,5 +1,11 @@
 # @mlaursen/release-script
 
+## 0.4.1
+
+### Patch Changes
+
+- 50b9b82: Remove validation for postVersionCommand
+
 ## 0.4.0
 
 ### Minor Changes
