@@ -68,6 +68,23 @@ export interface ReleaseOptions
    * Any additional args to pass to {@link postVersionCommand}
    */
   postVersionCommandArgs?: readonly string[];
+
+  /**
+   * Any spawn sync options for the post version command. The idea is something
+   * like:
+   *
+   * ```ts
+   * await release({
+   *   repo: "whatever",
+   *   postVersionCommand: "pnpm install && pnpm dedupe",
+   *   postVersionCommandOpts: {
+   *     shell: true,
+   *     stdio: "inherit",
+   *   },
+   * });
+   * ```
+   */
+  postVersionCommandOpts?: SpawnSyncOptions;
 }
 
 export async function release(options: ReleaseOptions): Promise<void> {
@@ -82,6 +99,7 @@ export async function release(options: ReleaseOptions): Promise<void> {
     githubReleaseOnly = (options.publishTags ?? []).length > 0,
     postVersionCommand = "",
     postVersionCommandArgs = [],
+    postVersionCommandOpts,
   } = options;
 
   if (
@@ -106,7 +124,7 @@ export async function release(options: ReleaseOptions): Promise<void> {
 
     exec(pkgManager, ["changeset", "version"], { stdio: "inherit" });
     if (postVersionCommand) {
-      exec(postVersionCommand, postVersionCommandArgs);
+      exec(postVersionCommand, postVersionCommandArgs, postVersionCommandOpts);
     }
 
     exec("git", ["add", "-u"]);
