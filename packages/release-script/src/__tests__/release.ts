@@ -297,27 +297,4 @@ describe("release", () => {
       prerelease: false,
     });
   });
-
-  it("should throw a type error if the postVersionCommand is not a string", async () => {
-    await expect(
-      release({
-        repo: "npm-packages",
-        postVersionCommand: 3 as unknown as string,
-      }),
-    ).rejects.toThrow(
-      new TypeError("postVersionCommand must be a string without spaces"),
-    );
-  });
-
-  it("should throw a type error if the postVersionCommandArgs is not an array of strings", async () => {
-    await expect(
-      release({
-        repo: "npm-packages",
-        postVersionCommand: "hello",
-        postVersionCommandArgs: [3 as unknown as string],
-      }),
-    ).rejects.toThrow(
-      new TypeError("postVersionCommandArgs must be an array of strings"),
-    );
-  });
 });

@@ -102,17 +102,6 @@ export async function release(options: ReleaseOptions): Promise<void> {
     postVersionCommandOpts,
   } = options;
 
-  if (
-    typeof postVersionCommand !== "string" ||
-    postVersionCommand.includes(" ")
-  ) {
-    throw new TypeError("postVersionCommand must be a string without spaces");
-  }
-
-  if (postVersionCommandArgs.some((arg) => typeof arg !== "string")) {
-    throw new TypeError("postVersionCommandArgs must be an array of strings");
-  }
-
   if (!githubReleaseOnly) {
     const pkgManager = await getPackageManager();
 
