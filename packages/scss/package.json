@@ -5,8 +5,12 @@
   "type": "module",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "default": "./dist/index.mjs"
+      "node": {
+        "types": "./dist/node.d.ts",
+        "default": "./dist/node.mjs"
+      },
+      "types": "./dist/browser.d.ts",
+      "default": "./dist/browser.mjs"
     },
     "./package.json": "./package.json"
   },

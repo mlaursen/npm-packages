@@ -5,24 +5,30 @@ import { defineRollupSwcOption, swc } from "rollup-plugin-swc3";
 
 const external = (id: string): boolean => !/^[./]/.test(id);
 
-export default [
-  {
-    input: "./src/index.ts",
-    output: {
-      file: "./dist/index.mjs",
-      format: "es",
-      sourcemap: true,
-    },
-    external,
-    plugins: [nodeResolve(), swc(defineRollupSwcOption({ sourceMaps: true }))],
-  },
-  {
-    input: "./types/index.d.ts",
-    output: {
-      file: "./dist/index.d.ts",
-      sourcemap: true,
-    },
-    external,
-    plugins: [dts()],
-  },
-] satisfies RollupOptions[];
+export default ["browser", "node"].flatMap(
+  (name) =>
+    [
+      {
+        input: `./src/${name}.ts`,
+        output: {
+          file: `./dist/${name}.mjs`,
+          format: "es",
+          sourcemap: true,
+        },
+        external,
+        plugins: [
+          nodeResolve(),
+          swc(defineRollupSwcOption({ sourceMaps: true })),
+        ],
+      },
+      {
+        input: `./types/${name}.d.ts`,
+        output: {
+          file: `./dist/${name}.d.ts`,
+          sourcemap: true,
+        },
+        external,
+        plugins: [dts()],
+      },
+    ] satisfies RollupOptions[],
+);
