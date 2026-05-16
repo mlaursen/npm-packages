@@ -203,6 +203,9 @@ importers:
       chokidar:
         specifier: ^5.0.0
         version: 5.0.0
+      prettier:
+        specifier: ^3.8.3
+        version: 3.8.3
       pretty-bytes:
         specifier: ^7.1.0
         version: 7.1.0
@@ -234,9 +237,6 @@ importers:
       eslint:
         specifier: ^9.39.4
         version: 9.39.4
-      prettier:
-        specifier: ^3.8.3
-        version: 3.8.3
       rollup:
         specifier: ^4.60.4
         version: 4.60.4
