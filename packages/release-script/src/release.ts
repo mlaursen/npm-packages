@@ -18,7 +18,8 @@ const exec = (
 ): void => {
   const cmd = command + " " + args.join(" ");
   console.log(cmd);
-  const result = spawnSync(command, args, opts);
+  // CWE-78, CWE-88: do not allow shell access for commands
+  const result = spawnSync(command, args, { ...opts, shell: false });
   if (result.status !== 0) {
     throw new Error(`${cmd} failed with exit code: ${result.status ?? 1}`);
   }
