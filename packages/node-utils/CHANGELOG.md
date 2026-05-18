@@ -1,5 +1,11 @@
 # @mlaursen/node-utils
 
+## 0.2.0
+
+### Minor Changes
+
+- 1d77e7f: Added a generateFile util
+
 ## 0.1.0
 
 ### Minor Changes

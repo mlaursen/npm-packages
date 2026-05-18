@@ -1,5 +1,11 @@
 # @mlaursen/scss
 
+## 0.0.4
+
+### Patch Changes
+
+- 11d73ba: Added node exports which default the load function to readFileSync
+
 ## 0.0.3
 
 ### Patch Changes

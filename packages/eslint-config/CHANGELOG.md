@@ -1,5 +1,11 @@
 # @mlaursen/eslint-config
 
+## 12.0.10
+
+### Patch Changes
+
+- 22d53f3: Switch to @eslint/config-helpers for the includeIgnoreFile since it was deprecated.
+
 ## 12.0.9
 
 ### Patch Changes
