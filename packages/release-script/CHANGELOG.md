@@ -1,5 +1,12 @@
 # @mlaursen/release-script
 
+## 0.4.2
+
+### Patch Changes
+
+- fcd0863: Fixed possible security issue if providing unverified user input to the release script... -\_-
+- 57ec522: Remove postVersionCommand
+
 ## 0.4.1
 
 ### Patch Changes
