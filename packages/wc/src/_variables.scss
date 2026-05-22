@@ -1,5 +1,11 @@
 @use "palette";
+@use "shape";
+@use "spacing";
+@use "transition";
 
 @mixin variables {
   @include palette.variables;
+  @include shape.variables;
+  @include spacing.variables;
+  @include transition.variables;
 }

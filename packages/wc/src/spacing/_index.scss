@@ -1,0 +1,68 @@
+@use "sass:map";
+@use "sass:list";
+
+@use "../utils";
+
+$-tokens-registered: false;
+$-tokens: (
+  factor: 0.5rem,
+  extra-small: 0.25rem,
+  small: 0.5rem,
+  medium: 0.75rem,
+  large: 1rem,
+  extra-large: 1.5rem,
+);
+$-configure-tokens: map.keys($-tokens);
+$-sizes: utils.list-slice($-configure-tokens, 2);
+
+@mixin -configure($name, $value) {
+  @if $value != null {
+    $-styles: map.set($-tokens, $name, $value) !global;
+  }
+}
+
+@mixin configure(
+  $factor: null,
+  $extra-small: null,
+  $small: null,
+  $medium: null,
+  $large: null,
+  $extra-large: null
+) {
+  @include -configure(factor, $factor);
+  @include -configure(extra-small, $extra-small);
+  @include -configure(small, $small);
+  @include -configure(medium, $medium);
+  @include -configure(large, $large);
+  @include -configure(extra-large, $extra-large);
+
+  @if not $-tokens-registered {
+    $-tokens-registered: true !global;
+    @include utils.register-tokens($tokens: $-tokens, $prefix: "spacing");
+  }
+}
+
+@mixin configure-global($overrides: null) {
+  $overrides: utils.get-config-map(spacing, $overrides, $-configure-tokens);
+  @include configure(
+    $factor: map.get($overrides, factor),
+    $extra-small: map.get($overrides, extra-small),
+    $small: map.get($overrides, small),
+    $medium: map.get($overrides, medium),
+    $large: map.get($overrides, large),
+    $extra-large: map.get($overrides, extra-large)
+  );
+}
+
+@mixin variables {
+  $register-tokens: not $-tokens-registered;
+  @if $register-tokens {
+    $-tokens-registered: true !global;
+  }
+
+  @include utils.set-default-tokens(
+    $tokens: $-tokens,
+    $prefix: "spacing",
+    $register-tokens: $register-tokens
+  );
+}

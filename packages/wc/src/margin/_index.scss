@@ -1,0 +1,86 @@
+@use "sass:list";
+@use "sass:map";
+
+@use "../utils";
+
+$-configure-tokens: (
+  none-styles,
+  top-styles,
+  bottom-styles,
+  centered-styles,
+  force-end-styles
+);
+$-host-variants: (centered, force-end);
+
+$-styles: (
+  none: (
+    margin: 0,
+  ),
+  top: (
+    margin-block-start: 0,
+  ),
+  bottom: (
+    margin-block-end: 0,
+  ),
+  centered: (
+    margin-inline: auto,
+  ),
+  force-end: (
+    margin-inline-start: auto,
+  ),
+);
+
+@mixin -configure($name, $value) {
+  @if $value != null {
+    $-styles: map.set($-styles, $name, $value) !global;
+  }
+}
+
+@mixin configure(
+  $none-styles: null,
+  $top-styles: null,
+  $bottom-styles: null,
+  $centered-styles: null,
+  $force-end-styles: null
+) {
+  @include -configure(none, $none-styles);
+  @include -configure(top, $top-styles);
+  @include -configure(bottom, $bottom-styles);
+  @include -configure(centered, $centered-styles);
+  @include -configure(force-end, $force-end-styles);
+}
+
+@mixin configure-global($overrides: null) {
+  $overrides: utils.get-config-map(margin, $overrides, $-configure-tokens);
+  @include configure(
+    $none-styles: map.get($overrides, none-styles),
+    $top-styles: map.get($overrides, top-styles),
+    $bottom-styles: map.get($overrides, bottom-styles),
+    $centered-styles: map.get($overrides, centered-styles),
+    $force-end-styles: map.get($overrides, force-end-styles)
+  );
+}
+
+@mixin css-styles {
+  $styles: ();
+  @each $variant, $value in $-styles {
+    $styles: map.set($styles, "&margin-#{$variant}", $value);
+  }
+  @include utils.css-styles($styles);
+}
+
+@mixin host-styles {
+  $styles: ();
+  @each $variant, $value in $-styles {
+    $selector: ":host([margin=#{$variant}])";
+    @if not list.index($-host-variants, $variant) {
+      $selector: $selector + " ::slotted(*)";
+    }
+    $styles: map.set($styles, $selector, $value);
+  }
+  @include utils.host-styles($styles);
+}
+
+@mixin styles {
+  @include host-styles;
+}

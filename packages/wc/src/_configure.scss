@@ -2,6 +2,10 @@
 
 @use "utils";
 @use "palette";
+@use "shape";
+@use "spacing";
+@use "margin";
+@use "transition";
 
 @mixin configure($output: null, $short-var-names: null) {
   @include utils.configure-setup(
@@ -10,4 +14,8 @@
   );
 
   @include palette.configure-global($palette);
+  @include shape.configure-global($shape);
+  @include spacing.configure-global($spacing);
+  @include margin.configure($margin);
+  @include transition.configure-global($transition);
 }
