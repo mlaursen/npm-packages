@@ -12,9 +12,11 @@
   },
   "scripts": {
     "node-run": "node --experimental-strip-types",
+    "test-clean-generated": "git clean -ndX src",
+    "clean-generated": "git clean -fdXq src",
     "clean-dist": "rm -rf dist",
     "clean-cache": "rm -rf .turbo node_modules",
-    "clean": "concurrently 'pnpm clean-dist' 'pnpm clean-cache'",
+    "clean": "concurrently 'pnpm clean-dist' 'pnpm clean-cache' 'pnpm clean-generated'",
     "format": "prettier --write .",
     "check-format": "prettier --check .",
     "lint": "eslint .",
@@ -31,8 +33,9 @@
     "build-dist-watch": "concurrently 'pnpm build-esm-watch' 'pnpm build-rollup-watch'",
     "build-types": "tsc -p tsconfig.types.json",
     "build-types-watch": "pnpm build-types --watch",
-    "build-watch": "concurrently 'pnpm build-esm-watch' 'pnpm build-rollup-watch' 'pnpm build-scss-watch'",
-    "dev": "concurrently 'pnpm build-types-watch' 'pnpm build-esm-watch' 'pnpm build-rollup-watch'"
+    "build-components": "tsx scripts/generate-components/index.ts",
+    "build-components-watch": "pnpm build-components --watch",
+    "dev": "concurrently 'pnpm build-esm-watch' 'pnpm build-rollup-watch' 'pnpm build-scss-watch' 'pnpm build-components-watch'"
   },
   "author": "Mikkel Laursen <mlaursen03@gmail.com>",
   "repository": {
@@ -57,20 +60,27 @@
   "devDependencies": {
     "@mlaursen/cli": "workspace:*",
     "@mlaursen/eslint-config": "workspace:*",
+    "@mlaursen/node-utils": "workspace:*",
+    "@mlaursen/scss": "workspace:*",
     "@mlaursen/utils": "workspace:*",
     "@rollup/plugin-node-resolve": "^16.0.3",
     "@swc/cli": "^0.8.1",
     "@swc/core": "^1.15.41",
     "@trivago/prettier-plugin-sort-imports": "^6.0.2",
     "@types/node": "^24.12.2",
-    "concurrently": "^9.2.1",
+    "browserslist": "^4.28.2",
+    "chokidar": "^5.0.0",
+    "concurrently": "^10.0.3",
     "eslint": "^9.39.4",
     "glob": "^13.0.6",
+    "lightningcss": "^1.32.0",
     "prettier": "^3.8.3",
+    "prettier-plugin-css-order": "^2.2.0",
     "rollup": "^4.60.4",
     "rollup-plugin-summary": "^3.0.1",
     "rollup-plugin-swc3": "^0.12.1",
     "ts-lit-plugin": "^2.0.2",
+    "tsx": "^4.22.0",
     "typescript": "^6.0.3"
   },
   "publishConfig": {

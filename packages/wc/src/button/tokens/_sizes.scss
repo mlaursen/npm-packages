@@ -1,0 +1,99 @@
+@use "sass:map";
+
+@use "../../utils";
+
+$extra-small-tokens: (
+  height: 2rem,
+  gap: "spacing.small",
+  padding-left: "spacing.medium",
+  padding-right: "spacing.medium",
+  icon: (
+    size: 1.25rem,
+  ),
+  outline-width: 1px,
+);
+$size-token-remaps: utils.get-tokens-from-map($extra-small-tokens, null);
+$extra-small-styles: utils.remap-variants(
+  button,
+  extra-small,
+  $size-token-remaps...
+);
+
+$small-tokens: (
+  height: 2.5rem,
+  gap: "spacing.small",
+  padding-left: "spacing.large",
+  padding-right: "spacing.large",
+  icon: (
+    size: 1.25rem,
+  ),
+  outline-width: 1px,
+);
+$small-styles: utils.remap-variants(button, small, $size-token-remaps...);
+
+$medium-tokens: (
+  height: 3.5rem,
+  gap: "spacing.small",
+  padding-left: "spacing.extra-large",
+  padding-right: "spacing.extra-large",
+  icon: (
+    size: 1.5rem,
+  ),
+  outline-width: 1px,
+);
+$medium-styles: map.merge(
+  utils.remap-variants(button, medium, $size-token-remaps...),
+  (
+    font-size: 1rem,
+    letter-spacing: utils.get-letter-spacing(0.15),
+    line-height: 1.5rem,
+  )
+);
+
+$large-tokens: (
+  height: 6rem,
+  gap: "spacing.medium",
+  padding-left: "spacing(6)",
+  padding-right: "spacing(6)",
+  icon: (
+    size: 2rem,
+  ),
+  outline-width: 2px,
+);
+$large-styles: map.merge(
+  utils.remap-variants(button, large, $size-token-remaps...),
+  (
+    font-size: 1.5rem,
+    font-weight: "weight.regular",
+    letter-spacing: 0,
+    line-height: 2rem,
+  )
+);
+$extra-large-tokens: (
+  height: 8.5rem,
+  gap: "spacing.large",
+  padding-left: "spacing(8)",
+  padding-right: "spacing(8)",
+  icon: (
+    size: 2.5rem,
+  ),
+  outline-width: 3px,
+);
+$extra-large-styles: map.merge(
+  utils.remap-variants(button, extra-large, $size-token-remaps...),
+  (
+    font-size: 2rem,
+    font-weight: "weight.regular",
+    letter-spacing: 0,
+    line-height: 2.5rem,
+  )
+);
+
+$size-tokens: (
+  extra-small: $extra-small-tokens,
+  small: $small-tokens,
+  medium: $medium-tokens,
+  large: $large-tokens,
+  extra-large: $extra-large-tokens,
+);
+$sizes: map.keys($size-tokens);

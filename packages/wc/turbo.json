@@ -1,0 +1,53 @@
+{
+  "$schema": "https://turborepo.com/schema.json",
+  "extends": ["//"],
+  "tasks": {
+    "build-components": {
+      "dependsOn": ["^build"],
+      "inputs": ["src/**/*.ts", "!src/**/*-styles.ts"],
+      "outputs": ["dist/**/*.js", "src/**/*-styles.ts"]
+    },
+    "build-types": {
+      "dependsOn": ["build-components"],
+      "inputs": ["src/**/*.ts"],
+      "outputs": ["dist/**/*.d.ts"]
+    },
+    "build-esm": {
+      "dependsOn": ["build-types"],
+      "inputs": ["src/**/*.ts", "!src/generate-components/**"],
+      "outputs": ["dist/**/*.js"]
+    },
+    "build-rollup": {
+      "dependsOn": ["build-esm"],
+      "outputs": ["dist/index.js"]
+    },
+    "build-scss": {
+      "dependsOn": ["^build"],
+      "inputs": ["src/**/*.scss"],
+      "outputs": ["dist/**/*.scss"]
+    },
+    "build": {
+      "dependsOn": [
+        "^build",
+        "build-components",
+        "build-types",
+        "build-esm",
+        "build-rollup",
+        "build-scss"
+      ],
+      "outputs": [
+        "dist/**/*.js",
+        "dist/**/*.d.ts",
+        "dist/**/*.scss",
+        "src/**/*-styles.ts"
+      ]
+    },
+    "dev": {
+      "dependsOn": ["build"],
+      "cache": false
+    },
+    "start": {
+      "dependsOn": ["build"]
+    }
+  }
+}

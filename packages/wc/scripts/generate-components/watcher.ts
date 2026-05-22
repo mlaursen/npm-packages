@@ -1,0 +1,109 @@
+import {
+  type CreateWatcherOptions,
+  createWatcher,
+  disableLogger,
+  enableLogger,
+  log,
+  logFailure,
+  logPending,
+} from "@mlaursen/node-utils";
+import { closeSync, existsSync, openSync, utimesSync } from "node:fs";
+import { rm } from "node:fs/promises";
+
+import { DEFAULT_CSS_BROWSERSLIST_TARGETS } from "./constants.js";
+import { createStyles } from "./createStyles.js";
+import type {
+  CreateStylesOptions,
+  GenerateComponentsScssOptions,
+} from "./types.js";
+
+const isPartial = (filePath: string): boolean => filePath.includes("_");
+const isIgnored: Required<CreateWatcherOptions>["ignored"] = (path, stats) =>
+  !!stats?.isFile() && !/\.scss$/.test(path);
+
+function touch(filePath: string): void {
+  try {
+    const now = Date.now();
+    utimesSync(filePath, now, now);
+  } catch {
+    closeSync(openSync(filePath, "w"));
+  }
+}
+
+async function createStylesWhileWatching(
+  options: CreateStylesOptions,
+): Promise<void> {
+  try {
+    await createStyles(options);
+    // touch this file so that eleventy will rebuild
+    touch("docs/assets/scss/global.scss");
+  } catch (error) {
+    if (error instanceof Error) {
+      logFailure(error.message);
+    } else {
+      throw error;
+    }
+  }
+}
+
+export function watcher(options: GenerateComponentsScssOptions = {}): void {
+  const {
+    basePath = process.cwd(),
+    output = "flagged",
+    colorScheme = "light-dark",
+    sassOptions,
+    targets = DEFAULT_CSS_BROWSERSLIST_TARGETS,
+    shortVarNames = output === "minified",
+  } = options;
+
+  enableLogger();
+  logPending(`Using ${colorScheme} color scheme for styles`);
+  disableLogger();
+
+  const rebuild = new Set<string>();
+  createWatcher({
+    watchPath: "src",
+    ignored: isIgnored,
+    onRemove: async (filePath) => {
+      log(`Removed ${filePath}`);
+      rebuild.delete(filePath);
+      if (existsSync(filePath)) {
+        await rm(filePath, { recursive: true });
+      }
+    },
+    onAddOrChange: async (filePath, ready) => {
+      if (isPartial(filePath)) {
+        if (ready) {
+          const promises: Promise<void>[] = [];
+          for (const file of rebuild) {
+            promises.push(
+              createStylesWhileWatching({
+                colorScheme,
+                filePath: file,
+                basePath,
+                output,
+                sassOptions,
+                targets,
+                shortVarNames,
+              }),
+            );
+          }
+
+          await Promise.all(promises);
+        }
+        return;
+      }
+
+      rebuild.add(filePath);
+      await createStylesWhileWatching({
+        colorScheme,
+        filePath,
+        basePath,
+        output,
+        sassOptions,
+        targets,
+        shortVarNames,
+      });
+    },
+  });
+}

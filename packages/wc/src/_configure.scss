@@ -6,19 +6,72 @@
 @use "spacing";
 @use "margin";
 @use "transition";
+@use "elevation";
+@use "interaction";
 @use "typography";
 
-@mixin configure($output: null, $short-var-names: null) {
+@use "css-reset";
+
+@use "popover";
+@use "text-container";
+@use "divider";
+@use "icon";
+@use "material-symbol";
+@use "box";
+@use "link";
+@use "button";
+@use "icon-button";
+@use "tooltip";
+
+@mixin configure(
+  $output: null,
+  $short-var-names: null,
+  $var-prefix: null,
+  $selector-prefix: null,
+  $palette: null,
+  $css-reset: null,
+  $shape: null,
+  $spacing: null,
+  $margin: null,
+  $interaction: null,
+  $elevation: null,
+  $transition: null,
+  $typography: null,
+  $text-container: null,
+  $divider: null,
+  $popover: null,
+  $icon: null,
+  $material-symbol: null,
+  $link: null,
+  $box: null,
+  $button: null,
+  $icon-button: null,
+  $tooltip: null
+) {
   @include utils.configure-setup(
     $output: $output,
     $short-var-names: $short-var-names
   );
 
   @include palette.configure-global($palette);
+  @include css-reset.configure($css-reset);
+
   @include shape.configure-global($shape);
   @include spacing.configure-global($spacing);
   @include margin.configure($margin);
   @include transition.configure-global($transition);
+  @include elevation.configure-global($elevation);
+  @include interaction.configure-global($interaction);
+  @include popover.configure-global($popover);
+  @include divider.configure-global($divider);
 
   @include typography.configure-global($typography);
+  @include text-container.configure-global($text-container);
+  @include link.configure-global($link);
+  @include icon.configure-global($icon);
+  @include material-symbol.configure-global($material-symbol);
+  @include box.configure-global($box);
+  @include button.configure-global($button);
+  @include icon-button.configure-global($icon-button);
+  @include tooltip.configure-global($tooltip);
 }

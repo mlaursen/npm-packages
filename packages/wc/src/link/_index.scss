@@ -1,0 +1,114 @@
+@use "sass:map";
+
+@use "../utils";
+
+$-tokens-registered: false;
+$-tokens: (
+  color: "palette.primary",
+  opacity: 1,
+);
+
+$-configure-tokens: map.keys($-tokens);
+
+$-base-styles: (
+  animation-delay: '0s, calc("interaction.focused.duration" * 0.25)',
+  animation-duration:
+    'calc("interaction.focused.duration" * 0.25), calc("interaction.focused.duration" * 0.75)',
+  animation-timing-function: "transition.easing.emphasized",
+  background: utils.get-rgb-var(
+      "interaction.container.color",
+      "interaction.container.opacity"
+    ),
+  color: utils.get-rgb-var("link.color", "link.opacity"),
+  outline: none,
+  transition:
+    '"transition.duration.short-3" background "transition.easing.linear"',
+
+  "@media (prefers-reduced-motion)": (
+    "&": (
+      animation: none,
+    ),
+  ),
+);
+$-focused-styles: (
+  background: utils.get-rgb-var(
+      "interaction.focused.container.color",
+      "interaction.focused.container.opacity"
+    ),
+  color: "interaction.focused.color",
+);
+$-focused-outward-styles: (
+  animation-name: "outward-grow, outward-shrink",
+  inset: 'calc(-1 * "interaction.focused.outward-offset")',
+  outline: '"interaction.focused.width" solid currentcolor',
+);
+$-focused-inward-styles: (
+  animation-name: "inward-grow, inward-shrink",
+  border: '"interaction.focused.width" solid currentcolor',
+  inset: "interaction.focused.inward-offset",
+);
+$-visited-styles: (
+  padding: 0, // "link.color": "palette.inverse-primary",
+);
+$-hovered-styles: (
+  "link.opacity": 0.08,
+);
+$-keyframes: (
+  "inward-grow": (
+    from: (
+      border-width: 0,
+    ),
+    to: (
+      border-width: "interaction.focused.active-width",
+    ),
+  ),
+  "inward-shrink": (
+    from: (
+      border-width: "interaction.focused.active-width",
+    ),
+  ),
+  "outward-grow": (
+    from: (
+      outline-width: 0,
+    ),
+    to: (
+      outline-width: "interaction.focused.active-width",
+    ),
+  ),
+  "outward-shrink": (
+    from: (
+      outline-width: "interaction.focused.active-width",
+    ),
+  ),
+);
+
+@mixin configure() {
+  @if not $-tokens-registered {
+    $-tokens-registered: true !global;
+    @include utils.register-tokens($tokens: $-tokens, $prefix: "link");
+  }
+}
+
+@mixin configure-global($overrides: null) {
+  $overrides: utils.get-config-map(link, $overrides, $-configure-tokens);
+  @include configure();
+}
+
+@mixin css-styles {
+  $styles: ();
+  @include utils.css-styles($styles);
+}
+
+@mixin host-styles {
+  $styles: (
+    ":host a": $-base-styles,
+    "host-hover": $-hovered-styles,
+    "a:visited": $-visited-styles,
+  );
+  @include utils.host-styles($styles, $keyframes: $-keyframes);
+}
+
+@mixin styles {
+  @include css-styles;
+  @include host-styles;
+}

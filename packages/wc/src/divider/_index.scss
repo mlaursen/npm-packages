@@ -1,0 +1,110 @@
+@use "sass:map";
+
+@use "../utils";
+
+$-tokens-registered: false;
+$-tokens: (
+  color: "palette.outline-variant",
+  size: 1px,
+  gap: "spacing.medium",
+  inset: "spacing.large",
+  middle: (
+    before: "spacing.large",
+    after: "spacing.large",
+  ),
+  margin: (
+    before: "spacing.medium",
+    after: "spacing.medium",
+  ),
+);
+
+$-configure-tokens: map.keys($-tokens);
+
+$-base-styles: (
+  display: block,
+  flex-shrink: 0,
+  border-color: "divider.color",
+  border-style: solid,
+);
+$-horizontal-styles: (
+  border-width: '0 0 "divider.size"',
+);
+$-vertical-styles: (
+  align-self: stretch,
+  border-width: '0 0 0 "divider.size"',
+  writing-mode: vertical-lr, // height: auto,
+);
+$-inset-horizontal-styles: (
+  margin-inline-start: "divider.inset",
+);
+$-inset-vertical-styles: ();
+$-middle-horizontal-styles: ();
+$-middle-vertical-styles: ();
+
+$-slotted-styles: (
+  align-items: center,
+  border: 0,
+  display: flex,
+
+  "&::before, &::after": utils.deep-merge(
+      $-base-styles,
+      $-horizontal-styles,
+      (
+        content: '""',
+        flex-grow: 1,
+        flex-shrink: null,
+      )
+    ),
+  "&::before": (
+    margin-inline-end: "divider.gap",
+  ),
+  "&::after": (
+    margin-inline-start: "divider.gap",
+  ),
+);
+$-slotted-content-styles: (
+  justify-self: center,
+);
+
+@mixin configure() {
+  @if not $-tokens-registered {
+    $-tokens-registered: true !global;
+    @include utils.register-tokens($tokens: $-tokens, $prefix: "divider");
+  }
+}
+
+@mixin configure-global($overrides: null) {
+  $overrides: utils.get-config-map(divider, $overrides, $-configure-tokens);
+  @include configure();
+}
+
+@mixin css-styles {
+  $styles: (
+    "&divider": utils.deep-merge($-base-styles, $-horizontal-styles),
+    "&divider--vertical": $-vertical-styles,
+  );
+  @include utils.css-styles($styles);
+}
+
+@mixin host-styles {
+  $styles: (
+    ":host": $-base-styles,
+    ":host([aria-orientation=horizontal])": $-horizontal-styles,
+    ":host([aria-orientation=horizontal][variant=inset])":
+      $-inset-horizontal-styles,
+    ":host([aria-orientation=horizontal][variant=middle])":
+      $-middle-horizontal-styles,
+    ":host([aria-orientation=vertical])": $-vertical-styles,
+    ":host([aria-orientation=vertical][variant=inset])": $-inset-vertical-styles,
+    ":host([aria-orientation=vertical][variant=middle])":
+      $-middle-vertical-styles,
+    ":host(:has(*))": $-slotted-styles,
+    "::slotted(*)": $-slotted-content-styles,
+  );
+  @include utils.host-styles($styles);
+}
+
+@mixin styles {
+  @include css-styles;
+  @include host-styles;
+}

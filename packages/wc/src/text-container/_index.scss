@@ -1,0 +1,81 @@
+@use "sass:map";
+@use "sass:list";
+
+@use "../utils";
+
+$-tokens-registered: false;
+$-tokens: (
+  padding: "spacing.large",
+  padding-inline: var(--_padding),
+  padding-block: var(--_padding),
+  width: "calc(65ch + calc(var(--_padding) * 2))",
+);
+
+$-configure-tokens: list.append(map.keys($-tokens), "styles");
+
+$-styles: (
+  "--_padding": "text-container.padding",
+  "--_padding-inline": "text-container.padding-inline",
+  "--_padding-block": "text-container.padding-block",
+  display: block,
+  margin: 0 auto,
+  // allow it to shrink in flex containers
+  min-width: 0,
+  max-width: "text-container.width",
+  padding: var(--_padding-block) var(--_padding-inline),
+  width: 100%,
+);
+
+@mixin configure($styles: null, $padding: null, $width: null) {
+  @if $styles != null {
+    $-styles: map.merge($-styles, $styles) !global;
+  }
+
+  @if $padding != null {
+    $-tokens: map.set($-tokens, padding, $padding) !global;
+  }
+
+  @if $width != null {
+    $-tokens: map.set($-tokens, width, $width) !global;
+  }
+
+  @if not $-tokens-registered {
+    $-tokens-registered: true !global;
+    @include utils.register-tokens(
+      $tokens: $-tokens,
+      $prefix: "text-container"
+    );
+  }
+}
+
+@mixin configure-global($overrides: null) {
+  $overrides: utils.get-config-map(
+    text-container,
+    $overrides,
+    $-configure-tokens
+  );
+  @include configure(
+    $styles: map.get($overrides, styles),
+    $padding: map.get($overrides, padding),
+    $width: map.get($overrides, width)
+  );
+}
+
+@mixin css-styles {
+  $styles: (
+    "&text-container": $-styles,
+  );
+  @include utils.css-styles($styles);
+}
+
+@mixin host-styles {
+  $styles: (
+    ":host": $-styles,
+  );
+  @include utils.host-styles($styles);
+}
+
+@mixin styles {
+  @include css-styles;
+  @include host-styles;
+}

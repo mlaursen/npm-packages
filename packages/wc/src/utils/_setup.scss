@@ -26,42 +26,14 @@ $-short-var-names: true;
       "short-var-names"
     ) !global;
   }
-
-  @if $var-prefix != null {
-    $-var-prefix: assert-string($var-prefix, "var-prefix") !global;
-  }
-
-  @if $selector-prefix != null {
-    $-selector-prefix: assert-string(
-      $selector-prefix,
-      "selector-prefix"
-    ) !global;
-  }
-
-  @if $keyframes-prefix != null {
-    $-keyframes-prefix: assert-string(
-      $keyframes-prefix,
-      "keyframes-prefix"
-    ) !global;
-  }
 }
 
-///
-/// @param {css | host | var-prefix | selector-prefix | keyframes-prefix} $name -
-/// @return {String | Boolean} -
-@function get-setup-config($name) {
-  $config: (
-    css: $-output == css,
-    host: $-output == host,
-    var-prefix: $-var-prefix,
-    selector-prefix: $-selector-prefix,
-    keyframes-prefix: $-keyframes-prefix,
-  );
+@function is-css-output() {
+  @return $-output == css;
+}
 
-  @return map.get(
-    $config,
-    validate(map.keys($config), $name, "setup config name")
-  );
+@function is-host-output() {
+  @return $-output == host;
 }
 
 /// Used to get the current CSS variable name from react-md tokens.
@@ -96,5 +68,5 @@ $-short-var-names: true;
     }
   }
 
-  @return #{$-var-prefix + $hyphenated-name};
+  @return #{"--mwc-" + $hyphenated-name};
 }

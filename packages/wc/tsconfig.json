@@ -26,7 +26,8 @@
     // "noUnusedLocals": true,
     // "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "noPropertyAccessFromIndexSignature": true,
+    // cannot have this enabled because of `process.env.NODE_ENV`. builders replace this exact string
+    "noPropertyAccessFromIndexSignature": false,
 
     "useDefineForClassFields": false,
 

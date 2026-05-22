@@ -1,10 +1,32 @@
 @use "palette";
 @use "margin";
+@use "elevation";
+@use "interaction";
+@use "popover";
 @use "typography";
+@use "text-container";
+@use "link";
+@use "divider";
+@use "box";
+@use "button";
+// @use "icon-button";
+@use "tooltip";
 
 @mixin styles {
   @include palette.styles;
   @include margin.styles;
 
   @include typography.styles;
+
+  @include elevation.styles;
+  @include interaction.styles;
+  @include popover.styles;
+
+  @include box.styles;
+  @include text-container.styles;
+  @include divider.styles;
+  @include button.styles;
+  // @include icon-button.styles;
+  @include link.styles;
+  @include tooltip.styles;
 }

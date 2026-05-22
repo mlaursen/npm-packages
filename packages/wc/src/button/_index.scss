@@ -1,0 +1,192 @@
+@use "sass:map";
+@use "sass:meta";
+@use "sass:list";
+
+@use "../utils";
+@use "../interaction";
+@use "../typography";
+
+@use "tokens";
+
+$-tokens-registered: false;
+$-tokens: utils.deep-merge(
+  tokens.$tonal-tokens,
+  tokens.$small-tokens,
+  tokens.$size-tokens,
+  tokens.$variant-tokens,
+  (
+    background-opacity: 1,
+    color-opacity: 1,
+    shadow: "palette.shadow",
+    elevation: 0,
+    icon: (
+      color: currentcolor,
+      opacity: 1,
+    ),
+    shape: (
+      round: "shape.corner.full",
+      square: "shape.corner.medium",
+    ),
+    disabled: (
+      elevation: 0,
+      icon: (
+        color: currentcolor,
+        opacity: 1,
+      ),
+    ),
+    hovered: (
+      icon: (
+        color: currentcolor,
+        opacity: 1,
+      ),
+      interaction: (
+        color: currentcolor,
+        opacity: 0.08,
+      ),
+    ),
+    focused: (
+      elevation: 0,
+      icon: (
+        color: currentcolor,
+        opacity: 1,
+      ),
+      interaction: (
+        color: currentcolor,
+        opacity: 0.1,
+      ),
+    ),
+    pressed: (
+      icon: (
+        color: currentcolor,
+        opacity: 1,
+      ),
+      interaction: (
+        color: currentcolor,
+        opacity: 0.1,
+      ),
+    ),
+  )
+);
+$-configure-tokens: map.keys($-tokens);
+
+$-remapped-styles: utils.remap-tokens(
+  map.remove($-tokens, utils.list-concat(tokens.$sizes, tokens.$variants)...),
+  button
+);
+$-short-names: map.keys($-remapped-styles);
+$-base-styles: map.deep-merge(
+  $-remapped-styles,
+  (
+    "elevation.level": "button.elevation",
+    "elevation.shadow-color": "button.shadow",
+    "interaction.hovered.container.color": "button.hovered.interaction.color",
+    "interaction.hovered.container.opacity":
+      "button.hovered.interaction.opacity",
+    "interaction.focused.container.color": "button.focused.interaction.color",
+    "interaction.focused.container.opacity":
+      "button.focused.interaction.opacity",
+    "interaction.focused.container.elevation": "button.focused.elevation",
+    "icon.color": utils.get-rgb-var("button.icon.color", "button.icon.opacity"),
+    "icon.size": "button.icon.size",
+    background: utils.get-rgb-var(
+        "button.background",
+        "button.background-opacity"
+      ),
+    border-width: 0,
+    box-sizing: border-box,
+    color: utils.get-rgb-var("button.color", "button.color-opacity"),
+    display: inline-flex,
+    flex-shrink: 0,
+    font: typography.typescale(label-large),
+    gap: "button.gap",
+    height: "button.height",
+    padding-inline-start: "button.padding-left",
+    padding-inline-end: "button.padding-right",
+    place-content: center,
+    place-items: center,
+  )
+);
+$-base-disabled-styles: utils.remap-variants(
+  button,
+  disabled,
+  elevation,
+  background,
+  background-opacity,
+  color,
+  color-opacity,
+  "icon.color",
+  "icon.opacity"
+);
+$-disabled-styles: (
+  pointer-events: none,
+);
+$-round-styles: (
+  border-radius: "button.shape.round",
+);
+$-square-styles: (
+  border-radius: "button.shape.square",
+);
+
+@mixin configure() {
+  @if not $-tokens-registered {
+    $-tokens-registered: true !global;
+    @include utils.register-tokens($tokens: $-tokens, $prefix: "button");
+  }
+}
+
+@mixin configure-global($overrides: null) {
+  $overrides: utils.get-config-map(button, $overrides, $-configure-tokens);
+  @include configure();
+}
+
+@mixin css-styles {
+  $styles: (
+    "&button": $-base-styles,
+    "&button--extra-small": tokens.$extra-small-styles,
+    "&button--small": tokens.$small-styles,
+    "&button--medium": tokens.$medium-styles,
+    "&button--large": tokens.$large-styles,
+    "&button--extra-large": tokens.$extra-large-styles,
+    "&button--round": $-round-styles,
+    "&button--square": $-round-styles,
+    "&button--text": tokens.$text-styles,
+    "&button--outlined": tokens.$outlined-styles,
+    "&button--outlined:is(:disabled, [aria-disabled=true])":
+      tokens.$outlined-disabled-styles,
+    "&button--tonal": tokens.$tonal-styles,
+    "&button--filled": tokens.$filled-styles,
+    "&button--elevated": tokens.$elevated-styles,
+    "&button:is(:disabled, [aria-disabled=true])": $-base-disabled-styles,
+    "&button:disabled": $-disabled-styles,
+  );
+  @include utils.css-styles($styles, $-short-names);
+}
+
+@mixin host-styles {
+  $styles: (
+    ":host": $-base-styles,
+    ":host([size=extra-small])": tokens.$extra-small-styles,
+    ":host([size=small])": tokens.$small-styles,
+    ":host([size=medium])": tokens.$medium-styles,
+    ":host([size=large])": tokens.$large-styles,
+    ":host([size=extra-large])": tokens.$extra-large-styles,
+    ":host([shape=round])": $-round-styles,
+    ":host([shape=square])": $-square-styles,
+    ":host([variant=text])": tokens.$text-styles,
+    ":host([variant=outlined])": tokens.$outlined-styles,
+    ":host([variant=outlined]:is([disabled], [aria-disabled=true]))":
+      tokens.$outlined-disabled-styles,
+    ":host([variant=tonal])": tokens.$tonal-styles,
+    ":host([variant=filled])": tokens.$filled-styles,
+    ":host([variant=elevated])": tokens.$elevated-styles,
+    ":host(:is([disabled], [aria-disabled=true]))": $-base-disabled-styles,
+    ":host([disabled])": $-disabled-styles,
+  );
+
+  @include utils.host-styles($styles, $-short-names);
+}
+
+@mixin styles {
+  @include css-styles;
+  @include host-styles;
+}
