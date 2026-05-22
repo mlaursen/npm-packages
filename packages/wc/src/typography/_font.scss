@@ -1,0 +1,350 @@
+@use "sass:list";
+@use "sass:map";
+@use "sass:string";
+
+@use "../utils";
+
+$-tokens-registered: false;
+$-tokens: (
+  font: (
+    brand: string.unquote("Roboto, sans-serif"),
+    plain: string.unquote("Roboto, sans-serif"),
+    monospace: string.unquote('"Roboto Mono", Roboto, sans-serif'),
+  ),
+  weight: (
+    regular: 400,
+    medium: 500,
+    bold: 700,
+  ),
+  display-large: (
+    size: utils.to-rem(57),
+    line-height: utils.to-rem(64),
+    tracking: utils.get-letter-spacing(-0.25),
+  ),
+  display-medium: (
+    size: utils.to-rem(45),
+    line-height: utils.to-rem(52),
+    tracking: utils.get-letter-spacing(0),
+  ),
+  display-small: (
+    size: utils.to-rem(36),
+    line-height: utils.to-rem(44),
+    tracking: utils.get-letter-spacing(0),
+  ),
+  headline-large: (
+    size: utils.to-rem(28),
+    line-height: utils.to-rem(40),
+    tracking: utils.get-letter-spacing(0),
+  ),
+  headline-medium: (
+    size: utils.to-rem(28),
+    line-height: utils.to-rem(36),
+    tracking: utils.get-letter-spacing(0),
+  ),
+  headline-small: (
+    size: utils.to-rem(24),
+    line-height: utils.to-rem(32),
+    tracking: utils.get-letter-spacing(0),
+  ),
+  title-large: (
+    size: utils.to-rem(22),
+    line-height: utils.to-rem(28),
+    tracking: utils.get-letter-spacing(0),
+  ),
+  title-medium: (
+    size: utils.to-rem(16),
+    line-height: utils.to-rem(24),
+    tracking: utils.get-letter-spacing(0.25),
+  ),
+  title-small: (
+    size: utils.to-rem(14),
+    line-height: utils.to-rem(20),
+    tracking: utils.get-letter-spacing(0.1),
+  ),
+  label-large: (
+    size: utils.to-rem(14),
+    line-height: utils.to-rem(20),
+    tracking: utils.get-letter-spacing(0.1),
+  ),
+  label-medium: (
+    size: utils.to-rem(12),
+    line-height: utils.to-rem(16),
+    tracking: utils.get-letter-spacing(0.5),
+  ),
+  label-small: (
+    size: utils.to-rem(11),
+    line-height: utils.to-rem(16),
+    tracking: utils.get-letter-spacing(0.5),
+  ),
+  body-large: (
+    size: utils.to-rem(16),
+    line-height: utils.to-rem(24),
+    tracking: utils.get-letter-spacing(0.5),
+  ),
+  body-medium: (
+    size: utils.to-rem(14),
+    line-height: utils.to-rem(20),
+    tracking: utils.get-letter-spacing(0.25),
+  ),
+  body-small: (
+    size: utils.to-rem(12),
+    line-height: utils.to-rem(20),
+    tracking: utils.get-letter-spacing(0.4),
+  ),
+);
+$-utility-classes: true;
+$-font-styles: italic oblique normal;
+$-font-weights: map.keys(map.get($-tokens, weight));
+$-text-alignments: left center right;
+$-text-decorations: underline overline line-through none;
+$-text-transforms: capitalize uppercase lowercase;
+$-text-overflows: nowrap ellipsis;
+
+$-font-token-names: map.keys(map.get($-tokens, font));
+$-weight-token-names: map.keys(map.get($-tokens, weight));
+$-configure-tokens: list.append(
+  list.join($-font-token-names, $-weight-token-names),
+  "utility-classes"
+);
+
+@function tokens() {
+  @return $-tokens;
+}
+
+@mixin -update($value, $group, $name) {
+  @if $value != null {
+    $-tokens: map.set($-tokens, $group, $name, $value) !global;
+  }
+}
+
+///
+/// @param {String} $brand [null] -
+/// @param {String} $plain [null] -
+/// @param {String} $monospace [null] -
+/// @param {Number} $regular [null] -
+/// @param {Number} $medium [null] -
+/// @param {Number} $bold [null] -
+@mixin configure(
+  $brand: null,
+  $plain: null,
+  $monospace: null,
+  $regular: null,
+  $medium: null,
+  $bold: null,
+  $font-styles: null,
+  $font-weights: null,
+  $text-alignments: null,
+  $text-transforms: null,
+  $text-overflows: null
+) {
+  @include -update($brand, font, brand);
+  @include -update($plain, font, plain);
+  @include -update($monospace, font, monospace);
+
+  @include -update($regular, weight, regular);
+  @include -update($medium, weight, medium);
+  @include -update($bold, weight, bold);
+
+  @if $font-styles !=null {
+    $-font-styles: $font-styles !global;
+  }
+
+  @if $font-weights != null {
+    $-font-weights: $font-weights !global;
+  }
+
+  @if $text-alignments != null {
+    $-text-alignments: $text-alignments !global;
+  }
+
+  @if $text-transforms != null {
+    $-text-transforms: $text-transforms !global;
+  }
+
+  @if $text-overflows != null {
+    $-text-overflows: $text-overflows !global;
+  }
+
+  @if not $-tokens-registered {
+    $-tokens-registered: true !global;
+    @include utils.register-tokens($tokens: $-tokens);
+  }
+}
+
+@mixin configure-global($font: null) {
+  $font: utils.get-config-map(font, $font, $-configure-tokens);
+  @include configure(
+    $brand: map.get($font, brand),
+    $plain: map.get($font, plain),
+    $monospace: map.get($font, monospace),
+    $regular: map.get($font, regular),
+    $medium: map.get($font, medium),
+    $bold: map.get($font, bold),
+    $font-styles: map.get($font, font-styles),
+    $font-weights: map.get($font, font-weights),
+    $text-alignments: map.get($font, text-alignments),
+    $text-transforms: map.get($font, text-transforms),
+    $text-overflows: map.get($font, text-overflows)
+  );
+
+  $register-tokens: not $-tokens-registered;
+  @if $register-tokens {
+    $-tokens-registered: true !global;
+    @include utils.register-tokens($tokens: $-tokens);
+  }
+}
+
+/// Generates the font variables
+@mixin variables {
+  $register-tokens: not $-tokens-registered;
+  @if $register-tokens {
+    $-tokens-registered: true !global;
+  }
+
+  @include utils.set-default-tokens(
+    $tokens: $-tokens,
+    $register-tokens: $register-tokens
+  );
+}
+
+@function -selector($name, $attr, $is-css) {
+  @if $is-css {
+    @return "&#{$name}";
+  }
+
+  @return ":host([#{$attr}=#{$name}])";
+}
+
+@function -get-font-styles($is-css) {
+  $styles: ();
+  @each $value in $-font-styles {
+    $selector: -selector(
+      $name: $value,
+      $attr: "font-style",
+      $is-css: $is-css,
+    );
+    $inner-styles: (
+      font-style: $value,
+    );
+    $styles: map.set($styles, $selector, $inner-styles);
+  }
+
+  @return $styles;
+}
+
+@function -get-font-weights($is-css) {
+  $styles: ();
+  @each $value in $-font-weights {
+    $selector: -selector(
+      $name: $value,
+      $attr: "font-weight",
+      $is-css: $is-css,
+    );
+    $inner-styles: (
+      font-weight: $value,
+    );
+    $styles: map.set($styles, $selector, $inner-styles);
+  }
+
+  @return $styles;
+}
+
+@function -get-text-alignments($is-css) {
+  $styles: ();
+  @each $value in $-text-alignments {
+    $selector: -selector(
+      $name: "align-#{$value}",
+      $attr: "text-align",
+      $is-css: $is-css,
+    );
+    $inner-styles: (
+      text-align: $value,
+    );
+    $styles: map.set($styles, $selector, $inner-styles);
+  }
+
+  @return $styles;
+}
+
+@function -get-text-decorations($is-css) {
+  $styles: ();
+  @each $value in $-text-decorations {
+    $selector: -selector(
+      $name: $value,
+      $attr: "text-decoration",
+      $is-css: $is-css,
+    );
+    $inner-styles: (
+      text-decoration: $value,
+    );
+    $styles: map.set($styles, $selector, $inner-styles);
+  }
+
+  @return $styles;
+}
+
+@function -get-text-transforms($is-css) {
+  $styles: ();
+  @each $value in $-text-transforms {
+    $selector: -selector(
+      $name: $value,
+      $attr: "text-transform",
+      $is-css: $is-css,
+    );
+    $inner-styles: (
+      text-transform: $value,
+    );
+    $styles: map.set($styles, $selector, $inner-styles);
+  }
+
+  @return $styles;
+}
+
+@function -get-text-overflows($is-css) {
+  $styles: ();
+  @each $value in $-text-overflows {
+    $selector: -selector(
+      $name: $value,
+      $attr: "text-overflow",
+      $is-css: $is-css,
+    );
+    // prettier-ignore
+    $inner-styles: if(
+      sass($value == nowrap): (white-space: nowrap);
+      else: utils.text-overflow(null)
+    );
+    $styles: map.set($styles, $selector, $inner-styles);
+  }
+
+  @return $styles;
+}
+
+@function -get-styles($is-css) {
+  $styles: ();
+  $parts: (
+    -get-font-styles($is-css),
+    -get-font-weights($is-css),
+    -get-text-alignments($is-css),
+    -get-text-decorations($is-css),
+    -get-text-transforms($is-css),
+    -get-text-overflows($is-css)
+  );
+  @each $part in $parts {
+    $styles: map.merge($styles, $part);
+  }
+
+  @return $styles;
+}
+
+@mixin css-styles {
+  @include utils.css-styles(-get-styles(true));
+}
+
+@mixin host-styles {
+  @include utils.host-styles(-get-styles(false));
+}
+
+@mixin styles {
+  @include css-styles;
+  @include host-styles;
+}

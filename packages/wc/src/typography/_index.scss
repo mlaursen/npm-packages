@@ -1,0 +1,32 @@
+@forward "typescale" show typescale;
+
+@use "sass:map";
+
+@use "../utils";
+
+@use "font";
+@use "typescale";
+
+$-configure-tokens: (font, typescale);
+
+@mixin configure($font: null, $typescale: null) {
+  @include font.configure-global($font);
+  @include typescale.configure-global($typescale);
+}
+
+@mixin configure-global($overrides: null) {
+  $overrides: utils.get-config-map(typography, $overrides, $-configure-tokens);
+  @include configure(
+    $font: map.get($overrides, font),
+    $typescale: map.get($overrides, typescale)
+  );
+}
+
+@mixin variables {
+  @include font.variables;
+}
+
+@mixin styles {
+  @include font.styles;
+  @include typescale.styles;
+}
