@@ -20,6 +20,25 @@ return {
     },
   },
   {
+    "neovim/nvim-lspconfig",
+    opts = {
+      servers = {
+        vtsls = {
+          settings = {
+            typescript = {
+              tsserver = {
+                pluginPaths = {
+                  "./node_modules",
+                  "./packages/wc/node_modules",
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+  },
+  {
     "L3MON4D3/LuaSnip",
     config = function()
       require("luasnip.loaders.from_lua").load({

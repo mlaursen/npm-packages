@@ -10,6 +10,7 @@ This is a for all the packages I publish under the `@mlaursen` scope.
 - [@mlaursen/scss](./packages/scss)
 - [@mlaursen/simple-docs](./packages/simple-docs)
 - [@mlaursen/utils](./packages/utils)
+- [@mlaursen/wc](./packages/wc)
 
 ## Installation
 
