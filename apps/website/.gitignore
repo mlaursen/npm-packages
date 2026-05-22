@@ -1,0 +1,15 @@
+node_modules
+.DS_STORE
+.env.local
+
+_site
+
+# generated
+src/_includes/css
+src/_includes/scripts
+
+# cache
+.cache
+
+# secret data
+.env

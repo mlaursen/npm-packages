@@ -1,0 +1,32 @@
+@use "@mlaursen/wc" as *;
+
+@include configure(
+  $palette: (
+    color-scheme: light-dark,
+  )
+);
+
+@layer {
+  @include css-reset;
+
+  :root {
+    @include variables;
+  }
+}
+
+.main-header {
+  grid-column: 1/-1;
+  position: sticky;
+  top: 0;
+}
+
+main {
+  padding-bottom: spacing(8);
+}
+
+.toc-page {
+  @media screen and (min-width: 1200px) {
+    display: grid;
+    grid-template: min-content 1fr / 1fr var(--toc-width, 0px);
+  }
+}

@@ -1,0 +1,14 @@
+---
+layout: base
+bodyClassName: "toc-page"
+---
+
+<mwc-typography variant="display">
+<h1>{{ doc.title }}</h1>
+</mwc-typography>
+{% if doc.description %}
+  <mwc-typography>
+  <p>{{ doc.description }}</p>
+  </mwc-typography>
+{% endif %}
+{{ content | safe }}
