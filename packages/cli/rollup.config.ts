@@ -8,10 +8,9 @@ export default [
   {
     input: "./src/cli.ts",
     output: {
-      file: "./dist/cli.mjs",
+      file: "./dist/cli.js",
       format: "es",
       sourcemap: false,
-      banner: "#!/usr/bin/env node",
     },
     external,
     plugins: [nodeResolve(), swc()],

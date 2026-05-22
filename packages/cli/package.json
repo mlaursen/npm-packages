@@ -4,7 +4,7 @@
   "version": "0.1.3",
   "description": "A small util to copy SCSS files for publishing.",
   "bin": {
-    "mlaursen-cli": "./dist/cli.mjs"
+    "mlaursen-cli": "./cli.js"
   },
   "scripts": {
     "clean-dist": "rm -rf dist types",

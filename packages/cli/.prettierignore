@@ -1,4 +1,5 @@
+node_modules
 CHANGELOG.md
 pnpm-lock.yaml
-/dist
-/types
+
+cli.js
