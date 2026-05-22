@@ -1,0 +1,275 @@
+@use "sass:list";
+@use "sass:map";
+@use "sass:meta";
+@use "sass:string";
+
+@use "mouse" as *;
+@use "setup" as *;
+@use "string" as *;
+@use "tokens" as *;
+
+@function -parse-possibly-nested-token-vars($value, $short-names) {
+  @if meta.type-of($value) !=
+    string or not
+    string.index($value, ".") or not
+    string.index($value, " ")
+  {
+    @return get-token-var($value, $short-names: $short-names);
+  }
+
+  // right now I only support adding nested tokens within quotes
+  $quote-index: string.index($value, '"');
+  $remaining: $value;
+  $rebuilt: "";
+  @while $quote-index {
+    $prefix: string.slice($remaining, 1, $quote-index - 1);
+    $remaining: string.slice($remaining, $quote-index + 1);
+    $next-quote-index: string.index($remaining, '"');
+    @if not $next-quote-index {
+      @error "tried to parse a css token but unable to find the next double-quote. original: '#{$value}'. remaining: '#{$remaining}'";
+    }
+
+    $token-name: string.slice($remaining, 1, $next-quote-index - 1);
+    $remaining: string.slice($remaining, $next-quote-index + 1);
+    $quote-index: string.index($remaining, '"');
+
+    $renamed: get-token-var($token-name, $short-names: $short-names);
+    // if it was really not a token, ensure the quotes remain
+    @if $renamed == $token-name {
+      $renamed: '"#{$renamed}"';
+    }
+
+    $rebuilt: $rebuilt + $prefix + $renamed;
+    @if not $quote-index {
+      $rebuilt: $rebuilt + $remaining;
+      @return $rebuilt;
+    }
+  }
+
+  @return get-token-var($value, $short-names: $short-names);
+}
+
+/// This is used to convert a Map into styles for each module. The map is a
+/// simple `property: value` pair for most cases. There are a few additions to
+/// add some more dynamic styling.
+///
+/// @example scss - Basic Styling
+///   $styles: (
+///     margin: 0,
+///     padding: 1rem,
+///     text-overflow: hidden,
+///   );
+///
+/// @example scss - Nested Selectors
+///   $styles: (
+///     position: relative,
+///
+///     "&::before": map.merge(
+///       utils.pseudo-element(),
+///       (
+///         background: #000,
+///         opacity: 0.3
+///       )
+///     ),
+///
+///     ":focus-visible &": (
+///       // ...whatever
+///     ),
+///   );
+///
+/// @example scss - Using Tokens
+///   $styles: (
+///     background: "palette.background",
+///     color: (
+///       default: "some.token.namespace",
+///       fallback: "palette.on-background",
+///     ),
+///   );
+///
+/// @example scss - Setting Tokens
+///   $styles: (
+///     "palette.background": #faf,
+///     "palette.on-background": (
+///       default: "some.token.namespace",
+///       fallback: #000,
+///     ),
+///   );
+///
+/// @example scss - Mouse Hover Styles
+///   $styles: (
+///     "mouse-hover": (
+///       cursor: pointer,
+///       opacity: 0.13,
+///     ),
+///   );
+///
+/// @example scss - Media Queries
+///   $styles: (
+///     "@media (prefers-reduced-motion)": (
+///       animation: none
+///     ),
+///   );
+///
+///
+/// @param {Map} $styles - the map of styles to generate
+/// @output
+@mixin map-to-styles($styles, $short-names: null) {
+  @if $styles {
+    @each $property, $value in $styles {
+      $value-type: meta.type-of($value);
+      @if $property == "mouse-hover" {
+        @include mouse-hover(true) {
+          @include map-to-styles($value, $short-names);
+        }
+      } @else if $property == "host-hover" {
+        @include mouse-hover(false) {
+          :host(:hover) {
+            @include map-to-styles($value, $short-names);
+          }
+        }
+      } @else if $property == "font" and $value-type == list {
+        $shorthand: ();
+        @each $part in $value {
+          $shorthand: list.append(
+            $shorthand,
+            get-token-var($part, $short-names: $short-names)
+          );
+        }
+
+        font: $shorthand;
+      } @else if $property == "font" and $value-type == map {
+        @include map-to-styles($value, $short-names);
+      } @else if string.slice($property, 1, 6) == "@media" {
+        @media #{string.slice($property, 7)} {
+          @include map-to-styles($value, $short-names);
+        }
+      } @else if string.index($property, "@starting-style") {
+        @starting-style {
+          @include map-to-styles($value, $short-names);
+        }
+      } @else if is-maybe-token-string($property) {
+        @if $property == $value {
+          $short-name: get-var-name($value, $short-names);
+          $var-value: get-token-var($value);
+
+          #{$short-name}: #{$var-value};
+        } @else {
+          @include set-var(
+            $name: $property,
+            $value: get-token-var($value, $short-names: $short-names),
+            $short-names: $short-names
+          );
+        }
+      } @else if $value-type == map {
+        #{$property} {
+          @include map-to-styles($value, $short-names);
+        }
+      } @else if $value-type != list {
+        $resolved-value: -parse-possibly-nested-token-vars(
+          $value,
+          $short-names
+        );
+
+        #{$property}: #{$resolved-value};
+      } @else if list.length($value) > 0 {
+        $list: ();
+        @each $part in $value {
+          $list: list.append(
+            $list,
+            get-token-var($part, $short-names: $short-names)
+          );
+        }
+        #{$property}: $list;
+      }
+    }
+  }
+}
+
+///
+/// @param {Map} $map -
+/// @param {String|null} $prefix -
+/// @return {List} -
+@function get-tokens-from-map($map, $prefix) {
+  $tokens: ();
+  @each $key, $value in $map {
+    $name: $key;
+    @if $prefix {
+      $name: "#{$prefix}.#{$key}";
+    }
+
+    @if meta.type-of($value) == map {
+      $child-tokens: get-tokens-from-map($value, $name);
+      @each $token in $child-tokens {
+        $tokens: list.append($tokens, $token);
+      }
+    } @else {
+      $tokens: list.append($tokens, $name);
+    }
+  }
+
+  @return $tokens;
+}
+
+///
+/// @param {Map} $tokens -
+/// @param {String | null} $prefix -
+/// @return {Map} -
+@function remap-tokens($tokens, $prefix) {
+  $result: ();
+  @each $name in get-tokens-from-map($tokens, $prefix) {
+    $result: map.set($result, $name, $name);
+  }
+
+  @return $result;
+}
+
+///
+/// @param {String | null} $prefix -
+/// @param {String} $token -
+/// @param {String...} $variants -
+/// @return {Map} -
+@function remap-variants($prefix, $token, $variants...) {
+  $result: ();
+  @each $variant in $variants {
+    $result: map.set(
+      $result,
+      "#{$prefix}.#{$variant}",
+      "#{$prefix}.#{$token}.#{$variant}"
+    );
+  }
+
+  @return $result;
+}
+
+@mixin css-styles($styles, $short-names: null, $keyframes: null) {
+  @if is-css-output() {
+    @include map-to-styles(
+      (
+        ".mwc": $styles,
+      ),
+      $short-names
+    );
+
+    @if $keyframes {
+      @each $name, $styles in $keyframes {
+        @keyframes mwc-#{$name} {
+          @include map-to-styles($styles);
+        }
+      }
+    }
+  }
+}
+
+@mixin host-styles($styles, $short-names: null, $keyframes: null) {
+  @if is-host-output() {
+    @include map-to-styles($styles, $short-names);
+
+    @if $keyframes {
+      @each $name, $styles in $keyframes {
+        @keyframes #{$name} {
+          @include map-to-styles($styles);
+        }
+      }
+    }
+  }
+}

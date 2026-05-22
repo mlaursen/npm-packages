@@ -1,0 +1,205 @@
+@use "sass:list";
+@use "sass:map";
+@use "sass:meta";
+@use "sass:string";
+
+@use "string" as *;
+@use "list" as *;
+@use "setup" as *;
+@use "validate" as *;
+
+/// @type {List}
+$-tokens: ();
+/// @type {Map}
+$-tokens-with-fallback: ();
+$-force-added: ();
+
+/// Gets a css variable declaration.
+///
+/// @returns {String} `var(--name, fallback)` or `var(--name)`
+@function get-var($name, $fallback: null, $short-names: null) {
+  $var: get-var-name($name, $short-names);
+  @if $fallback and not string.index($var, "--_") {
+    @return var(#{$var}, #{$fallback});
+  }
+
+  @return var(#{$var});
+}
+
+/// This is used to create a `var(...)` declaration from a token name
+///
+/// @param {any} $token - An optional token name or any value. This
+/// function will be ignored if it is not a string.
+/// @param {any} $fallback [null] - An optional fallback value.
+/// This can be set to another token name which will be used.
+/// @returns {String} `var(--name, fallback)` or `var(--name)`
+@function get-token-var($token, $fallback: null, $short-names: null) {
+  @if meta.type-of($token) != string {
+    @return $token;
+  }
+
+  @if list.index($-tokens, $token) or is-maybe-token-string($token) {
+    @if not $fallback {
+      $fallback: map.get($-tokens-with-fallback, $token);
+    }
+
+    @return get-var(
+      $token,
+      get-token-var($fallback, $short-names: $short-names),
+      $short-names
+    );
+  }
+
+  @return try-to-apply-spacing($token);
+}
+
+/// @param {String} $name - The token name to set
+/// @param {any} $value - The value to use. If this is set to `null` or false,
+/// the token will not be updated.
+@mixin set-var($name, $value, $short-names: null) {
+  @if $value {
+    $var-name: get-var-name($name, $short-names);
+    $var-value: get-token-var($value, $short-names: $short-names);
+    #{$var-name}: #{$var-value};
+  }
+}
+
+/// A simple helper function to set a property to a token's value.
+///
+/// @param {String} $property - The css property name to use.
+/// @param {String} $name - The token name to use
+/// @param {any} $fallback [null] - An optional fallback value or token name
+@mixin use-var($property, $name, $fallback: null, $short-names: null) {
+  #{$property}: get-var($name, $fallback, $short-names);
+}
+
+/// This function is used to convert any color value (including custom
+/// properties) into an rgb value with opacity.
+///
+/// @param {Color | String} $color - The token or color that should be
+/// converted to an rgb value.
+/// @param {Number | String} $opacity - The token or opacity value that should
+/// be used
+/// @param {Color | String} $color-fallback [null] - An optional fallback value
+/// for the color if it was set to a token name.
+/// @param {Number | String} $opacity-fallback [null] - An optional fallback
+/// value for the opacity if it was set to a token name.
+/// @return {String} - `rgb(from $color r g b / $opacity)`
+@function get-rgb-var($color, $opacity) {
+  @return rgb(from $color r g b / $opacity);
+}
+
+/// This mixin is used to register tokens so that the `verify-tokens` mixin
+/// works correctly.
+///
+/// @param {Map} $tokens - this should be the locally scoped tokens map for a
+/// specific module.
+/// @param {String} $prefix [null] - An optional starting prefix.
+@mixin register-tokens($tokens, $prefix: null, $skip-fallback-values: false) {
+  @if meta.type-of($tokens) != map {
+    @error "register-tokens() only supports maps";
+  }
+
+  // prettier-ignore
+  $var-prefix: if(sass($prefix): $prefix + "."; else: "");
+  @each $maybe-prefix, $maybe-value in $tokens {
+    @if meta.type-of($maybe-value) == map {
+      @include register-tokens($maybe-value, $var-prefix + $maybe-prefix);
+    } @else {
+      $name: "#{$var-prefix}#{$maybe-prefix}";
+
+      $force-added-index: list.index($-force-added, $name);
+      @if $force-added-index {
+        $-force-added: list-filter($-force-added, $name) !global;
+      } @else {
+        $-tokens: list.append($-tokens, $name) !global;
+      }
+      @if $maybe-value and not $skip-fallback-values {
+        $-tokens-with-fallback: map.set(
+          $-tokens-with-fallback,
+          $name,
+          $maybe-value
+        ) !global;
+      }
+    }
+  }
+}
+
+///
+/// @param {Map} $tokens - the map of tokens to iterate over
+/// @param {String} $prefix [null] - an optional starting prefix
+/// @param {Boolean} $register-tokens [false] - set to `true` to also register
+/// these tokens immediately
+@mixin set-default-tokens(
+  $tokens,
+  $prefix: null,
+  $register-tokens: false,
+  $skip-fallback-values: false
+) {
+  @if $register-tokens {
+    @include register-tokens($tokens, $prefix, $skip-fallback-values);
+  }
+
+  // prettier-ignore
+  $var-prefix: if(sass($prefix): $prefix + "."; else: "");
+  @each $maybe-prefix, $maybe-value in $tokens {
+    $name: "#{$var-prefix}#{$maybe-prefix}";
+    @if meta.type-of($maybe-value) == map {
+      @include set-default-tokens($maybe-value, $name, $skip-fallback-values);
+    } @else {
+      @include set-var($name, $maybe-value);
+    }
+  }
+}
+
+///
+/// @param {Number} $multiplier - a number to multiply against the
+/// base spacing factor
+/// @return {String} - a calc string like: `calc(var(--mwc-spacing-factor) * #{$multiplier})`;
+@function spacing($multiplier: 1) {
+  $factor: get-token-var(
+    "spacing.factor",
+    map.get($-tokens-with-fallback, factor)
+  );
+  @return calc(#{$factor} * #{assert-number($multiplier, multiplier)});
+}
+
+///
+/// @param {String} $token -
+/// @return {String} -
+@function try-to-apply-spacing($token) {
+  $spacing: "spacing(";
+  $spacing-length: string.length($spacing);
+  $spacing-index: string.index($token, $spacing);
+  @while $spacing-index {
+    $prefix: string.slice($token, 1, $spacing-index - 1);
+    $remaining: string.slice($token, $spacing-index + $spacing-length);
+    $paren-index: string.index($remaining, ")");
+    @if not $paren-index {
+      @return $token;
+    }
+
+    $value: string.slice($remaining, 1, $paren-index - 1);
+    $suffix: string.slice($remaining, $paren-index + 1);
+    $token: $prefix + #{spacing($value)} + $suffix;
+
+    $spacing-index: string.index($token, $spacing);
+  }
+
+  @return $token;
+}
+
+/// This is an internal mixin that is just used to ensure that no invalid
+/// tokens have been called.
+@mixin verify-tokens {
+  @if list.length($-force-added) > 0 {
+    $valid-tokens: ();
+    @each $token in $-tokens {
+      @if not list.index($-force-added, $token) {
+        $valid-tokens: list.append($valid-tokens, $token);
+      }
+    }
+
+    @error "The following tokens do not exist and need to be removed or fixed: #{$-force-added}. Valid tokens are: #{$valid-tokens}";
+  }
+}

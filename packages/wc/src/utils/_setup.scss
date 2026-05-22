@@ -1,0 +1,100 @@
+@use "sass:list";
+@use "sass:map";
+@use "sass:meta";
+@use "sass:string";
+
+@use "validate" as *;
+@use "string" as *;
+
+/// The default behavior is to generate styles for the internal web
+/// components but setting this to `css` will generate styles with class
+/// names instead.
+/// @type {css | host}
+$-output: host;
+
+/// @type {Boolean}
+$-short-var-names: true;
+
+@mixin configure-setup($output: null, $short-var-names: null) {
+  @if $output != null {
+    $-output: validate((css, host), $output, "$output") !global;
+  }
+
+  @if $short-var-names != null {
+    $-short-var-names: assert-boolean(
+      $short-var-names,
+      "short-var-names"
+    ) !global;
+  }
+
+  @if $var-prefix != null {
+    $-var-prefix: assert-string($var-prefix, "var-prefix") !global;
+  }
+
+  @if $selector-prefix != null {
+    $-selector-prefix: assert-string(
+      $selector-prefix,
+      "selector-prefix"
+    ) !global;
+  }
+
+  @if $keyframes-prefix != null {
+    $-keyframes-prefix: assert-string(
+      $keyframes-prefix,
+      "keyframes-prefix"
+    ) !global;
+  }
+}
+
+///
+/// @param {css | host | var-prefix | selector-prefix | keyframes-prefix} $name -
+/// @return {String | Boolean} -
+@function get-setup-config($name) {
+  $config: (
+    css: $-output == css,
+    host: $-output == host,
+    var-prefix: $-var-prefix,
+    selector-prefix: $-selector-prefix,
+    keyframes-prefix: $-keyframes-prefix,
+  );
+
+  @return map.get(
+    $config,
+    validate(map.keys($config), $name, "setup config name")
+  );
+}
+
+/// Used to get the current CSS variable name from react-md tokens.
+///
+/// @param {String} $name - token name. i.e `"font.brand"`
+/// @param {String...} $short-names -
+/// @returns {String} the var name. i.e. `"--mwc-font-brand"`
+@function get-var-name($name, $short-names: null) {
+  @if not list.index($-tokens, $name) {
+    $-tokens: list.append($-tokens, $name) !global;
+    $-force-added: list.append($-force-added, $name) !global;
+  }
+
+  $hyphenated-name: str-replace($name, ".", "-");
+
+  // I do not want to display the palette prefix
+  @if string.index($hyphenated-name, "palette-") == 1 {
+    $hyphenated-name: string.slice($hyphenated-name, 9);
+  } @else if string.index($hyphenated-name, "transition-") == 1 {
+    $hyphenated-name: string.slice($hyphenated-name, 12);
+  }
+
+  @if $-short-var-names and $short-names {
+    $parts: string.split($hyphenated-name, "-");
+    @if list.index($short-names, $name) {
+      $result: "--_";
+      @each $part in $parts {
+        $result: $result + string.slice($part, 1, 1);
+      }
+
+      @return $result;
+    }
+  }
+
+  @return #{$-var-prefix + $hyphenated-name};
+}

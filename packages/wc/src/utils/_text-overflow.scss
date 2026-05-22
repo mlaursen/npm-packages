@@ -1,0 +1,12 @@
+/// Used to enable `text-overflow` for an element.
+///
+/// @param {String} $white-space [nowrap] - the `white-space` value.
+/// @return {Map} -
+@function text-overflow($white-space: nowrap) {
+  @return (
+    overflow: hidden,
+    overflow-wrap: anywhere,
+    text-overflow: ellipsis,
+    white-space: $white-space
+  );
+}
