@@ -1,0 +1,5 @@
+@use "palette";
+
+@mixin styles {
+  @include palette.styles;
+}

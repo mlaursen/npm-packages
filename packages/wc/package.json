@@ -57,6 +57,7 @@
   "devDependencies": {
     "@mlaursen/cli": "workspace:*",
     "@mlaursen/eslint-config": "workspace:*",
+    "@mlaursen/utils": "workspace:*",
     "@rollup/plugin-node-resolve": "^16.0.3",
     "@swc/cli": "^0.8.1",
     "@swc/core": "^1.15.41",

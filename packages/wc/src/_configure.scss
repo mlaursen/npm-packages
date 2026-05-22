@@ -1,10 +1,13 @@
 @use "sass:map";
 
 @use "utils";
+@use "palette";
 
 @mixin configure($output: null, $short-var-names: null) {
   @include utils.configure-setup(
     $output: $output,
     $short-var-names: $short-var-names
   );
+
+  @include palette.configure-global($palette);
 }
