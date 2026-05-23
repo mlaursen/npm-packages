@@ -1,6 +1,7 @@
 import { writeFile } from "node:fs/promises";
 import prettier from "prettier";
 
+import { ensureParentDir } from "./ensureParentDir.js";
 import { type FilesizeOptions } from "./filesize.js";
 import { logComplete } from "./logger.js";
 import { prettyFilesize } from "./prettyFilesize.js";
@@ -55,6 +56,7 @@ export async function generateFile(
     data = await prettier.format(data, { filepath: filePath });
   }
 
+  await ensureParentDir(filePath);
   await writeFile(filePath, data, "utf8");
   let suffix = "";
   if (fileSize) {
