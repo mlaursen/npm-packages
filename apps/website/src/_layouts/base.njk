@@ -1,25 +1,17 @@
 <!DOCTYPE html>
-<html dir="{{ meta.dir }}" lang="{{ meta.lang }}">
-  <!-- The order of elements in the head follows recommendations by Harry Roberts. learn more here: https://www.youtube.com/watch?v=MHyAOZ45vnU -->
+<html lang="{{ meta.lang }}">
   <head>
-    <!-- 1 charset/viewport -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- 2 title -->
     <title>{{ title or meta.title }}</title>
     <base href="{{ page.url }}" />
-    <!-- 3 synchronous js  -->
+    {% include "head/google-fonts.njk" %}
     {% include "head/js-inline.njk" %}
-    <!-- 4 schema settings -->
     {# {% include "head/schema.njk" %} #}
-    <!-- 5 CSS  -->
     {% include "head/css-inline.njk" %}
-    <!-- 6 preloads  -->
     {% include "head/preloads.njk" %}
-    <!-- 7 defer  -->
     {% include "head/js-defer.njk" %}
-    <!-- 8 meta tags, icons, open graph etc.  -->
     {% include "head/meta-info.njk" %}
   </head>
-  <body class="{{ bodyClassName }}">{% include "partials/layout.njk" %}</body>
+  <body class="{{ bodyClassName }}">{{ content | safe }}</body>
 </html>

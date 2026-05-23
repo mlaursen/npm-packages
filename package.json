@@ -25,6 +25,15 @@
     "clean-other": "pnpm turbo-s clean",
     "clean-root": "rm -rf .turbo node_modules",
     "clean": "pnpm clean-other && pnpm clean-root",
+    "create-favicons": "pnpm --filter website create-favicons",
+    "website-build": "pnpm turbo-s build --filter website",
+    "website-dev": "pnpm turbo-s dev --filter website",
+    "website-test": "pnpm --filter website test",
+    "website-start": "pnpm --filter website start",
+    "wc-clean-generated": "pnpm --filter @mlaursen/wc clean-generated",
+    "wc-build": "pnpm turbo-s build --filter @mlaursen/wc",
+    "wc-test-scss": "pnpm --filter @mlaursen/wc test-scss",
+    "wc-dev": "pnpm turbo-s dev --filter @mlaursen/wc",
     "release": "tsx scripts/release.ts"
   },
   "devDependencies": {

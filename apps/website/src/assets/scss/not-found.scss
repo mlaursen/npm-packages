@@ -1,0 +1,34 @@
+@use "@mlaursen/wc" as *;
+@use "configure-website";
+
+.not-found {
+  @include map-to-styles(
+    (
+      "--primary": "palette.on-background",
+      "--secondary": #ff4081,
+      "--white": #fff,
+      "--black": #000,
+      "--eye": #0b3f8e,
+      "--mouth": #fc89b7,
+      "--lip": #98403d,
+      "--eyebrow": #973f3d,
+      color: var(--primary),
+      margin-top: 4rem,
+      max-width: 40rem,
+      width: 100%,
+
+      text: (
+        fill: currentcolor,
+        font: typescale(
+            display-large,
+            $prominent: false,
+            $overrides: typescale(
+                display-large,
+                $prominent: true,
+                $overrides: (font-size: 525px)
+              )
+          ),
+      ),
+    )
+  );
+}

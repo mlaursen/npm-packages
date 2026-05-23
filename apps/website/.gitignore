@@ -13,3 +13,10 @@ src/_includes/scripts
 
 # secret data
 .env
+
+# playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+/playwright/.auth/

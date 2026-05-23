@@ -2,8 +2,10 @@ import { EleventyRenderPlugin } from "@11ty/eleventy";
 import { eleventyImageTransformPlugin } from "@11ty/eleventy-img";
 import webc from "@11ty/eleventy-plugin-webc";
 import litPlugin from "@lit-labs/eleventy-plugin-lit";
+import { enableLogger, log } from "@mlaursen/node-utils";
 import dotenv from "dotenv";
 
+import { ENABLE_SSR, ROOT_DIR } from "./src/_config/constants.js";
 import { buildJs } from "./src/_config/events/build-js.js";
 import { buildScss } from "./src/_config/events/build-scss.js";
 import { slugify } from "./src/_config/filters/slugify.js";
@@ -11,34 +13,28 @@ import { sortAlphaNumeric } from "./src/_config/filters/sortAlphaNumeric.js";
 import { draftsPlugin } from "./src/_config/plugins/drafts.js";
 import { htmlPlugin } from "./src/_config/plugins/html.js";
 
-const rootDir = "src";
-const SSR = process.argv.includes("--ssr");
-const DEV = process.argv.includes("--dev");
-
-dotenv.config({
-  quiet: true,
-  path: `.env.${DEV ? "development" : "production"}`,
-});
-dotenv.config({ quiet: true });
+dotenv.config({ quiet: true, override: true });
 
 /** @param {import("@11ty/eleventy").UserConfig} eleventyConfig */
 export default async function createConfig(eleventyConfig) {
+  enableLogger();
   eleventyConfig.on("eleventy.before", async () => {
-    await buildScss(rootDir);
-    await buildJs(rootDir);
+    await buildScss();
+    await buildJs();
   });
 
   eleventyConfig.addWatchTarget(
-    `./${rootDir}/assets/**/*.{scss,js,svg,png,jpeg}`,
+    `./${ROOT_DIR}/assets/**/*.{scss,js,svg,png,jpeg}`,
   );
-  eleventyConfig.addWatchTarget(`./${rootDir}/_includes/**/*.{webc}`);
+  eleventyConfig.addWatchTarget(`./${ROOT_DIR}/_includes/**/*.{webc}`);
 
   eleventyConfig.addLayoutAlias("base", "base.njk");
+  eleventyConfig.addLayoutAlias("base-nav", "base-nav.njk");
   eleventyConfig.addLayoutAlias("page", "page.njk");
   eleventyConfig.addLayoutAlias("docs", "docs.njk");
 
   eleventyConfig.addPlugin(webc, {
-    components: [`./${rootDir}/_includes/webc/**/*.webc`],
+    components: [`./${ROOT_DIR}/_includes/webc/**/*.webc`],
     useTransform: true,
   });
 
@@ -57,10 +53,11 @@ export default async function createConfig(eleventyConfig) {
       pictureAttributes: {},
     },
   });
-  if (SSR) {
+  if (ENABLE_SSR) {
+    log("Enabling SSR for web components");
     eleventyConfig.addPlugin(litPlugin, {
       mode: "worker",
-      componentModules: [`${rootDir}/assets/scripts/main.js`],
+      componentModules: [`${ROOT_DIR}/assets/scripts/main.js`],
     });
   }
 
@@ -69,9 +66,9 @@ export default async function createConfig(eleventyConfig) {
   eleventyConfig.addFilter("slugify", slugify);
   eleventyConfig.addFilter("alphanumeric", sortAlphaNumeric);
 
-  eleventyConfig.addPassthroughCopy(`${rootDir}/assets/fonts`);
+  eleventyConfig.addPassthroughCopy(`${ROOT_DIR}/assets/fonts`);
   eleventyConfig.addPassthroughCopy({
-    [`${rootDir}/assets/favicon/*`]: "/",
+    [`${ROOT_DIR}/assets/favicon/*`]: "/",
   });
 
   // force reload instead of hot reload since lit shadow dom styles are lost
@@ -85,7 +82,7 @@ export default async function createConfig(eleventyConfig) {
 
     dir: {
       output: "_site",
-      input: rootDir,
+      input: ROOT_DIR,
       includes: "_includes",
       layouts: "_layouts",
     },

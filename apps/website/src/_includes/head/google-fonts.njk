@@ -1,0 +1,14 @@
+{% set enableSymbols = symbols or data.symbols or meta.symbols %}
+{% set enableGoogleFonts = fonts.google or data.fonts.google or meta.fonts.google %}
+{% if enableSymbols or enableGoogleFonts %}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+{% endif %}
+{% if enableSymbols %}
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&family=Material+Symbols+Sharp:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+{% endif %}
+{% if enableGoogleFonts %}
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+{% endif %}

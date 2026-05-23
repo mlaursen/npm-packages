@@ -1,19 +1,15 @@
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
-      rel="stylesheet">
-<link rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&family=Material+Symbols+Sharp:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-{# <link rel="preload" #}
-{#       href="/assets/fonts/Roboto-VariableFont_wdth,wght.ttf" #}
-{#       as="font" #}
-{#       type="font/ttf" #}
-{#       crossorigin /> #}
-{# <link rel="preload" #}
-{#       href="/assets/fonts/Roboto-Italic-VariableFont_wdth,wght.ttf" #}
-{#       as="font" #}
-{#       type="font/ttf" #}
-{#       crossorigin /> #}
+{% if not fonts.google and not data.fonts.google and not meta.fonts.google %}
+  <link rel="preload"
+        href="/assets/fonts/Roboto-VariableFont_wdth,wght.ttf"
+        as="font"
+        type="font/ttf"
+        crossorigin />
+  <link rel="preload"
+        href="/assets/fonts/Roboto-Italic-VariableFont_wdth,wght.ttf"
+        as="font"
+        type="font/ttf"
+        crossorigin />
+{% endif %}
 <!-- preloads in page data -->
 {%- if preloads -%}
   <!-- prettier-ignore -->

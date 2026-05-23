@@ -10,15 +10,15 @@
 
     // Other Outputs
     "sourceMap": true,
-    "declaration": true,
-    "declarationMap": true,
-    "declarationDir": "./dist",
+    // "declaration": false,
+    // "declarationMap": true,
+    // "declarationDir": "./dist",
 
     "experimentalDecorators": true,
 
     // Stricter Typechecking Options
     "noUncheckedIndexedAccess": true,
-    "exactOptionalPropertyTypes": true,
+    // "exactOptionalPropertyTypes": true,
 
     // Style Options
     "noImplicitReturns": true,
@@ -39,7 +39,10 @@
     "moduleDetection": "force",
     "skipLibCheck": true,
 
-    "rootDir": "."
+    "rootDir": ".",
+    "paths": {
+      "@/test": ["./fixtures/test.ts"]
+    }
   },
   "exclude": ["node_modules", "_site"]
 }

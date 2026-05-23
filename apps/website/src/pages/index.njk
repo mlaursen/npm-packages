@@ -1,89 +1,19 @@
 ---
 layout: base
 permalink: /index.html
-
-sizes:
-  # - "extra-small"
-  - "small"
-  # - "medium"
-  # - "large"
-  # - "extra-large"
-
-variants:
-  - "tonal"
-  - "text"
-  - "outlined"
-  - "filled"
-  - "elevated"
-
-shapes:
-  - "round"
-  - "square"
-
-disabled:
-  - false
-  - true
-
-icons:
-  - leading: false
-    trailing: false
-  - leading: true
-    trailing: false
-  - leading: false
-    trailing: true
 ---
 
-<mwc-text-container>
-<mwc-link href="https://github.com">github</mwc-link>
-<a href="https://github.com">github</a>
-<mwc-typography variant="display">
-<h1>Hello, world!</h1>
-</mwc-typography>
-<mwc-typography variant="headline">
-<h2>Buttons</h2>
-</mwc-typography>
-{% for variant in variants %}
-  {% for isDisabled in disabled %}
-    {% for shape in shapes %}
-      <mwc-typography variant="title" text-transform="capitalize">
-      <h3>
-        {{ variant }} {{ shape }}
-        {% if isDisabled %}(disabled){% endif %}
-      </h3>
-      </mwc-typography>
-      <mwc-box>
-      {% for icon in icons %}
-        {% for size in sizes %}
-          <mwc-button size="{{ size }}" variant="{{ variant }}" shape="{{ shape }}"
-          {% if isDisabled %}disabled{% endif %}
-          >
-          {% if icon.leading %}
-            <mwc-material-symbol>favorite</mwc-material-symbol>
-          {% endif %}
-          Label
-          {% if icon.trailing %}
-            <mwc-material-symbol>favorite</mwc-material-symbol>
-          {% endif %}
-          </mwc-button>
-          {% set dividerVariant %}
-            {{ "inset" if icon.leading else "middle" }}
-          {% endset %}
-          <mwc-divider variant={{ dividerVariant }} aria-orientation="vertical"></mwc-divider>
-        {% endfor %}
-      {% endfor %}
-      </mwc-box>
-    {% endfor %}
-  {% endfor %}
-  <mwc-divider></mwc-divider>
-{% endfor %}
-<mwc-typography variant="display">
-<h2>Dividers</h2>
-</mwc-typography>
-<mwc-divider></mwc-divider>
-<mwc-divider variant="inset"></mwc-divider>
-<mwc-divider variant="middle"></mwc-divider>
-<mwc-divider aria-orientation="vertical"></mwc-divider>
-<mwc-divider aria-orientation="vertical" variant="inset"></mwc-divider>
-<mwc-divider aria-orientation="vertical" variant="middle"></mwc-divider>
-<mwc-divider><mwc-typography>content</mwc-typography><mwc-typography>second</mwc-typography></mwc-divider>
-</mwc-text-container>
+<main>
+  <mwc-text-container>
+  <mwc-typography variant="display">
+  <h1>Hello,</h1>
+  </mwc-typography>
+  <mwc-typography variant="headline">
+  <p>
+    This page is empty since I haven't really made this site yet. You
+    can check out my <a href="https://github.com/mlaursen">GitHub</a>
+    for some more information about projects I work on.
+  </p>
+  </mwc-typography>
+  </mwc-text-container>
+</main>

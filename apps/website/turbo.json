@@ -11,7 +11,7 @@
       ]
     },
     "dev": {
-      "dependsOn": ["build"],
+      "dependsOn": ["^build"],
       "cache": false
     }
   }

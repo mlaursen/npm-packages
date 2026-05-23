@@ -1,8 +1,11 @@
 ---
-layout: base
+layout: base-nav
 bodyClassName: "toc-page"
 ---
 
+{% css "local" %}
+{% include "css/toc-page.css" %}
+{% endcss %}
 <mwc-typography variant="display">
 <h1>{{ doc.title }}</h1>
 </mwc-typography>
