@@ -26,6 +26,47 @@ $-force-added: ();
   @return var(#{$var});
 }
 
+@function parse-possibly-nested-token-vars($value, $short-names) {
+  @if meta.type-of($value) !=
+    string or not
+    string.index($value, ".") or not
+    string.index($value, " ")
+  {
+    @return get-token-var($value, $short-names: $short-names);
+  }
+
+  // right now I only support adding nested tokens within quotes
+  $quote-index: string.index($value, '"');
+  $remaining: $value;
+  $rebuilt: "";
+  @while $quote-index {
+    $prefix: string.slice($remaining, 1, $quote-index - 1);
+    $remaining: string.slice($remaining, $quote-index + 1);
+    $next-quote-index: string.index($remaining, '"');
+    @if not $next-quote-index {
+      @error "tried to parse a css token but unable to find the next double-quote. original: '#{$value}'. remaining: '#{$remaining}'";
+    }
+
+    $token-name: string.slice($remaining, 1, $next-quote-index - 1);
+    $remaining: string.slice($remaining, $next-quote-index + 1);
+    $quote-index: string.index($remaining, '"');
+
+    $renamed: get-token-var($token-name, $short-names: $short-names);
+    // if it was really not a token, ensure the quotes remain
+    @if $renamed == $token-name {
+      $renamed: '"#{$renamed}"';
+    }
+
+    $rebuilt: $rebuilt + $prefix + $renamed;
+    @if not $quote-index {
+      $rebuilt: $rebuilt + $remaining;
+      @return $rebuilt;
+    }
+  }
+
+  @return get-token-var($value, $short-names: $short-names);
+}
+
 /// This is used to create a `var(...)` declaration from a token name
 ///
 /// @param {any} $token - An optional token name or any value. This
@@ -40,7 +81,10 @@ $-force-added: ();
 
   @if list.index($-tokens, $token) or is-maybe-token-string($token) {
     @if not $fallback {
-      $fallback: map.get($-tokens-with-fallback, $token);
+      $fallback: parse-possibly-nested-token-vars(
+        map.get($-tokens-with-fallback, $token),
+        $short-names: $short-names
+      );
     }
 
     @return get-var(

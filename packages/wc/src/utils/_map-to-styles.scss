@@ -8,47 +8,6 @@
 @use "string" as *;
 @use "tokens" as *;
 
-@function -parse-possibly-nested-token-vars($value, $short-names) {
-  @if meta.type-of($value) !=
-    string or not
-    string.index($value, ".") or not
-    string.index($value, " ")
-  {
-    @return get-token-var($value, $short-names: $short-names);
-  }
-
-  // right now I only support adding nested tokens within quotes
-  $quote-index: string.index($value, '"');
-  $remaining: $value;
-  $rebuilt: "";
-  @while $quote-index {
-    $prefix: string.slice($remaining, 1, $quote-index - 1);
-    $remaining: string.slice($remaining, $quote-index + 1);
-    $next-quote-index: string.index($remaining, '"');
-    @if not $next-quote-index {
-      @error "tried to parse a css token but unable to find the next double-quote. original: '#{$value}'. remaining: '#{$remaining}'";
-    }
-
-    $token-name: string.slice($remaining, 1, $next-quote-index - 1);
-    $remaining: string.slice($remaining, $next-quote-index + 1);
-    $quote-index: string.index($remaining, '"');
-
-    $renamed: get-token-var($token-name, $short-names: $short-names);
-    // if it was really not a token, ensure the quotes remain
-    @if $renamed == $token-name {
-      $renamed: '"#{$renamed}"';
-    }
-
-    $rebuilt: $rebuilt + $prefix + $renamed;
-    @if not $quote-index {
-      $rebuilt: $rebuilt + $remaining;
-      @return $rebuilt;
-    }
-  }
-
-  @return get-token-var($value, $short-names: $short-names);
-}
-
 /// This is used to convert a Map into styles for each module. The map is a
 /// simple `property: value` pair for most cases. There are a few additions to
 /// add some more dynamic styling.
@@ -165,10 +124,7 @@
           @include map-to-styles($value, $short-names);
         }
       } @else if $value-type != list {
-        $resolved-value: -parse-possibly-nested-token-vars(
-          $value,
-          $short-names
-        );
+        $resolved-value: parse-possibly-nested-token-vars($value, $short-names);
 
         #{$property}: #{$resolved-value};
       } @else if list.length($value) > 0 {
@@ -245,7 +201,7 @@
   @if is-css-output() {
     @include map-to-styles(
       (
-        ".mwc": $styles,
+        ".mwc-": $styles,
       ),
       $short-names
     );
