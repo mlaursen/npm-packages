@@ -253,7 +253,7 @@ $-configure-tokens: list.append(
   $styles: ();
   @each $value in $-text-alignments {
     $selector: -selector(
-      $name: "align-#{$value}",
+      $name: $value,
       $attr: "text-align",
       $is-css: $is-css,
     );
