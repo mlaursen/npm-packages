@@ -19,11 +19,18 @@ $-styles: (
     color-scheme: "palette.color-scheme",
   ),
   "html,body": (
-    height: 100%,
     margin: 0,
     padding: 0,
   ),
-  "body": map.merge($-colors, $-typescale),
+  "body": utils.deep-merge(
+      $-colors,
+      $-typescale,
+      // do not set height: 100% on the html so that sticky elements in the
+      // body work correctly
+      (
+          height: 100%,
+        )
+    ),
 );
 
 @mixin configure($styles: null) {
