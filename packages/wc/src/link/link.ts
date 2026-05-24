@@ -2,9 +2,7 @@ import { spread } from "@open-wc/lit-helpers";
 import { LitElement, type TemplateResult, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
 
-import { AriaMixin } from "../aria-mixin/aria-mixin.js";
-import buttonStyles from "../button/button-styles.js";
-import { InteractionMixin } from "../interaction/interaction-mixin.js";
+import type { InteractionDirection } from "../interaction/types.js";
 import { MarginMixin } from "../margin/margin-mixin.js";
 import { PaletteMixin } from "../palette/palette-mixin.js";
 import styles from "./link-styles.js";
@@ -60,6 +58,9 @@ export class Link extends BaseLink implements LinkProperties {
 
   @property()
   type?: string;
+
+  @property({ reflect: true })
+  interaction: InteractionDirection = "outward";
 
   protected override render(): TemplateResult {
     const props: Props = {};

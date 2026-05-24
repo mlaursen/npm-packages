@@ -1,85 +1,65 @@
 @use "sass:map";
+@use "sass:meta";
 
 @use "../utils";
+@use "../interaction";
 
 $-tokens-registered: false;
 $-tokens: (
   color: "palette.primary",
-  opacity: 1,
+  focused: (
+    offset: "spacing.extra-small",
+  ),
+  hovered: (
+    color: "palette.secondary",
+  ),
+  visited: (
+    color: "palette.tertiary",
+  ),
 );
+$-color-variants: map.keys(map.get($-tokens, visited));
 
 $-configure-tokens: map.keys($-tokens);
 
-$-base-styles: (
-  animation-delay: '0s, calc("interaction.focused.duration" * 0.25)',
-  animation-duration:
-    'calc("interaction.focused.duration" * 0.25), calc("interaction.focused.duration" * 0.75)',
-  animation-timing-function: "transition.easing.emphasized",
-  background: utils.get-rgb-var(
-      "interaction.container.color",
-      "interaction.container.opacity"
-    ),
-  color: utils.get-rgb-var("link.color", "link.opacity"),
-  outline: none,
-  transition:
-    '"transition.duration.short-3" background "transition.easing.linear"',
+$-disable-interaction-styles: false;
+$-remapped-styles: utils.remap-tokens(
+  map.remove($-tokens, hovered, visited),
+  link
+);
+$-short-names: map.keys($-remapped-styles);
 
-  "@media (prefers-reduced-motion)": (
-    "&": (
-      animation: none,
+$-base-styles: utils.deep-merge(
+  $-remapped-styles,
+  (
+    color: "link.color",
+  )
+);
+$-base-interaction-styles: (
+  "interaction.focused.outward-offset": "link.focused.offset",
+  "interaction.focused.inward-offset": 'calc("link.focused.offset" * -1)',
+  outline: 0,
+  position: relative,
+  transition: '"transition.duration.short-3" color "transition.easing.linear"',
+
+  "&::before": utils.deep-merge(
+      utils.pseudo-element(
+        $border-radius: null,
+      ),
+      (
+        border-radius: "spacing.small",
+        box-sizing: border-box,
+      )
     ),
-  ),
 );
-$-focused-styles: (
-  background: utils.get-rgb-var(
-      "interaction.focused.container.color",
-      "interaction.focused.container.opacity"
-    ),
-  color: "interaction.focused.color",
-);
-$-focused-outward-styles: (
-  animation-name: "outward-grow, outward-shrink",
-  inset: 'calc(-1 * "interaction.focused.outward-offset")',
-  outline: '"interaction.focused.width" solid currentcolor',
-);
-$-focused-inward-styles: (
-  animation-name: "inward-grow, inward-shrink",
-  border: '"interaction.focused.width" solid currentcolor',
-  inset: "interaction.focused.inward-offset",
-);
+
+$-focused-styles: ();
 $-visited-styles: (
-  padding: 0, // "link.color": "palette.inverse-primary",
+  color: "link.visited.color",
 );
+// $-visited-styles: utils.remap-variants(link, visited, $-color-variants...);
+// $-hovered-styles: utils.remap-variants(link, hovered, $-color-variants...);
 $-hovered-styles: (
-  "link.opacity": 0.08,
-);
-$-keyframes: (
-  "inward-grow": (
-    from: (
-      border-width: 0,
-    ),
-    to: (
-      border-width: "interaction.focused.active-width",
-    ),
-  ),
-  "inward-shrink": (
-    from: (
-      border-width: "interaction.focused.active-width",
-    ),
-  ),
-  "outward-grow": (
-    from: (
-      outline-width: 0,
-    ),
-    to: (
-      outline-width: "interaction.focused.active-width",
-    ),
-  ),
-  "outward-shrink": (
-    from: (
-      outline-width: "interaction.focused.active-width",
-    ),
-  ),
+  color: "link.hovered.color",
 );
 
 @mixin configure() {
@@ -95,17 +75,110 @@ $-keyframes: (
 }
 
 @mixin css-styles {
-  $styles: ();
-  @include utils.css-styles($styles);
+  $keyframes: null;
+  $styles: (
+    "&link": utils.deep-merge(
+        $-base-styles,
+        (
+          "mouse-hover": $-hovered-styles,
+        )
+      ),
+  );
+
+  @if not $-disable-interaction-styles {
+    $focused-styles: interaction.get-focused-styles();
+    $focus-visible: utils.deep-merge(
+      map.get($focused-styles, focused),
+      map.get($focused-styles, outward)
+    );
+    $base: utils.deep-merge(
+      $-base-interaction-styles,
+      map.get($focused-styles, base)
+    );
+    $remove-background: (
+      background: null,
+    );
+
+    $styles: utils.deep-merge(
+      $styles,
+      (
+        "&link": $base,
+        "&link:focus-visible": utils.deep-merge(
+            $focus-visible,
+            (
+              "&::before": $remove-background,
+            )
+          ),
+      )
+    );
+    $keyframes: map.get($focused-styles, keyframes);
+  }
+
+  @include utils.css-styles(
+    $styles,
+    $keyframes: $keyframes,
+    $short-names: $-short-names
+  );
 }
 
 @mixin host-styles {
+  $keyframes: null;
   $styles: (
-    ":host a": $-base-styles,
-    "host-hover": $-hovered-styles,
+    "a": utils.deep-merge(
+        $-base-styles,
+        (
+          "mouse-hover": utils.deep-merge(
+              $-hovered-styles,
+              (
+                "&:visited": (
+                  color: "link.hovered.color",
+                ),
+              )
+            ),
+        )
+      ),
     "a:visited": $-visited-styles,
+    "a:focus-visible": $-focused-styles,
   );
-  @include utils.host-styles($styles, $keyframes: $-keyframes);
+
+  @if not $-disable-interaction-styles {
+    $focused-styles: interaction.get-focused-styles();
+    $base: utils.deep-merge(
+      $-base-interaction-styles,
+      map.get($focused-styles, base)
+    );
+    $remove-background: (
+      background: null,
+    );
+
+    $styles: utils.deep-merge(
+      $styles,
+      (
+        "a": $base,
+        "a:focus-visible": utils.deep-merge(
+            map.get($focused-styles, focused),
+            (
+              "&::before": $remove-background,
+            )
+          ),
+        ":host([interaction=outward]) a:focus-visible": map.get(
+            $focused-styles,
+            outward
+          ),
+        ":host([interaction=inward]) a:focus-visible": map.get(
+            $focused-styles,
+            inward
+          ),
+      )
+    );
+    $keyframes: map.get($focused-styles, keyframes);
+  }
+
+  @include utils.host-styles(
+    $styles,
+    $keyframes: $keyframes,
+    $short-names: $-short-names
+  );
 }
 
 @mixin styles {

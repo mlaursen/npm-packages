@@ -1,3 +1,5 @@
+import type { InteractionDirection } from "../interaction/types.js";
+
 export type PassThroughLinkProperties = Partial<
   Pick<
     HTMLAnchorElement,
@@ -15,4 +17,5 @@ export type PassThroughLinkProperties = Partial<
 export interface LinkProperties extends PassThroughLinkProperties {
   "aria-current"?: "page" | undefined;
   href: string;
+  interaction: InteractionDirection;
 }

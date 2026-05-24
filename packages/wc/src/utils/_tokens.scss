@@ -29,8 +29,8 @@ $-force-added: ();
 @function parse-possibly-nested-token-vars($value, $short-names) {
   @if meta.type-of($value) !=
     string or not
-    string.index($value, ".") or not
-    string.index($value, " ")
+    string.index($value, ".") or
+    (not string.index($value, " ") and not string.index($value, '("'))
   {
     @return get-token-var($value, $short-names: $short-names);
   }
@@ -109,6 +109,11 @@ $-force-added: ();
     @if $name == $value {
       // do not shorten
       $var-value: get-token-var($value);
+    } @else {
+      $var-value: parse-possibly-nested-token-vars(
+        $var-value,
+        $short-names: $short-names
+      );
     }
 
     @if $var-name != $full-var-name or $name != $value {

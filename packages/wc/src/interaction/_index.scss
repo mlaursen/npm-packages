@@ -226,6 +226,16 @@ $-keyframes: (
   );
 }
 
+@function get-focused-styles() {
+  @return (
+    base: $-focusable-styles,
+    focused: $-focusable-focused-styles,
+    inward: $-focusable-inward-styles,
+    outward: $-focusable-outward-styles,
+    keyframes: $-keyframes
+  );
+}
+
 @mixin css-styles {
   $clickable-styles: map.merge(
     $-clickable-styles,
