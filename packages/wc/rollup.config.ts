@@ -1,5 +1,5 @@
 import { nodeResolve } from "@rollup/plugin-node-resolve";
-import { type RollupOptions } from "rollup";
+import { defineConfig } from "rollup";
 import summary from "rollup-plugin-summary";
 import { swc } from "rollup-plugin-swc3";
 
@@ -20,20 +20,23 @@ const swcPlugin = swc({
 });
 
 const external = (id: string): boolean => !/^[./]/.test(id);
-export default [
-  {
-    input: "./src/index.ts",
-    output: {
-      file: "./dist/index.js",
-      format: "es",
-      sourcemap: true,
+
+export default defineConfig(({ silent }) => {
+  return [
+    {
+      input: "./src/index.ts",
+      output: {
+        file: "./dist/index.js",
+        format: "es",
+        sourcemap: true,
+      },
+      external,
+      plugins: [
+        nodeResolve(),
+        swcPlugin,
+        // @ts-expect-error bad type definition
+        !silent && summary(),
+      ],
     },
-    external,
-    plugins: [
-      nodeResolve(),
-      swcPlugin,
-      // @ts-expect-error bad type definition
-      summary(),
-    ],
-  },
-] satisfies RollupOptions[];
+  ];
+});

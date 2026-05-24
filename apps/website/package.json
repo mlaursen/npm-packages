@@ -5,7 +5,10 @@
   "type": "module",
   "scripts": {
     "node-run": "node --experimental-strip-types",
-    "clean-dist": "rm -rf _site",
+    "test-clean-generated": "git clean -ndX src",
+    "clean-generated": "git clean -fdXq src",
+    "clean-site": "rm -rf _site",
+    "clean-dist": "concurrently 'pnpm clean-site' 'pnpm clean-generated'",
     "clean-cache": "rm -rf .turbo node_modules",
     "clean": "concurrently 'pnpm clean-dist' 'pnpm clean-cache'",
     "create-favicons": "pnpm node-run scripts/create-favicons.ts",

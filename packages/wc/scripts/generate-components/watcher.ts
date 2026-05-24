@@ -3,6 +3,7 @@ import {
   createWatcher,
   disableLogger,
   enableLogger,
+  getGitRoot,
   log,
   logFailure,
   logPending,
@@ -21,6 +22,8 @@ const isPartial = (filePath: string): boolean => filePath.includes("_");
 const isIgnored: Required<CreateWatcherOptions>["ignored"] = (path, stats) =>
   !!stats?.isFile() && !/\.scss$/.test(path);
 
+const gitRoot = getGitRoot();
+
 function touch(filePath: string): void {
   try {
     const now = Date.now();
@@ -36,7 +39,7 @@ async function createStylesWhileWatching(
   try {
     await createStyles(options);
     // touch this file so that eleventy will rebuild
-    touch("docs/assets/scss/global.scss");
+    touch(`${gitRoot}/apps/website/src/pages/index.njk`);
   } catch (error) {
     if (error instanceof Error) {
       logFailure(error.message);
@@ -48,10 +51,11 @@ async function createStylesWhileWatching(
 
 export function watcher(options: GenerateComponentsScssOptions = {}): void {
   const {
+    quiet = false,
     basePath = process.cwd(),
     output = "flagged",
     colorScheme = "light-dark",
-    sassOptions,
+    sassOptions = {},
     targets = DEFAULT_CSS_BROWSERSLIST_TARGETS,
     shortVarNames = output === "minified",
   } = options;
@@ -62,6 +66,7 @@ export function watcher(options: GenerateComponentsScssOptions = {}): void {
 
   const rebuild = new Set<string>();
   createWatcher({
+    quiet,
     watchPath: "src",
     ignored: isIgnored,
     onRemove: async (filePath) => {
@@ -78,6 +83,7 @@ export function watcher(options: GenerateComponentsScssOptions = {}): void {
           for (const file of rebuild) {
             promises.push(
               createStylesWhileWatching({
+                quiet,
                 colorScheme,
                 filePath: file,
                 basePath,
@@ -96,6 +102,7 @@ export function watcher(options: GenerateComponentsScssOptions = {}): void {
 
       rebuild.add(filePath);
       await createStylesWhileWatching({
+        quiet,
         colorScheme,
         filePath,
         basePath,

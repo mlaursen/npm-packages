@@ -19,26 +19,12 @@ const colorScheme = ((): ColorScheme => {
   return "light-dark";
 })();
 
-const varPrefix = ((): string | undefined => {
-  const i = process.argv.indexOf("--var-prefix");
-  const varPrefix = process.argv[i + 1];
-  if (
-    i === -1 ||
-    typeof varPrefix !== "string" ||
-    varPrefix.trim().length === 0 ||
-    varPrefix.indexOf("--")
-  ) {
-    return;
-  }
-
-  return varPrefix;
-})();
-
 const minified = process.argv.includes("--minified");
 const options: GenerateComponentsOptions = {
   output: minified ? "minified" : "flagged",
-  varPrefix,
   colorScheme,
+  quiet: process.argv.includes("-q") || process.argv.includes("--quiet"),
+  // shortVarNames: true,
 };
 
 if (process.argv.includes("--watch")) {

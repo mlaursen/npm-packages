@@ -42,10 +42,6 @@
         "src/**/*-styles.ts"
       ]
     },
-    "dev": {
-      "dependsOn": ["build"],
-      "cache": false
-    },
     "start": {
       "dependsOn": ["build"]
     }

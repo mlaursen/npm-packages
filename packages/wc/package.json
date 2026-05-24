@@ -25,7 +25,7 @@
     "typecheck-watch": "tsc --noEmit --watch",
     "test-scss": "pnpm node-run scripts/test-scss.ts",
     "build-scss": "mlaursen-cli copy-scss-files \"src/**/_*.scss\"",
-    "build-scss-watch": "pnpm build-scss --watch",
+    "build-scss-watch": "pnpm build-scss -w",
     "build-esm": "swc -d ./dist --strip-leading-paths src",
     "build-esm-watch": "pnpm build-esm --watch",
     "build-rollup": "rollup -c rollup.config.ts",
@@ -36,7 +36,7 @@
     "build-types-watch": "pnpm build-types --watch",
     "build-components": "tsx scripts/generate-components/index.ts",
     "build-components-watch": "pnpm build-components --watch",
-    "dev": "concurrently 'pnpm build-esm-watch' 'pnpm build-rollup-watch' 'pnpm build-scss-watch' 'pnpm build-components-watch'"
+    "dev": "concurrently 'pnpm build-rollup-watch --silent' 'pnpm build-scss-watch' 'pnpm build-components-watch -q'"
   },
   "author": "Mikkel Laursen <mlaursen03@gmail.com>",
   "repository": {

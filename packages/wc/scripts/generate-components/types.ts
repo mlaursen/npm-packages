@@ -12,7 +12,7 @@ export interface ConfigureScssOptions {
   colorScheme?: ColorScheme;
 
   /**
-   * @defaultValue ``
+   * @defaultValue `false`
    */
   shortVarNames?: boolean;
 }
@@ -28,12 +28,13 @@ export interface GenerateComponentsScssOptions extends ConfigureScssOptions {
    */
   output?: CreateStylesOutput;
 
-  sassOptions?: CompileScssOptions["sassOptions"];
-
   /**
    * @defaultValue `DEFAULT_CSS_BROWSERSLIST_TARGETS`
    */
   targets?: Targets;
+
+  quiet?: boolean;
+  sassOptions?: CompileScssOptions["sassOptions"];
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
