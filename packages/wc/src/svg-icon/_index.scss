@@ -1,0 +1,49 @@
+@use "sass:map";
+
+@use "../utils";
+
+$-tokens-registered: false;
+$-tokens: ();
+
+$-configure-tokens: map.keys($-tokens);
+
+$-styles: (
+  fill: currentcolor,
+  height: 1em,
+  width: 1em,
+);
+
+@mixin configure($styles: null) {
+  @if $styles != null {
+    $-styles: utils.deep-merge($-styles, $styles) !global;
+  }
+
+  @if not $-tokens-registered {
+    $-tokens-registered: true !global;
+    @include utils.register-tokens($tokens: $-tokens, $prefix: "svg-icon");
+  }
+}
+
+@mixin configure-global($overrides: null) {
+  $overrides: utils.get-config-map(svg-icon, $overrides, $-configure-tokens);
+  @include configure();
+}
+
+@mixin css-styles {
+  $styles: (
+    "&svg-icon": $-styles,
+  );
+  @include utils.css-styles($styles);
+}
+
+@mixin host-styles {
+  $styles: (
+    ":host": $-styles,
+  );
+  @include utils.host-styles($styles);
+}
+
+@mixin styles {
+  @include css-styles;
+  @include host-styles;
+}

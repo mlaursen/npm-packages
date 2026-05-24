@@ -11,6 +11,7 @@ import "./icon-button/icon-button.js";
 import "./link/link.js";
 import "./material-symbol/material-symbol.js";
 import "./palette/update-palette.js";
+import "./svg-icon/svg-icon.js";
 import "./text-container/text-container.js";
 import "./tooltip/tooltip.js";
 import "./typography/typography.js";
