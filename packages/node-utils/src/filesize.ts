@@ -4,7 +4,7 @@ export interface FilesizeOptions {
   /**
    * Set to `true` to use gzip size
    */
-  gzip?: boolean | undefined;
+  gzip?: boolean;
 }
 
 /**
