@@ -21,6 +21,9 @@ $-tokens: (
   spacing-x: "popover.spacing",
   spacing-y: "popover.spacing",
 
+  multiplier-x: 1,
+  multiplier-y: 1,
+
   opacity: 0,
   open: (
     opacity: 1,
@@ -37,6 +40,7 @@ $-tokens: (
 );
 
 $-configure-tokens: (
+  host-styles,
   target-styles,
   popover-styles,
   popover-left-styles,
@@ -51,16 +55,33 @@ $-configure-tokens: (
   popover-below-styles
 );
 
-$-target-styles: (
-  anchor-name: --popover-target,
+$-remapped-styles: utils.remap-tokens(
+  map.remove(
+    $-tokens,
+    // only keep the tokens that are used a lot. so positioning, spacing,
+    // multipliers, etc
+    background,
+    color,
+    z-index,
+    fallbacks,
+    open,
+    closed,
+    opacity,
+    transform,
+    transition-duration,
+    transition-property
+  ),
+  popover
 );
+$-short-names: map.keys($-remapped-styles);
 $-popover-styles: (
   background: transparent,
   border: 0,
   box-sizing: border-box,
   inset: '"popover.top" "popover.right" "popover.bottom" "popover.left"',
   margin: 0,
-  padding: '"popover.spacing-y" "popover.spacing-x"',
+  padding-block: "popover.spacing-y",
+  padding-inline: "popover.spacing-x",
   position-anchor: --popover-target,
   position-try-fallbacks: "popover.fallbacks",
   opacity: "popover.opacity",
@@ -81,6 +102,14 @@ $-popover-styles: (
       "popover.transform": "popover.closed.transform",
     ),
   ),
+);
+// this was added so that wrapping elements in a `<mwc-popover>` do not mess
+// up their alignment
+$-host-styles: (
+  display: inline-flex,
+);
+$-target-styles: (
+  anchor-name: --popover-target,
 );
 $-popover-content-styles: (
   background: "popover.background",
@@ -133,6 +162,7 @@ $-popover-below-styles: (
 );
 
 @mixin configure(
+  $host-styles: null,
   $target-styles: null,
   $popover-styles: null,
   $popover-left-styles: null,
@@ -146,6 +176,10 @@ $-popover-below-styles: (
   $popover-bottom-styles: null,
   $popover-below-styles: null
 ) {
+  @if $host-styles != null {
+    $-host-styles: $host-styles !global;
+  }
+
   @if $target-styles != null {
     $-target-styles: map.merge($-target-styles, $target-styles) !global;
   }
@@ -264,11 +298,12 @@ $-popover-below-styles: (
     "&popover--bottom": $-popover-bottom-styles,
     "&popover--below": $-popover-below-styles,
   );
-  @include utils.css-styles($styles);
+  @include utils.css-styles($styles, $short-names: $-short-names);
 }
 
 @mixin host-styles {
   $styles: (
+    ":host": utils.deep-merge($-host-styles, $-remapped-styles),
     "::slotted([slot=target])": $-target-styles,
     "#popover": $-popover-styles,
     ".content": $-popover-content-styles,
@@ -284,7 +319,7 @@ $-popover-below-styles: (
     ":host([anchor-y=bottom])": $-popover-bottom-styles,
     ":host([anchor-y=below])": $-popover-below-styles,
   );
-  @include utils.host-styles($styles);
+  @include utils.host-styles($styles, $short-names: $-short-names);
 }
 
 @mixin styles {

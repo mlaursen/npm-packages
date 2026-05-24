@@ -17,9 +17,10 @@ import {
 } from "./types.js";
 
 /**
- * This mixin allows other elements to support the popover api if
- * a `popoverBehavior` property exists.
- *
+ * This mixin allows other elements to support the popover api if a
+ * `popoverBehavior` property exists. It is generally recommended to use this
+ * alongside the `MarginMixin` so that wrapping the popover targets can still
+ * have general margin and spacing applied.
  */
 export function PopoverMixin<T extends StylableLitElement>(
   Base: T,

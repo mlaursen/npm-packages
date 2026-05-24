@@ -30,7 +30,9 @@ $-styles: (
   // overrides
   font-family: "icon.symbol.family",
   font-variation-settings:
-    '"FILL" "icon.symbol.fill", "wght" "icon.symbol.weight", "GRAD" "icon.symbol.grade", "opsz" "icon.symbol.opsz"'
+    '"FILL" "icon.symbol.fill", "wght" "icon.symbol.weight", "GRAD" "icon.symbol.grade", "opsz" "icon.symbol.opsz"',
+  height: 1em,
+  width: 1em
 );
 
 @mixin configure(
