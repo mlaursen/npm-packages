@@ -6,3 +6,4 @@ export * from "./generateFile.js";
 export * from "./getGitRoot.js";
 export * from "./logger.js";
 export * from "./prettyFilesize.js";
+export * from "./touch.js";
