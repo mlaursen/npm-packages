@@ -20,7 +20,7 @@ program
   .option("--src <src>", "An optional src directory", "src")
   .option("-o, --out <dir>", "An optional dist directory", "dist")
   .option("-w, --watch", "Watch mode", false)
-  .option("-v, --verbose", "Verbose logging mode", false)
+  .option("-q, --quiet", "Disable additional logging", false)
   .option<Set<string>>(
     "-r, --copy-to-root <fileName>",
     "Also copy this file to the root directory",

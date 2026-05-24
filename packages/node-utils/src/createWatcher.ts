@@ -1,14 +1,17 @@
 import chokidar, { type ChokidarOptions, type FSWatcher } from "chokidar";
 
-import { enableLogger, log } from "./logger.js";
+import { disableLogger, enableLogger, log } from "./logger.js";
 
 export interface CreateWatcherOptions extends ChokidarOptions {
+  /** @defaultValue `false` */
+  quiet?: boolean;
   watchPath: string;
   onAddOrChange: (path: string, ready: boolean) => void;
   onRemove: (path: string) => void;
 }
 
 export function createWatcher({
+  quiet,
   watchPath,
   onRemove,
   onAddOrChange,
@@ -34,6 +37,9 @@ export function createWatcher({
     ready = true;
     enableLogger();
     log("Watching changes...");
+    if (quiet) {
+      disableLogger();
+    }
   });
 
   return watcher;

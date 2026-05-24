@@ -22,6 +22,9 @@ export interface CopyScssFilesOptions {
   /** @defaultValue `process.argv.includes("--watch")` */
   watch?: boolean;
 
+  /** @defaultValue `false` */
+  quiet?: boolean;
+
   /**
    * @defaultValue `(path, renameDist) => [renameDist(path)]`
    */
@@ -39,6 +42,7 @@ export async function copyScssFiles(
     dist = "dist",
     watch = process.argv.includes("--watch"),
     pattern = `${src}/**/*.scss`,
+    quiet,
     getDistPaths = (path, renameDist) => [renameDist(path)],
   } = options;
 
@@ -48,6 +52,7 @@ export async function copyScssFiles(
 
   if (watch) {
     createWatcher({
+      quiet,
       watchPath: src,
       ignored: (path, stats) => !!stats?.isFile() && !path.endsWith(".scss"),
       onRemove(path) {
