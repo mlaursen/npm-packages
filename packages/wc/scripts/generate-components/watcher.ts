@@ -7,8 +7,9 @@ import {
   log,
   logFailure,
   logPending,
+  touch,
 } from "@mlaursen/node-utils";
-import { closeSync, existsSync, openSync, utimesSync } from "node:fs";
+import { existsSync } from "node:fs";
 import { rm } from "node:fs/promises";
 
 import { DEFAULT_CSS_BROWSERSLIST_TARGETS } from "./constants.js";
@@ -23,15 +24,6 @@ const isIgnored: Required<CreateWatcherOptions>["ignored"] = (path, stats) =>
   !!stats?.isFile() && !/\.scss$/.test(path);
 
 const gitRoot = getGitRoot();
-
-function touch(filePath: string): void {
-  try {
-    const now = Date.now();
-    utimesSync(filePath, now, now);
-  } catch {
-    closeSync(openSync(filePath, "w"));
-  }
-}
 
 async function createStylesWhileWatching(
   options: CreateStylesOptions,

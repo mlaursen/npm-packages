@@ -27,13 +27,13 @@
     "clean": "pnpm clean-other && pnpm clean-root",
     "create-favicons": "pnpm --filter website create-favicons",
     "website-build": "pnpm turbo-s build --filter website",
-    "website-dev": "pnpm turbo-s dev --filter website",
+    "website-dev": "pnpm --filter website dev",
     "website-test": "pnpm --filter website test",
     "website-start": "pnpm --filter website start",
     "wc-clean-generated": "pnpm --filter @mlaursen/wc clean-generated",
     "wc-build": "pnpm turbo-s build --filter @mlaursen/wc",
     "wc-test-scss": "pnpm --filter @mlaursen/wc test-scss",
-    "wc-dev": "pnpm turbo-s dev --filter @mlaursen/wc",
+    "wc-dev": "pnpm --filter @mlaursen/wc dev",
     "release": "tsx scripts/release.ts"
   },
   "devDependencies": {

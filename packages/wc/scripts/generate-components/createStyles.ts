@@ -1,4 +1,9 @@
-import { enableLogger, generateFile, logFailure } from "@mlaursen/node-utils";
+import {
+  disableLogger,
+  enableLogger,
+  generateFile,
+  logFailure,
+} from "@mlaursen/node-utils";
 import { compileScss } from "@mlaursen/scss";
 import { transform } from "lightningcss";
 import { format } from "prettier";
@@ -67,6 +72,7 @@ export async function createStyles(
   } catch (error) {
     enableLogger();
     logFailure(`Unable to compile ${filePath.replace(basePath, "")}.`);
+    disableLogger();
 
     const err = error instanceof Error ? error : new Error(String(error));
     const startIndex = err.message.indexOf(TOKENS_MESSAGE);
