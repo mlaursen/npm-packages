@@ -5,6 +5,7 @@ import { customElement, property } from "lit/decorators.js";
 import type { InteractionDirection } from "../interaction/types.js";
 import { MarginMixin } from "../margin/margin-mixin.js";
 import { PaletteMixin } from "../palette/palette-mixin.js";
+import { PASS_THROUGH_PROPS } from "./constants.js";
 import styles from "./link-styles.js";
 import {
   type LinkProperties,
@@ -13,16 +14,6 @@ import {
 
 const BaseLink = PaletteMixin(MarginMixin(LitElement));
 
-const PASS_THROUGH_PROPS = [
-  "rel",
-  "href",
-  "hreflang",
-  "target",
-  "download",
-  "ping",
-  "type",
-  "referrerPolicy",
-] satisfies readonly (keyof PassThroughLinkProperties)[];
 type Props = Partial<
   Record<keyof PassThroughLinkProperties, string | undefined>
 >;

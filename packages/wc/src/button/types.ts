@@ -1,5 +1,9 @@
 import { type OverridableStringUnion } from "@mlaursen/utils";
 
+import type {
+  LinkProperties,
+  PassThroughLinkProperties,
+} from "../link/types.js";
 import { type DefaultComponentExtraSize } from "../types.js";
 
 export interface ButtonSizeOverrides {}
@@ -28,24 +32,29 @@ export type ButtonShape = OverridableStringUnion<
   ButtonShapeOverrides
 >;
 
-export interface ButtonProperties {
+export interface ButtonLinkProperties extends PassThroughLinkProperties {
+  "aria-current"?: "page";
+  href?: string;
+}
+
+export interface ButtonProperties extends ButtonLinkProperties {
   /**
    * @defaultValue `"submit"`
    */
-  type?: HTMLButtonElement["type"];
+  type: HTMLButtonElement["type"];
 
   /**
    * @defaultValue `"small"`
    */
-  size?: ButtonSize;
+  size: ButtonSize;
 
   /**
    * @defaultValue `"round"`
    */
-  shape?: ButtonShape;
+  shape: ButtonShape;
 
   /**
    * @defaultValue `"filled"`
    */
-  variant?: ButtonVariant;
+  variant: ButtonVariant;
 }
