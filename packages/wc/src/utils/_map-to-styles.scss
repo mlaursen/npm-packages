@@ -107,18 +107,11 @@
           @include map-to-styles($value, $short-names);
         }
       } @else if is-maybe-token-string($property) {
-        @if $property == $value {
-          $short-name: get-var-name($value, $short-names);
-          $var-value: get-token-var($value);
-
-          #{$short-name}: #{$var-value};
-        } @else {
-          @include set-var(
-            $name: $property,
-            $value: get-token-var($value, $short-names: $short-names),
-            $short-names: $short-names
-          );
-        }
+        @include set-var(
+          $name: $property,
+          $value: $value,
+          $short-names: $short-names
+        );
       } @else if $value-type == map {
         #{$property} {
           @include map-to-styles($value, $short-names);

@@ -81,8 +81,9 @@ $-force-added: ();
 
   @if list.index($-tokens, $token) or is-maybe-token-string($token) {
     @if not $fallback {
+      $token-fallback: map.get($-tokens-with-fallback, $token);
       $fallback: parse-possibly-nested-token-vars(
-        map.get($-tokens-with-fallback, $token),
+        $token-fallback,
         $short-names: $short-names
       );
     }
@@ -103,8 +104,16 @@ $-force-added: ();
 @mixin set-var($name, $value, $short-names: null) {
   @if $value {
     $var-name: get-var-name($name, $short-names);
+    $full-var-name: get-var-name($name);
     $var-value: get-token-var($value, $short-names: $short-names);
-    #{$var-name}: #{$var-value};
+    @if $name == $value {
+      // do not shorten
+      $var-value: get-token-var($value);
+    }
+
+    @if $var-name != $full-var-name or $name != $value {
+      #{$var-name}: #{$var-value};
+    }
   }
 }
 
@@ -115,6 +124,15 @@ $-force-added: ();
 /// @param {any} $fallback [null] - An optional fallback value or token name
 @mixin use-var($property, $name, $fallback: null, $short-names: null) {
   #{$property}: get-var($name, $fallback, $short-names);
+}
+
+/// A simple helper function to set a property to a token's value.
+///
+/// @param {String} $property - The css property name to use.
+/// @param {String} $name - The token name to use
+/// @param {any} $fallback [null] - An optional fallback value or token name
+@mixin use-token-var($property, $name, $fallback: null, $short-names: null) {
+  #{$property}: get-token-var($name, $fallback, $short-names);
 }
 
 /// This function is used to convert any color value (including custom
