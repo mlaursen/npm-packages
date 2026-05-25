@@ -1,4 +1,5 @@
 @use "sass:map";
+@use "sass:list";
 
 ///
 /// @param {List} $maps -
@@ -7,6 +8,21 @@
   $result: ();
   @each $map in $maps {
     $result: map.deep-merge($result, $map);
+  }
+
+  @return $result;
+}
+
+///
+/// @param {Map} $map -
+/// @param {List} $keys -
+/// @return {Map} -
+@function pick-keys($map, $keys) {
+  $result: ();
+  @each $key, $value in $map {
+    @if list.index($keys, $key) {
+      $result: map.set($result, $key, map.get($map, $key));
+    }
   }
 
   @return $result;

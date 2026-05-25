@@ -19,13 +19,14 @@ $-base-styles: (
   "popover.background": "tooltip.background",
   "popover.color": "tooltip.color",
   "popover.spacing": "spacing.extra-small",
+  "popover.fallbacks": "block-start, inline-start, block-end, inline-end",
 );
 $-tooltip-styles: (
   border-radius: "tooltip.border-radius",
   font: typography.typescale(body-small),
   padding: "tooltip.padding",
+  text-wrap: nowrap,
   width: minmax("tooltip.min-width", "tooltip.max-width"),
-  white-space: nowrap,
 );
 
 @mixin configure() {
@@ -50,7 +51,7 @@ $-tooltip-styles: (
 @mixin host-styles {
   $styles: (
     ":host": $-base-styles,
-    ".content": $-tooltip-styles,
+    "#content": $-tooltip-styles,
   );
   @include utils.map-to-styles($styles);
 }

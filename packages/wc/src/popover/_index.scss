@@ -1,4 +1,6 @@
+@use "sass:list";
 @use "sass:map";
+@use "sass:string";
 
 @use "../utils";
 
@@ -7,31 +9,26 @@ $-tokens: (
   background: "palette.inverse-surface",
   color: "palette.inverse-on-surface",
 
-  top: auto,
-  right: auto,
-  bottom: auto,
-  left: auto,
+  // the area tokens are for configuring the position
+  area-x: "center",
+  area-y: "center",
 
-  offset-x: 0%,
-  offset-y: 0%,
   z-index: 50,
 
-  fallbacks: "flip-inline, flip-block",
   spacing: 0%,
   spacing-x: "popover.spacing",
   spacing-y: "popover.spacing",
 
-  multiplier-x: 1,
-  multiplier-y: 1,
+  fallbacks: null,
 
   opacity: 0,
   open: (
     opacity: 1,
-    transform: null,
+    transform: "scale(1)",
   ),
   closed: (
     opacity: 0,
-    transform: null,
+    transform: "scale(1)",
   ),
   // using a small value so that the base transform applies
   transform: "scale(1)",
@@ -43,50 +40,31 @@ $-configure-tokens: (
   host-styles,
   target-styles,
   popover-styles,
-  popover-left-styles,
-  popover-inner-left-styles,
-  popover-center-x-styles,
-  popover-inner-right-styles,
-  popover-right-styles,
-  popover-above-styles,
-  popover-top-styles,
-  popover-center-y-styles,
-  popover-bottom-styles,
-  popover-below-styles
+  left-styles,
+  inner-left-styles,
+  center-x-styles,
+  inner-right-styles,
+  right-styles,
+  above-styles,
+  top-styles,
+  center-y-styles,
+  bottom-styles,
+  below-styles
 );
 
-$-remapped-styles: utils.remap-tokens(
-  map.remove(
-    $-tokens,
-    // only keep the tokens that are used a lot. so positioning, spacing,
-    // multipliers, etc
-    background,
-    color,
-    z-index,
-    fallbacks,
-    open,
-    closed,
-    opacity,
-    transform,
-    transition-duration,
-    transition-property
-  ),
-  popover
-);
-$-short-names: map.keys($-remapped-styles);
 $-popover-styles: (
   background: transparent,
   border: 0,
   box-sizing: border-box,
-  inset: '"popover.top" "popover.right" "popover.bottom" "popover.left"',
+  inset: auto,
   margin: 0,
+  opacity: "popover.opacity",
   padding-block: "popover.spacing-y",
   padding-inline: "popover.spacing-x",
   position-anchor: --popover-target,
+  position-area: '"popover.area-y" "popover.area-x"',
   position-try-fallbacks: "popover.fallbacks",
-  opacity: "popover.opacity",
-  transform:
-    'translate("popover.offset-x", "popover.offset-y") "popover.transform"',
+  transform: "popover.transform",
   transition-behavior: allow-discrete,
   transition-duration: "popover.transition-duration",
   transition-property: 'display, overlay, "popover.transition-property"',
@@ -118,63 +96,77 @@ $-popover-content-styles: (
   color: "popover.color",
   display: flex,
 );
-$-popover-left-styles: (
-  "popover.right": anchor(left),
-  "popover.multiplier-x": -1,
+$-horizontal-anchor-styles: (
+  left: (
+    "popover.area-x": start,
+  ),
+  inner-left: (
+    "popover.area-x": span-end,
+  ),
+  center: (
+    "popover.area-x": center,
+  ),
+  inner-right: (
+    "popover.area-x": span-start,
+  ),
+  right: (
+    "popover.area-x": end,
+  ),
 );
-$-popover-inner-left-styles: (
-  "popover.left": anchor(left),
-  "popover.multiplier-x": -1,
+$-vertical-anchor-styles: (
+  above: (
+    "popover.area-y": start,
+  ),
+  top: (
+    "popover.area-y": span-start,
+  ),
+  center-y: (
+    "popover.area-y": center,
+  ),
+  bottom: (
+    "popover.area-y": span-end,
+  ),
+  below: (
+    "popover.area-y": end,
+  ),
 );
-$-popover-center-x-styles: (
-  "popover.left": anchor(center),
-  "popover.fallbacks": "flip-y",
-  "popover.offset-x": -50%,
-);
-$-popover-inner-right-styles: (
-  "popover.right": anchor(right),
-  "popover.multiplier-x": 1,
-);
-$-popover-right-styles: (
-  "popover.left": anchor(right),
-  "popover.multiplier-x": 1,
-);
-$-popover-above-styles: (
-  "popover.bottom": anchor(top),
-  "popover.multiplier-y": -1,
-);
-$-popover-top-styles: (
-  "popover.top": anchor(top),
-  "popover.multiplier-y": -1,
-);
-$-popover-center-y-styles: (
-  "popover.top": anchor(center),
-  "popover.fallbacks": "flip-x",
-  "popover.offset-y": -50%,
-);
-$-popover-bottom-styles: (
-  "popover.bottom": anchor(bottom),
-  "popover.multiplier-y": 1,
-);
-$-popover-below-styles: (
-  "popover.top": anchor(bottom),
-  "popover.multiplier-y": 1,
-);
+
+@mixin -configure-horizontal-anchor($anchor, $styles) {
+  @if $styles != null {
+    $-horizontal-anchor-styles: utils.deep-merge(
+      $-horizontal-anchor-styles,
+      (
+        $name: $styles,
+      )
+    ) !global;
+  }
+}
+
+@mixin -configure-vertical-anchor($anchor, $styles) {
+  @if $styles != null {
+    $-vertical-anchor-styles: utils.deep-merge(
+      $-vertical-anchor-styles,
+      (
+        $name: $styles,
+      )
+    ) !global;
+  }
+}
 
 @mixin configure(
   $host-styles: null,
   $target-styles: null,
   $popover-styles: null,
-  $popover-left-styles: null,
-  $popover-inner-left-styles: null,
-  $popover-center-x-styles: null,
-  $popover-inner-right-styles: null,
-  $popover-right-styles: null,
-  $popover-above-styles: null,
-  $popover-top-styles: null,
-  $popover-center-y-styles: null,
-  $popover-bottom-styles: null,
-  $popover-below-styles: null
+  $left-styles: null,
+  $inner-left-styles: null,
+  $center-x-styles: null,
+  $inner-right-styles: null,
+  $right-styles: null,
+  $above-styles: null,
+  $top-styles: null,
+  $center-y-styles: null,
+  $bottom-styles: null,
+  $below-styles: null
 ) {
   @if $host-styles != null {
     $-host-styles: $host-styles !global;
@@ -188,75 +180,17 @@ $-popover-below-styles: (
     $-popover-styles: map.merge($-popover-styles, $popover-styles) !global;
   }
 
-  @if $popover-left-styles != null {
-    $-popover-left-styles: map.merge(
-      $-popover-left-styles,
-      $popover-left-styles
-    ) !global;
-  }
+  @include -configure-horizontal-anchor(left, $left-styles);
+  @include -configure-horizontal-anchor(inner-left, $inner-left-styles);
+  @include -configure-horizontal-anchor(center-x, $center-x-styles);
+  @include -configure-horizontal-anchor(inner-right, $inner-right-styles);
+  @include -configure-horizontal-anchor(right, $right-styles);
 
-  @if $popover-inner-left-styles != null {
-    $-popover-inner-left-styles: map.merge(
-      $-popover-inner-left-styles,
-      $popover-inner-left-styles
-    ) !global;
-  }
-
-  @if $popover-center-x-styles != null {
-    $-popover-center-x-styles: map.merge(
-      $-popover-center-x-styles,
-      $popover-center-x-styles
-    ) !global;
-  }
-
-  @if $popover-inner-right-styles != null {
-    $-popover-inner-right-styles: map.merge(
-      $-popover-inner-right-styles,
-      $popover-inner-right-styles
-    ) !global;
-  }
-
-  @if $popover-right-styles != null {
-    $-popover-right-styles: map.merge(
-      $-popover-right-styles,
-      $popover-right-styles
-    ) !global;
-  }
-
-  @if $popover-above-styles != null {
-    $-popover-above-styles: map.merge(
-      $-popover-above-styles,
-      $popover-above-styles
-    ) !global;
-  }
-
-  @if $popover-top-styles != null {
-    $-popover-top-styles: map.merge(
-      $-popover-top-styles,
-      $popover-top-styles
-    ) !global;
-  }
-
-  @if $popover-center-y-styles != null {
-    $-popover-center-y-styles: map.merge(
-      $-popover-center-y-styles,
-      $popover-center-y-styles
-    ) !global;
-  }
-
-  @if $popover-bottom-styles != null {
-    $-popover-bottom-styles: map.merge(
-      $-popover-bottom-styles,
-      $popover-bottom-styles
-    ) !global;
-  }
-
-  @if $popover-below-styles != null {
-    $-popover-below-styles: map.merge(
-      $-popover-below-styles,
-      $popover-below-styles
-    ) !global;
-  }
+  @include -configure-vertical-anchor(above, $above-styles);
+  @include -configure-vertical-anchor(top, $top-styles);
+  @include -configure-vertical-anchor(center-y, $center-y-styles);
+  @include -configure-vertical-anchor(bottom, $bottom-styles);
+  @include -configure-vertical-anchor(below, $below-styles);
 
   @if not $-tokens-registered {
     $-tokens-registered: true !global;
@@ -269,16 +203,16 @@ $-popover-below-styles: (
   @include configure(
     $target-styles: map.get($overrides, target-styles),
     $popover-styles: map.get($overrides, popover-styles),
-    $popover-left-styles: map.get($overrides, popover-left-styles),
-    $popover-inner-left-styles: map.get($overrides, popover-inner-left-styles),
-    $popover-center-x-styles: map.get($overrides, popover-center-x-styles),
-    $popover-inner-right-styles: map.get($overrides, popover-inner-right-styles),
-    $popover-right-styles: map.get($overrides, popover-right-styles),
-    $popover-above-styles: map.get($overrides, popover-above-styles),
-    $popover-top-styles: map.get($overrides, popover-top-styles),
-    $popover-center-y-styles: map.get($overrides, popover-center-y-styles),
-    $popover-bottom-styles: map.get($overrides, popover-bottom-styles),
-    $popover-below-styles: map.get($overrides, popover-below-styles)
+    $left-styles: map.get($overrides, left-styles),
+    $inner-left-styles: map.get($overrides, inner-left-styles),
+    $center-x-styles: map.get($overrides, center-x-styles),
+    $inner-right-styles: map.get($overrides, inner-right-styles),
+    $right-styles: map.get($overrides, right-styles),
+    $above-styles: map.get($overrides, above-styles),
+    $top-styles: map.get($overrides, top-styles),
+    $center-y-styles: map.get($overrides, center-y-styles),
+    $bottom-styles: map.get($overrides, bottom-styles),
+    $below-styles: map.get($overrides, below-styles)
   );
 }
 
@@ -286,40 +220,42 @@ $-popover-below-styles: (
   $styles: (
     "&popover": $-popover-styles,
     "&popover-target": $-target-styles,
-    "&popover--left": $-popover-left-styles,
-    "&popover--inner-left": $-popover-inner-left-styles,
-    "&popover--center-x": $-popover-center-x-styles,
-    "&popover--inner-right": $-popover-inner-right-styles,
-    "&popover--right": $-popover-right-styles,
-
-    "&popover--above": $-popover-above-styles,
-    "&popover--top": $-popover-top-styles,
-    "&popover--center-y": $-popover-center-y-styles,
-    "&popover--bottom": $-popover-bottom-styles,
-    "&popover--below": $-popover-below-styles,
   );
-  @include utils.css-styles($styles, $short-names: $-short-names);
+  @each $anchor, $anchor-styles in $-horizontal-anchor-styles {
+    $name: if(sass($anchor == "center"): then center-x; else: $anchor);
+    $styles: map.set($styles, "&popover--#{$name}", $anchor-styles);
+  }
+  @each $anchor, $anchor-styles in $-vertical-anchor-styles {
+    $name: if(sass($anchor == "center"): then center-y; else: $anchor);
+    $styles: map.set($styles, "&popover--#{$name}", $anchor-styles);
+  }
+
+  @include utils.css-styles($styles);
 }
 
 @mixin host-styles {
   $styles: (
-    ":host": utils.deep-merge($-host-styles, $-remapped-styles),
+    ":host": $-host-styles,
     "::slotted([slot=target])": $-target-styles,
     "#popover": $-popover-styles,
-    ".content": $-popover-content-styles,
-    ":host([anchor-x=left])": $-popover-left-styles,
-    ":host([anchor-x=inner-left])": $-popover-inner-left-styles,
-    ":host([anchor-x=center])": $-popover-center-x-styles,
-    ":host([anchor-x=inner-right])": $-popover-inner-right-styles,
-    ":host([anchor-x=right])": $-popover-right-styles,
-
-    ":host([anchor-y=above])": $-popover-above-styles,
-    ":host([anchor-y=top])": $-popover-top-styles,
-    ":host([anchor-y=center])": $-popover-center-y-styles,
-    ":host([anchor-y=bottom])": $-popover-bottom-styles,
-    ":host([anchor-y=below])": $-popover-below-styles,
+    "#content": $-popover-content-styles,
   );
-  @include utils.host-styles($styles, $short-names: $-short-names);
+  @each $anchor, $anchor-styles in $-horizontal-anchor-styles {
+    $styles: map.set(
+      $styles,
+      ":host([anchor-x=#{$anchor}]) #popover",
+      $anchor-styles
+    );
+  }
+  @each $anchor, $anchor-styles in $-vertical-anchor-styles {
+    $styles: map.set(
+      $styles,
+      ":host([anchor-y=#{$anchor}]) #popover",
+      $anchor-styles
+    );
+  }
+
+  @include utils.host-styles($styles);
 }
 
 @mixin styles {

@@ -97,7 +97,7 @@ export function PopoverMixin<T extends StylableLitElement>(
       return html`
         <slot name="target">${target}</slot>
         <div id="popover" popover=${ifDefined(this.popoverBehavior)}>
-          <div class="content">${content}</div>
+          <div id="content">${content}</div>
         </div>
       `;
     }
