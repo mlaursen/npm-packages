@@ -4,6 +4,11 @@
   "description": "",
   "type": "module",
   "exports": {
+    "./types": {
+      "types": "./dist/types.d.ts",
+      "default": null
+    },
+    "./*": "./dist/*/*.js",
     ".": {
       "sass": "./dist/_index.scss",
       "default": "./dist/index.js"
@@ -32,11 +37,11 @@
     "build-rollup-watch": "pnpm build-dist --watch",
     "build-dist": "pnpm build-esm && pnpm build-rollup",
     "build-dist-watch": "concurrently 'pnpm build-esm-watch' 'pnpm build-rollup-watch'",
-    "build-types": "tsc -p tsconfig.types.json",
+    "build-types": "pnpm node-run scripts/build-types.ts",
     "build-types-watch": "pnpm build-types --watch",
     "build-components": "tsx scripts/generate-components/index.ts",
     "build-components-watch": "pnpm build-components --watch",
-    "dev": "concurrently 'pnpm build-rollup-watch --silent' 'pnpm build-scss-watch' 'pnpm build-components-watch -q'"
+    "dev": "concurrently 'pnpm build-rollup-watch --silent' 'pnpm build-types-watch' 'pnpm build-scss-watch' 'pnpm build-esm-watch -q' 'pnpm build-components-watch -q'"
   },
   "author": "Mikkel Laursen <mlaursen03@gmail.com>",
   "repository": {
@@ -78,6 +83,7 @@
     "prettier": "^3.8.3",
     "prettier-plugin-css-order": "^2.2.0",
     "rollup": "^4.60.4",
+    "rollup-plugin-dts": "^6.4.1",
     "rollup-plugin-summary": "^3.0.1",
     "rollup-plugin-swc3": "^0.12.1",
     "ts-lit-plugin": "^2.0.2",

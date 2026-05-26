@@ -18,7 +18,7 @@
       "outputs": ["dist/**/*.js"]
     },
     "build-rollup": {
-      "dependsOn": ["build-esm"],
+      "dependsOn": ["build-esm", "build-types"],
       "outputs": ["dist/index.js"]
     },
     "build-scss": {

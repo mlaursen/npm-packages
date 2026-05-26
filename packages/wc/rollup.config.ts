@@ -1,6 +1,7 @@
 import { getGitRoot, touch } from "@mlaursen/node-utils";
 import { nodeResolve } from "@rollup/plugin-node-resolve";
 import { type Plugin, defineConfig } from "rollup";
+import { dts } from "rollup-plugin-dts";
 import summary from "rollup-plugin-summary";
 import { swc } from "rollup-plugin-swc3";
 
@@ -49,6 +50,15 @@ export default defineConfig(({ silent, watch }) => {
         !silent && summary(),
         watch && touchWebsitePlugin(),
       ],
+    },
+    {
+      input: "./types/index.d.ts",
+      output: {
+        file: "./dist/index.d.ts",
+        sourcemap: true,
+      },
+      external,
+      plugins: [dts()],
     },
   ];
 });

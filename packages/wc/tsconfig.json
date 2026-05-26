@@ -12,7 +12,7 @@
     "sourceMap": true,
     "declaration": true,
     "declarationMap": true,
-    "declarationDir": "./dist",
+    "declarationDir": "./types",
 
     "experimentalDecorators": true,
 
