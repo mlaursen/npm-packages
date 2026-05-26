@@ -13,5 +13,8 @@ export const ROOT_DIR = "src";
 export const SCSS_DIR = `${ROOT_DIR}/assets/scss`;
 export const SCSS_OUT_DIR = `${ROOT_DIR}/_includes/css`;
 
+export const SCRIPTS_DIR = `${ROOT_DIR}/assets/scripts`;
+export const SCRIPTS_OUT_DIR = `${ROOT_DIR}/_includes/scripts`;
+
 // relative to eleventy.config.js
 export const WC_ROOT = "../../packages/wc";

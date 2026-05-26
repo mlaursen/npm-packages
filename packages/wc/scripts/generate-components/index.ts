@@ -24,7 +24,7 @@ const options: GenerateComponentsOptions = {
   output: minified ? "minified" : "flagged",
   colorScheme,
   quiet: process.argv.includes("-q") || process.argv.includes("--quiet"),
-  // shortVarNames: true,
+  shortVarNames: true,
 };
 
 if (process.argv.includes("--watch")) {

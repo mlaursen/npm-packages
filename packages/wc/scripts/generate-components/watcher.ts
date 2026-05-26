@@ -34,7 +34,9 @@ async function createStylesWhileWatching(
     touch(`${gitRoot}/apps/website/src/pages/index.njk`);
   } catch (error) {
     if (error instanceof Error) {
+      enableLogger();
       logFailure(error.message);
+      disableLogger();
     } else {
       throw error;
     }

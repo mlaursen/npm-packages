@@ -12,6 +12,8 @@ export const colorScheme = "light dark";
 export const locale = "en_EN";
 export const lang = "en";
 
+export const sourceBase = "https://github.com/mlaursen/";
+
 export const author = {
   name: "Mikkel Laursen",
   email: "mlaursen03@gmail.com",

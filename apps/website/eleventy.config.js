@@ -24,7 +24,7 @@ export default async function createConfig(eleventyConfig) {
   });
 
   eleventyConfig.addWatchTarget(
-    `./${ROOT_DIR}/assets/**/*.{scss,js,svg,png,jpeg}`,
+    `./${ROOT_DIR}/assets/**/*.{scss,js,ts,svg,png,jpeg}`,
   );
   eleventyConfig.addWatchTarget(`./${ROOT_DIR}/_includes/**/*.{webc}`);
 

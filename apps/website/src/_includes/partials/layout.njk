@@ -1,6 +1,14 @@
 <mwc-box bg="primary" class="main-header">
-<mwc-button>navigation</mwc-button>
-<mwc-typography>@mlaursen/wc</mwc-typography>
+<mwc-icon-button aria-label="Navigation">
+<mwc-material-symbol>menu</mwc-material-symbol>
+</mwc-icon-button>
+<mwc-typography>{{ headerTitle or packageName }}</mwc-typography>
+<mwc-tooltip margin="force-end" anchor-x="right">
+<span slot="tooltip">Source Code</span>
+<mwc-icon-button slot="target" aria-label="Source Code" href="{{ meta.sourceBase + sourcePath }}">
+{% include "partials/github-icon.njk" %}
+</mwc-icon-button>
+</mwc-tooltip>
 </mwc-box>
 <main id="main" class="{{ mainClassName }}">
   {{ content | safe }}
