@@ -1,26 +1,8 @@
 ---
 layout: docs
 permalink: /packages/wc/components/button.html
-doc:
+page:
   title: Button
-
-sizes:
-  # - "extra-small"
-  - "small"
-  # - "medium"
-  # - "large"
-  # - "extra-large"
-
-variants:
-  - "tonal"
-  - "text"
-  - "outlined"
-  - "filled"
-  - "elevated"
-
-shapes:
-  - "round"
-  - "square"
 
 disabled:
   - false
@@ -36,41 +18,41 @@ icons:
 ---
 
 <mwc-text-container>
-<mwc-typography variant="headline">
-<h2>Buttons</h2>
-</mwc-typography>
-{% for variant in variants %}
-  {% for isDisabled in disabled %}
-    {% for shape in shapes %}
-      <mwc-typography variant="title" text-transform="capitalize">
-      <h3>
-        {{ variant }} {{ shape }}
-        {% if isDisabled %}(disabled){% endif %}
-      </h3>
-      </mwc-typography>
-      <mwc-box>
-      {% for icon in icons %}
-        {% for size in sizes %}
-          <mwc-button size="{{ size }}" variant="{{ variant }}" shape="{{ shape }}"
-          {% if isDisabled %}disabled{% endif %}
-          >
-          {% if icon.leading %}
-            <mwc-material-symbol>favorite</mwc-material-symbol>
-          {% endif %}
-          Label
-          {% if icon.trailing %}
-            <mwc-material-symbol>favorite</mwc-material-symbol>
-          {% endif %}
-          </mwc-button>
-          {% set dividerVariant %}
-            {{ "inset" if icon.leading else "middle" }}
-          {% endset %}
-          <mwc-divider variant={{ dividerVariant }} aria-orientation="vertical"></mwc-divider>
-        {% endfor %}
+  <mwc-typography variant="headline">
+    <h2>Buttons</h2>
+  </mwc-typography>
+  {% for variant in button.variants %}
+    {% for isDisabled in disabled %}
+      {% for shape in button.shapes %}
+        <mwc-typography variant="title" text-transform="capitalize">
+          <h3>
+            {{ variant }} {{ shape }}
+            {% if isDisabled %}(disabled){% endif %}
+          </h3>
+        </mwc-typography>
+        <mwc-box>
+          {% for icon in icons %}
+            {% for size in button.sizes %}
+              <mwc-button size="{{ size }}"
+                          variant="{{ variant }}"
+                          shape="{{ shape }}"
+                          {% if isDisabled %}disabled{% endif %}>
+                {% if icon.leading %}
+                  <mwc-material-symbol>
+                    favorite
+                  </mwc-material-symbol>
+                {% endif %}
+                Label
+                {% if icon.trailing %}
+                  <mwc-material-symbol>
+                    favorite
+                  </mwc-material-symbol>
+                {% endif %}
+              </mwc-button>
+            {% endfor %}
+          {% endfor %}
+        </mwc-box>
       {% endfor %}
-      </mwc-box>
     {% endfor %}
   {% endfor %}
-  <mwc-divider></mwc-divider>
-{% endfor %}
 </mwc-text-container>
