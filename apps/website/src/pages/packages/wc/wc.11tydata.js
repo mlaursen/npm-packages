@@ -9,10 +9,10 @@ export const currentVersion = 0;
 
 export const sourcePath = "npm-packages/packages/wc";
 
-/** @type {import("@mlaursen/wc/types").DefaultComponentSize[]} */
+/** @type {import("@mlaursen/wc").DefaultComponentSize[]} */
 export const defaultSizes = ["small", "medium", "large"];
 
-/** @type {import("@mlaursen/wc/types").DefaultComponentExtraSize[]} */
+/** @type {import("@mlaursen/wc").DefaultComponentExtraSize[]} */
 export const defaultExtraSizes = [
   "extra-small",
   ...defaultSizes,
@@ -20,16 +20,21 @@ export const defaultExtraSizes = [
 ];
 
 export const button = {
-  /** @type {import("@mlaursen/wc/types").ButtonSize[]} */
+  /** @type {import("@mlaursen/wc").ButtonSize[]} */
   sizes: defaultExtraSizes,
 
-  /** @type {import("@mlaursen/wc/types").ButtonShape[]} */
+  /** @type {import("@mlaursen/wc").ButtonShape[]} */
   shapes: ["round", "square"],
 
-  /** @type {import("@mlaursen/wc/types").ButtonVariant[]} */
+  /** @type {import("@mlaursen/wc").ButtonVariant[]} */
   variants: ["tonal", "text", "outlined", "filled", "elevated"],
 
   playground: true,
+};
+
+export const iconButton = {
+  /** @type {(import("@mlaursen/wc").IconButtonWidth | null)[]} **/
+  widths: ["narrow", null, "wide"],
 };
 
 export const eleventyComputed = {

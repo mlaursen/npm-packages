@@ -30,3 +30,32 @@ export type BoxGap = "all" | "row" | "column" | "none";
 export type BoxPadding = "all" | "none";
 export type BoxFlexDirection = "row" | "column";
 export type BoxGrid = boolean | "fit" | "fill" | `${number}`;
+
+export interface BoxProperties {
+  align?: BoxAlignItems;
+
+  justify?: BoxJustifyContent;
+
+  /**
+   * @defaultValue `false`
+   */
+  grid: BoxGrid;
+
+  fullWidth?: boolean;
+
+  stacked?: boolean;
+
+  reversed?: boolean;
+
+  /**
+   * @defaultValue `"all"`
+   */
+  gap: BoxGap;
+
+  nowrap?: boolean;
+
+  /**
+   * @defaultValue `"all"`
+   */
+  padding: BoxPadding;
+}

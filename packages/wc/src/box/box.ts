@@ -15,12 +15,13 @@ import {
   type BoxGrid,
   type BoxJustifyContent,
   type BoxPadding,
+  type BoxProperties,
 } from "./types.js";
 
 const BaseBox = PaletteMixin(MarginMixin(LitElement));
 
 @customElement("mwc-box")
-export class Box extends BaseBox {
+export class Box extends BaseBox implements BoxProperties {
   static override styles = [...BaseBox.styles, boxStyles];
 
   @property()
