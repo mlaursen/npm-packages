@@ -8,6 +8,7 @@ $-tokens-registered: false;
 $-tokens: (
   background: "palette.inverse-surface",
   color: "palette.inverse-on-surface",
+  border-radius: null,
 
   // the area tokens are for configuring the position
   area-x: "center",
@@ -92,6 +93,7 @@ $-target-styles: (
 $-popover-content-styles: (
   background: "popover.background",
   border: 0,
+  border-radius: "popover.border-radius",
   box-sizing: border-box,
   color: "popover.color",
   display: flex,

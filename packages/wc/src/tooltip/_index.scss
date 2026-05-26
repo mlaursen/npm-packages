@@ -20,9 +20,9 @@ $-base-styles: (
   "popover.color": "tooltip.color",
   "popover.spacing": "spacing.extra-small",
   "popover.fallbacks": "block-start, inline-start, block-end, inline-end",
+  "popover.border-radius": "tooltip.border-radius",
 );
 $-tooltip-styles: (
-  border-radius: "tooltip.border-radius",
   font: typography.typescale(body-small),
   padding: "tooltip.padding",
   text-wrap: nowrap,

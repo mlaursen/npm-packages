@@ -9,7 +9,7 @@
 @use "divider";
 @use "box";
 @use "button";
-// @use "icon-button";
+@use "icon-button";
 @use "tooltip";
 
 @mixin styles {
@@ -26,7 +26,7 @@
   @include text-container.styles;
   @include divider.styles;
   @include button.styles;
-  // @include icon-button.styles;
+  @include icon-button.styles;
   @include link.styles;
   @include tooltip.styles;
 }
