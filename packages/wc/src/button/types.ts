@@ -1,9 +1,6 @@
 import { type OverridableStringUnion } from "@mlaursen/utils";
 
-import type {
-  LinkProperties,
-  PassThroughLinkProperties,
-} from "../link/types.js";
+import { type PassThroughLinkProperties } from "../link/types.js";
 import { type DefaultComponentExtraSize } from "../types.js";
 
 export interface ButtonSizeOverrides {}

@@ -15,7 +15,8 @@ export type PassThroughLinkProperties = Partial<
 >;
 
 export interface LinkProperties extends PassThroughLinkProperties {
-  "aria-current"?: "page" | undefined;
+  "aria-current"?: "page";
   href: string;
   interaction: InteractionDirection;
+  inline?: boolean;
 }

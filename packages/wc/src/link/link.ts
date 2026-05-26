@@ -53,6 +53,9 @@ export class Link extends BaseLink implements LinkProperties {
   @property({ reflect: true })
   interaction: InteractionDirection = "outward";
 
+  @property({ type: Boolean })
+  inline?: boolean;
+
   protected override render(): TemplateResult {
     const props: Props = {};
     for (const name of PASS_THROUGH_PROPS) {
