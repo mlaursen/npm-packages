@@ -3,63 +3,88 @@
 @use "../utils";
 
 $-tokens-registered: false;
-$-tokens: (
-  size: "button.container.height",
-  icon-size: "icon.size",
+$-extra-small-tokens: (
+  height: 2rem,
+  icon-size: 1.25rem,
+  narrow-width: 1.75rem,
+  wide-width: 2.5rem,
+);
+$-small-tokens: (
+  height: 2.5rem,
+  icon-size: 1.5rem,
+  narrow-width: 2rem,
+  wide-width: 3.25rem,
+);
+$-medium-tokens: (
+  height: 3.5rem,
+  icon-size: 1.5rem,
+  narrow-width: 3rem,
+  wide-width: 4.5rem,
+);
+$-large-tokens: (
+  height: 6rem,
+  icon-size: 2rem,
+  narrow-width: 4rem,
+  wide-width: 8rem,
+);
 
-  extra-small: (
-    icon-size: 1.25rem,
-    narrow-width: 1.75rem,
-    wide-width: 2.5rem,
-  ),
-  small: (
-    icon-size: 1.5rem,
-    narrow-width: 2rem,
-    wide-width: 3.25rem,
-  ),
-  medium: (
-    size: 3.5rem,
-    icon-size: 1.5rem,
-    narrow-width: 3rem,
-    wide-width: 4.5rem,
-  ),
-  large: (
-    size: 6rem,
-    icon-size: 2rem,
-    narrow-width: 4rem,
-    wide-width: 8rem,
-  ),
-  extra-large: (
-    size: 8.5rem,
-    icon-size: 2.5rem,
-    narrow-width: 6.5rem,
-    wide-width: 11.5rem,
-  ),
+$-extra-large-tokens: (
+  height: 8.5rem,
+  icon-size: 2.5rem,
+  narrow-width: 6.5rem,
+  wide-width: 11.5rem,
+);
+$-tokens: utils.deep-merge(
+  $-small-tokens,
+  (
+    width: "icon-button.height",
+
+    extra-small: $-extra-small-tokens,
+    small: $-small-tokens,
+    medium: $-medium-tokens,
+    large: $-large-tokens,
+    extra-large: $-extra-large-tokens,
+  )
 );
 
 $-configure-tokens: map.keys($-tokens);
 
-$-styles: (
-  "icon.size": 1em,
-  font-size: "icon-button.icon-size",
-  height: auto,
-  padding: 'calc(("icon-button.size" - 1em) / 2)',
-  width: auto,
+$-remapped-styles: utils.remap-tokens(
+  map.remove($-tokens, extra-small, small, medium, large, extra-large, width),
+  icon-button
 );
-$-extra-small-styles: (
-  "icon-button.icon-size": "icon-button.extra-small.icon-size",
+$-short-names: map.keys($-remapped-styles);
+
+@function -remap-size($size) {
+  @return utils.deep-merge(
+    utils.remap-variants(icon-button, $size, height, narrow-width, wide-width),
+    (
+      font-size: "icon-button.#{$size}.icon-size",
+    )
+  );
+}
+
+$-styles: utils.deep-merge(
+  $-remapped-styles,
+  (
+    "icon.size": 1em,
+    font-size: "icon-button.icon-size",
+    height: auto,
+    padding-block: 'calc(("icon-button.height" - 1em) / 2)',
+    padding-inline: 'calc(("icon-button.width" - 1em) / 2)',
+    width: auto,
+  )
 );
-$-small-styles: (
-  "icon-button.icon-size": "icon-button.small.icon-size",
+$-extra-small-styles: -remap-size(extra-small);
+$-small-styles: -remap-size(small);
+$-medium-styles: -remap-size(medium);
+$-large-styles: -remap-size(large);
+$-extra-large-styles: -remap-size(extra-large);
+$-narrow-styles: (
+  "icon-button.width": "icon-button.narrow-width",
 );
-$-medium-styles: (
-  "icon-button.icon-size": "icon-button.medium.icon-size",
-);
-$-large-styles: (
-  "icon-button.icon-size": "icon-button.large.icon-size",
-);
-$-extra-large-styles: (
-  "icon-button.icon-size": "icon-button.extra-large.icon-size",
+$-wide-styles: (
+  "icon-button.width": "icon-button.wide-width",
 );
 
 @mixin configure() {
@@ -75,22 +100,33 @@ $-extra-large-styles: (
 }
 
 @mixin css-styles {
-  $styles: ();
-  @include utils.css-styles($styles);
+  $styles: (
+    "&icon-button": $-styles,
+    "&icon-button--extra-small": $-extra-small-styles,
+    // small is removed since it is the default remapping
+    // "&icon-button--small": $-small-styles,
+    "&icon-button--medium": $-medium-styles,
+    "&icon-button--large": $-large-styles,
+    "&icon-button--extra-large": $-extra-large-styles,
+    "&icon-button--narrow": $-narrow-styles,
+    "&icon-button--wide": $-wide-styles,
+  );
+  @include utils.css-styles($styles, $short-names: $-short-names);
 }
 
 @mixin host-styles {
   $styles: (
     ":host": $-styles,
     ":host([size=extra-small])": $-extra-small-styles,
-    ":host([size=small])": $-small-styles,
+    // small is removed since it is the default remapping
+    // ":host([size=small])": $-small-styles,
     ":host([size=medium])": $-medium-styles,
     ":host([size=large])": $-large-styles,
     ":host([size=extra-large])": $-extra-large-styles,
-    // ":host([width=narrow])": null,
-     // ":host([width=wide])": null,
+    ":host([width=narrow])": $-narrow-styles,
+    ":host([width=wide])": $-wide-styles,
   );
-  @include utils.host-styles($styles);
+  @include utils.host-styles($styles, $short-names: $-short-names);
 }
 
 @mixin styles {

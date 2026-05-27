@@ -6,3 +6,7 @@ export type IconButtonWidth = OverridableStringUnion<
   DefaultIconButtonWidth,
   IconButtonWidthOverrides
 >;
+
+export interface IconButtonProperties {
+  width: IconButtonWidth | null;
+}

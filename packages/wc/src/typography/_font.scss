@@ -54,7 +54,7 @@ $-tokens: (
   title-medium: (
     size: utils.to-rem(16),
     line-height: utils.to-rem(24),
-    tracking: utils.get-letter-spacing(0.25),
+    tracking: utils.get-letter-spacing(0.15),
   ),
   title-small: (
     size: utils.to-rem(14),

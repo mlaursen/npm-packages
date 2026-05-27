@@ -31,6 +31,6 @@ export type * from "./palette/types.js";
 export type * from "./popover/types.js";
 export type * from "./svg-icon/types.js";
 export type * from "./tooltip/types.js";
+export type * from "./types.js";
 export type * from "./typography/types.js";
 export * from "./utils/luminance.js";
-export type * from "./types.js";
