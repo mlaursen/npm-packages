@@ -1,11 +1,13 @@
 import {
   enableLogger,
+  ensureParentDir,
   logComplete,
   prettyFilesize,
 } from "@mlaursen/node-utils";
 import { compileScss } from "@mlaursen/scss";
 import browserslist from "browserslist";
 import { browserslistToTargets, transform } from "lightningcss";
+import { existsSync, readFileSync } from "node:fs";
 import { writeFile } from "node:fs/promises";
 
 enableLogger();
@@ -21,13 +23,13 @@ const code = `
 );
 // shortVarNames === false
 //  ✓ Wrote:
-// - ./dist/raw.css       42.4 kB
-// - ./dist/raw.min.css   36.6 kB
+// - ./css/raw.css       42.4 kB
+// - ./css/raw.min.css   36.6 kB
 //
 // shortVarNames === true
 //  ✓ Wrote:
-// - ./dist/raw.css       38.7 kB
-// - ./dist/raw.min.css   33 kB
+// - ./css/raw.css       38.7 kB
+// - ./css/raw.min.css   33 kB
 
 @layer {
   @include css-reset;
@@ -59,15 +61,51 @@ const minified = transform({
   inputSourceMap: (result.sourceMap && JSON.stringify(result.sourceMap)) ?? "",
 });
 
+let materialThemeCss: string | undefined;
+if (existsSync("material-theme.scss")) {
+  const result = compileScss({
+    code: `@use "./src" as *;
+@use "./material-theme";
+
+@layer {
+  @include css-reset;
+  :root{
+    @include variables;
+  }
+
+  @include styles;
+}
+`,
+    basePath: process.cwd(),
+    load(filePath) {
+      if (filePath.endsWith("material-theme.scss")) {
+        return readFileSync("./material-theme.scss", "utf8").replace(
+          "@mlaursen/wc",
+          "./src",
+        );
+      }
+
+      return readFileSync(filePath, "utf8");
+    },
+  });
+
+  materialThemeCss = result.css;
+}
+
+await ensureParentDir("./css/raw.css");
+
 await Promise.all([
-  writeFile("./dist/raw.css", result.css, "utf8"),
-  writeFile("./dist/raw.min.css", minified.code.toString(), "utf8"),
+  writeFile("./css/raw.css", result.css, "utf8"),
+  writeFile("./css/raw.min.css", minified.code.toString(), "utf8"),
+  materialThemeCss &&
+    writeFile("./css/material-theme.css", materialThemeCss, "utf8"),
 ]);
 
 logComplete(
   `Wrote:
-- ./dist/raw.css       ${prettyFilesize(result.css)}
-- ./dist/raw.min.css   ${prettyFilesize(minified.code.toString())}
+- ./css/raw.css             ${prettyFilesize(result.css)}
+- ./css/raw.min.css         ${prettyFilesize(minified.code.toString())}
+${materialThemeCss && `- ./css/material-theme.css  ${prettyFilesize(result.css)}`}
 `,
   Date.now() - start,
 );

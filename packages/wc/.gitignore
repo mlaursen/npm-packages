@@ -2,9 +2,13 @@ node_modules
 .DS_STORE
 .env.local
 
+/css
 /dist
 /types
 /coverage
 
 # generated
 src/**/*-styles.ts
+
+material-theme.json
+material-theme.scss
