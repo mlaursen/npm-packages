@@ -2,12 +2,14 @@
 @use "shape";
 @use "spacing";
 @use "transition";
+@use "z-index";
 @use "typography";
 
 @mixin variables {
   @include palette.variables;
   @include shape.variables;
   @include spacing.variables;
+  @include z-index.variables;
   @include transition.variables;
   @include typography.variables;
 }

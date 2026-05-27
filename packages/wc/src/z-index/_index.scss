@@ -1,0 +1,46 @@
+@use "sass:map";
+
+@use "../utils";
+
+$-tokens-registered: false;
+$-tokens: (
+  pseudo: 0,
+  popover: 50,
+  sticky: 99,
+  fixed: 99,
+);
+$-configure-tokens: map.keys($-tokens);
+
+@mixin -configure($name, $value) {
+  @if $value != null {
+    $-tokens: map.set($-tokens, $name, $value) !global;
+  }
+}
+
+@mixin configure($sticky: null, $fixed: null) {
+  @include -configure(sticky, $sticky);
+  @include -configure(fixed, $fixed);
+
+  @if not $-tokens-registered {
+    $-tokens-registered: true !global;
+    @include utils.register-tokens($tokens: $-tokens, $prefix: "z-index");
+  }
+}
+
+@mixin configure-global($overrides: null) {
+  $overrides: utils.get-config-map(z-index, $overrides, $-configure-tokens);
+  @include configure();
+}
+
+@mixin variables {
+  $register-tokens: not $-tokens-registered;
+  @if $register-tokens {
+    $-tokens-registered: true !global;
+  }
+
+  @include utils.set-default-tokens(
+    $tokens: $-tokens,
+    $prefix: "z-index",
+    $register-tokens: $register-tokens
+  );
+}

@@ -17,7 +17,7 @@ $-sizes: utils.list-slice($-configure-tokens, 2);
 
 @mixin -configure($name, $value) {
   @if $value != null {
-    $-styles: map.set($-tokens, $name, $value) !global;
+    $-tokens: map.set($-tokens, $name, $value) !global;
   }
 }
 

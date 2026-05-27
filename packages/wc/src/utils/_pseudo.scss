@@ -15,7 +15,7 @@
 /// @param {String} border-radius [inherit] - You normally want to inherit the
 /// `border-radius`, but it can be configured with this param if needed.
 @function pseudo-element(
-  $z-index: 0,
+  $z-index: "z-index.pseudo",
   $fixed: false,
   $inset: 0,
   $border-radius: inherit

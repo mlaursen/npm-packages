@@ -9,6 +9,7 @@
 @use "elevation";
 @use "interaction";
 @use "typography";
+@use "z-index";
 
 @use "css-reset";
 
@@ -33,6 +34,7 @@
   $shape: null,
   $spacing: null,
   $margin: null,
+  $z-index: null,
   $interaction: null,
   $elevation: null,
   $transition: null,
@@ -59,6 +61,7 @@
   @include shape.configure-global($shape);
   @include spacing.configure-global($spacing);
   @include margin.configure($margin);
+  @include z-index.configure-global($z-index);
   @include transition.configure-global($transition);
   @include elevation.configure-global($elevation);
   @include interaction.configure-global($interaction);
