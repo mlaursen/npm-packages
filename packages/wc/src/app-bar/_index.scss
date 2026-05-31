@@ -1,0 +1,166 @@
+@use "sass:map";
+@use "sass:string";
+
+@use "../utils";
+@use "../typography";
+
+// NOTE: this is really the text field
+// search: (
+//   background: "palette.surface-container",
+//   color: "palette.on-surface-variant"
+//   height: 3.5rem,
+//   shape: "shape.corner.full",
+//   font: "typescale.title-medium"
+// ),
+// scrolled: (
+//   search: (
+//     background: "palette.surface-container-highest"
+//   )
+// )
+
+$-tokens-registered: false;
+$-tokens: (
+  background: "palette.surface",
+  color: "palette.on-surface",
+  elevation: 0,
+  position: static,
+  position-v: "0 auto",
+  gap: "spacing.extra-small",
+  padding-x: "spacing.extra-small",
+  padding-y: auto,
+  height: 4rem,
+  columns: auto 1fr auto,
+  scrolled: (
+    background: "palette.surface-container",
+    elevation: 2,
+  ),
+  stacked: (
+    padding-y: '"spacing.small" "spacing.medium"',
+  ),
+  medium: (
+    height: 7rem,
+    subtitle: (
+      height: 8.5rem,
+    ),
+  ),
+  large: (
+    height: 7.5rem,
+    subtitle: (
+      height: 9.5rem,
+    ),
+  ),
+);
+
+$-configure-tokens: map.keys($-tokens);
+
+$-base-styles: (
+  "elevation.level": "app-bar.elevation",
+  "icon-button.height": 3rem,
+  align-items: center,
+  background: "app-bar.background",
+  box-sizing: border-box,
+  color: "app-bar.color",
+  column-gap: "app-bar.gap",
+  display: grid,
+  grid-template-areas: '"nav title actions"',
+  grid-template-columns: "app-bar.columns",
+  inset: '"app-bar.position-v" auto',
+  min-height: "app-bar.height",
+  padding-block: "app-bar.padding-y",
+  padding-inline: "app-bar.padding-x",
+  position: "app-bar.position",
+  z-index: "z-index.sticky",
+);
+$-position-top-styles: (
+  "app-bar.position-v": "0 auto",
+);
+$-position-bottom-styles: (
+  "app-bar.position-v": "auto 0",
+);
+$-multiple-rows-styles: (
+  "app-bar.title.margin": "spacing.large",
+  "app-bar.padding-y": "app-bar.stacked.padding-y",
+  grid-template-areas: '"nav actions" "title title"',
+);
+$-medium-styles: (
+  "app-bar.height": "app-bar.medium.height",
+);
+$-medium-subtitle-styles: (
+  "app-bar.height": "app-bar.medium.subtitle.height",
+);
+$-large-styles: (
+  "app-bar.height": "app-bar.large.height",
+);
+$-large-subtitle-styles: (
+  "app-bar.height": "app-bar.large.subtitle.height",
+);
+$-nav-styles: (
+  grid-area: nav,
+);
+$-actions-styles: (
+  justify-self: end,
+);
+$-actions-container-styles: (
+  align-items: center,
+  display: flex,
+  grid-area: actions,
+  justify-self: end,
+);
+$-scrolled-styles: (
+  "elevation.level": "app-bar.scrolled.elevation",
+);
+$-fixed-styles: (
+  "app-bar.position": fixed,
+);
+$-fixed-upwards-styles: ();
+$-sticky-styles: (
+  "app-bar.position": sticky,
+);
+$-sticky-upwards-styles: ();
+
+@mixin configure() {
+  @if not $-tokens-registered {
+    $-tokens-registered: true !global;
+    @include utils.register-tokens($tokens: $-tokens, $prefix: "app-bar");
+  }
+}
+
+@mixin configure-global($overrides: null) {
+  $overrides: utils.get-config-map(app-bar, $overrides, $-configure-tokens);
+  @include configure();
+}
+
+@mixin css-styles {
+  $styles: (
+    "&app-bar": $-base-styles,
+  );
+  @include utils.css-styles($styles);
+}
+
+@mixin host-styles {
+  $styles: (
+    ":host": $-base-styles,
+    ":host([position=top])": $-position-top-styles,
+    ":host([position=bottom])": $-position-bottom-styles,
+    ":host([scroll-behavior^=fixed])": $-fixed-styles,
+    ":host([scroll-behavior=fixed-upwards])": $-fixed-upwards-styles,
+    ":host([scroll-behavior^=sticky])": $-sticky-styles,
+    ":host([scroll-behavior=sticky-upwards])": $-sticky-upwards-styles,
+    ":host([scrolled])": $-scrolled-styles,
+    "::slotted([slot=nav])": $-nav-styles,
+    ".actions": $-actions-container-styles,
+    "::slotted([slot=actions])": $-actions-styles,
+
+    ":host(:not([size=small]))": $-multiple-rows-styles,
+    ":host([size^=medium])": $-medium-styles,
+    ":host([size=medium-subtitle])": $-medium-subtitle-styles,
+    ":host([size^=large])": $-large-styles,
+    ":host([size=large-subtitle])": $-large-subtitle-styles,
+  );
+  @include utils.host-styles($styles);
+}
+
+@mixin styles {
+  @include css-styles;
+  @include host-styles;
+}

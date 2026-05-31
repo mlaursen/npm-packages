@@ -16,6 +16,7 @@ import "./text-container/text-container.js";
 import "./tooltip/tooltip.js";
 import "./typography/typography.js";
 
+export type * from "./app-bar/types.js";
 export type * from "./aria-mixin/types.js";
 export type * from "./box/types.js";
 export type * from "./button/types.js";

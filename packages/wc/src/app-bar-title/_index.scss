@@ -1,0 +1,58 @@
+@use "sass:map";
+
+@use "../utils";
+
+$-tokens-registered: false;
+$-tokens: (
+  title: (
+    grid-area: title,
+    spacing: null,
+    justify: start,
+  ),
+);
+
+$-configure-tokens: map.keys($-tokens);
+
+$-base-styles: (
+  grid-area: "app-bar.title.grid-area",
+  justify-self: "app-bar.title.justify",
+  margin-inline-start: "app-bar.title.margin",
+);
+$-centered-styles: (
+  "app-bar.title.justify": center,
+  "app-bar.title.margin": 0,
+);
+
+@mixin configure() {
+  @if not $-tokens-registered {
+    $-tokens-registered: true !global;
+    @include utils.register-tokens($tokens: $-tokens, $prefix: "app-bar");
+  }
+}
+
+@mixin configure-global($overrides: null) {
+  $overrides: utils.get-config-map(
+    app-bar-title,
+    $overrides,
+    $-configure-tokens
+  );
+  @include configure();
+}
+
+@mixin css-styles {
+  $styles: ();
+  @include utils.css-styles($styles);
+}
+
+@mixin host-styles {
+  $styles: (
+    ":host": $-base-styles,
+    ":host([position=center])": $-centered-styles,
+  );
+  @include utils.host-styles($styles);
+}
+
+@mixin styles {
+  @include css-styles;
+  @include host-styles;
+}

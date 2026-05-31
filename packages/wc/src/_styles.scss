@@ -5,6 +5,8 @@
 @use "popover";
 @use "typography";
 @use "text-container";
+@use "app-bar";
+@use "app-bar-title";
 @use "link";
 @use "divider";
 @use "box";
@@ -22,6 +24,8 @@
   @include interaction.styles;
   @include popover.styles;
 
+  @include app-bar.styles;
+  @include app-bar-title.styles;
   @include box.styles;
   @include text-container.styles;
   @include divider.styles;

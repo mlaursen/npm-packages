@@ -15,6 +15,9 @@
 
 @use "popover";
 @use "text-container";
+
+@use "app-bar";
+@use "app-bar-title";
 @use "divider";
 @use "icon";
 @use "material-symbol";
@@ -40,6 +43,8 @@
   $transition: null,
   $typography: null,
   $text-container: null,
+  $app-bar: null,
+  $app-bar-title: null,
   $divider: null,
   $popover: null,
   $icon: null,
@@ -69,6 +74,8 @@
   @include divider.configure-global($divider);
 
   @include typography.configure-global($typography);
+  @include app-bar.configure-global($app-bar);
+  @include app-bar-title.configure-global($app-bar-title);
   @include text-container.configure-global($text-container);
   @include link.configure-global($link);
   @include icon.configure-global($icon);
