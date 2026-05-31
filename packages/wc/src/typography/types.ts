@@ -22,3 +22,20 @@ export type TypographyVariant = OverridableStringUnion<
   DefaultTypographyVariant,
   TypographyVariantOverrides
 >;
+
+export interface TypographyProperties {
+  /**
+   * @defaultValue `"large"`
+   */
+  size: TypographySize;
+
+  /**
+   * @defaultValue `"body"`
+   */
+  variant: TypographyVariant;
+
+  /**
+   * @defaultValue `"body"`
+   */
+  prominent: boolean;
+}

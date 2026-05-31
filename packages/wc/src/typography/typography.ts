@@ -4,30 +4,36 @@ import { html } from "lit/static-html.js";
 
 import { MarginMixin } from "../margin/margin-mixin.js";
 import { PaletteMixin } from "../palette/palette-mixin.js";
-import { type TypographySize, type TypographyVariant } from "./types.js";
+import {
+  type TypographyProperties,
+  type TypographySize,
+  type TypographyVariant,
+} from "./types.js";
 import styles from "./typography-styles.js";
 
 const BaseTypography = PaletteMixin(MarginMixin(LitElement));
 
+/**
+ * @example Simple Example
+ * ```ts
+ * <mwc-typography variant="display">
+ *   <h1>This is a large display</h1>
+ * </mwc-typography>
+ * <mwc-typography>
+ *   <p>This is a large body typography variant</p>
+ * </mwc-typography>
+ * ```
+ */
 @customElement("mwc-typography")
-export class Typography extends BaseTypography {
+export class Typography extends BaseTypography implements TypographyProperties {
   static override styles = [...BaseTypography.styles, styles];
 
-  /**
-   * Default: `"large"`
-   */
   @property({ reflect: true })
   size: TypographySize = "large";
 
-  /**
-   * Default: `"body"`
-   */
   @property({ reflect: true })
   variant: TypographyVariant = "body";
 
-  /**
-   * Default: `"body"`
-   */
   @property({ type: Boolean })
   prominent = false;
 
