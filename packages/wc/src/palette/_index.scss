@@ -331,7 +331,7 @@ $-token-names: map.keys($-light-theme-tokens);
         @if $is-on-color {
           $selector: $selector + "color=#{$name}";
         } @else {
-          $selector: $selector + "bg=#{$name}";
+          $selector: $selector + "background=#{$name}";
         }
 
         $selector: $selector + "])";

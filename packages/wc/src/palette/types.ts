@@ -81,3 +81,8 @@ export type OnContainerColor =
   | DarkOnBasePaletteContainer;
 export type CamelCaseContainerColor = CamelCase<ContainerColor>;
 export type CamelCaseOnContainerColor = CamelCase<OnContainerColor>;
+
+export interface PaletteProperties {
+  background?: PaletteBackgroundColor;
+  color?: PaletteTextColor;
+}

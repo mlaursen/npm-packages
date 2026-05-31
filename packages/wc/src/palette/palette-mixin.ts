@@ -6,27 +6,26 @@ import {
   type StyledLitElementWithProperties,
 } from "../types.js";
 import paletteStyles from "./palette-styles.js";
-import { type PaletteBackgroundColor, type PaletteTextColor } from "./types.js";
-
-export interface PaletteMixinProperties {
-  bg?: PaletteBackgroundColor;
-  color?: PaletteTextColor;
-}
+import {
+  type PaletteBackgroundColor,
+  type PaletteProperties,
+  type PaletteTextColor,
+} from "./types.js";
 
 export function PaletteMixin<T extends StylableLitElement>(
   Base: T,
-): StyledLitElementWithProperties<PaletteMixinProperties, T> {
+): StyledLitElementWithProperties<PaletteProperties, T> {
   let styles: CSSResultArray = [paletteStyles];
   if (Base.styles) {
     const baseStyles = Array.isArray(Base.styles) ? Base.styles : [Base.styles];
     styles = [paletteStyles, ...baseStyles];
   }
 
-  class PaletteStyledElement extends Base {
+  class PaletteStyledElement extends Base implements PaletteProperties {
     static override styles = styles;
 
     @property()
-    bg?: PaletteBackgroundColor;
+    background?: PaletteBackgroundColor;
 
     @property()
     color?: PaletteTextColor;
