@@ -2,21 +2,14 @@ import { spread } from "@open-wc/lit-helpers";
 import { LitElement, type TemplateResult, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
 
-import type { InteractionDirection } from "../interaction/types.js";
+import { type InteractionDirection } from "../interaction/types.js";
 import { MarginMixin } from "../margin/margin-mixin.js";
 import { PaletteMixin } from "../palette/palette-mixin.js";
-import { PASS_THROUGH_PROPS } from "./constants.js";
+import { PASS_THROUGH_LINK_PROPS } from "./constants.js";
 import styles from "./link-styles.js";
-import {
-  type LinkProperties,
-  type PassThroughLinkProperties,
-} from "./types.js";
+import { type LinkProperties } from "./types.js";
 
 const BaseLink = PaletteMixin(MarginMixin(LitElement));
-
-type Props = Partial<
-  Record<keyof PassThroughLinkProperties, string | undefined>
->;
 
 @customElement("mwc-link")
 export class Link extends BaseLink implements LinkProperties {
@@ -57,8 +50,8 @@ export class Link extends BaseLink implements LinkProperties {
   inline?: boolean;
 
   protected override render(): TemplateResult {
-    const props: Props = {};
-    for (const name of PASS_THROUGH_PROPS) {
+    const props: Partial<HTMLAnchorElement> = {};
+    for (const name of PASS_THROUGH_LINK_PROPS) {
       props[name] = this[name];
     }
 

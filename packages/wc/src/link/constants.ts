@@ -1,6 +1,6 @@
-import type { PassThroughLinkProperties } from "./types.js";
+import { type PassThroughLinkProperties } from "./types.js";
 
-export const PASS_THROUGH_PROPS = [
+export const PASS_THROUGH_LINK_PROPS = [
   "rel",
   "href",
   "hreflang",

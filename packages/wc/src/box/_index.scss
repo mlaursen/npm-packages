@@ -63,7 +63,7 @@ $-styles: (
     column-gap: "box.gap-h",
   ),
   padded: (
-    padding: "box.padding-v" "box.padding-h",
+    padding: '"box.padding-v" "box.padding-h"',
   ),
   flex-wrap: (
     flex-wrap: wrap,
@@ -82,10 +82,8 @@ $-styles: (
   ),
   grid: (
     display: grid,
-    grid-template-columns: repeat(
-        "box.columns",
-        minmax("box.item-min-size", 1fr)
-      ),
+    grid-template-columns:
+      'repeat("box.columns", minmax("box.item-min-size", 1fr))',
   ),
   grid-fill: (
     "box.columns": auto-fill,

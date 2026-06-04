@@ -38,7 +38,7 @@
 /// @return {Boolean} -
 @function has-letter-dot-letter($token) {
   $length: string.length($token);
-  @if $length < 8 {
+  @if $length < 4 {
     @return false;
   }
 

@@ -17,7 +17,7 @@ export function MarginMixin<T extends StylableLitElement>(
     styles = [marginStyles, ...baseStyles];
   }
 
-  class MarginStyledElement extends Base {
+  class MarginStyledElement extends Base implements MarginProperties {
     static override styles = styles;
 
     @property()

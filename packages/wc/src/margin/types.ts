@@ -6,7 +6,8 @@ export type DefaultMargin =
   | "top"
   | "bottom"
   | "centered"
-  | "force-end";
+  | "start"
+  | "end";
 export type Margin = OverridableStringUnion<DefaultMargin, MarginOverrides>;
 
 export interface MarginProperties {

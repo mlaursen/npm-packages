@@ -8,9 +8,10 @@ $-configure-tokens: (
   top-styles,
   bottom-styles,
   centered-styles,
-  force-end-styles
+  start-styles,
+  end-styles
 );
-$-host-variants: (centered, force-end);
+$-host-variants: (centered, start, end);
 
 $-styles: (
   none: (
@@ -25,7 +26,10 @@ $-styles: (
   centered: (
     margin-inline: auto,
   ),
-  force-end: (
+  start: (
+    margin-inline-end: auto,
+  ),
+  end: (
     margin-inline-start: auto,
   ),
 );
@@ -41,13 +45,15 @@ $-styles: (
   $top-styles: null,
   $bottom-styles: null,
   $centered-styles: null,
-  $force-end-styles: null
+  $start-styles: null,
+  $end-styles: null
 ) {
   @include -configure(none, $none-styles);
   @include -configure(top, $top-styles);
   @include -configure(bottom, $bottom-styles);
   @include -configure(centered, $centered-styles);
-  @include -configure(force-end, $force-end-styles);
+  @include -configure(start, $start-styles);
+  @include -configure(end, $end-styles);
 }
 
 @mixin configure-global($overrides: null) {
@@ -57,7 +63,8 @@ $-styles: (
     $top-styles: map.get($overrides, top-styles),
     $bottom-styles: map.get($overrides, bottom-styles),
     $centered-styles: map.get($overrides, centered-styles),
-    $force-end-styles: map.get($overrides, force-end-styles)
+    $start-styles: map.get($overrides, start-styles),
+    $end-styles: map.get($overrides, end-styles)
   );
 }
 
