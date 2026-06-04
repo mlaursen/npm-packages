@@ -9,11 +9,12 @@ export async function generateComponents(
   options: GenerateComponentsOptions = {},
 ): Promise<void> {
   const {
+    quiet = false,
     colorScheme = "light-dark",
     output = "flagged",
     basePath = process.cwd(),
     targets = DEFAULT_CSS_BROWSERSLIST_TARGETS,
-    sassOptions,
+    sassOptions = {},
     shortVarNames = output === "minified",
   } = options;
 
@@ -21,9 +22,10 @@ export async function generateComponents(
     ignore: ["**/_*.scss"],
     cwd: resolve(import.meta.dirname, "../.."),
   });
-  await Promise.all(
+  const results = await Promise.allSettled(
     styles.map((filePath) =>
       createStyles({
+        quiet,
         colorScheme,
         filePath,
         basePath,
@@ -34,4 +36,10 @@ export async function generateComponents(
       }),
     ),
   );
+
+  for (const result of results) {
+    if (result.status === "rejected") {
+      throw result.reason;
+    }
+  }
 }
