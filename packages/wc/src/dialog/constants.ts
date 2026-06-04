@@ -1,6 +1,6 @@
 import { Duration, Easing } from "../transition/constants.js";
 import { getVar } from "../utils/tokens.js";
-import { type AnimateDialogOptions } from "./types.js";
+import { type AnimateDialogElementMap } from "./types.js";
 
 export const DEFAULT_DIALOG_OPEN_ANIMATION = {
   dialog: [
@@ -56,7 +56,7 @@ export const DEFAULT_DIALOG_OPEN_ANIMATION = {
       { duration: Duration.Medium1, easing: Easing.Linear, fill: "forwards" },
     ],
   ],
-} as const satisfies AnimateDialogOptions;
+} as const satisfies AnimateDialogElementMap;
 
 export const DEFAULT_DIALOG_CLOSE_ANIMATION = {
   dialog: [
@@ -113,4 +113,4 @@ export const DEFAULT_DIALOG_CLOSE_ANIMATION = {
       { duration: Duration.Short2, easing: Easing.Linear, fill: "forwards" },
     ],
   ],
-} as const satisfies AnimateDialogOptions;
+} as const satisfies AnimateDialogElementMap;

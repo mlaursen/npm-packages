@@ -23,6 +23,8 @@ $-tokens: (
   fallbacks: null,
 
   opacity: 0,
+  // using a small value so that the base transform applies
+  transform: "scale(1)",
   open: (
     opacity: 1,
     transform: "scale(1)",
@@ -31,10 +33,6 @@ $-tokens: (
     opacity: 0,
     transform: "scale(1)",
   ),
-  // using a small value so that the base transform applies
-  transform: "scale(1)",
-  transition-property: "opacity, transform",
-  transition-duration: "transition.duration.short-4",
 );
 
 $-configure-tokens: (
@@ -66,20 +64,11 @@ $-popover-styles: (
   position-area: '"popover.area-y" "popover.area-x"',
   position-try-fallbacks: "popover.fallbacks",
   transform: "popover.transform",
-  transition-behavior: allow-discrete,
-  transition-duration: "popover.transition-duration",
-  transition-property: 'display, overlay, "popover.transition-property"',
-  transition-timing-function: "transition.easing.emphasized-accelerate",
   z-index: "popover.z-index",
 
   "&:popover-open": (
     "popover.opacity": "popover.open.opacity",
     "popover.transform": "popover.open.transform",
-
-    "@starting-style": (
-      "popover.opacity": "popover.closed.opacity",
-      "popover.transform": "popover.closed.transform",
-    ),
   ),
 );
 // this was added so that wrapping elements in a `<mwc-popover>` do not mess

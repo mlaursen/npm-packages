@@ -18,7 +18,7 @@ import {
 } from "./constants.js";
 import styles from "./dialog-styles.js";
 import {
-  type AnimateDialogOptions,
+  type AnimateDialogElementMap,
   type CloseDialogOptions,
   type DialogProperties,
   type DialogType,
@@ -64,7 +64,7 @@ export class Dialog extends BaseDialog implements DialogProperties {
   @query("#header")
   private _header?: HTMLElement;
 
-  @query("#contents")
+  @query("#content")
   private _content?: HTMLElement;
 
   @query("#actions")
@@ -86,9 +86,9 @@ export class Dialog extends BaseDialog implements DialogProperties {
   #connectedResolvers = Promise.withResolvers<undefined>();
   #animationController?: AbortController;
 
-  getOpenAnimation: GetAnimationMap<AnimateDialogOptions> = () =>
+  getOpenAnimation: GetAnimationMap<AnimateDialogElementMap> = () =>
     DEFAULT_DIALOG_OPEN_ANIMATION;
-  getCloseAnimation: GetAnimationMap<AnimateDialogOptions> = () =>
+  getCloseAnimation: GetAnimationMap<AnimateDialogElementMap> = () =>
     DEFAULT_DIALOG_CLOSE_ANIMATION;
 
   override getFallbackFocus = (): HTMLElement | null | undefined =>
@@ -237,7 +237,7 @@ export class Dialog extends BaseDialog implements DialogProperties {
   #getAnimations(
     animate: ShowDialogOptions["animate"] = true,
     enter: boolean,
-  ): Readonly<AnimateDialogOptions> {
+  ): Readonly<AnimateDialogElementMap> {
     const getDefault = enter ? this.getOpenAnimation : this.getCloseAnimation;
     if (typeof animate === "boolean") {
       if (animate) {
@@ -250,7 +250,7 @@ export class Dialog extends BaseDialog implements DialogProperties {
     return animate();
   }
 
-  async #animate(options: Readonly<AnimateDialogOptions>): Promise<void> {
+  async #animate(options: Readonly<AnimateDialogElementMap>): Promise<void> {
     this.#animationController?.abort();
     this.#animationController = new AbortController();
 

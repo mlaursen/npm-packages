@@ -6,3 +6,9 @@ export type AnimateElementMap<K extends string = string> = Partial<
 
 export type GetAnimationMap<T extends AnimateElementMap = AnimateElementMap> =
   () => T;
+
+export interface BaseAnimateOptions<
+  T extends AnimateElementMap = AnimateElementMap,
+> {
+  animate?: boolean | (() => Readonly<T>);
+}

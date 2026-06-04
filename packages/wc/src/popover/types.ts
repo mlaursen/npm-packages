@@ -1,5 +1,11 @@
-import type { LiteralStringUnion } from "@mlaursen/utils";
-import type { TemplateResult } from "lit";
+import { type LiteralStringUnion } from "@mlaursen/utils";
+import { type TemplateResult } from "lit";
+
+import {
+  type AnimateElementMap,
+  type BaseAnimateOptions,
+  type GetAnimationMap,
+} from "../transition/types.js";
 
 /**
  *                  ------------
@@ -70,12 +76,12 @@ export interface RenderPopoverTargetOptions {
   content: TemplateResult;
 }
 
-export type PopoverControls = Pick<
-  HTMLElement,
-  "showPopover" | "hidePopover" | "togglePopover"
->;
+export type AnimatePopoverElementMap = AnimateElementMap<"popover" | "target">;
 
-export interface PopoverProperties extends PopoverControls {
+export type BasePopoverAnimateOptions =
+  BaseAnimateOptions<AnimatePopoverElementMap>;
+
+export interface PopoverProperties {
   /**
    * @see {@link HorizontalPosition}
    * @defaultValue `"center"`
@@ -150,4 +156,10 @@ export interface PopoverProperties extends PopoverControls {
    * ```
    */
   renderPopoverTarget(options?: RenderPopoverTargetOptions): TemplateResult;
+
+  showPopover: (options?: Readonly<BasePopoverAnimateOptions>) => Promise<void>;
+  hidePopover: (options?: Readonly<BasePopoverAnimateOptions>) => Promise<void>;
+
+  getShowPopoverAnimation: GetAnimationMap<AnimatePopoverElementMap>;
+  getHidePopoverAnimation: GetAnimationMap<AnimatePopoverElementMap>;
 }

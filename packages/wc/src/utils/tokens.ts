@@ -3,7 +3,7 @@ export function getVar(
   fallback?: string | number,
 ): string {
   let suffix = "";
-  if (fallback) {
+  if (fallback !== "") {
     suffix = `, ${fallback}`;
   }
 

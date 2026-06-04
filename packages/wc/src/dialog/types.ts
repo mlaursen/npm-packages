@@ -1,10 +1,11 @@
-import type { OverridableStringUnion } from "@mlaursen/utils";
+import { type OverridableStringUnion } from "@mlaursen/utils";
 
 import {
   type AnimateElementMap,
+  type BaseAnimateOptions,
   type GetAnimationMap,
 } from "../transition/types.js";
-import type { DefaultComponentExtraSize } from "../types.js";
+import { type DefaultComponentExtraSize } from "../types.js";
 
 export interface DialogWidthOverrides {}
 export type DefaultDialogWidth = DefaultComponentExtraSize;
@@ -15,13 +16,11 @@ export type DialogWidth = OverridableStringUnion<
 
 export type DialogType = "alert";
 
-export type AnimateDialogOptions = AnimateElementMap<
+export type AnimateDialogElementMap = AnimateElementMap<
   "dialog" | "header" | "content" | "actions"
 >;
 
-export interface ShowDialogOptions {
-  animate?: boolean | (() => Readonly<AnimateDialogOptions>);
-}
+export type ShowDialogOptions = BaseAnimateOptions<AnimateDialogElementMap>;
 
 export interface CloseDialogOptions extends ShowDialogOptions {
   returnValue?: string;
@@ -57,6 +56,6 @@ export interface DialogProperties {
   show: (options?: Readonly<ShowDialogOptions>) => Promise<void>;
   close: (options?: Readonly<CloseDialogOptions>) => Promise<void>;
 
-  getOpenAnimation: GetAnimationMap<AnimateDialogOptions>;
-  getCloseAnimation: GetAnimationMap<AnimateDialogOptions>;
+  getOpenAnimation: GetAnimationMap<AnimateDialogElementMap>;
+  getCloseAnimation: GetAnimationMap<AnimateDialogElementMap>;
 }
