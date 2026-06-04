@@ -209,8 +209,23 @@
   }
 }
 
-@mixin host-styles($styles, $short-names: null, $keyframes: null) {
+@mixin host-styles(
+  $styles,
+  $short-names: null,
+  $keyframes: null,
+  $disable-display-none: false
+) {
   @if is-host-output() {
+    @if not $disable-display-none {
+      $styles: map.set(
+        $styles,
+        ":host([hidden])",
+        (
+          display: none,
+        )
+      );
+    }
+
     @include map-to-styles($styles, $short-names);
 
     @if $keyframes {
