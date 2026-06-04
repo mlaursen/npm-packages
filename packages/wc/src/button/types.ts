@@ -34,6 +34,26 @@ export interface ButtonLinkProperties extends PassThroughLinkProperties {
   href?: string;
 }
 
+/**
+ * This was added since it is not officially a part of the lib.d.ts file yet in
+ * Typescript. Should be removed once it is.
+ *
+ * @see [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/button#command)
+ */
+export type CommandAttribute =
+  | "show-modal"
+  | "close"
+  | "request-close"
+  | "show-popover"
+  | "hide-popover"
+  | "toggle-popover"
+  | `--${string}`;
+
+/**
+ * @see [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/button#popovertargetaction)
+ */
+export type PopoverTargetAction = "show" | "hide" | "toggle";
+
 export interface ButtonProperties extends ButtonLinkProperties {
   /**
    * @defaultValue `"submit"`
@@ -54,4 +74,9 @@ export interface ButtonProperties extends ButtonLinkProperties {
    * @defaultValue `"filled"`
    */
   variant: ButtonVariant;
+
+  command?: CommandAttribute;
+  commandfor?: string;
+  popovertarget?: string;
+  popovertargetaction?: PopoverTargetAction;
 }
