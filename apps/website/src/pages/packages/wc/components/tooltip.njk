@@ -1,0 +1,34 @@
+---
+layout: docs
+permalink: /packages/wc/components/tooltip.html
+page:
+  title: Tooltip
+  description:
+
+anchors:
+  x:
+    - left
+    - inner-left
+    - center
+    - inner-right
+    - right
+  y:
+   - above
+   - top
+   - center
+   - bottom
+   - below
+---
+
+<mwc-box style="--mwc-box-gap: 6rem" stacked>
+  {% for y in anchors.y %}
+    {% for x in anchors.x %}
+      <mwc-tooltip anchor-x="{{ x }}" anchor-y="{{ y }}" popover-behavior="manual" arrow>
+        <mwc-button slot="target">
+          {{ x }} - {{ y }}
+        </mwc-button>
+        <span slot="tooltip">Hello, world!</span>
+      </mwc-tooltip>
+    {% endfor %}
+  {% endfor %}
+</mwc-box>

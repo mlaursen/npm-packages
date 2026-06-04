@@ -1,0 +1,27 @@
+---
+layout: docs
+permalink: /packages/wc/components/icon-button.html
+page:
+  title: Icon Button
+---
+
+{% for variant in button.variants %}
+  {% for width in iconButton.widths %}
+    {% for shape in button.shapes %}
+      <mwc-typography text-transform="capitalize" variant="headline" size="medium">
+        <h2>{{ variant }} {{ width or "Equal" }} {{ shape }}</h2>
+      </mwc-typography>
+      <mwc-box>
+        {% for size in button.sizes %}
+          <mwc-icon-button size="{{ size }}" shape="{{ shape }}" variant="{{ variant }}" {{ ('width=' + width) if width }}>
+            <mwc-material-symbol>
+              favorite
+            </mwc-material-symbol>
+          </mwc-icon-button>
+        {% endfor %}
+      </mwc-box>
+    {% endfor %}
+  {% endfor %}
+  <mwc-divider>
+  </mwc-divider>
+{% endfor %}

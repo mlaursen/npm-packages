@@ -1,0 +1,122 @@
+---
+layout: docs
+permalink: /packages/wc/components/app-bar.html
+page:
+  title: App Bar
+
+scrollBehavior: sticky
+additional: true
+useTitle: false
+
+titles:
+  small: Title Large
+  medium: Headline medium
+  large: Display small
+
+titlePositions:
+  - start
+  - center
+---
+
+<mwc-box stacked align="stretch" background="inverse-primary">
+  {% for titlePosition in titlePositions %}
+    {% for size in appBar.sizes %}
+      <mwc-app-bar scroll-behavior="{{ scrollBehavior }}" size="{{ size }}" title-position="{{ titlePosition }}">
+        <mwc-icon-button slot="nav">
+          <mwc-material-symbol>
+            menu
+          </mwc-material-symbol>
+        </mwc-icon-button>
+        {% if useTitle %}
+          <mwc-app-bar-title slot="title" position="{{ titlePosition }}">
+            {{ titles[size] }}
+          </mwc-app-bar-title>
+        {% else %}
+          <div slot="title">{{ titles[size] }}</div>
+        {% endif %}
+        <mwc-icon-button slot="actions">
+          <mwc-material-symbol>
+            search
+          </mwc-material-symbol>
+        </mwc-icon-button>
+        <mwc-icon-button slot="actions">
+          <mwc-material-symbol>
+            calendar_month
+          </mwc-material-symbol>
+        </mwc-icon-button>
+      </mwc-app-bar>
+    {% endfor %}
+  {% endfor %}
+  {% if additional %}
+    {% for background in theme.backgrounds %}
+      <mwc-app-bar background="{{ background }}" scroll-behavior="{{ scrollBehavior }}">
+        <div slot="title">{{ background | capitalize }}</div>
+      </mwc-app-bar>
+    {% endfor %}
+  {% endif %}
+</mwc-box>
+<mwc-divider>
+</mwc-divider>
+<mwc-box stacked align="stretch" background="inverse-primary">
+  <mwc-app-bar scroll-behavior="static">
+    <mwc-icon-button slot="nav">
+      <mwc-material-symbol>
+        arrow_back
+      </mwc-material-symbol>
+    </mwc-icon-button>
+    {% if useTitle %}
+      <mwc-app-bar-title subtitle>
+        <div slot="subtitle">Refine your photo</div>
+        Image editor
+      </mwc-app-bar-title>
+    {% else %}
+      <div slot="title">Image editor</div>
+      <div slot="subtitle">Refine your photo</div>
+    {% endif %}
+    <mwc-icon-button slot="actions" size="small" width="wide" variant="filled">
+      <mwc-material-symbol>
+        check
+      </mwc-material-symbol>
+    </mwc-icon-button>
+  </mwc-app-bar>
+  <mwc-app-bar scroll-behavior="static" size="medium-subtitle">
+    <mwc-icon-button slot="nav">
+      <mwc-material-symbol>
+        arrow_back
+      </mwc-material-symbol>
+    </mwc-icon-button>
+    <mwc-app-bar-title size="medium" subtitle>
+      <div slot="subtitle">Record new fitness goals</div>
+      Daily activities
+    </mwc-app-bar-title>
+    <mwc-icon-button slot="actions" variant="filled">
+      <mwc-material-symbol>
+        add
+      </mwc-material-symbol>
+    </mwc-icon-button>
+  </mwc-app-bar>
+  <mwc-app-bar scroll-behavior="static" size="large-subtitle">
+    <mwc-icon-button slot="nav">
+      <mwc-material-symbol>
+        arrow_back
+      </mwc-material-symbol>
+    </mwc-icon-button>
+    <mwc-app-bar-title subtitle size="large">
+      <div slot="subtitle">Discover popular trails</div>
+      Top 10 hiking trails
+    </mwc-app-bar-title>
+    <mwc-tooltip slot="actions">
+      <mwc-icon-button slot="target" variant="tonal">
+        <mwc-material-symbol>
+          add
+        </mwc-material-symbol>
+      </mwc-icon-button>
+      <span slot="tooltip">Add new hike</span>
+    </mwc-tooltip>
+  </mwc-app-bar>
+  <mwc-app-bar scroll-behavior="static" background="primary" variant="custom">
+    <mwc-typography>
+      <div>Hello, world!</div>
+    </mwc-typography>
+  </mwc-app-bar>
+</mwc-box>

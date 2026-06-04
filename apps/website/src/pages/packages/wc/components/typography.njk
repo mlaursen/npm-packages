@@ -1,0 +1,38 @@
+---
+layout: docs
+permalink: /packages/wc/components/typography.html
+page:
+  title: Typography
+
+prominent:
+  - false
+  - true
+---
+
+<mwc-box stacked align="start">
+  {% for isProminent in prominent %}
+    {% for variant in typography.variants %}
+      {% for size in typography.sizes %}
+        <mwc-typography size="{{ size }}"
+                        variant="{{ variant }}"
+                        {{ "prominent" if isProminent }}>
+          {% set tag %}
+            {%- if variant == "display" -%}
+              {{- "h2" -}}
+            {%- elseif variant == "headline" -%}
+              {{- "h3" -}}
+            {%- elseif variant == "title" -%}
+              {{- "h4" -}}
+            {%- else -%}
+              {{- "div" -}}
+            {% endif %}
+          {% endset %}
+          <{{ tag }}>
+          {{ variant | capitalize }} {{ size | capitalize }}
+          {% if isProminent %}Prominent{% endif %}
+          </{{ tag }}>
+        </mwc-typography>
+      {% endfor %}
+    {% endfor %}
+  {% endfor %}
+</mwc-box>

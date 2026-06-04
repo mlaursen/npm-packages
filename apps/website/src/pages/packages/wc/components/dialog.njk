@@ -1,0 +1,58 @@
+---
+layout: docs
+permalink: /packages/wc/components/dialog.html
+page:
+  title: Dialog
+---
+
+<mwc-box stacked align="stretch">
+  <div>
+    <mwc-button command="show-modal" commandfor="dialog-1">
+      Show 1
+    </mwc-button>
+    <mwc-button command="show-modal" commandfor="dialog-2">
+      Show 2
+    </mwc-button>
+    <mwc-button command="show-modal" commandfor="dialog-3">
+      Show 3
+    </mwc-button>
+  </div>
+  <mwc-dialog id="dialog-1">
+    <h2 slot="title">Title</h2>
+    <div slot="content">Hello, world!</div>
+    <mwc-text-button slot="actions" command="close" commandfor="dialog-1">
+      Cancel
+    </mwc-text-button>
+    <mwc-text-button slot="actions" command="close" commandfor="dialog-1" autofocus>
+      Ok
+    </mwc-text-button>
+  </mwc-dialog>
+  <mwc-dialog id="dialog-2" type="alert">
+    <h2 slot="title">Alert dialog</h2>
+    <p slot="content">
+      This is a description of the alert. The alertdialog role is used to notify users of urgent information that demands the user's immediate attention.
+    </p>
+    <mwc-text-button slot="actions" command="close" commandfor="dialog-2">
+      Ok
+    </mwc-text-button>
+  </mwc-dialog>
+  <mwc-dialog id="dialog-3" width="small">
+    <mwc-material-symbol slot="icon">
+      delete
+    </mwc-material-symbol>
+    <h2 slot="title">Permanently delete?</h2>
+    <p slot="content">
+      Deleting the selected photos will also remove them from all synced devices.
+    </p>
+    <mwc-text-button slot="actions" command="close" commandfor="dialog-3">
+      Delete
+    </mwc-text-button>
+    <mwc-tonal-button slot="actions" command="close" commandfor="dialog-3" autofocus>
+      Cancel
+    </mwc-tonal-button>
+  </mwc-dialog>
+  <mwc-popover-dialog id="dialog-4" popover-behavior="manual">
+    Show 4
+    <p slot="content">This is the main content!</p>
+  </mwc-popover-dialog>
+</mwc-box>

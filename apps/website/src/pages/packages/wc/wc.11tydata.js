@@ -19,6 +19,47 @@ export const defaultExtraSizes = [
   "extra-large",
 ];
 
+/** @type {import("@mlaursen/wc").BasePaletteTheme[]} */
+const baseThemes = ["primary", "secondary", "tertiary", "error"];
+export const theme = {
+  baseThemes,
+
+  /** @type {import("@mlaursen/wc").PaletteBackgroundColor[]} */
+  backgrounds: [
+    "background",
+    "surface",
+    "surface-variant",
+    "surface-dim",
+    "surface-bright",
+    "surface-container-lowest",
+    "surface-container-low",
+    "surface-container",
+    "surface-container-high",
+    "surface-container-highest",
+    ...baseThemes.flatMap((name) => [name, `${name}-container`]),
+  ],
+};
+
+export const appBar = {
+  /** @type {import("@mlaursen/wc").AppBarSize[]} */
+  sizes: defaultSizes,
+
+  /** @type {import("@mlaursen/wc").AppBarVariant[]} */
+  variants: ["flexible"],
+
+  /** @type {import("@mlaursen/wc").AppBarPosition[]} */
+  positions: ["top", "bottom"],
+
+  /** @type {import("@mlaursen/wc").AppBarScrollBehavior[]} */
+  scrollBehavior: [
+    "static",
+    "sticky",
+    "fixed",
+    "sticky-upwards",
+    "fixed-upwards",
+  ],
+};
+
 export const button = {
   /** @type {import("@mlaursen/wc").ButtonSize[]} */
   sizes: defaultExtraSizes,
@@ -35,6 +76,14 @@ export const button = {
 export const iconButton = {
   /** @type {(import("@mlaursen/wc").IconButtonWidth | null)[]} **/
   widths: ["narrow", null, "wide"],
+};
+
+export const typography = {
+  /** @type {import("@mlaursen/wc").TypographySize[]} */
+  sizes: defaultSizes.toReversed(),
+
+  /** @type {import("@mlaursen/wc").TypographyVariant[]} */
+  variants: ["display", "headline", "title", "label", "body"],
 };
 
 export const eleventyComputed = {
