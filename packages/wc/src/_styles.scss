@@ -12,6 +12,10 @@
 @use "box";
 @use "button";
 @use "icon-button";
+@use "dialog";
+@use "dialog-actions";
+@use "dialog-content";
+@use "dialog-header";
 @use "tooltip";
 
 @mixin styles {
@@ -32,5 +36,9 @@
   @include button.styles;
   @include icon-button.styles;
   @include link.styles;
+  @include dialog.styles;
+  @include dialog-actions.styles;
+  @include dialog-content.styles;
+  @include dialog-header.styles;
   @include tooltip.styles;
 }

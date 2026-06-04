@@ -1,0 +1,61 @@
+@use "sass:map";
+
+@use "../utils";
+
+$-tokens-registered: false;
+$-tokens: (
+  header: (
+    padding-h: "dialog.padding-h",
+    padding-v: "dialog.padding-v",
+  ),
+);
+
+$-configure-tokens: map.keys($-tokens);
+
+$-base-styles: (
+  "box.padding-v": "dialog.header.padding-v",
+  "box.padding-h": "dialog.header.padding-h",
+);
+$-icon-styles: (
+  color: "palette.secondary",
+);
+$-stacked-styles: (
+  text-align: center,
+);
+
+@mixin configure() {
+  @if not $-tokens-registered {
+    $-tokens-registered: true !global;
+    @include utils.register-tokens($tokens: $-tokens, $prefix: "dialog");
+  }
+}
+
+@mixin configure-global($overrides: null) {
+  $overrides: utils.get-config-map(
+    dialog-content,
+    $overrides,
+    $-configure-tokens
+  );
+  @include configure();
+}
+
+@mixin css-styles {
+  $styles: (
+    "&dialog-header": $-base-styles,
+  );
+  @include utils.css-styles($styles);
+}
+
+@mixin host-styles {
+  $styles: (
+    ":host": $-base-styles,
+    ":host([stacked])": $-stacked-styles,
+    "::slotted([slot=icon])": $-icon-styles,
+  );
+  @include utils.host-styles($styles);
+}
+
+@mixin styles {
+  @include css-styles;
+  @include host-styles;
+}

@@ -36,7 +36,7 @@ export class Box extends BaseBox implements BoxProperties {
   @property({ type: Boolean, attribute: "full-width" })
   fullWidth?: boolean;
 
-  @property({ type: Boolean })
+  @property({ type: Boolean, reflect: true })
   stacked?: boolean;
 
   @property({ type: Boolean })

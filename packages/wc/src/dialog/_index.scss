@@ -1,0 +1,115 @@
+@use "sass:map";
+
+@use "../utils";
+
+$-tokens-registered: false;
+$-tokens: (
+  background: "palette.surface-container-high",
+  border-radius: "shape.corner.extra-large",
+  scrim: (
+    background: "palette.scrim",
+    opacity: 0.32,
+  ),
+  elevation: 3,
+  max-width: 35rem,
+  min-width: 17.5rem,
+  gap: "spacing.large",
+  padding-v: "spacing.extra-large",
+  padding-h: "spacing.extra-large",
+  width: fit-content,
+  z-index: "z-index.modal",
+
+  extra-small: (
+    width: "dialog.min-width",
+  ),
+  small: (
+    width: 20rem,
+  ),
+  medium: (
+    width: 28rem,
+  ),
+  large: (
+    width: 32rem,
+  ),
+  extra-large: (
+    width: "dialog.max-width",
+  ),
+);
+
+$-configure-tokens: map.keys($-tokens);
+
+$-base-styles: (
+  "elevation.level": "dialog.elevation",
+  background: "dialog.background",
+  border: 0,
+  border-radius: "dialog.border-radius",
+  min-width: "dialog.min-width",
+  max-width: "dialog.max-width",
+  outline: 0,
+  padding: 0,
+  width: "dialog.width",
+  // this makes it so the content doesn't readjust once the open/close
+  // animations complete
+  will-change: transform,
+  z-index: "dialog.z-index",
+
+  "&::before": utils.pseudo-element(),
+);
+$-backdrop-styles: (
+  background: "dialog.scrim.background",
+  opacity: "dialog.scrim.opacity",
+);
+$-header-and-content-styles: (
+  "dialog.header.padding-v": '"dialog.padding-v" 0',
+  "dialog.content.padding-v": '"spacing.large" "dialog.padding-v"',
+);
+$-content-and-actions-styles: (
+  "dialog.actions.padding-v": '0 "dialog.padding-v"',
+);
+
+$-extra-small-width-styles: utils.remap-variants(dialog, extra-small, width);
+$-small-width-styles: utils.remap-variants(dialog, small, width);
+$-medium-width-styles: utils.remap-variants(dialog, medium, width);
+$-large-width-styles: utils.remap-variants(dialog, large, width);
+$-extra-large-width-styles: utils.remap-variants(dialog, extra-large, width);
+
+@mixin configure() {
+  @if not $-tokens-registered {
+    $-tokens-registered: true !global;
+    @include utils.register-tokens($tokens: $-tokens, $prefix: "dialog");
+  }
+}
+
+@mixin configure-global($overrides: null) {
+  $overrides: utils.get-config-map(dialog, $overrides, $-configure-tokens);
+  @include configure();
+}
+
+@mixin css-styles {
+  $styles: (
+    "&dialog": $-base-styles,
+    "&dialog::backdrop": $-backdrop-styles,
+  );
+  @include utils.css-styles($styles);
+}
+
+@mixin host-styles {
+  $styles: (
+    "dialog": $-base-styles,
+    "dialog::backdrop": $-backdrop-styles,
+    ":host([width=extra-small])": $-extra-small-width-styles,
+    ":host([width=small])": $-small-width-styles,
+    ":host([width=medium])": $-medium-width-styles,
+    ":host([width=large])": $-large-width-styles,
+    ":host([width=extra-large])": $-extra-large-width-styles,
+    ".header": $-header-and-content-styles,
+    ".actions": $-content-and-actions-styles,
+  );
+
+  @include utils.host-styles($styles);
+}
+
+@mixin styles {
+  @include css-styles;
+  @include host-styles;
+}

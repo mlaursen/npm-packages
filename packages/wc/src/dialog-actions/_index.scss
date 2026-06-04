@@ -1,0 +1,53 @@
+@use "sass:map";
+
+@use "../utils";
+
+$-tokens-registered: false;
+$-tokens: (
+  actions: (
+    gap: "spacing.small",
+    padding-h: "dialog.padding-h",
+    padding-v: "dialog.padding-v",
+  ),
+);
+
+$-configure-tokens: map.keys($-tokens);
+
+$-base-styles: (
+  "box.gap": "dialog.actions.gap",
+  "box.padding-v": "dialog.actions.padding-v",
+  "box.padding-h": "dialog.actions.padding-h",
+);
+
+@mixin configure() {
+  @if not $-tokens-registered {
+    $-tokens-registered: true !global;
+    @include utils.register-tokens($tokens: $-tokens, $prefix: "dialog");
+  }
+}
+
+@mixin configure-global($overrides: null) {
+  $overrides: utils.get-config-map(
+    dialog-actions,
+    $overrides,
+    $-configure-tokens
+  );
+  @include configure();
+}
+
+@mixin css-styles {
+  $styles: ();
+  @include utils.css-styles($styles);
+}
+
+@mixin host-styles {
+  $styles: (
+    ":host": $-base-styles,
+  );
+  @include utils.host-styles($styles);
+}
+
+@mixin styles {
+  @include css-styles;
+  @include host-styles;
+}

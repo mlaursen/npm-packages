@@ -232,7 +232,9 @@ $-keyframes: (
     focused: $-focusable-focused-styles,
     inward: $-focusable-inward-styles,
     outward: $-focusable-outward-styles,
-    keyframes: $-keyframes
+    keyframes: $-keyframes,
+    inward-keyframes: map.remove($-keyframes, "outward-grow", "outward-shrink"),
+    outward-keyframes: map.remove($-keyframes, "inward-grow", "inward-shrink")
   );
 }
 

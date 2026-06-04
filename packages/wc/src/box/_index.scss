@@ -63,7 +63,8 @@ $-styles: (
     column-gap: "box.gap-h",
   ),
   padded: (
-    padding: '"box.padding-v" "box.padding-h"',
+    padding-block: "box.padding-v",
+    padding-inline: "box.padding-h",
   ),
   flex-wrap: (
     flex-wrap: wrap,

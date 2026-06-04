@@ -114,6 +114,8 @@ export class Button extends BaseButton implements ButtonProperties {
   }
 
   protected override willUpdate(changed: PropertyValues): void {
+    super.willUpdate(changed);
+
     if (changed.has("value") && this.value && this.internals) {
       this.internals.setFormValue(this.value);
     }
