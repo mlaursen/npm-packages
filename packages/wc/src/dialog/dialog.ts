@@ -10,7 +10,12 @@ import { classMap } from "lit/directives/class-map.js";
 import { ifDefined } from "lit/directives/if-defined.js";
 
 import { FocusTrapMixin } from "../focus/focus-trap-mixin.js";
-import { type GetAnimationMap } from "../transition/types.js";
+import { AnimateMixin } from "../transition/animate-mixin.js";
+import {
+  type AnimateOptions,
+  type AnimationList,
+  type GetAnimationMap,
+} from "../transition/types.js";
 import { isSlotted } from "../utils/slots.js";
 import {
   DEFAULT_DIALOG_CLOSE_ANIMATION,
@@ -23,12 +28,11 @@ import {
   type DialogProperties,
   type DialogType,
   type DialogWidth,
-  type ShowDialogOptions,
 } from "./types.js";
 
 type SlotStateName = "_hasHeader" | "_hasTitle" | "_hasContent" | "_hasActions";
 
-const BaseDialog = FocusTrapMixin(LitElement);
+const BaseDialog = AnimateMixin(FocusTrapMixin(LitElement));
 
 @customElement("mwc-dialog")
 export class Dialog extends BaseDialog implements DialogProperties {
@@ -82,9 +86,7 @@ export class Dialog extends BaseDialog implements DialogProperties {
   @state()
   private _hasActions = false;
 
-  #opening = false;
-  #connectedResolvers = Promise.withResolvers<undefined>();
-  #animationController?: AbortController;
+  #prevReturnValue = "";
 
   getOpenAnimation: GetAnimationMap<AnimateDialogElementMap> = () =>
     DEFAULT_DIALOG_OPEN_ANIMATION;
@@ -93,20 +95,6 @@ export class Dialog extends BaseDialog implements DialogProperties {
 
   override getFallbackFocus = (): HTMLElement | null | undefined =>
     this._dialog;
-
-  override connectedCallback(): void {
-    super.connectedCallback();
-
-    // might need to add form stuffs to handle submit
-    this.#connectedResolvers.resolve(void 0);
-  }
-
-  override disconnectedCallback(): void {
-    super.disconnectedCallback();
-
-    this.#connectedResolvers = Promise.withResolvers();
-    this.#animationController?.abort();
-  }
 
   protected override willUpdate(changed: PropertyValues): void {
     super.willUpdate(changed);
@@ -167,123 +155,64 @@ export class Dialog extends BaseDialog implements DialogProperties {
     `;
   }
 
-  async show(options: ShowDialogOptions = {}): Promise<void> {
-    const { animate } = options;
-    this.#opening = true;
+  override _isOpenable(): boolean {
+    return !!this._dialog && !this._dialog.open;
+  }
 
-    await this.#connectedResolvers.promise;
-    await this.updateComplete;
-    const dialog = this._dialog;
+  override _isClosable(): boolean {
+    return !!this._dialog && this._dialog.open;
+  }
 
-    if (!this.#opening || !dialog || dialog.open) {
-      this.#opening = false;
-      return;
-    }
+  override _showElement(): void {
+    this._dialog?.showModal();
 
-    const canceled = !this.dispatchEvent(
-      new Event("open", { cancelable: true }),
-    );
-    if (canceled) {
-      this.#opening = false;
-      return;
-    }
-
-    dialog.showModal();
     this.open = true;
     this._content?.scrollTo({ top: 0 });
     this.querySelector<HTMLElement>("[autofocus]")?.focus();
-
-    await this.#animate(this.#getAnimations(animate, true));
-    this.dispatchEvent(new Event("opened"));
-    this.#opening = false;
   }
 
-  async close(options: CloseDialogOptions = {}): Promise<void> {
-    const { animate, returnValue = "" } = options;
-
-    this.#opening = false;
-    if (!this.isConnected) {
-      this.open = false;
-      return;
-    }
-
-    await this.updateComplete;
-    const dialog = this._dialog;
-    if (this.#opening || !dialog || !dialog.open) {
-      this.open = false;
-      return;
-    }
-
-    const prevReturnValue = this.returnValue;
-    this.returnValue = returnValue;
-    const canceled = !this.dispatchEvent(
-      new Event("close", { cancelable: true }),
-    );
-    if (canceled) {
-      this.returnValue = prevReturnValue;
-      return;
-    }
-
-    await this.#animate(this.#getAnimations(animate, false));
-    dialog.close(options.returnValue);
+  override _closeElement(): void {
+    this._dialog?.close();
     this.open = false;
-    this.dispatchEvent(new Event("closed"));
   }
 
-  showModal(): void {
-    this.show();
+  override _onNotClosable(): void {
+    this.open = false;
   }
 
-  #getAnimations(
-    animate: ShowDialogOptions["animate"] = true,
-    enter: boolean,
-  ): Readonly<AnimateDialogElementMap> {
-    const getDefault = enter ? this.getOpenAnimation : this.getCloseAnimation;
-    if (typeof animate === "boolean") {
-      if (animate) {
-        return getDefault();
-      }
+  override _onNotConnectedClose(): void {
+    this.open = false;
+  }
 
-      return {};
+  override _getAnimations(options: AnimateOptions): AnimationList {
+    const { animate = true, opening } = options;
+    if (!animate) {
+      return [];
     }
 
-    return animate();
-  }
+    const getDefault = opening ? this.getOpenAnimation : this.getCloseAnimation;
+    const { dialog, actions, content, header } =
+      animate === true ? getDefault() : animate();
 
-  async #animate(options: Readonly<AnimateDialogElementMap>): Promise<void> {
-    this.#animationController?.abort();
-    this.#animationController = new AbortController();
-
-    const { dialog, header, content, actions } = options;
-    const animations = [
+    return [
       [this._dialog, dialog],
       [(this._hasHeader || this._hasTitle) && this._header, header],
       [this._hasContent && this._content, content],
       [this._hasActions && this._actions, actions],
-    ] as const;
+    ];
+  }
 
-    const promises: Promise<Animation>[] = [];
-    for (const [elementOrElements, animationArgs] of animations) {
-      if (!animationArgs?.length || !elementOrElements) {
-        continue;
-      }
+  override _onBeforeClose(options: CloseDialogOptions): void {
+    this.#prevReturnValue = this.returnValue;
+    this.returnValue = options.returnValue ?? "";
+  }
 
-      const elements = Array.isArray(elementOrElements)
-        ? elementOrElements
-        : [elementOrElements];
-      for (const element of elements) {
-        for (const args of animationArgs) {
-          const animation = element.animate(...args);
-          this.#animationController.signal.addEventListener("abort", () => {
-            animation.cancel();
-          });
+  override _onCloseCanceled(): void {
+    this.returnValue = this.#prevReturnValue;
+  }
 
-          promises.push(animation.finished.catch(() => animation));
-        }
-      }
-    }
-
-    await Promise.all(promises);
+  showModal(): void {
+    this.show();
   }
 
   #handleClick(event: MouseEvent): void {

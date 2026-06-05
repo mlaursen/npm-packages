@@ -2,7 +2,12 @@ import { type CSSResultArray, type TemplateResult, html } from "lit";
 import { property, query } from "lit/decorators.js";
 import { ifDefined } from "lit/directives/if-defined.js";
 
-import type { GetAnimationMap } from "../transition/types.js";
+import { AnimateMixin } from "../transition/animate-mixin.js";
+import type {
+  AnimateOptions,
+  AnimationList,
+  GetAnimationMap,
+} from "../transition/types.js";
 import {
   type StylableLitElement,
   type StyledLitElementWithProperties,
@@ -14,7 +19,6 @@ import {
 import popoverStyles from "./popover-styles.js";
 import {
   type AnimatePopoverElementMap,
-  type BasePopoverAnimateOptions,
   type HorizontalPosition,
   type PopoverBehavior,
   type PopoverInitiator,
@@ -38,7 +42,7 @@ export function PopoverMixin<T extends StylableLitElement>(
     styles = [popoverStyles, ...baseStyles];
   }
 
-  class PopoverElement extends Base implements PopoverProperties {
+  class PopoverElement extends AnimateMixin(Base) implements PopoverProperties {
     static override styles = styles;
 
     @property({ reflect: true, attribute: "anchor-x" })
@@ -81,9 +85,6 @@ export function PopoverMixin<T extends StylableLitElement>(
 
     #timeout: ReturnType<typeof globalThis.setTimeout> | undefined;
     #initiator: PopoverInitiator | null = null;
-    #opening = false;
-    #connectedResolvers = Promise.withResolvers<undefined>();
-    #animationController?: AbortController;
 
     protected override firstUpdated(): void {
       this._popover?.addEventListener("toggle", this.#handleToggle);
@@ -96,7 +97,6 @@ export function PopoverMixin<T extends StylableLitElement>(
       this.addEventListener("mouseleave", this.#handleMouseLeave);
       this.addEventListener("focus", this.#handleFocus, true);
       this.addEventListener("blur", this.#handleBlur, true);
-      this.#connectedResolvers.resolve(void 0);
     }
 
     override disconnectedCallback(): void {
@@ -109,8 +109,6 @@ export function PopoverMixin<T extends StylableLitElement>(
 
       this._popover?.removeEventListener("toggle", this.#handleToggle);
       this.#clearTimeout();
-      this.#connectedResolvers = Promise.withResolvers();
-      this.#animationController?.abort();
     }
 
     renderPopoverTarget(options: RenderPopoverTargetOptions): TemplateResult {
@@ -123,112 +121,37 @@ export function PopoverMixin<T extends StylableLitElement>(
       `;
     }
 
-    override async showPopover(
-      options?: Readonly<BasePopoverAnimateOptions>,
-    ): Promise<void> {
-      this.#opening = true;
-
-      await this.#connectedResolvers.promise;
-      await this.updateComplete;
-
-      const popover = this._popover;
-      if (!this.#opening || !popover) {
-        this.#opening = false;
-        return;
+    override _getAnimations(options: AnimateOptions): AnimationList {
+      const { animate = true, opening } = options;
+      if (!animate) {
+        return [];
       }
 
-      const canceled = !this.dispatchEvent(
-        new Event("show-popover", { cancelable: true }),
-      );
-      if (canceled) {
-        this.#opening = false;
-        return;
-      }
-
-      popover.showPopover();
-      await this.#animate(this.#getAnimations(options?.animate, true));
-      this.dispatchEvent(new Event("popover-open"));
-      this.#opening = false;
-    }
-
-    override async hidePopover(
-      options?: Readonly<BasePopoverAnimateOptions>,
-    ): Promise<void> {
-      this.#opening = false;
-      if (!this.isConnected) {
-        return;
-      }
-
-      await this.updateComplete;
-      const popover = this._popover;
-      if (!popover) {
-        return;
-      }
-
-      const canceled = !this.dispatchEvent(
-        new Event("hide-popover", { cancelable: true }),
-      );
-      if (canceled) {
-        return;
-      }
-
-      await this.#animate(this.#getAnimations(options?.animate, false));
-      popover.hidePopover();
-      this.dispatchEvent(new Event("popover-closed"));
-    }
-
-    async #animate(
-      options: Readonly<AnimatePopoverElementMap> = {},
-    ): Promise<void> {
-      this.#animationController?.abort();
-      this.#animationController = new AbortController();
-
-      const { popover, target } = options;
-      const animations = [
-        [this._popover, popover],
-        [this._target?.assignedElements(), target],
-      ] as const;
-
-      const promises: Promise<Animation>[] = [];
-      for (const [elementOrElements, animationArgs] of animations) {
-        if (!animationArgs?.length || !elementOrElements) {
-          continue;
-        }
-
-        const elements = Array.isArray(elementOrElements)
-          ? elementOrElements
-          : [elementOrElements];
-        for (const element of elements) {
-          for (const args of animationArgs) {
-            const animation = element.animate(...args);
-            this.#animationController.signal.addEventListener("abort", () => {
-              animation.cancel();
-            });
-
-            promises.push(animation.finished.catch(() => animation));
-          }
-        }
-      }
-
-      await Promise.all(promises);
-    }
-
-    #getAnimations(
-      animate: BasePopoverAnimateOptions["animate"] = true,
-      enter: boolean,
-    ): Readonly<AnimatePopoverElementMap> {
-      const getDefault = enter
+      const getDefault = opening
         ? this.getShowPopoverAnimation
         : this.getHidePopoverAnimation;
-      if (typeof animate === "boolean") {
-        if (animate) {
-          return getDefault();
-        }
+      const { popover, target } = animate === true ? getDefault() : animate();
 
-        return {};
-      }
+      return [
+        [this._popover, popover],
+        [this._target, target],
+      ];
+    }
 
-      return animate();
+    override _showElement(): void {
+      this._popover?.showPopover();
+    }
+
+    override _closeElement(): void {
+      this._popover?.hidePopover();
+    }
+
+    override showPopover(): void {
+      this.show();
+    }
+
+    override hidePopover(): void {
+      this.close();
     }
 
     #handleToggle = (event: ToggleEvent): void => {

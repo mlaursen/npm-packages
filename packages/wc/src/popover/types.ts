@@ -3,6 +3,7 @@ import { type TemplateResult } from "lit";
 
 import {
   type AnimateElementMap,
+  type AnimatedElementProperties,
   type BaseAnimateOptions,
   type GetAnimationMap,
 } from "../transition/types.js";
@@ -78,10 +79,7 @@ export interface RenderPopoverTargetOptions {
 
 export type AnimatePopoverElementMap = AnimateElementMap<"popover" | "target">;
 
-export type BasePopoverAnimateOptions =
-  BaseAnimateOptions<AnimatePopoverElementMap>;
-
-export interface PopoverProperties {
+export interface PopoverProperties extends AnimatedElementProperties {
   /**
    * @see {@link HorizontalPosition}
    * @defaultValue `"center"`
@@ -156,9 +154,6 @@ export interface PopoverProperties {
    * ```
    */
   renderPopoverTarget(options?: RenderPopoverTargetOptions): TemplateResult;
-
-  showPopover: (options?: Readonly<BasePopoverAnimateOptions>) => Promise<void>;
-  hidePopover: (options?: Readonly<BasePopoverAnimateOptions>) => Promise<void>;
 
   getShowPopoverAnimation: GetAnimationMap<AnimatePopoverElementMap>;
   getHidePopoverAnimation: GetAnimationMap<AnimatePopoverElementMap>;
