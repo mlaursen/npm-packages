@@ -227,9 +227,9 @@ $-vertical-anchor-styles: (
 @mixin host-styles {
   $styles: (
     ":host": $-host-styles,
-    "::slotted([slot=target])": $-target-styles,
+    "::slotted([slot=popover-target])": $-target-styles,
     "#popover": $-popover-styles,
-    "#content": $-popover-content-styles,
+    "#popover-content": $-popover-content-styles,
   );
   @each $anchor, $anchor-styles in $-horizontal-anchor-styles {
     $styles: map.set(

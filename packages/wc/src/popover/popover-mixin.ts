@@ -114,9 +114,9 @@ export function PopoverMixin<T extends StylableLitElement>(
     renderPopoverTarget(options: RenderPopoverTargetOptions): TemplateResult {
       const { target, content } = options;
       return html`
-        <slot name="target">${target}</slot>
+        <slot name="popover-target">${target}</slot>
         <div id="popover" popover=${ifDefined(this.popoverBehavior)}>
-          <div id="content">${content}</div>
+          <div id="popover-content">${content}</div>
         </div>
       `;
     }

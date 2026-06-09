@@ -13,7 +13,7 @@ const BaseTooltip = MarginMixin(PopoverMixin(LitElement));
  * @example Simple Example
  * ```ts
  * <mwc-tooltip>
- *   <mwc-button slot="target">Button</mwc-button>
+ *   <mwc-button slot="popover-target">Button</mwc-button>
  *   <span slot="tooltip">I am a tooltip!</span>
  * </mwc-tooltip>
  * ```

@@ -51,7 +51,7 @@ $-tooltip-styles: (
 @mixin host-styles {
   $styles: (
     ":host": $-base-styles,
-    "#content": $-tooltip-styles,
+    "#popover-content": $-tooltip-styles,
   );
   @include utils.map-to-styles($styles);
 }
