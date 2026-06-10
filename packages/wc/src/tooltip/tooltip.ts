@@ -3,7 +3,7 @@ import { customElement } from "lit/decorators.js";
 
 import { MarginMixin } from "../margin/margin-mixin.js";
 import { PopoverMixin } from "../popover/popover-mixin.js";
-import { type PopoverBehavior } from "../popover/types.js";
+import { type PopoverInitiator, type PopoverType } from "../popover/types.js";
 import styles from "./tooltip-styles.js";
 import { type TooltipProperties } from "./types.js";
 
@@ -22,7 +22,8 @@ const BaseTooltip = MarginMixin(PopoverMixin(LitElement));
 export class Tooltip extends BaseTooltip implements TooltipProperties {
   static override styles = [...BaseTooltip.styles, styles];
 
-  override popoverBehavior: PopoverBehavior = "hint";
+  override popoverType: PopoverType = "hint";
+  override popoverInitiator: PopoverInitiator = "no-click";
 
   protected override render(): TemplateResult {
     return this.renderPopoverTarget({

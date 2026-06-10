@@ -232,18 +232,10 @@ $-vertical-anchor-styles: (
     "#popover-content": $-popover-content-styles,
   );
   @each $anchor, $anchor-styles in $-horizontal-anchor-styles {
-    $styles: map.set(
-      $styles,
-      ":host([anchor-x=#{$anchor}]) #popover",
-      $anchor-styles
-    );
+    $styles: map.set($styles, ":host([anchor-x=#{$anchor}])", $anchor-styles);
   }
   @each $anchor, $anchor-styles in $-vertical-anchor-styles {
-    $styles: map.set(
-      $styles,
-      ":host([anchor-y=#{$anchor}]) #popover",
-      $anchor-styles
-    );
+    $styles: map.set($styles, ":host([anchor-y=#{$anchor}])", $anchor-styles);
   }
 
   @include utils.host-styles($styles);

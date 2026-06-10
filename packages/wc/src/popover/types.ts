@@ -1,10 +1,8 @@
-import { type LiteralStringUnion } from "@mlaursen/utils";
 import { type TemplateResult } from "lit";
 
 import {
   type AnimateElementMap,
   type AnimatedElementProperties,
-  type BaseAnimateOptions,
   type GetAnimationMap,
 } from "../transition/types.js";
 
@@ -33,7 +31,7 @@ import {
  * Bottom:
  * - the container bottom is in-line with the bottom of the element
  */
-export type VerticalPosition = "above" | "below" | "center" | "top" | "bottom";
+export type VerticalAnchor = "above" | "below" | "center" | "top" | "bottom";
 
 /**
  *
@@ -62,15 +60,23 @@ export type VerticalPosition = "above" | "below" | "center" | "top" | "bottom";
  * Inner Right:
  * - the container's right is in-line with the right of the element
  */
-export type HorizontalPosition =
+export type HorizontalAnchor =
   | "left"
   | "right"
   | "center"
   | "inner-left"
   | "inner-right";
 
-export type PopoverBehavior = LiteralStringUnion<"auto" | "hint" | "manual">;
-export type PopoverInitiator = "focus" | "hover" | "click" | "force";
+export type PopoverType = "auto" | "hint" | "manual" | (string & {});
+export type PopoverInitiator =
+  | "all"
+  | "focus"
+  | "hover"
+  | "click"
+  | "no-click"
+  | "no-focus"
+  | "no-hover";
+export type PopoverInitiatorAction = "focus" | "hover" | "click" | "force";
 
 export interface RenderPopoverTargetOptions {
   target?: TemplateResult;
@@ -81,23 +87,28 @@ export type AnimatePopoverElementMap = AnimateElementMap<"popover" | "target">;
 
 export interface PopoverProperties extends AnimatedElementProperties {
   /**
-   * @see {@link HorizontalPosition}
+   * @see {@link HorizontalAnchor}
    * @defaultValue `"center"`
    */
-  anchorX: HorizontalPosition;
+  anchorX: HorizontalAnchor;
 
   /**
-   * @see {@link VerticalPosition}
+   * @see {@link VerticalAnchor}
    * @defaultValue `"below"`
    */
-  anchorY: VerticalPosition;
+  anchorY: VerticalAnchor;
 
   /**
    * The popover will only be enabled if this property is defined.
    *
    * @see {@link HTMLElement.popover}
    */
-  popoverBehavior?: PopoverBehavior;
+  popoverType?: PopoverType;
+
+  /**
+   * @defaultValue `"all"`
+   */
+  popoverInitiator: PopoverInitiator;
 
   /**
    * An optional override for how long (in ms) to focus or hover the popover
@@ -129,9 +140,6 @@ export interface PopoverProperties extends AnimatedElementProperties {
    * before showing the popover.
    */
   focusDelay?: number;
-
-  disableFocus?: boolean;
-  disableHover?: boolean;
 
   /**
    * Convenience query element for the popover itself. Used for the

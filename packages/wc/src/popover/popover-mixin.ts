@@ -19,12 +19,13 @@ import {
 import popoverStyles from "./popover-styles.js";
 import {
   type AnimatePopoverElementMap,
-  type HorizontalPosition,
-  type PopoverBehavior,
+  type HorizontalAnchor,
   type PopoverInitiator,
+  type PopoverInitiatorAction,
   type PopoverProperties,
+  type PopoverType,
   type RenderPopoverTargetOptions,
-  type VerticalPosition,
+  type VerticalAnchor,
 } from "./types.js";
 
 /**
@@ -46,13 +47,16 @@ export function PopoverMixin<T extends StylableLitElement>(
     static override styles = styles;
 
     @property({ reflect: true, attribute: "anchor-x" })
-    anchorX: HorizontalPosition = "center";
+    anchorX: HorizontalAnchor = "center";
 
     @property({ reflect: true, attribute: "anchor-y" })
-    anchorY: VerticalPosition = "below";
+    anchorY: VerticalAnchor = "below";
 
-    @property({ reflect: true, attribute: "popover-behavior" })
-    popoverBehavior?: PopoverBehavior;
+    @property({ reflect: true, attribute: "popover-type" })
+    popoverType?: PopoverType;
+
+    @property({ reflect: true, attribute: "popover-initiator" })
+    popoverInitiator: PopoverInitiator = "all";
 
     @property({ type: Number, attribute: "show-delay" })
     showDelay?: number;
@@ -66,12 +70,6 @@ export function PopoverMixin<T extends StylableLitElement>(
     @property({ type: Number, attribute: "focus-delay" })
     focusDelay?: number;
 
-    @property({ type: Boolean, attribute: "disable-focus" })
-    disableFocus?: boolean;
-
-    @property({ type: Boolean, attribute: "disable-hover" })
-    disableHover?: boolean;
-
     @query("#popover")
     _popover?: HTMLSpanElement;
 
@@ -84,7 +82,7 @@ export function PopoverMixin<T extends StylableLitElement>(
       DEFAULT_HIDE_POPOVER_ANIMATION;
 
     #timeout: ReturnType<typeof globalThis.setTimeout> | undefined;
-    #initiator: PopoverInitiator | null = null;
+    #initiator: PopoverInitiatorAction | null = null;
 
     protected override firstUpdated(): void {
       this._popover?.addEventListener("toggle", this.#handleToggle);
@@ -115,7 +113,7 @@ export function PopoverMixin<T extends StylableLitElement>(
       const { target, content } = options;
       return html`
         <slot name="popover-target">${target}</slot>
-        <div id="popover" popover=${ifDefined(this.popoverBehavior)}>
+        <div id="popover" popover=${ifDefined(this.popoverType)}>
           <div id="popover-content">${content}</div>
         </div>
       `;
@@ -165,8 +163,36 @@ export function PopoverMixin<T extends StylableLitElement>(
       globalThis.clearTimeout(this.#timeout);
     }
 
-    #showPopover(initiator: PopoverInitiator): void {
-      if (!this.popoverBehavior) {
+    #isShowPrevented(
+      initiator: Exclude<PopoverInitiatorAction, "force">,
+    ): boolean {
+      if (this.#initiator) {
+        return true;
+      }
+
+      switch (this.popoverInitiator) {
+        case "all":
+          return false;
+        case "focus":
+          return initiator !== "focus";
+        case "hover":
+          return initiator !== "hover";
+        case "click":
+          return initiator !== "click";
+        case "no-click":
+          return initiator === "click";
+        case "no-focus":
+          return initiator === "focus";
+        case "no-hover":
+          return initiator === "hover";
+        default:
+          // shouldn't be possible
+          return true;
+      }
+    }
+
+    #showPopover(initiator: PopoverInitiatorAction): void {
+      if (!this.popoverType) {
         return;
       }
 
@@ -177,11 +203,7 @@ export function PopoverMixin<T extends StylableLitElement>(
         return;
       }
 
-      if (
-        this.#initiator ||
-        (this.disableFocus && initiator === "focus") ||
-        (this.disableHover && initiator === "hover")
-      ) {
+      if (this.#isShowPrevented(initiator)) {
         return;
       }
 
@@ -201,8 +223,8 @@ export function PopoverMixin<T extends StylableLitElement>(
       }, delay);
     }
 
-    #hidePopover(initiator: PopoverInitiator): void {
-      if (!this.popoverBehavior) {
+    #hidePopover(initiator: PopoverInitiatorAction): void {
+      if (!this.popoverType) {
         return;
       }
 
