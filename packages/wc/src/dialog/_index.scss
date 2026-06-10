@@ -67,6 +67,20 @@ $-content-and-actions-styles: (
   "dialog.actions.padding-v": '0 "dialog.padding-v"',
 );
 
+$-popover-dialog-styles: (
+  "dialog.scrim.opacity": 0,
+  inset: auto,
+  margin: 0,
+  padding-block: "popover.spacing-y",
+  padding-inline: "popover.spacing-x",
+  position-anchor: --popover-target,
+  position-area: '"popover.area-y" "popover.area-x"',
+  position-try-fallbacks: "popover.fallbacks",
+  transform: "popover.transform",
+);
+$-popover-backdrop-styles: ();
+$-popover-target-styles: ();
+
 $-extra-small-width-styles: utils.remap-variants(dialog, extra-small, width);
 $-small-width-styles: utils.remap-variants(dialog, small, width);
 $-medium-width-styles: utils.remap-variants(dialog, medium, width);
@@ -104,6 +118,9 @@ $-extra-large-width-styles: utils.remap-variants(dialog, extra-large, width);
     ":host([width=extra-large])": $-extra-large-width-styles,
     ".header": $-header-and-content-styles,
     ".actions": $-content-and-actions-styles,
+    "dialog[popover]": $-popover-dialog-styles,
+    "dialog[popover]::backdrop": $-popover-backdrop-styles,
+    "::slotted([slot=popover-target])": $-popover-target-styles,
   );
 
   @include utils.host-styles($styles);

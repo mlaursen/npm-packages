@@ -146,16 +146,32 @@ export class Button extends BaseButton implements ButtonProperties {
       return;
     }
 
-    const form = this.internals?.form;
+    const internals = this.internals;
+    const form = internals?.form;
     if (!form || this.type === "button") {
       return;
     }
 
-    if (this.type === "submit") {
-      form.requestSubmit();
-    } else {
+    if (this.type === "reset") {
       form.reset();
+      return;
     }
+
+    // See https://github.com/WICG/webcomponents/issues/814
+    form.addEventListener(
+      "submit",
+      (event: SubmitEvent) => {
+        Object.defineProperty(event, "submitter", {
+          configurable: true,
+          enumerable: true,
+          get: () => this,
+        });
+      },
+      { capture: true, once: true },
+    );
+
+    internals.setFormValue(this.value ?? "");
+    form.requestSubmit();
   }
 
   #clickLink(forceNewTab = false): void {

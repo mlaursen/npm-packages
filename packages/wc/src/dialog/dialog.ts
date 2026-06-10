@@ -3,6 +3,7 @@ import {
   type PropertyValues,
   type TemplateResult,
   html,
+  isServer,
   nothing,
 } from "lit";
 import { customElement, property, query, state } from "lit/decorators.js";
@@ -96,6 +97,14 @@ export class Dialog extends BaseDialog implements DialogProperties {
   override getFallbackFocus = (): HTMLElement | null | undefined =>
     this._dialog;
 
+  constructor() {
+    super();
+
+    if (!isServer) {
+      this.addEventListener("submit", this.#handleSubmit);
+    }
+  }
+
   protected override willUpdate(changed: PropertyValues): void {
     super.willUpdate(changed);
 
@@ -153,6 +162,11 @@ export class Dialog extends BaseDialog implements DialogProperties {
         ${(this.open && this.renderFocusTrap(false)) || nothing}
       </dialog>
     `;
+  }
+
+  // this is just added to provide the correct type definitions
+  override close(options?: CloseDialogOptions): Promise<void> {
+    return super.close(options);
   }
 
   override _isOpenable(): boolean {
@@ -213,6 +227,22 @@ export class Dialog extends BaseDialog implements DialogProperties {
 
   showModal(): void {
     this.show();
+  }
+
+  #handleSubmit(event: SubmitEvent): void {
+    const form = event.target;
+    const { submitter } = event;
+    if (
+      !(form instanceof HTMLFormElement) ||
+      form.method !== "dialog" ||
+      !submitter
+    ) {
+      return;
+    }
+
+    this.close({
+      returnValue: submitter.getAttribute("value") ?? this.returnValue,
+    });
   }
 
   #handleClick(event: MouseEvent): void {
