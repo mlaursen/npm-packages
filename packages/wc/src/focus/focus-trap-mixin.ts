@@ -9,28 +9,31 @@ export function FocusTrapMixin<T extends LitConstructor>(
   Base: T,
 ): T & LitConstructor<FocusTrapProperties> {
   class FocusTrapElement extends Base implements FocusTrapProperties {
-    #treewalker = isServer
+    #treeWalker = isServer
       ? null
       : document.createTreeWalker(this, NodeFilter.SHOW_ELEMENT);
 
     @property({ type: Boolean, attribute: "disable-focus-trap" })
     disableFocusTrap?: boolean;
 
-    @query(".focus-trap")
+    @query("#first-focus-trap")
     private _firstFocusTrap?: HTMLDivElement;
+
+    @query("#last-focus-trap")
+    private _lastFocusTrap?: HTMLDivElement;
 
     getFallbackFocus(): HTMLElement | null | undefined {
       return null;
     }
 
-    renderFocusTrap(): TemplateResult | null {
+    renderFocusTrap(last: boolean): TemplateResult | null {
       if (this.disableFocusTrap) {
         return null;
       }
 
       return html`
         <div
-          class="focus-trap"
+          id="${last ? "last" : "first"}-focus-trap"
           @focus=${this.#handleFocus}
           tabindex="0"
           aria-hidden="true"
@@ -39,28 +42,38 @@ export function FocusTrapMixin<T extends LitConstructor>(
     }
 
     #handleFocus(event: FocusEvent): void {
-      if (!this.#treewalker) {
+      const root = this._firstFocusTrap?.parentNode;
+      if (
+        !this.#treeWalker ||
+        !this._firstFocusTrap ||
+        !this._lastFocusTrap ||
+        !root
+      ) {
         return;
       }
 
       let firstFocusableChild: HTMLElement | undefined;
       let lastFocusableChild: HTMLElement | undefined;
 
-      this.#treewalker.currentNode = this.#treewalker.root;
-      while (this.#treewalker.nextNode()) {
-        const node = this.#treewalker.currentNode;
-        if (isFocusable(node)) {
+      this.#treeWalker.currentNode = root;
+      while (this.#treeWalker.nextNode()) {
+        const node = this.#treeWalker.currentNode;
+        if (
+          node !== this._firstFocusTrap &&
+          node !== this._lastFocusTrap &&
+          isFocusable(node)
+        ) {
           firstFocusableChild ??= node;
           lastFocusableChild = node;
         }
       }
 
+      const isFirstFocusTrap = event.currentTarget === this._firstFocusTrap;
       if (!firstFocusableChild && !lastFocusableChild) {
         this.getFallbackFocus()?.focus();
         return;
       }
 
-      const isFirstFocusTrap = event.currentTarget === this._firstFocusTrap;
       const isLastFocusTrap = !isFirstFocusTrap;
       const isFromFirstFocusableChild =
         event.relatedTarget === firstFocusableChild;

@@ -131,7 +131,7 @@ export class Dialog extends BaseDialog implements DialogProperties {
         @cancel=${this.#handleCancel}
         class=${className}
       >
-        ${(this.open && this.renderFocusTrap()) || nothing}
+        ${(this.open && this.renderFocusTrap(true)) || nothing}
         <mwc-dialog-header id="header" ?hidden=${!hasHeader}>
           <slot name="icon" slot="icon"></slot>
           <mwc-dialog-title id="title" ?hidden=${!this._hasTitle}>
@@ -150,7 +150,7 @@ export class Dialog extends BaseDialog implements DialogProperties {
           </slot>
         </mwc-dialog-actions>
         <slot></slot>
-        ${(this.open && this.renderFocusTrap()) || nothing}
+        ${(this.open && this.renderFocusTrap(false)) || nothing}
       </dialog>
     `;
   }
