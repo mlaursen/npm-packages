@@ -11,6 +11,8 @@ import { classMap } from "lit/directives/class-map.js";
 import { ifDefined } from "lit/directives/if-defined.js";
 
 import { FocusTrapMixin } from "../focus/focus-trap-mixin.js";
+import { PopoverMixin } from "../popover/popover-mixin.js";
+import { type PopoverInitiator } from "../popover/types.js";
 import { AnimateMixin } from "../transition/animate-mixin.js";
 import {
   type AnimateOptions,
@@ -31,13 +33,81 @@ import {
   type DialogWidth,
 } from "./types.js";
 
-type SlotStateName = "_hasHeader" | "_hasTitle" | "_hasContent" | "_hasActions";
+type SlotStateName =
+  | "_hasHeader"
+  | "_hasTitle"
+  | "_hasContent"
+  | "_hasActions"
+  | "_hasPopoverTarget";
 
-const BaseDialog = AnimateMixin(FocusTrapMixin(LitElement));
+const BaseDialog = PopoverMixin(AnimateMixin(FocusTrapMixin(LitElement)));
 
+/**
+ * Dialogs are built with the following slots:
+ * - rendered in `mwc-dialog-header`:
+ *   - `title` - the main title for the dialog
+ *   - `icon` - an icon rendered in the header above the title
+ *   - `header` - any custom content that is rendered after the optional `title` and `icon`
+ *   - the `mwc-dialog-header` will be hidden if none of the slots were provided
+ * - rendered in `mwc-dialog-content`:
+ *   - `content` - any content to display in the dialog within a scrollable area
+ *   - the `mwc-dialog-content` will be hidden if none of the slots were provided
+ * - rendered in `mwc-dialog-actions`:
+ *   - `actions` - generally buttons used to confirm or cancel
+ *   - the `mwc-dialog-actions` will be hidden if none of the slots were provided
+ * - rendered in the `dialog` element:
+ *   - default slot
+ * - rendered before the `dialog` element:
+ *   - `popover-target` - this should generally be a button component acting as
+ *     the popover target/anchor element
+ *
+ * The dialog's open state can be controlled any of the following:
+ * - toggling the `open` attribute
+ * - using a `mwc-button` with `command`/`commandfor`
+ *   - [Invoker Commands API](https://developer.mozilla.org/en-US/docs/Web/API/Invoker_Commands_API)
+ * - triggering the `show()` and `close()` functions directly on the `mwc-dialog`
+ * - using `<form method="dialog">` to close the dialog
+ * - providing a `slot="popover-target"` which will show on click
+ *   - can be configured to show on hover and/or focus as well
+ *
+ * @example Invoker Commands API Example
+ * ```html
+ * <mwc-button command="show-modal" commandfor="dialog-1">
+ *   Show
+ * </mwc-button>
+ * <mwc-dialog id="dialog-1">
+ *   <h2 slot="title">Title</h2>
+ *   <p slot="content">Hello, world!</p>
+ *   <mwc-text-button slot="actions" command="close" commandfor="dialog-1">
+ *     Cancel
+ *   </mwc-text-button>
+ *   <mwc-text-button slot="actions" command="close" commandfor="dialog-1" autofocus>
+ *     Ok
+ *   </mwc-text-button>
+ * </mwc-dialog>
+ * ```
+ *
+ * @example Form Dialog Example
+ * ```html
+ * <mwc-button command="show-modal" commandfor="dialog-1">
+ *   Show
+ * </mwc-button>
+ * <mwc-dialog id="dialog-1">
+ *   <h2 slot="title">Title</h2>
+ *   <form id="form" slot="content" method="dialog">
+ *   </form>
+ *   <mwc-text-button slot="actions" form="form">
+ *     Cancel
+ *   </mwc-text-button>
+ *   <mwc-text-button slot="actions" form="form" autofocus>
+ *     Ok
+ *   </mwc-text-button>
+ * </mwc-dialog>
+ * ```
+ */
 @customElement("mwc-dialog")
 export class Dialog extends BaseDialog implements DialogProperties {
-  static override styles = styles;
+  static override styles = [...BaseDialog.styles, styles];
 
   @property()
   label?: string;
@@ -47,6 +117,9 @@ export class Dialog extends BaseDialog implements DialogProperties {
 
   @property()
   describedBy?: string;
+
+  @property({ reflect: true, attribute: "popover-initiator" })
+  override popoverInitiator: PopoverInitiator = "click";
 
   /**
    * @see [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/API/HTMLDialogElement/returnValue)
@@ -75,6 +148,9 @@ export class Dialog extends BaseDialog implements DialogProperties {
   @query("#actions")
   private _actions?: HTMLElement;
 
+  @query("slot[name=popover-target]")
+  private _popoverTarget?: HTMLSlotElement;
+
   @state()
   private _hasHeader = false;
 
@@ -86,6 +162,9 @@ export class Dialog extends BaseDialog implements DialogProperties {
 
   @state()
   private _hasActions = false;
+
+  @state()
+  private _hasPopoverTarget = false;
 
   #prevReturnValue = "";
 
@@ -117,6 +196,12 @@ export class Dialog extends BaseDialog implements DialogProperties {
     }
   }
 
+  override disconnectedCallback(): void {
+    super.disconnectedCallback();
+
+    this.removeEventListener("click", this.#handlePopoverTargetClick);
+  }
+
   override render(): TemplateResult {
     const isAlert = this.type === "alert";
     const hasHeader = this._hasHeader || this._hasTitle;
@@ -128,9 +213,15 @@ export class Dialog extends BaseDialog implements DialogProperties {
     const className = classMap({
       header: hasHeader && this._hasContent,
       actions: this._hasActions && this._hasContent,
+      popover: this._hasPopoverTarget,
     });
 
     return html`
+      <slot
+        name="popover-target"
+        @slotchange=${this.#handlePopoverTargetSlotChange}
+      >
+      </slot>
       <dialog
         aria-label=${this.label || nothing}
         aria-labelledby=${labelledBy}
@@ -139,6 +230,9 @@ export class Dialog extends BaseDialog implements DialogProperties {
         @click=${this.#handleClick}
         @cancel=${this.#handleCancel}
         class=${className}
+        popover=${ifDefined(
+          this._hasPopoverTarget ? (this.popoverType ?? "manual") : undefined,
+        )}
       >
         ${(this.open && this.renderFocusTrap(true)) || nothing}
         <mwc-dialog-header id="header" ?hidden=${!hasHeader}>
@@ -283,6 +377,39 @@ export class Dialog extends BaseDialog implements DialogProperties {
 
   #handleActionsSlotChange(event: Event): void {
     this.#handleSlotChange(event, "_hasActions");
+  }
+
+  #handlePopoverTargetSlotChange(event: Event): void {
+    this.#handleSlotChange(event, "_hasPopoverTarget");
+    if (!this._hasPopoverTarget || !this._popoverTarget) {
+      this.removeEventListener("click", this.#handlePopoverTargetClick);
+      return;
+    }
+
+    this.addEventListener("click", this.#handlePopoverTargetClick);
+  }
+
+  #handlePopoverTargetClick(event: MouseEvent): void {
+    if (
+      !this._popoverTarget ||
+      !this._hasPopoverTarget ||
+      !(event.target instanceof Node)
+    ) {
+      this.removeEventListener("click", this.#handlePopoverTargetClick);
+      return;
+    }
+
+    const elements = this._popoverTarget.assignedElements();
+    for (const element of elements) {
+      if (element.contains(event.target)) {
+        if (this.open) {
+          this.close();
+        } else {
+          this.show();
+        }
+        return;
+      }
+    }
   }
 }
 
