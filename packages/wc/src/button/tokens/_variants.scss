@@ -15,7 +15,9 @@ $-color-variants: (
   "hovered.interaction.opacity",
   "hovered.color",
   "focused.interaction.color",
-  "focused.interaction.opacity"
+  "focused.interaction.opacity",
+  "pressed.interaction.color",
+  "pressed.interaction.opacity"
 );
 
 $text-tokens: (
@@ -208,7 +210,9 @@ $elevated-tokens: (
 $elevated-styles: utils.remap-variants(
   button,
   elevated,
-  utils.list-concat((background), $-color-variants)...
+  elevation,
+  background,
+  $-color-variants...
 );
 
 $variant-tokens: (

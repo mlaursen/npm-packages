@@ -1,4 +1,5 @@
 import { type LitConstructor } from "../types.js";
+import { BaseAnimateMixin } from "./base-animate-mixin.js";
 import {
   type AnimateOptions,
   type AnimatedElementProperties,
@@ -6,14 +7,16 @@ import {
   type BaseAnimateOptions,
 } from "./types.js";
 
-export const AnimateMixin = <T extends LitConstructor>(
+export function AnimateMixin<T extends LitConstructor>(
   Base: T,
-): T & LitConstructor<AnimatedElementProperties> =>
-  class AnimatedLitElement extends Base implements AnimatedElementProperties {
+): T & LitConstructor<AnimatedElementProperties> {
+  return class AnimatedLitElement
+    extends BaseAnimateMixin(Base)
+    implements AnimatedElementProperties
+  {
     _opening = false;
 
     #connectedResolvers = Promise.withResolvers<undefined>();
-    #animationController?: AbortController;
 
     override connectedCallback(): void {
       super.connectedCallback();
@@ -25,7 +28,6 @@ export const AnimateMixin = <T extends LitConstructor>(
       super.disconnectedCallback();
 
       this.#connectedResolvers = Promise.withResolvers();
-      this.#animationController?.abort();
     }
 
     _showElement(): void {}
@@ -36,9 +38,6 @@ export const AnimateMixin = <T extends LitConstructor>(
     _isClosable(): boolean {
       return true;
     }
-    _getAnimations(_options: AnimateOptions): AnimationList {
-      return [];
-    }
 
     _onBeforeOpen(): void {}
     _onOpenCanceled(): void {}
@@ -46,6 +45,14 @@ export const AnimateMixin = <T extends LitConstructor>(
     _onCloseCanceled(): void {}
     _onNotConnectedClose(): void {}
     _onNotClosable(): void {}
+
+    override _getAnimations(_options: AnimateOptions): AnimationList {
+      return [];
+    }
+
+    override _animate(options: AnimateOptions): Promise<void> {
+      return super._animate(options);
+    }
 
     async show(options: BaseAnimateOptions = {}): Promise<void> {
       const { animate } = options;
@@ -102,41 +109,5 @@ export const AnimateMixin = <T extends LitConstructor>(
       this._closeElement();
       this.dispatchEvent(new Event("closed"));
     }
-
-    async _animate(options: AnimateOptions): Promise<void> {
-      this.#animationController?.abort();
-      this.#animationController = new AbortController();
-
-      const animations = this._getAnimations(options);
-      if (animations.length === 0) {
-        return;
-      }
-
-      const promises: Promise<Animation>[] = [];
-      for (const [elementOrElements, animationArgs] of animations) {
-        if (!animationArgs?.length || !elementOrElements) {
-          continue;
-        }
-
-        const elements = Array.isArray(elementOrElements)
-          ? elementOrElements
-          : [elementOrElements];
-        for (const element of elements) {
-          if (!element) {
-            continue;
-          }
-
-          for (const args of animationArgs) {
-            const animation = element.animate(...args);
-            this.#animationController.signal.addEventListener("abort", () => {
-              animation.cancel();
-            });
-
-            promises.push(animation.finished.catch(() => animation));
-          }
-        }
-      }
-
-      await Promise.all(promises);
-    }
   };
+}

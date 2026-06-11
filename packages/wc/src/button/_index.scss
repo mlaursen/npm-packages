@@ -86,6 +86,9 @@ $-base-styles: map.deep-merge(
     "interaction.focused.container.opacity":
       "button.focused.interaction.opacity",
     "interaction.focused.container.elevation": "button.focused.elevation",
+    "interaction.pressed.container.color": "button.pressed.interaction.color",
+    "interaction.pressed.container.opacity":
+      "button.pressed.interaction.opacity",
     "icon.color": utils.get-rgb-var("button.icon.color", "button.icon.opacity"),
     "icon.size": "button.icon.size",
     background: utils.get-rgb-var(

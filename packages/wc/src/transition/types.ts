@@ -25,14 +25,22 @@ export type AnimationList = readonly [
   animations: readonly AnimateElementArgs[] | undefined,
 ][];
 
-export interface AnimatedElementProperties {
+export interface BaseAnimatedElementAttributes {
+  _getAnimations(options: BaseAnimateOptions): AnimationList;
+  _animate(options: BaseAnimateOptions): Promise<void>;
+
+  _animations: readonly Animation[];
+}
+
+export interface AnimatedElementProperties extends BaseAnimatedElementAttributes {
   show(options?: BaseAnimateOptions): Promise<void>;
   close(options?: BaseAnimateOptions): Promise<void>;
 
-  _opening: boolean;
-
   _isOpenable(): boolean;
   _isClosable(): boolean;
+
+  _getAnimations(options: AnimateOptions): AnimationList;
+  _animate(options: AnimateOptions): Promise<void>;
 
   /**
    * This is called before the animation begins and should generally do
@@ -49,10 +57,6 @@ export interface AnimatedElementProperties {
    */
   _showElement(): void;
   _closeElement(): void;
-
-  _getAnimations(options: AnimateOptions): AnimationList;
-
-  _animate(options: AnimateOptions): Promise<void>;
 
   _onBeforeOpen(): void;
   _onOpenCanceled(): void;

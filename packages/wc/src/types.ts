@@ -18,3 +18,8 @@ export type StyledLitElement<T = LitElement> = LitConstructor<T> & {
 };
 export type StyledLitElementWithProperties<P, T = LitElement> = T &
   StyledLitElement<P>;
+
+export interface Point {
+  x: number;
+  y: number;
+}
