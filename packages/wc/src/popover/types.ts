@@ -83,7 +83,7 @@ export interface RenderPopoverTargetOptions {
   content: TemplateResult;
 }
 
-export type AnimatePopoverElementMap = AnimateElementMap<"popover" | "target">;
+export type AnimatePopoverElementMap = AnimateElementMap<"popover" | "content">;
 
 export interface PopoverProperties extends AnimatedElementProperties {
   /**
@@ -148,6 +148,24 @@ export interface PopoverProperties extends AnimatedElementProperties {
   _popover?: HTMLSpanElement;
 
   /**
+   * Convenience query for the `<div id="popover-content">`. Used for
+   * animations.
+   */
+  _popoverContent?: HTMLDivElement;
+
+  /**
+   * This is mostly used internally to handle click events on the popover
+   * target.
+   */
+  _popoverTarget?: HTMLSlotElement;
+
+  /**
+   * This will be `true` when the `<slot name="popover-target">` has at least
+   * one element.
+   */
+  _hasPopoverTarget: boolean;
+
+  /**
    * This is used to actually implement the popover behavior within the lit
    * element.
    *
@@ -161,7 +179,13 @@ export interface PopoverProperties extends AnimatedElementProperties {
    * }
    * ```
    */
-  renderPopoverTarget(options?: RenderPopoverTargetOptions): TemplateResult;
+  renderPopover(options?: RenderPopoverTargetOptions): TemplateResult;
+
+  /**
+   * This should be used when the popover element needs to be customized (like
+   * dialogs) and the only part that is required is the popover-target slot.
+   */
+  renderPopoverTarget(target?: TemplateResult): TemplateResult;
 
   getShowPopoverAnimation: GetAnimationMap<AnimatePopoverElementMap>;
   getHidePopoverAnimation: GetAnimationMap<AnimatePopoverElementMap>;

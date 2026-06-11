@@ -8,18 +8,18 @@ page:
 <mwc-box stacked align="stretch">
   <div>
     <mwc-button command="show-modal" commandfor="dialog-1">
-      Show 1
+      Show Simple
     </mwc-button>
     <mwc-button command="show-modal" commandfor="dialog-2">
-      Show 2
+      Show Alert
     </mwc-button>
     <mwc-button command="show-modal" commandfor="dialog-3">
-      Show 3
+      Show Icon
     </mwc-button>
   </div>
   <mwc-dialog id="dialog-1">
     <h2 slot="title">Title</h2>
-    <div slot="content">Hello, world!</div>
+    <p slot="content">Hello, world!</p>
     <mwc-text-button slot="actions" command="close" commandfor="dialog-1">
       Cancel
     </mwc-text-button>
@@ -51,10 +51,43 @@ page:
       Cancel
     </mwc-tonal-button>
   </mwc-dialog>
-  <mwc-dialog id="dialog-4" popover-behavior="manual">
+  <mwc-dialog popover-initiator="no-click">
     <mwc-button slot="popover-target">
-      Show 4
+      Show Popover
     </mwc-button>
     <p slot="content">This is the main content!</p>
   </mwc-dialog>
+  <mwc-button command="show-modal" commandfor="dialog-5">
+    Show Form Dialog
+  </mwc-button>
+  <mwc-dialog id="dialog-5">
+    <h2 slot="title">Title</h2>
+    <form id="form" slot="content" method="dialog">
+      <input type="text" name="firstName" defaultValue="John" />
+      <input type="text" name="lastName" defaultValue="Doe" />
+    </form>
+    <mwc-button slot="actions" form="form" value="close">
+      Cancel
+    </mwc-button>
+    <mwc-button slot="actions" form="form" value="ok">
+      OK
+    </mwc-button>
+  </mwc-dialog>
+  <mwc-typography style="margin-top: 10rem">
+    <p>
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. In sapien lorem, euismod quis leo ut, aliquam tristique arcu. Ut eros dui, faucibus id augue eget, accumsan convallis erat. Suspendisse quis porttitor nisl, sed lacinia ligula. Nunc pellentesque, ipsum a tristique lacinia, tellus ligula euismod libero, non pulvinar ipsum lectus sed dolor. Praesent at laoreet risus, id pretium sapien. Vestibulum accumsan, risus finibus ullamcorper volutpat, odio est euismod felis, id suscipit nulla lacus sed lectus. Mauris leo ex, laoreet et placerat vitae, pellentesque et lorem.
+    </p>
+    <p>
+      Aenean feugiat vitae odio nec placerat. In condimentum vitae urna a finibus. Suspendisse sit amet ex nulla. Praesent eget tortor et massa egestas faucibus. Integer vestibulum sem iaculis suscipit consectetur. Duis malesuada consequat est quis pulvinar. Pellentesque vitae dolor ac nibh semper rutrum. Cras pretium est nunc, vitae finibus arcu bibendum et. Suspendisse nec enim metus. Proin elementum ullamcorper sodales. Duis congue nisi justo, at tempus quam consequat eget. Integer dictum massa euismod luctus convallis. Etiam dignissim quis dui ut consequat. Aliquam cursus erat sed nisl blandit ultricies. Praesent dignissim condimentum lacus, ut porttitor quam faucibus in.
+    </p>
+    <p>
+      Suspendisse non efficitur velit. Cras tellus libero, ornare ac vestibulum at, hendrerit quis felis. Donec sollicitudin nibh urna, sed lacinia ligula maximus eget. Vestibulum condimentum, risus eget aliquet luctus, erat velit rutrum turpis, et auctor tortor diam nec turpis. Vivamus finibus lectus at tortor viverra gravida. Praesent aliquam dignissim venenatis. Nullam a urna sed mi lacinia efficitur. In bibendum dolor vitae purus vehicula finibus. Morbi mi tellus, malesuada a pretium eget, aliquet sit amet diam. Maecenas mauris nunc, porttitor eget fermentum et, accumsan sed libero. Sed sem nisl, mollis eu turpis quis, pulvinar consectetur turpis. Proin mattis, mauris vel hendrerit ullamcorper, nulla felis placerat nisl, id cursus libero lacus nec velit.
+    </p>
+    <p>
+      Nullam faucibus mollis massa ac feugiat. Quisque feugiat ultrices nibh vitae commodo. Vestibulum vulputate diam ac mauris luctus, non fringilla mi facilisis. In egestas arcu ante, at tempor massa fringilla eget. Maecenas sagittis, lacus vel elementum pulvinar, augue quam pulvinar magna, et euismod nisi turpis eget odio. Morbi ac massa suscipit, imperdiet erat ut, dapibus nulla. Donec aliquam nisl quis tincidunt maximus. Vivamus vestibulum massa turpis, ac mattis lacus volutpat vel. Proin efficitur nisi orci, vitae sodales sem malesuada quis. Vestibulum feugiat tortor metus.
+    </p>
+    <p>
+      Sed eu urna magna. Maecenas auctor, ipsum vel blandit finibus, leo justo malesuada elit, ut suscipit nisi lacus in ligula. In hac habitasse platea dictumst. Donec viverra facilisis vestibulum. Sed vel aliquam libero. Nam nec tortor non orci fringilla lacinia vitae a dolor. Suspendisse lacinia sit amet sapien vitae tincidunt. Nulla sed posuere est. Fusce placerat ante justo, quis posuere felis rhoncus in. Aenean cursus velit non neque blandit lacinia. Cras vestibulum libero nec nulla gravida semper.
+    </p>
+  </mwc-typography>
 </mwc-box>

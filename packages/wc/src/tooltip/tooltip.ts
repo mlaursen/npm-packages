@@ -26,7 +26,7 @@ export class Tooltip extends BaseTooltip implements TooltipProperties {
   override popoverInitiator: PopoverInitiator = "no-click";
 
   protected override render(): TemplateResult {
-    return this.renderPopoverTarget({
+    return this.renderPopover({
       content: html`<slot name="tooltip"></slot>`,
     });
   }

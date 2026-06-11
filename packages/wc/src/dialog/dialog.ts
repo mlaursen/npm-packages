@@ -148,9 +148,6 @@ export class Dialog extends BaseDialog implements DialogProperties {
   @query("#actions")
   private _actions?: HTMLElement;
 
-  @query("slot[name=popover-target]")
-  private _popoverTarget?: HTMLSlotElement;
-
   @state()
   private _hasHeader = false;
 
@@ -162,9 +159,6 @@ export class Dialog extends BaseDialog implements DialogProperties {
 
   @state()
   private _hasActions = false;
-
-  @state()
-  private _hasPopoverTarget = false;
 
   #prevReturnValue = "";
 
@@ -194,12 +188,14 @@ export class Dialog extends BaseDialog implements DialogProperties {
         this.close();
       }
     }
-  }
 
-  override disconnectedCallback(): void {
-    super.disconnectedCallback();
-
-    this.removeEventListener("click", this.#handlePopoverTargetClick);
+    if (changed.has("_hasPopoverTarget")) {
+      if (this._hasPopoverTarget) {
+        this.popoverType ??= "manual";
+      } else {
+        this.popoverType = undefined;
+      }
+    }
   }
 
   override render(): TemplateResult {
@@ -217,11 +213,7 @@ export class Dialog extends BaseDialog implements DialogProperties {
     });
 
     return html`
-      <slot
-        name="popover-target"
-        @slotchange=${this.#handlePopoverTargetSlotChange}
-      >
-      </slot>
+      ${this.renderPopoverTarget()}
       <dialog
         aria-label=${this.label || nothing}
         aria-labelledby=${labelledBy}
@@ -377,39 +369,6 @@ export class Dialog extends BaseDialog implements DialogProperties {
 
   #handleActionsSlotChange(event: Event): void {
     this.#handleSlotChange(event, "_hasActions");
-  }
-
-  #handlePopoverTargetSlotChange(event: Event): void {
-    this.#handleSlotChange(event, "_hasPopoverTarget");
-    if (!this._hasPopoverTarget || !this._popoverTarget) {
-      this.removeEventListener("click", this.#handlePopoverTargetClick);
-      return;
-    }
-
-    this.addEventListener("click", this.#handlePopoverTargetClick);
-  }
-
-  #handlePopoverTargetClick(event: MouseEvent): void {
-    if (
-      !this._popoverTarget ||
-      !this._hasPopoverTarget ||
-      !(event.target instanceof Node)
-    ) {
-      this.removeEventListener("click", this.#handlePopoverTargetClick);
-      return;
-    }
-
-    const elements = this._popoverTarget.assignedElements();
-    for (const element of elements) {
-      if (element.contains(event.target)) {
-        if (this.open) {
-          this.close();
-        } else {
-          this.show();
-        }
-        return;
-      }
-    }
   }
 }
 

@@ -1,5 +1,10 @@
-import { type CSSResultArray, type TemplateResult, html } from "lit";
-import { property, query } from "lit/decorators.js";
+import {
+  type CSSResultArray,
+  type PropertyValues,
+  type TemplateResult,
+  html,
+} from "lit";
+import { property, query, state } from "lit/decorators.js";
 import { ifDefined } from "lit/directives/if-defined.js";
 
 import { AnimateMixin } from "../transition/animate-mixin.js";
@@ -12,6 +17,7 @@ import {
   type StylableLitElement,
   type StyledLitElementWithProperties,
 } from "../types.js";
+import { isSlotted } from "../utils/slots.js";
 import {
   DEFAULT_HIDE_POPOVER_ANIMATION,
   DEFAULT_SHOW_POPOVER_ANIMATION,
@@ -73,8 +79,14 @@ export function PopoverMixin<T extends StylableLitElement>(
     @query("#popover")
     _popover?: HTMLSpanElement;
 
-    @query("slot[name=target]")
-    _target?: HTMLSlotElement;
+    @query("#popover-content")
+    _popoverContent?: HTMLDivElement;
+
+    @query("slot[name=popover-target]")
+    _popoverTarget?: HTMLSlotElement;
+
+    @state()
+    _hasPopoverTarget = false;
 
     getShowPopoverAnimation: GetAnimationMap<AnimatePopoverElementMap> = () =>
       DEFAULT_SHOW_POPOVER_ANIMATION;
@@ -84,35 +96,43 @@ export function PopoverMixin<T extends StylableLitElement>(
     #timeout: ReturnType<typeof globalThis.setTimeout> | undefined;
     #initiator: PopoverInitiatorAction | null = null;
 
-    protected override firstUpdated(): void {
+    override firstUpdated(): void {
       this._popover?.addEventListener("toggle", this.#handleToggle);
     }
 
-    override connectedCallback(): void {
-      super.connectedCallback();
+    protected override willUpdate(changed: PropertyValues): void {
+      super.willUpdate(changed);
 
-      this.addEventListener("mouseenter", this.#handleMouseEnter);
-      this.addEventListener("mouseleave", this.#handleMouseLeave);
-      this.addEventListener("focus", this.#handleFocus, true);
-      this.addEventListener("blur", this.#handleBlur, true);
+      if (!changed.has("_hasPopoverTarget")) {
+        return;
+      }
+
+      this.#bindHandlers(this._hasPopoverTarget);
     }
 
     override disconnectedCallback(): void {
       super.disconnectedCallback();
 
-      this.removeEventListener("mouseenter", this.#handleMouseEnter);
-      this.removeEventListener("mouseleave", this.#handleMouseLeave);
-      this.removeEventListener("focus", this.#handleFocus, true);
-      this.removeEventListener("blur", this.#handleBlur, true);
-
       this._popover?.removeEventListener("toggle", this.#handleToggle);
+      this.#bindHandlers(false);
       this.#clearTimeout();
     }
 
-    renderPopoverTarget(options: RenderPopoverTargetOptions): TemplateResult {
+    renderPopoverTarget(target?: TemplateResult): TemplateResult {
+      return html`
+        <slot
+          name="popover-target"
+          @slotchange=${this.#handlePopoverTargetSlotChange}
+        >
+          ${target}
+        </slot>
+      `;
+    }
+
+    renderPopover(options: RenderPopoverTargetOptions): TemplateResult {
       const { target, content } = options;
       return html`
-        <slot name="popover-target">${target}</slot>
+        ${this.renderPopoverTarget(target)}
         <div id="popover" popover=${ifDefined(this.popoverType)}>
           <div id="popover-content">${content}</div>
         </div>
@@ -128,11 +148,11 @@ export function PopoverMixin<T extends StylableLitElement>(
       const getDefault = opening
         ? this.getShowPopoverAnimation
         : this.getHidePopoverAnimation;
-      const { popover, target } = animate === true ? getDefault() : animate();
+      const { popover, content } = animate === true ? getDefault() : animate();
 
       return [
         [this._popover, popover],
-        [this._target, target],
+        [this._popoverContent, content],
       ];
     }
 
@@ -152,24 +172,19 @@ export function PopoverMixin<T extends StylableLitElement>(
       this.close();
     }
 
-    #handleToggle = (event: ToggleEvent): void => {
-      if (event.newState === "closed") {
-        this.#initiator = null;
-        this.#clearTimeout();
-      }
-    };
+    #bindHandlers(add: boolean): void {
+      const name = add ? "addEventListener" : "removeEventListener";
 
-    #clearTimeout(): void {
-      globalThis.clearTimeout(this.#timeout);
+      this[name]("mouseenter", this.#handleMouseEnter);
+      this[name]("mouseleave", this.#handleMouseLeave);
+      this[name]("focus", this.#handleFocus, true);
+      this[name]("blur", this.#handleBlur, true);
+      this._popoverTarget?.[name]("click", this.#handlePopoverTargetClick);
     }
 
-    #isShowPrevented(
+    #isInitiatorPrevented = (
       initiator: Exclude<PopoverInitiatorAction, "force">,
-    ): boolean {
-      if (this.#initiator) {
-        return true;
-      }
-
+    ): boolean => {
       switch (this.popoverInitiator) {
         case "all":
           return false;
@@ -189,6 +204,17 @@ export function PopoverMixin<T extends StylableLitElement>(
           // shouldn't be possible
           return true;
       }
+    };
+
+    #handleToggle = (event: ToggleEvent): void => {
+      if (event.newState === "closed") {
+        this.#initiator = null;
+        this.#clearTimeout();
+      }
+    };
+
+    #clearTimeout(): void {
+      globalThis.clearTimeout(this.#timeout);
     }
 
     #showPopover(initiator: PopoverInitiatorAction): void {
@@ -203,7 +229,7 @@ export function PopoverMixin<T extends StylableLitElement>(
         return;
       }
 
-      if (this.#isShowPrevented(initiator)) {
+      if (this.#initiator || this.#isInitiatorPrevented(initiator)) {
         return;
       }
 
@@ -261,6 +287,33 @@ export function PopoverMixin<T extends StylableLitElement>(
     #handleBlur(): void {
       this.#hidePopover("focus");
     }
+
+    #handlePopoverTargetSlotChange(event: Event): void {
+      this._hasPopoverTarget = isSlotted(event);
+    }
+
+    #handlePopoverTargetClick = (event: Event): void => {
+      if (
+        this.#isInitiatorPrevented("click") ||
+        !this._popoverTarget ||
+        !this._hasPopoverTarget ||
+        !(event.target instanceof Node)
+      ) {
+        return;
+      }
+
+      const elements = this._popoverTarget.assignedElements();
+      for (const element of elements) {
+        if (element.contains(event.target)) {
+          if (this.#initiator) {
+            this.close();
+          } else {
+            this.show();
+          }
+          return;
+        }
+      }
+    };
   }
 
   return PopoverElement;
