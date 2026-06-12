@@ -137,28 +137,28 @@ export class Dialog extends BaseDialog implements DialogProperties {
   width?: DialogWidth;
 
   @query("dialog")
-  private _dialog?: HTMLDialogElement;
+  protected _dialog?: HTMLDialogElement;
 
   @query("#header")
-  private _header?: HTMLElement;
+  protected _header?: HTMLElement;
 
   @query("#content")
-  private _content?: HTMLElement;
+  protected _content?: HTMLElement;
 
   @query("#actions")
-  private _actions?: HTMLElement;
+  protected _actions?: HTMLElement;
 
   @state()
-  private _hasHeader = false;
+  protected _hasHeader = false;
 
   @state()
-  private _hasTitle = false;
+  protected _hasTitle = false;
 
   @state()
-  private _hasContent = false;
+  protected _hasContent = false;
 
   @state()
-  private _hasActions = false;
+  protected _hasActions = false;
 
   #prevReturnValue = "";
 
@@ -332,13 +332,26 @@ export class Dialog extends BaseDialog implements DialogProperties {
   }
 
   #handleClick(event: MouseEvent): void {
-    if (this.type !== "alert" && event.target === event.currentTarget) {
-      const success = this.dispatchEvent(
-        new Event("cancel", { cancelable: true }),
-      );
-      if (success) {
-        this.close();
-      }
+    if (this.type === "alert" || event.target !== event.currentTarget) {
+      return;
+    }
+
+    const rect = this._dialog?.getBoundingClientRect();
+    if (
+      rect &&
+      event.clientX > rect.left &&
+      event.clientX < rect.right &&
+      event.clientY > rect.top &&
+      event.clientY < rect.bottom
+    ) {
+      return;
+    }
+
+    const success = this.dispatchEvent(
+      new Event("cancel", { cancelable: true }),
+    );
+    if (success) {
+      this.close();
     }
   }
 
