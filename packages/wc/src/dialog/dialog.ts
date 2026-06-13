@@ -3,7 +3,6 @@ import {
   type PropertyValues,
   type TemplateResult,
   html,
-  isServer,
   nothing,
 } from "lit";
 import { customElement, property, query, state } from "lit/decorators.js";
@@ -174,12 +173,18 @@ export class Dialog extends BaseDialog implements DialogProperties {
   override getFallbackFocus = (): HTMLElement | null | undefined =>
     this._dialog;
 
-  constructor() {
-    super();
+  override connectedCallback(): void {
+    super.connectedCallback();
 
-    if (!isServer) {
-      this.addEventListener("submit", this.#handleSubmit);
-    }
+    this.addEventListener("submit", this.#handleSubmit);
+    this.addEventListener("request-close", this.#handleRequestClose);
+  }
+
+  override disconnectedCallback(): void {
+    super.disconnectedCallback();
+
+    this.removeEventListener("submit", this.#handleSubmit);
+    this.removeEventListener("request-close", this.#handleRequestClose);
   }
 
   protected override willUpdate(changed: PropertyValues): void {
@@ -203,6 +208,10 @@ export class Dialog extends BaseDialog implements DialogProperties {
   }
 
   override render(): TemplateResult {
+    return html`${this.renderPopoverTarget()}${this.renderDialog()}`;
+  }
+
+  protected renderDialog(fallback = html`<slot></slot>`): TemplateResult {
     const isAlert = this.type === "alert";
     const hasHeader = this._hasHeader || this._hasTitle;
     const labelledBy =
@@ -217,7 +226,6 @@ export class Dialog extends BaseDialog implements DialogProperties {
     });
 
     return html`
-      ${this.renderPopoverTarget()}
       <dialog
         aria-label=${this.label || nothing}
         aria-labelledby=${labelledBy}
@@ -230,7 +238,7 @@ export class Dialog extends BaseDialog implements DialogProperties {
           this._hasPopoverTarget ? (this.popoverType ?? "manual") : undefined,
         )}
       >
-        ${(this.open && this.renderFocusTrap(true)) || nothing}
+        ${(this.open && this.renderFocusTrap(false)) || nothing}
         <mwc-dialog-header id="header" ?hidden=${!hasHeader}>
           <slot name="icon" slot="icon"></slot>
           <mwc-dialog-title id="title" ?hidden=${!this._hasTitle}>
@@ -240,6 +248,7 @@ export class Dialog extends BaseDialog implements DialogProperties {
           <slot name="header" @slotchange=${this.#handleHeaderSlotChange}>
           </slot>
         </mwc-dialog-header>
+        ${fallback}
         <mwc-dialog-content id="content" ?hidden=${!this._hasContent}>
           <slot name="content" @slotchange=${this.#handleContentSlotChange}>
           </slot>
@@ -248,8 +257,7 @@ export class Dialog extends BaseDialog implements DialogProperties {
           <slot name="actions" @slotchange=${this.#handleActionsSlotChange}>
           </slot>
         </mwc-dialog-actions>
-        <slot></slot>
-        ${(this.open && this.renderFocusTrap(false)) || nothing}
+        ${(this.open && this.renderFocusTrap(true)) || nothing}
       </dialog>
     `;
   }
@@ -333,6 +341,14 @@ export class Dialog extends BaseDialog implements DialogProperties {
     this.close({
       returnValue: submitter.getAttribute("value") ?? this.returnValue,
     });
+  }
+
+  #handleRequestClose(event: Event): void {
+    if (event.defaultPrevented) {
+      return;
+    }
+
+    this.close();
   }
 
   #handleClick(event: MouseEvent): void {
