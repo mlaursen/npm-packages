@@ -29,6 +29,7 @@ return {
               tsserver = {
                 pluginPaths = {
                   "./node_modules",
+                  "./apps/website/node_modules",
                   "./packages/wc/node_modules",
                 },
               },

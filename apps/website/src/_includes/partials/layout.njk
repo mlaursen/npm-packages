@@ -14,7 +14,7 @@
     </mwc-tooltip>
     <mwc-tooltip>
       <span slot="tooltip">Show Configuration</span>
-      <mwc-icon-button slot="popover-target">
+      <mwc-icon-button slot="popover-target" command="show-modal" commandfor="configuration-sheet">
         <mwc-material-symbol>
           more_vert
         </mwc-material-symbol>
@@ -25,3 +25,7 @@
 <main id="main" class="{{ mainClassName }}">
   {{ content | safe }}
 </main>
+<mwc-sheet id="configuration-sheet" close-button width="extra-large">
+  <h2 slot="title">Configuration</h2>
+  <configure-palette slot="content"></configure-palette>
+</mwc-sheet>

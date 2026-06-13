@@ -68,10 +68,6 @@ $-base-styles: (
   "dialog.margin.inline-start": "sheet.margin",
   "dialog.shape.round": "sheet.shape.round",
   "dialog.shape.square": "sheet.shape.square",
-  "dialog.shape.end-end": "dialog.shape.square",
-  "dialog.shape.end-start": "dialog.shape.square",
-  "dialog.shape.start-end": "dialog.shape.square",
-  "dialog.shape.start-start": "dialog.shape.square",
   "dialog.max-height": "sheet.max-height",
   "dialog.max-width": "sheet.max-width",
 );
@@ -101,24 +97,27 @@ $-bottom-styles: (
   "sheet.open.from.y": 100%,
 );
 $-round-right-styles: (
-  "dialog.shape.start-start": "sheet.shape.round",
-  "dialog.shape.end-start": "sheet.shape.round",
+  "dialog.shape.start-end": "sheet.shape.square",
+  "dialog.shape.end-end": "sheet.shape.square",
 );
 $-round-left-styles: (
-  "dialog.shape.start-end": "sheet.shape.round",
-  "dialog.shape.end-end": "sheet.shape.round",
+  "dialog.shape.start-start": "sheet.shape.square",
+  "dialog.shape.end-start": "sheet.shape.square",
 );
 $-round-bottom-styles: (
-  "dialog.shape.start-start": "sheet.shape.round",
-  "dialog.shape.start-end": "sheet.shape.round",
+  "dialog.shape.end-start": "sheet.shape.square",
+  "dialog.shape.end-end": "sheet.shape.square",
 );
 $-round-top-styles: (
-  "dialog.shape.end-start": "sheet.shape.round",
-  "dialog.shape.end-end": "sheet.shape.round",
+  "dialog.shape.start-start": "sheet.shape.square",
+  "dialog.shape.start-end": "sheet.shape.square",
 );
 
 $-detached-styles: (
   "sheet.margin": "sheet.detached.spacing",
+);
+$-detached-round-styles: (
+  "sheet.shape.square": "sheet.shape.round",
 );
 $-detached-horizontal-styles: (
   "sheet.max-height": 'calc(100dvh - calc("sheet.margin" * 2))',
@@ -158,6 +157,7 @@ $-sheet-styles: (
     ":host(:is([position=top], [position=bottom]))": $-vertical-styles,
     ":host(:is([position=left], [position=right]))": $-horizontal-styles,
     ":host(:is([variant=detached]))": $-detached-styles,
+    ":host(:is([variant=detached][shape=round]))": $-detached-round-styles,
     ":host(:is([variant=detached], :is([position=top], [position=bottom])))":
       $-detached-vertical-styles,
     ":host(:is([variant=detached], :is([position=left], [position=right])))":

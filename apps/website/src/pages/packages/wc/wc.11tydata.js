@@ -9,6 +9,9 @@ export const currentVersion = 0;
 
 export const sourcePath = "npm-packages/packages/wc";
 
+export const materialThemeBuilderUrl =
+  "https://material-foundation.github.io/material-theme-builder/";
+
 /** @type {import("@mlaursen/wc").DefaultComponentSize[]} */
 export const defaultSizes = ["small", "medium", "large"];
 
