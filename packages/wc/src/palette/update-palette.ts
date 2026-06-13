@@ -22,7 +22,7 @@ import {
   getRemainingVar,
   isPaletteContainerProperty,
   isRemainingPaletteProperty,
-} from "./utils.js";
+} from "./update-palette-utils.js";
 
 @customElement("mwc-update-palette")
 export class UpdatePalette

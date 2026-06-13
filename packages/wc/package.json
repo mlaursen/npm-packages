@@ -4,11 +4,7 @@
   "description": "",
   "type": "module",
   "exports": {
-    "./types": {
-      "types": "./dist/types.d.ts",
-      "default": null
-    },
-    "./*": "./dist/*/*.js",
+    "./*": "./dist/*.js",
     ".": {
       "sass": "./dist/_index.scss",
       "default": "./dist/index.js"
@@ -60,16 +56,17 @@
   ],
   "license": "MIT",
   "dependencies": {
+    "@mlaursen/utils": "workspace:*",
     "@open-wc/form-control": "^1.0.0",
     "@open-wc/lit-helpers": "^0.7.0",
-    "lit": "^3.3.2"
+    "lit": "^3.3.2",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@mlaursen/cli": "workspace:*",
     "@mlaursen/eslint-config": "workspace:*",
     "@mlaursen/node-utils": "workspace:*",
     "@mlaursen/scss": "workspace:*",
-    "@mlaursen/utils": "workspace:*",
     "@rollup/plugin-node-resolve": "^16.0.3",
     "@swc/cli": "^0.8.1",
     "@swc/core": "^1.15.41",
@@ -89,8 +86,7 @@
     "rollup-plugin-swc3": "^0.12.1",
     "ts-lit-plugin": "^2.0.2",
     "tsx": "^4.22.0",
-    "typescript": "^6.0.3",
-    "zod": "^4.4.3"
+    "typescript": "^6.0.3"
   },
   "publishConfig": {
     "access": "public"

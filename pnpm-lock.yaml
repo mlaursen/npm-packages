@@ -543,6 +543,9 @@ importers:
 
   packages/wc:
     dependencies:
+      '@mlaursen/utils':
+        specifier: workspace:*
+        version: link:../utils
       '@open-wc/form-control':
         specifier: ^1.0.0
         version: 1.0.0
@@ -552,6 +555,9 @@ importers:
       lit:
         specifier: ^3.3.2
         version: 3.3.3
+      zod:
+        specifier: ^4.4.3
+        version: 4.4.3
     devDependencies:
       '@mlaursen/cli':
         specifier: workspace:*
@@ -565,9 +571,6 @@ importers:
       '@mlaursen/scss':
         specifier: workspace:*
         version: link:../scss
-      '@mlaursen/utils':
-        specifier: workspace:*
-        version: link:../utils
       '@rollup/plugin-node-resolve':
         specifier: ^16.0.3
         version: 16.0.3(rollup@4.62.4)
@@ -628,9 +631,6 @@ importers:
       typescript:
         specifier: ^6.0.3
         version: 6.0.3
-      zod:
-        specifier: ^4.4.3
-        version: 4.4.3
 
 packages:
 
