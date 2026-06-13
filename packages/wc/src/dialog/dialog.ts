@@ -14,8 +14,6 @@ import "../dialog-content/dialog-content.js";
 import "../dialog-header/dialog-header.js";
 import "../dialog-title/dialog-title.js";
 import { FocusTrapMixin } from "../focus/focus-trap-mixin.js";
-import { PopoverMixin } from "../popover/popover-mixin.js";
-import { type PopoverInitiator } from "../popover/types.js";
 import { AnimateMixin } from "../transition/animate-mixin.js";
 import {
   type AnimateOptions,
@@ -38,7 +36,7 @@ import {
   type RenderDialogOptions,
 } from "./types.js";
 
-const BaseDialog = PopoverMixin(AnimateMixin(FocusTrapMixin(LitElement)));
+const BaseDialog = AnimateMixin(FocusTrapMixin(LitElement));
 
 /**
  * Dialogs are built with the following slots:
@@ -55,9 +53,6 @@ const BaseDialog = PopoverMixin(AnimateMixin(FocusTrapMixin(LitElement)));
  *   - the `mwc-dialog-actions` will be hidden if none of the slots were provided
  * - rendered in the `dialog` element:
  *   - default slot
- * - rendered before the `dialog` element:
- *   - `popover-target` - this should generally be a button component acting as
- *     the popover target/anchor element
  *
  * The dialog's open state can be controlled any of the following:
  * - toggling the `open` attribute
@@ -65,8 +60,6 @@ const BaseDialog = PopoverMixin(AnimateMixin(FocusTrapMixin(LitElement)));
  *   - [Invoker Commands API](https://developer.mozilla.org/en-US/docs/Web/API/Invoker_Commands_API)
  * - triggering the `show()` and `close()` functions directly on the `mwc-dialog`
  * - using `<form method="dialog">` to close the dialog
- * - providing a `slot="popover-target"` which will show on click
- *   - can be configured to show on hover and/or focus as well
  *
  * @example Invoker Commands API Example
  * ```html
@@ -105,7 +98,7 @@ const BaseDialog = PopoverMixin(AnimateMixin(FocusTrapMixin(LitElement)));
  */
 @customElement("mwc-dialog")
 export class Dialog extends BaseDialog implements DialogProperties {
-  static override styles = [...BaseDialog.styles, styles];
+  static override styles = [styles];
 
   protected readonly titleId = "title";
   protected readonly headerId = "header";
@@ -120,9 +113,6 @@ export class Dialog extends BaseDialog implements DialogProperties {
 
   @property()
   describedBy?: string;
-
-  @property({ reflect: true, attribute: "popover-initiator" })
-  override popoverInitiator: PopoverInitiator = "click";
 
   /**
    * @see [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/API/HTMLDialogElement/returnValue)
@@ -200,18 +190,10 @@ export class Dialog extends BaseDialog implements DialogProperties {
         this.close();
       }
     }
-
-    if (changed.has("_hasPopoverTarget")) {
-      if (this._hasPopoverTarget) {
-        this.popoverType ??= "manual";
-      } else {
-        this.popoverType = undefined;
-      }
-    }
   }
 
   override render(): TemplateResult {
-    return html`${this.renderPopoverTarget()}${this.renderDialog()}`;
+    return this.renderDialog();
   }
 
   protected renderDialog({
@@ -229,7 +211,6 @@ export class Dialog extends BaseDialog implements DialogProperties {
     const className = classMap({
       header: hasHeader && this._hasContent,
       actions: this._hasActions && this._hasContent,
-      popover: this._hasPopoverTarget,
     });
 
     return html`
@@ -241,9 +222,6 @@ export class Dialog extends BaseDialog implements DialogProperties {
         @click=${this.#handleClick}
         @cancel=${this.#handleCancel}
         class=${className}
-        popover=${ifDefined(
-          this._hasPopoverTarget ? (this.popoverType ?? "manual") : undefined,
-        )}
       >
         ${(this.open && this.renderFocusTrap("first")) || nothing} ${header}
         <slot name="dialog-header"></slot>

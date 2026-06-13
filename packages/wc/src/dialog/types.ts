@@ -2,11 +2,6 @@ import { type OverridableStringUnion } from "@mlaursen/utils";
 import { type TemplateResult } from "lit";
 
 import {
-  type PopoverInitiator,
-  type PopoverProperties,
-  type PopoverType,
-} from "../popover/types.js";
-import {
   type AnimateElementMap,
   type BaseAnimateOptions,
   type GetAnimationMap,
@@ -49,7 +44,7 @@ export interface RenderDialogOptions {
   actions?: TemplateResult;
 }
 
-export interface DialogProperties extends PopoverProperties {
+export interface DialogProperties {
   /**
    * This is a pass-through for the `aria-label` attribute on the `dialog`
    * element
@@ -128,22 +123,4 @@ export interface DialogProperties extends PopoverProperties {
 
   /** @defaultValue `() => DEFAULT_DIALOG_CLOSE_ANIMATION` */
   getCloseAnimation: GetAnimationMap<AnimateDialogElementMap>;
-
-  /**
-   * NOTE: The popover properties are only used when a `slot="popover-target"`
-   * has been provided.
-   *
-   * @defaultValue `"manual"`
-   * @see {@link PopoverProperties.popoverType}
-   */
-  popoverType?: PopoverType;
-
-  /**
-   * NOTE: The popover properties are only used when a `slot="popover-target"`
-   * has been provided.
-   *
-   * @defaultValue `"click"`
-   * @see {@link PopoverProperties.popoverInitiator}
-   */
-  popoverInitiator: PopoverInitiator;
 }
