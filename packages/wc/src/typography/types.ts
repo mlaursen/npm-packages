@@ -1,5 +1,6 @@
 import { type OverridableStringUnion } from "@mlaursen/utils";
 
+import { type PaletteProperties } from "../palette/types.js";
 import { type DefaultComponentSize } from "../types.js";
 
 export interface TypographySizeOverrides {}
@@ -23,7 +24,7 @@ export type TypographyVariant = OverridableStringUnion<
   TypographyVariantOverrides
 >;
 
-export interface TypographyProperties {
+export interface TypographyProperties extends PaletteProperties {
   /**
    * @defaultValue `"large"`
    */
