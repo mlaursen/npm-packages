@@ -1,8 +1,8 @@
 const IS_FOCUSABLE =
   ":is(input, button, textarea, select, :is(a,area)[href], [tabindex], [contenteditable])";
-const NOT_DISABLED = ":not(:disabled, [disabled])";
+const NOT_DISABLED_OR_HIDDEN = ":not(:disabled, [disabled], [hidden])";
 const NOT_NEGATIVE_TABINDEX = ':not([tabindex^="-"])';
-const FOCUSABLE = `${IS_FOCUSABLE}${NOT_DISABLED}${NOT_NEGATIVE_TABINDEX}`;
+const FOCUSABLE = `${IS_FOCUSABLE}${NOT_DISABLED_OR_HIDDEN}${NOT_NEGATIVE_TABINDEX}`;
 
 /**
  * @private
@@ -16,7 +16,10 @@ export function isFocusable(element: Element | Node): element is HTMLElement {
     return true;
   }
 
-  if (!element.localName.includes("-") || element.matches(NOT_DISABLED)) {
+  if (
+    !element.localName.includes("-") ||
+    element.matches(NOT_DISABLED_OR_HIDDEN)
+  ) {
     return false;
   }
 

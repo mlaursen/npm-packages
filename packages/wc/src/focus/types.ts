@@ -14,10 +14,9 @@ export interface FocusTrapProperties {
 
   /**
    * This should be called in the render at the beginning and end of the
-   * focus trap area. It will need to be called with `true` and `false` so
-   * a first and last marker can be rendered.
+   * focus trap area.
    *
-   * @param isFirst - true if the first focus trap
+   * @param position
    */
-  renderFocusTrap: (isFirst: boolean) => TemplateResult | null;
+  renderFocusTrap: (position: "first" | "last") => TemplateResult | null;
 }

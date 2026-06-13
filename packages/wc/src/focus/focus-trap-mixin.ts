@@ -36,14 +36,14 @@ export function FocusTrapMixin<T extends LitConstructor>(
       return null;
     }
 
-    renderFocusTrap(last: boolean): TemplateResult | null {
+    renderFocusTrap(position: "first" | "last"): TemplateResult | null {
       if (this.disableFocusTrap) {
         return null;
       }
 
       return html`
         <div
-          id="${last ? "last" : "first"}-focus-trap"
+          id="${position}-focus-trap"
           @focus=${this.#handleFocus}
           tabindex="0"
           aria-hidden="true"

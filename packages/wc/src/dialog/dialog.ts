@@ -238,7 +238,7 @@ export class Dialog extends BaseDialog implements DialogProperties {
           this._hasPopoverTarget ? (this.popoverType ?? "manual") : undefined,
         )}
       >
-        ${(this.open && this.renderFocusTrap(false)) || nothing}
+        ${(this.open && this.renderFocusTrap("first")) || nothing}
         <mwc-dialog-header id="header" ?hidden=${!hasHeader}>
           <slot name="icon" slot="icon"></slot>
           <mwc-dialog-title id="title" ?hidden=${!this._hasTitle}>
@@ -257,7 +257,7 @@ export class Dialog extends BaseDialog implements DialogProperties {
           <slot name="actions" @slotchange=${this.#handleActionsSlotChange}>
           </slot>
         </mwc-dialog-actions>
-        ${(this.open && this.renderFocusTrap(true)) || nothing}
+        ${(this.open && this.renderFocusTrap("last")) || nothing}
       </dialog>
     `;
   }
