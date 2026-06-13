@@ -1,7 +1,7 @@
 import { customElement, property } from "lit/decorators.js";
 
 import { Button } from "../button/button.js";
-import type { ButtonVariant } from "../button/types.js";
+import { type ButtonVariant } from "../button/types.js";
 import styles from "./icon-button-styles.js";
 import { type IconButtonProperties, type IconButtonWidth } from "./types.js";
 

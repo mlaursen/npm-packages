@@ -7,10 +7,10 @@ import {
 import { customElement, property } from "lit/decorators.js";
 
 import styles from "./divider-styles.js";
-import { type DividerVariant } from "./types.js";
+import { type DividerProperties, type DividerVariant } from "./types.js";
 
 @customElement("mwc-divider")
-export class Divider extends LitElement {
+export class Divider extends LitElement implements DividerProperties {
   static override styles = styles;
 
   @property()

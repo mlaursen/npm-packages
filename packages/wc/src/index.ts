@@ -44,3 +44,5 @@ export type * from "./transition/types.js";
 export type * from "./types.js";
 export type * from "./typography/types.js";
 export * from "./utils/luminance.js";
+export * from "./utils/slots.js";
+export * from "./utils/tokens.js";

@@ -10,6 +10,7 @@ import {
   type TypographySize,
   type TypographyVariant,
 } from "../typography/types.js";
+import "../typography/typography.js";
 import styles from "./app-bar-title-styles.js";
 
 @customElement("mwc-app-bar-title")

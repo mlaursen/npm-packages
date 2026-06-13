@@ -1,7 +1,10 @@
 import { type OverridableStringUnion } from "@mlaursen/utils";
 
 import { type PassThroughLinkProperties } from "../link/types.js";
-import { type DefaultComponentExtraSize } from "../types.js";
+import {
+  type DefaultComponentExtraSize,
+  type DefaultComponentShape,
+} from "../types.js";
 
 export interface ButtonSizeOverrides {}
 export type DefaultButtonSize = DefaultComponentExtraSize;
@@ -23,7 +26,7 @@ export type ButtonVariant = OverridableStringUnion<
 >;
 
 export interface ButtonShapeOverrides {}
-export type DefaultButtonShape = "round" | "square";
+export type DefaultButtonShape = DefaultComponentShape;
 export type ButtonShape = OverridableStringUnion<
   DefaultButtonShape,
   ButtonShapeOverrides

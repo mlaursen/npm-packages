@@ -25,14 +25,14 @@ export type AnimationList = readonly [
   animations: readonly AnimateElementArgs[] | undefined,
 ][];
 
-export interface BaseAnimatedElementAttributes {
+export interface BaseAnimatedElementProperties {
   _getAnimations(options: BaseAnimateOptions): AnimationList;
   _animate(options: BaseAnimateOptions): Promise<void>;
 
   _animations: readonly Animation[];
 }
 
-export interface AnimatedElementProperties extends BaseAnimatedElementAttributes {
+export interface AnimatedElementProperties extends BaseAnimatedElementProperties {
   show(options?: BaseAnimateOptions): Promise<void>;
   close(options?: BaseAnimateOptions): Promise<void>;
 

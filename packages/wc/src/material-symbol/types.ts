@@ -1,3 +1,5 @@
+import { type IconProperties } from "../icon/types.js";
+
 /**
  * Fill gives you the ability to modify the default icon style. A single icon
  * can render both unfilled and filled states.
@@ -45,3 +47,12 @@ export type MaterialSymbolGrade = -25 | 0 | 200;
 export type MaterialSymbolOpticalSize = 20 | 24 | 40 | 48;
 
 export type MaterialSymbolFamily = "outlined" | "rounded" | "sharp";
+
+export interface MaterialSymbolProperties extends IconProperties {
+  family?: MaterialSymbolFamily;
+
+  fill?: MaterialSymbolFill;
+  weight?: MaterialSymbolWeight;
+  grade?: MaterialSymbolGrade;
+  opsz?: MaterialSymbolOpticalSize;
+}

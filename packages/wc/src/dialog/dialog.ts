@@ -10,6 +10,10 @@ import { customElement, property, query, state } from "lit/decorators.js";
 import { classMap } from "lit/directives/class-map.js";
 import { ifDefined } from "lit/directives/if-defined.js";
 
+import "../dialog-actions/dialog-actions.js";
+import "../dialog-content/dialog-content.js";
+import "../dialog-header/dialog-header.js";
+import "../dialog-title/dialog-title.js";
 import { FocusTrapMixin } from "../focus/focus-trap-mixin.js";
 import { PopoverMixin } from "../popover/popover-mixin.js";
 import { type PopoverInitiator } from "../popover/types.js";

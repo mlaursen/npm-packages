@@ -8,6 +8,7 @@ import {
   type MaterialSymbolFill,
   type MaterialSymbolGrade,
   type MaterialSymbolOpticalSize,
+  type MaterialSymbolProperties,
   type MaterialSymbolWeight,
 } from "./types.js";
 
@@ -21,7 +22,7 @@ const LIVE_STYLE_PROPERTIES = [
 type LiveStyleProperty = (typeof LIVE_STYLE_PROPERTIES)[number];
 
 @customElement("mwc-material-symbol")
-export class MaterialSymbol extends Icon {
+export class MaterialSymbol extends Icon implements MaterialSymbolProperties {
   static override styles = [...Icon.styles, styles];
 
   @property()

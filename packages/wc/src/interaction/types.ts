@@ -12,14 +12,14 @@ export interface RippleAnimateOptions extends BaseAnimateOptions {
   endPoint: Readonly<Point>;
 }
 
-export interface InteractionAttributes {
+export interface InteractionProperties {
   disabled: boolean;
   disableRipple: boolean;
 
   interaction: InteractionDirection;
 }
 
-export interface Interactable extends InteractionAttributes {
+export interface Interactable extends InteractionProperties {
   _ripple?: HTMLSpanElement;
   _pressed: boolean;
 

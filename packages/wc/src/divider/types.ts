@@ -6,3 +6,19 @@ export type DividerVariant = OverridableStringUnion<
   DefaultDividerVariant,
   DividerVariantOverrides
 >;
+
+export interface DividerProperties {
+  size?: string;
+
+  stretch?: string;
+
+  /**
+   * @defaultValue `"separator"`
+   */
+  role?: string;
+
+  /**
+   * @defaultValue `"full-width"`
+   */
+  variant?: DividerVariant;
+}

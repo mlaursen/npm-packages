@@ -2,15 +2,15 @@ import { type LitConstructor } from "../types.js";
 import {
   type AnimationList,
   type BaseAnimateOptions,
-  type BaseAnimatedElementAttributes,
+  type BaseAnimatedElementProperties,
 } from "./types.js";
 
 export function BaseAnimateMixin<T extends LitConstructor>(
   Base: T,
-): T & LitConstructor<BaseAnimatedElementAttributes> {
+): T & LitConstructor<BaseAnimatedElementProperties> {
   return class BaseAnimatedElement
     extends Base
-    implements BaseAnimatedElementAttributes
+    implements BaseAnimatedElementProperties
   {
     #animationController?: AbortController;
 

@@ -3,7 +3,7 @@ import { customElement, property } from "lit/decorators.js";
 
 import { Icon } from "../icon/icon.js";
 import styles from "./svg-icon-styles.js";
-import type { SvgIconProperties } from "./types.js";
+import { type SvgIconProperties } from "./types.js";
 
 /**
  * This component is quite as useful as others since you must have valid html

@@ -8,3 +8,8 @@ export type IconSize = OverridableStringUnion<
   DefaultIconSize,
   IconSizeOverrides
 >;
+
+export interface IconProperties {
+  /** @defaultValue `"medium"` */
+  size?: IconSize;
+}
