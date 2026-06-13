@@ -10,7 +10,10 @@ import {
   type BaseAnimateOptions,
   type GetAnimationMap,
 } from "../transition/types.js";
-import { type DefaultComponentExtraSize } from "../types.js";
+import {
+  type DefaultComponentExtraSize,
+  type DefaultComponentShape,
+} from "../types.js";
 
 export interface DialogWidthOverrides {}
 export type DefaultDialogWidth = DefaultComponentExtraSize;
@@ -20,6 +23,13 @@ export type DialogWidth = OverridableStringUnion<
 >;
 
 export type DialogType = "alert";
+
+export interface DialogShapeOverrides {}
+export type DefaultDialogShape = DefaultComponentShape;
+export type DialogShape = OverridableStringUnion<
+  DefaultDialogShape,
+  DialogShapeOverrides
+>;
 
 export type AnimateDialogElementMap = AnimateElementMap<
   "dialog" | "header" | "content" | "actions"
@@ -65,6 +75,11 @@ export interface DialogProperties extends PopoverProperties {
    * custom property.
    */
   width?: DialogWidth;
+
+  /**
+   * @defaultValue `"round"`
+   */
+  shape: DialogShape;
 
   /** @see {@link HTMLDialogElement.returnValue} */
   returnValue: HTMLDialogElement["returnValue"];

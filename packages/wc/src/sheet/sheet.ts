@@ -16,6 +16,7 @@ import {
 import styles from "./sheet-styles.js";
 import {
   type AnimateSheetElementMap,
+  type SheetPosition,
   type SheetProperties,
   type SheetShape,
 } from "./types.js";
@@ -27,13 +28,16 @@ export class Sheet extends BaseSheet implements SheetProperties {
   static override styles = [...BaseSheet.styles, styles];
 
   @property({ reflect: true })
-  shape: SheetShape = "round";
+  override shape: SheetShape = "round";
 
   @property({ type: Boolean, attribute: "back-button" })
   backButton?: boolean;
 
   @property({ type: Boolean, attribute: "close-button" })
   closeButton?: boolean;
+
+  @property({ reflect: true })
+  position: SheetPosition = "right";
 
   @property({ reflect: true })
   override width: DialogWidth = "extra-small";

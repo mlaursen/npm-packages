@@ -32,6 +32,7 @@ import {
   type AnimateDialogElementMap,
   type CloseDialogOptions,
   type DialogProperties,
+  type DialogShape,
   type DialogType,
   type DialogWidth,
 } from "./types.js";
@@ -135,6 +136,9 @@ export class Dialog extends BaseDialog implements DialogProperties {
 
   @property()
   type?: DialogType;
+
+  @property({ reflect: true })
+  shape: DialogShape = "round";
 
   @property()
   width?: DialogWidth;

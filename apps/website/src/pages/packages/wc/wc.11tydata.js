@@ -19,6 +19,9 @@ export const defaultExtraSizes = [
   "extra-large",
 ];
 
+/** @type {import("@mlaursen/wc").DefaultComponentShape[]} */
+const defaultShapes = ["square", "round"];
+
 /** @type {import("@mlaursen/wc").BasePaletteTheme[]} */
 const baseThemes = ["primary", "secondary", "tertiary", "error"];
 export const theme = {
@@ -76,6 +79,25 @@ export const button = {
 export const iconButton = {
   /** @type {(import("@mlaursen/wc").IconButtonWidth | null)[]} **/
   widths: ["narrow", null, "wide"],
+};
+
+export const dialog = {
+  /** @type {(import("@mlaursen/wc").DialogType | null)[]} **/
+  types: [null, "alert"],
+
+  /** @type {(import("@mlaursen/wc").DialogWidth)[]} **/
+  widths: defaultSizes,
+};
+
+export const sheet = {
+  /** @type {(import("@mlaursen/wc").SheetShape)[]} **/
+  shapes: defaultShapes,
+
+  /** @type {(import("@mlaursen/wc").SheetPosition)[]} **/
+  positions: ["right", "left", "bottom", "top"],
+
+  /** @type {(import("@mlaursen/wc").DialogWidth)[]} **/
+  widths: defaultSizes,
 };
 
 export const typography = {

@@ -3,6 +3,7 @@ import { type OverridableStringUnion } from "@mlaursen/utils";
 import {
   type AnimateDialogElementMap,
   type DialogProperties,
+  type DialogWidth,
 } from "../dialog/types.js";
 import {
   type AnimateElementMap,
@@ -23,8 +24,28 @@ export type SheetShape = OverridableStringUnion<
   SheetShapeOverrides
 >;
 
+interface SheetPositionOverrides {}
+export type DefaultSheetPosition = "top" | "right" | "bottom" | "eft";
+export type SheetPosition = OverridableStringUnion<
+  DefaultSheetPosition,
+  SheetPositionOverrides
+>;
+
 export interface SheetProperties extends DialogProperties {
+  /**
+   * @defaultValue `"round"`
+   */
   shape: SheetShape;
+
+  /**
+   * @defaultValue `"right"`
+   */
+  position: SheetPosition;
+
+  /**
+   * @defaultValue `"extra-small"`
+   */
+  width: DialogWidth;
 
   show: (options?: ShowSheetOptions) => Promise<void>;
   close: (options?: ShowSheetOptions) => Promise<void>;

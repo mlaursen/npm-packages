@@ -1,0 +1,41 @@
+---
+layout: docs
+permalink: /packages/wc/components/sheet.html
+page:
+  title: Sheet
+---
+
+<mwc-box stacked align="start">
+  <mwc-button id="show-sheet-1">
+    Show Sheet
+  </mwc-button>
+  <mwc-sheet id="sheet-1" close-button>
+    <h1 slot="sheet-title">Headline</h1>
+    <p slot="content">Hello, world!</p>
+    <mwc-box slot="content" disable-padding>
+      <mwc-button id="toggle-position">
+        Toggle Position
+      </mwc-button>
+    </mwc-box>
+  </mwc-sheet>
+  <mwc-button command="show-modal" commandfor="sheet-2">
+    Show Simple
+  </mwc-button>
+  <mwc-sheet id="sheet-2" back-button close-button>
+    <h1 slot="sheet-title">Headline</h1>
+    <p slot="content">Hello, world!</p>
+  </mwc-sheet>
+  <mwc-button command="show-modal" commandfor="sheet-3">
+    Show Title
+  </mwc-button>
+  <mwc-sheet id="sheet-3">
+    <h1 slot="sheet-title">Headline</h1>
+    <p slot="content">Hello, world!</p>
+    <mwc-material-symbol slot="back-icon">
+      favorite
+    </mwc-material-symbol>
+  </mwc-sheet>
+</mwc-box>
+{% js "defer" %}
+{% include "scripts/wc/sheet.js" %}
+{% endjs %}

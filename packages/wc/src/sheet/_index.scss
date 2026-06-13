@@ -6,8 +6,41 @@ $-tokens-registered: false;
 $-tokens: (
   background: "palette.surface-container-low",
   elevation: 1,
-  max-width: 25rem,
-  width: 16rem,
+
+  max-height: 100dvh,
+  max-width: 100dvw,
+  margin: 0,
+
+  open: (
+    from: (
+      x: null,
+      y: null,
+    ),
+    to: (
+      x: null,
+      y: null,
+    ),
+  ),
+  close: (
+    from: (
+      x: null,
+      y: null,
+    ),
+    to: (
+      x: null,
+      y: null,
+    ),
+  ),
+
+  horizontal: (
+    height: 100%,
+    max-width: 25rem,
+    width: 16rem,
+  ),
+  vertical: (
+    height: max-content,
+    width: 100%,
+  ),
 
   inline: (
     background: "palette.surface",
@@ -24,19 +57,61 @@ $-configure-tokens: map.keys($-tokens);
 
 $-base-styles: (
   "dialog.elevation": "sheet.elevation",
+  "dialog.height": "sheet.height",
+  "dialog.margin.block-end": 0,
+  "dialog.margin.block-start": 0,
+  "dialog.margin.inline-end": 0,
+  "dialog.margin.inline-start": 0,
+  "dialog.shape.round": "sheet.shape.round",
+  "dialog.shape.square": "sheet.shape.square",
+  "dialog.shape.end-end": "dialog.shape.square",
+  "dialog.shape.end-start": "dialog.shape.square",
+  "dialog.shape.start-end": "dialog.shape.square",
+  "dialog.shape.start-start": "dialog.shape.square",
+  "dialog.max-height": "sheet.max-height",
   "dialog.max-width": "sheet.max-width",
-  "dialog.min-width": "sheet.width",
 );
-$-dialog-styles: (
-  border-radius: "sheet.shape.square",
-  height: 100dvh,
-  margin: 0,
-  margin-inline-start: auto,
-  max-height: 100dvh,
+$-horizontal-styles: (
+  "dialog.height": "sheet.horizontal.height",
+  "dialog.max-width": "sheet.horizontal.max-width",
+  "dialog.min-width": "sheet.horizontal.width",
 );
-$-round-dialog-styles: (
-  border-start-start-radius: "sheet.shape.round",
-  border-end-start-radius: "sheet.shape.round",
+$-vertical-styles: (
+  "dialog.height": "dialog.vertical.height",
+  "dialog.width": "sheet.vertical.width",
+);
+$-dialog-styles: ();
+$-right-styles: (
+  "dialog.margin.inline-start": auto,
+  "sheet.open.from.x": 100%,
+);
+$-left-styles: (
+  "dialog.margin.inline-end": auto,
+  "sheet.open.from.x": -100%,
+);
+$-top-styles: (
+  "dialog.margin.block-end": auto,
+  "sheet.open.from.y": -100%,
+);
+$-bottom-styles: (
+  "dialog.margin.block-start": auto,
+  "sheet.open.from.y": 100%,
+);
+$-round-right-styles: (
+  "dialog.shape.start-start": "sheet.shape.round",
+  "dialog.shape.end-start": "sheet.shape.round",
+);
+$-round-left-styles: (
+  "dialog.shape.start-end": "sheet.shape.round",
+  "dialog.shape.end-end": "sheet.shape.round",
+);
+$-round-bottom-styles: (
+  "dialog.shape.start-start": "sheet.shape.round",
+  "dialog.shape.start-end": "sheet.shape.round",
+);
+$-round-top-styles: (
+  "dialog.shape.end-start": "sheet.shape.round",
+  "dialog.shape.end-end": "sheet.shape.round",
 );
 
 @mixin configure() {
@@ -60,7 +135,16 @@ $-round-dialog-styles: (
   $styles: (
     ":host": $-base-styles,
     "dialog": $-dialog-styles,
-    ":host([shape=round]) dialog": $-round-dialog-styles,
+    ":host(:is([position=top], [position=bottom]))": $-vertical-styles,
+    ":host(:is([position=left], [position=right]))": $-horizontal-styles,
+    ":host([position=top])": $-top-styles,
+    ":host([position=right])": $-right-styles,
+    ":host([position=bottom])": $-bottom-styles,
+    ":host([position=left])": $-left-styles,
+    ":host([shape=round][position=top])": $-round-top-styles,
+    ":host([shape=round][position=right])": $-round-right-styles,
+    ":host([shape=round][position=bottom])": $-round-bottom-styles,
+    ":host([shape=round][position=left])": $-round-left-styles,
   );
   @include utils.host-styles($styles);
 }

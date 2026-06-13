@@ -7,17 +7,17 @@
   <span slot="title">{{ headerTitle or packageName }}</span>
   <div slot="actions">
     <mwc-tooltip>
+      <span slot="tooltip">Source Code</span>
+      <mwc-icon-button slot="popover-target" aria-label="Source Code" href="{{ meta.sourceBase + sourcePath }}">
+        {% include "partials/github-icon.njk" %}
+      </mwc-icon-button>
+    </mwc-tooltip>
+    <mwc-tooltip>
       <span slot="tooltip">Show Configuration</span>
       <mwc-icon-button slot="popover-target">
         <mwc-material-symbol>
           more_vert
         </mwc-material-symbol>
-      </mwc-icon-button>
-    </mwc-tooltip>
-    <mwc-tooltip>
-      <span slot="tooltip">Source Code</span>
-      <mwc-icon-button slot="popover-target" aria-label="Source Code" href="{{ meta.sourceBase + sourcePath }}">
-        {% include "partials/github-icon.njk" %}
       </mwc-icon-button>
     </mwc-tooltip>
   </div>

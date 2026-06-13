@@ -1,15 +1,25 @@
 import { Duration, Easing } from "../transition/constants.js";
-import type { AnimateSheetElementMap } from "./types.js";
+import { getVar } from "../utils/tokens.js";
+import { type AnimateSheetElementMap } from "./types.js";
+
+const openFromX = getVar("sheet.open.from.x", 0);
+const openFromY = getVar("sheet.open.from.y", 0);
+const openToX = getVar("sheet.open.to.x", 0);
+const openToY = getVar("sheet.open.to.y", 0);
+const closeFromX = getVar("sheet.close.from.x", openToX);
+const closeFromY = getVar("sheet.close.from.y", openToY);
+const closeToX = getVar("sheet.close.to.x", openFromX);
+const closeToY = getVar("sheet.close.to.y", openFromY);
 
 export const DEFAULT_SHEET_OPEN_ANIMATION = {
   sheet: [
     [
       [
         {
-          transform: "translateX(100%)",
+          transform: `translate(${openFromX}, ${openFromY})`,
         },
         {
-          transform: "translateX(0)",
+          transform: `translate(${openToX}, ${openToY})`,
         },
       ],
       {
@@ -25,10 +35,10 @@ export const DEFAULT_SHEET_CLOSE_ANIMATION = {
     [
       [
         {
-          transform: "translateX(0)",
+          transform: `translate(${closeFromX}, ${closeFromY})`,
         },
         {
-          transform: "translateX(100%)",
+          transform: `translate(${closeToX}, ${closeToY})`,
         },
       ],
       {

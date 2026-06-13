@@ -1,11 +1,11 @@
 @use "sass:map";
+@use "sass:meta";
 
 @use "../utils";
 
 $-tokens-registered: false;
 $-tokens: (
   background: "palette.surface-container-high",
-  border-radius: "shape.corner.extra-large",
   scrim: (
     background: "palette.scrim",
     opacity: 0.32,
@@ -16,8 +16,28 @@ $-tokens: (
   gap: "spacing.large",
   padding-v: "spacing.extra-large",
   padding-h: "spacing.extra-large",
+  max-height: 100%,
+  height: fit-content,
   width: fit-content,
   z-index: "z-index.modal",
+
+  margin: (
+    inline-start: auto,
+    inline-end: auto,
+    block-start: auto,
+    block-end: auto,
+  ),
+
+  shape: (
+    all: "dialog.shape.round",
+    square: "shape.corner.none",
+    round: "shape.corner.extra-large",
+
+    start-start: "dialog.shape.all",
+    start-end: "dialog.shape.all",
+    end-start: "dialog.shape.all",
+    end-end: "dialog.shape.all",
+  ),
 
   extra-small: (
     width: "dialog.min-width",
@@ -38,16 +58,32 @@ $-tokens: (
 
 $-configure-tokens: map.keys($-tokens);
 
-$-base-styles: (
+$-remap-tokens: utils.remap-tokens(
+  utils.pick-keys($-tokens, ("margin", "shape")),
+  dialog
+);
+
+$-base-styles: $-remap-tokens;
+$-base-dialog-styles: (
   "elevation.level": "dialog.elevation",
   background: "dialog.background",
+  border-end-end-radius: "dialog.shape.end-end",
+  border-end-start-radius: "dialog.shape.end-start",
+  border-start-end-radius: "dialog.shape.start-end",
+  border-start-start-radius: "dialog.shape.start-start",
   border: 0,
-  border-radius: "dialog.border-radius",
-  min-width: "dialog.min-width",
+  height: "dialog.height",
+  margin-block-end: "dialog.margin.block-end",
+  margin-block-start: "dialog.margin.block-start",
+  margin-inline-end: "dialog.margin.inline-end",
+  margin-inline-start: "dialog.margin.inline-start",
+  max-height: "dialog.max-height",
   max-width: "dialog.max-width",
+  min-width: "dialog.min-width",
   outline: 0,
   padding: 0,
   width: "dialog.width",
+
   // this makes it so the content doesn't readjust once the open/close
   // animations complete
   will-change: transform,
@@ -58,6 +94,9 @@ $-base-styles: (
 $-backdrop-styles: (
   background: "dialog.scrim.background",
   opacity: "dialog.scrim.opacity",
+);
+$-square-styles: (
+  "dialog.shape.all": "dialog.shape.square",
 );
 $-header-and-content-styles: (
   "dialog.header.padding-v": '"dialog.padding-v" 0',
@@ -109,13 +148,15 @@ $-extra-large-width-styles: utils.remap-variants(dialog, extra-large, width);
 
 @mixin host-styles {
   $styles: (
-    "dialog": $-base-styles,
-    "dialog::backdrop": $-backdrop-styles,
+    ":host": $-base-styles,
     ":host([width=extra-small])": $-extra-small-width-styles,
     ":host([width=small])": $-small-width-styles,
     ":host([width=medium])": $-medium-width-styles,
     ":host([width=large])": $-large-width-styles,
     ":host([width=extra-large])": $-extra-large-width-styles,
+    ":host([shape=square])": $-square-styles,
+    "dialog": $-base-dialog-styles,
+    "dialog::backdrop": $-backdrop-styles,
     ".header": $-header-and-content-styles,
     ".actions": $-content-and-actions-styles,
     "dialog[popover]": $-popover-dialog-styles,
