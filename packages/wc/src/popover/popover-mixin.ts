@@ -280,8 +280,14 @@ export function PopoverMixin<T extends StylableLitElement>(
       this.#hidePopover("hover");
     }
 
-    #handleFocus(): void {
-      this.#showPopover("focus");
+    #handleFocus(event: Event): void {
+      // only show when the user is focusing via keyboard
+      if (
+        event.target instanceof HTMLElement &&
+        event.target.matches(":focus-visible")
+      ) {
+        this.#showPopover("focus");
+      }
     }
 
     #handleBlur(): void {
