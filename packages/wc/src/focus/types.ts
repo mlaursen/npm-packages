@@ -19,4 +19,6 @@ export interface FocusTrapProperties {
    * @param position
    */
   renderFocusTrap: (position: "first" | "last") => TemplateResult | null;
+
+  focusFirstAutoFocus: () => void;
 }

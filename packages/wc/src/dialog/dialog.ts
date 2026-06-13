@@ -287,7 +287,7 @@ export class Dialog extends BaseDialog implements DialogProperties {
 
     this.open = true;
     this._content?.scrollTo({ top: 0 });
-    this.querySelector<HTMLElement>("[autofocus]")?.focus();
+    this.focusFirstAutoFocus();
   }
 
   override _closeElement(): void {

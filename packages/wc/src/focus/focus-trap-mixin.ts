@@ -3,7 +3,11 @@ import { property, query } from "lit/decorators.js";
 
 import { type LitConstructor } from "../types.js";
 import { type FocusTrapProperties } from "./types.js";
-import { getFocusableElements, isWithinRoot } from "./utils.js";
+import {
+  getAutoFocusElement,
+  getFocusableElements,
+  isWithinRoot,
+} from "./utils.js";
 
 export function FocusTrapMixin<T extends LitConstructor>(
   Base: T,
@@ -49,6 +53,11 @@ export function FocusTrapMixin<T extends LitConstructor>(
           aria-hidden="true"
         ></div>
       `;
+    }
+
+    focusFirstAutoFocus(): void {
+      const element = getAutoFocusElement(this);
+      element?.focus();
     }
 
     #handleFocus(event: FocusEvent): void {

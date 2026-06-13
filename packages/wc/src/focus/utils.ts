@@ -26,6 +26,12 @@ export function isFocusable(element: Element | Node): element is HTMLElement {
   return element.shadowRoot?.delegatesFocus ?? false;
 }
 
+function isShadowRootNode(
+  node: Node,
+): node is HTMLElement & { shadowRoot: ShadowRoot } {
+  return node instanceof HTMLElement && !!node.shadowRoot;
+}
+
 /**
  * This traverses the shadow dom to find all the focusable nodes and ensure
  * focus is contained. This was added since focus was missed when rendering a
@@ -36,11 +42,11 @@ export function isFocusable(element: Element | Node): element is HTMLElement {
  */
 export function getFocusableElements(
   root: Node,
-  firstFocusTrap: HTMLElement,
-  lastFocusTrap: HTMLElement,
+  firstFocusTrap: HTMLElement | undefined,
+  lastFocusTrap: HTMLElement | undefined,
 ): readonly HTMLElement[] {
   const elements: HTMLElement[] = [];
-  if (root instanceof HTMLElement && root.shadowRoot) {
+  if (isShadowRootNode(root)) {
     elements.push(
       ...getFocusableElements(root.shadowRoot, firstFocusTrap, lastFocusTrap),
     );
@@ -55,7 +61,7 @@ export function getFocusableElements(
 
     if (isFocusable(node)) {
       elements.push(node);
-    } else if (node instanceof HTMLElement && node.shadowRoot) {
+    } else if (isShadowRootNode(node)) {
       elements.push(
         ...getFocusableElements(node.shadowRoot, firstFocusTrap, lastFocusTrap),
       );
@@ -63,6 +69,42 @@ export function getFocusableElements(
   }
 
   return elements;
+}
+
+export function getAutoFocusElement(root: Node): HTMLElement | undefined {
+  const match = isShadowRootNode(root) && getAutoFocusElement(root.shadowRoot);
+  if (match) {
+    return match;
+  }
+
+  const treeWalker = document.createTreeWalker(root, NodeFilter.SHOW_ELEMENT, {
+    acceptNode(node) {
+      if (node instanceof HTMLElement && node.checkVisibility()) {
+        return NodeFilter.FILTER_ACCEPT;
+      }
+
+      return NodeFilter.FILTER_REJECT;
+    },
+  });
+  while (treeWalker.nextNode()) {
+    const node = treeWalker.currentNode;
+    if (!(node instanceof HTMLElement)) {
+      continue;
+    }
+
+    if (node.matches("[autofocus]:not([hidden])")) {
+      return node;
+    }
+
+    if (isShadowRootNode(node)) {
+      const match = getAutoFocusElement(node.shadowRoot);
+      if (match) {
+        return match;
+      }
+    }
+  }
+
+  return;
 }
 
 /**
