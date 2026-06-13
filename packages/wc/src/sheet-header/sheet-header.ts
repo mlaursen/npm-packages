@@ -2,22 +2,28 @@ import { LitElement, type TemplateResult, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
 
 import styles from "./sheet-header-styles.js";
-import { type SheetHeaderProperties } from "./types.js";
+import {
+  type SheetHeaderAutoFocus,
+  type SheetHeaderProperties,
+} from "./types.js";
 
 @customElement("mwc-sheet-header")
 export class SheetHeader extends LitElement implements SheetHeaderProperties {
   static override styles = styles;
 
+  @property({ attribute: "auto-focus" })
+  autoFocus: SheetHeaderAutoFocus = "auto";
+
   @property({ type: Boolean, attribute: "back-button" })
   backButton = false;
 
-  @property()
+  @property({ attribute: "back-label" })
   backLabel = "Back";
 
   @property({ type: Boolean, attribute: "close-button" })
   closeButton?: boolean;
 
-  @property()
+  @property({ attribute: "close-label" })
   closeLabel = "Close";
 
   override render(): TemplateResult {
@@ -26,6 +32,8 @@ export class SheetHeader extends LitElement implements SheetHeaderProperties {
         aria-label=${this.backLabel}
         @click=${this.#close}
         ?hidden=${!this.backButton}
+        ?autofocus=${this.autoFocus === "back" ||
+        (this.backButton && this.autoFocus === "auto")}
       >
         <slot name="back-icon">
           <mwc-material-symbol>arrow_back</mwc-material-symbol>
@@ -38,6 +46,8 @@ export class SheetHeader extends LitElement implements SheetHeaderProperties {
         aria-label=${this.closeLabel}
         @click=${this.#close}
         ?hidden=${!this.closeButton}
+        ?autofocus=${this.autoFocus === "close" ||
+        (this.closeButton && this.autoFocus === "auto")}
       >
         <slot name="close-icon">
           <mwc-material-symbol>close</mwc-material-symbol>

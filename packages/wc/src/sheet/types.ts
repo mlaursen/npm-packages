@@ -5,6 +5,10 @@ import {
   type DialogProperties,
   type DialogWidth,
 } from "../dialog/types.js";
+import type {
+  SheetHeaderAutoFocus,
+  SheetHeaderProperties,
+} from "../sheet-header/types.js";
 import {
   type AnimateElementMap,
   type BaseAnimateOptions,
@@ -38,7 +42,8 @@ export type SheetVariant = OverridableStringUnion<
   SheetVariantOverrides
 >;
 
-export interface SheetProperties extends DialogProperties {
+export interface SheetProperties
+  extends DialogProperties, Omit<Partial<SheetHeaderProperties>, "autoFocus"> {
   /**
    * @defaultValue `"round"`
    */
@@ -67,4 +72,9 @@ export interface SheetProperties extends DialogProperties {
 
   /** @defaultValue `() => DEFAULT_SHEET_CLOSE_ANIMATION` */
   getCloseAnimation: GetAnimationMap<AnimateSheetElementMap>;
+
+  /**
+   * @defaultValue `"auto"`
+   */
+  headerFocus?: SheetHeaderAutoFocus;
 }

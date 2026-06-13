@@ -1,13 +1,28 @@
+export type SheetHeaderAutoFocus = "back" | "close" | "auto";
+
 export interface SheetHeaderProperties {
+  /**
+   * @defaultValue `"auto"`
+   */
+  autoFocus: SheetHeaderAutoFocus;
+
   /**
    * @defaultValue `"Back"`
    */
-  backLabel?: string;
-  backButton?: boolean;
+  backLabel: string;
+
+  /**
+   * @defaultValue `false`
+   */
+  backButton: boolean;
 
   /**
    * @defaultValue `"Close"`
    */
-  closeLabel?: string;
-  closeButton?: boolean;
+  closeLabel: string;
+
+  /**
+   * @defaultValue `false`
+   */
+  closeButton: boolean;
 }

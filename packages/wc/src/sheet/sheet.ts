@@ -1,8 +1,10 @@
 import { type TemplateResult, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
+import { ifDefined } from "lit/directives/if-defined.js";
 
 import { Dialog } from "../dialog/dialog.js";
 import { type DialogWidth } from "../dialog/types.js";
+import { type SheetHeaderAutoFocus } from "../sheet-header/types.js";
 import {
   type AnimateOptions,
   type AnimationList,
@@ -34,8 +36,14 @@ export class Sheet extends BaseSheet implements SheetProperties {
   @property({ reflect: true })
   override shape: SheetShape = "round";
 
+  @property({ attribute: "back-label" })
+  backLabel?: string;
+
   @property({ type: Boolean, attribute: "back-button" })
   backButton = false;
+
+  @property({ attribute: "close-label" })
+  closeLabel?: string;
 
   @property({ type: Boolean, attribute: "close-button" })
   closeButton = false;
@@ -45,6 +53,9 @@ export class Sheet extends BaseSheet implements SheetProperties {
 
   @property({ reflect: true })
   override width: DialogWidth = "extra-small";
+
+  @property({ attribute: "header-focus" })
+  headerFocus?: SheetHeaderAutoFocus;
 
   override getOpenAnimation: GetAnimationMap<AnimateSheetElementMap> = () =>
     DEFAULT_SHEET_OPEN_ANIMATION;
@@ -68,8 +79,11 @@ export class Sheet extends BaseSheet implements SheetProperties {
     return html`
       <mwc-sheet-header
         id=${this.headerId}
+        auto-focus=${ifDefined(this.headerFocus)}
         ?hidden=${!this.backButton && !this.closeButton && !this._hasTitle}
+        back-label=${ifDefined(this.backLabel)}
         ?back-button=${this.backButton}
+        close-label=${ifDefined(this.closeLabel)}
         ?close-button=${this.closeButton}
       >
         <slot name="back-button" slot="back-button"></slot>
