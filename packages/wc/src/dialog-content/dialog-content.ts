@@ -1,4 +1,3 @@
-import { type TemplateResult, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
 
 import { type Margin } from "../margin/types.js";
@@ -19,10 +18,6 @@ export class DialogContent extends Typography {
 
   @property({ reflect: true })
   override margin: Margin = "none";
-
-  override render(): TemplateResult {
-    return html`<slot></slot>`;
-  }
 }
 
 declare global {

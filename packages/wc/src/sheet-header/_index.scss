@@ -72,7 +72,7 @@ $-action-button-styles: (
 @mixin host-styles {
   $styles: (
     ":host": $-base-styles,
-    ".title": $-title-styles,
+    "::slotted([slot=title])": $-title-styles,
     ":host([back-button])": $-back-button-styles,
     ":host([close-button])": $-close-button-styles,
     ":host(:is([back-button], [close-button]))": $-action-button-styles,

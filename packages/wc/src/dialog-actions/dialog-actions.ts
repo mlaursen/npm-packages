@@ -1,4 +1,3 @@
-import { type TemplateResult, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
 
 import { Box } from "../box/box.js";
@@ -11,10 +10,6 @@ export class DialogActions extends Box {
 
   @property({ reflect: true })
   override justify: BoxJustifyContent = "end";
-
-  override render(): TemplateResult {
-    return html`<slot></slot>`;
-  }
 }
 
 declare global {

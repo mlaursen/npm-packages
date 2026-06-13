@@ -1,4 +1,3 @@
-import { type TemplateResult, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
 
 import { type Margin } from "../margin/types.js";
@@ -16,10 +15,6 @@ export class DialogTitle extends Typography {
 
   @property({ reflect: true })
   override color: PaletteTextColor = "on-surface-variant";
-
-  override render(): TemplateResult {
-    return html`<slot></slot>`;
-  }
 }
 
 declare global {

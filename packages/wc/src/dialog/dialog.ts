@@ -38,13 +38,6 @@ import {
   type RenderDialogOptions,
 } from "./types.js";
 
-type SlotStateName =
-  | "_hasHeader"
-  | "_hasTitle"
-  | "_hasContent"
-  | "_hasActions"
-  | "_hasPopoverTarget";
-
 const BaseDialog = PopoverMixin(AnimateMixin(FocusTrapMixin(LitElement)));
 
 /**
@@ -113,6 +106,11 @@ const BaseDialog = PopoverMixin(AnimateMixin(FocusTrapMixin(LitElement)));
 @customElement("mwc-dialog")
 export class Dialog extends BaseDialog implements DialogProperties {
   static override styles = [...BaseDialog.styles, styles];
+
+  protected readonly titleId = "title";
+  protected readonly headerId = "header";
+  protected readonly contentId = "content";
+  protected readonly actionsId = "actions";
 
   @property()
   label?: string;
@@ -217,13 +215,14 @@ export class Dialog extends BaseDialog implements DialogProperties {
   }
 
   protected renderDialog({
-    classes,
-    fallback = html`<slot></slot>`,
+    header = this.renderDefaultHeader(),
+    content = this.renderDefaultContent(),
+    actions = this.renderDefaultActions(),
   }: RenderDialogOptions = {}): TemplateResult {
     const isAlert = this.type === "alert";
     const hasHeader = this._hasHeader || this._hasTitle;
     const labelledBy =
-      this.labelledBy || (this._hasTitle && "title") || nothing;
+      this.labelledBy || (this._hasTitle && this.titleId) || nothing;
     const describedBy =
       this.describedBy || (this._hasContent && isAlert && "content") || nothing;
 
@@ -231,7 +230,6 @@ export class Dialog extends BaseDialog implements DialogProperties {
       header: hasHeader && this._hasContent,
       actions: this._hasActions && this._hasContent,
       popover: this._hasPopoverTarget,
-      ...classes,
     });
 
     return html`
@@ -247,27 +245,49 @@ export class Dialog extends BaseDialog implements DialogProperties {
           this._hasPopoverTarget ? (this.popoverType ?? "manual") : undefined,
         )}
       >
-        ${(this.open && this.renderFocusTrap("first")) || nothing}
-        <mwc-dialog-header id="header" ?hidden=${!hasHeader}>
-          <slot name="icon" slot="icon"></slot>
-          <mwc-dialog-title id="title" ?hidden=${!this._hasTitle}>
-            <slot name="title" @slotchange=${this.#handleTitleSlotChange}>
-            </slot>
-          </mwc-dialog-title>
-          <slot name="header" @slotchange=${this.#handleHeaderSlotChange}>
-          </slot>
-        </mwc-dialog-header>
-        ${fallback}
-        <mwc-dialog-content id="content" ?hidden=${!this._hasContent}>
-          <slot name="content" @slotchange=${this.#handleContentSlotChange}>
-          </slot>
-        </mwc-dialog-content>
-        <mwc-dialog-actions ?hidden=${!this._hasActions} align="end">
-          <slot name="actions" @slotchange=${this.#handleActionsSlotChange}>
-          </slot>
-        </mwc-dialog-actions>
+        ${(this.open && this.renderFocusTrap("first")) || nothing} ${header}
+        <slot name="dialog-header"></slot>
+        ${content}
+        <slot name="dialog-content"></slot>
+        ${actions}
+        <slot></slot>
         ${(this.open && this.renderFocusTrap("last")) || nothing}
       </dialog>
+    `;
+  }
+
+  protected renderDefaultHeader(): TemplateResult {
+    const hasHeader = this._hasHeader || this._hasTitle;
+    return html`
+      <mwc-dialog-header id=${this.headerId} ?hidden=${!hasHeader}>
+        <slot name="icon" slot="icon"></slot>
+        <mwc-dialog-title id=${this.titleId} ?hidden=${!this._hasTitle}>
+          <slot name="title" @slotchange=${this.#handleTitleSlotChange}></slot>
+        </mwc-dialog-title>
+        <slot name="header" @slotchange=${this.#handleHeaderSlotChange}></slot>
+      </mwc-dialog-header>
+    `;
+  }
+
+  protected renderDefaultContent(): TemplateResult {
+    return html`
+      <mwc-dialog-content id=${this.contentId} ?hidden=${!this._hasContent}>
+        <slot name="content" @slotchange=${this.#handleContentSlotChange}>
+        </slot>
+      </mwc-dialog-content>
+    `;
+  }
+
+  protected renderDefaultActions(): TemplateResult {
+    return html`
+      <mwc-dialog-actions
+        id=${this.actionsId}
+        ?hidden=${!this._hasActions}
+        align="end"
+      >
+        <slot name="actions" @slotchange=${this.#handleActionsSlotChange}>
+        </slot>
+      </mwc-dialog-actions>
     `;
   }
 
@@ -393,24 +413,20 @@ export class Dialog extends BaseDialog implements DialogProperties {
     this.close();
   }
 
-  #handleSlotChange(event: Event, name: SlotStateName): void {
-    this[name] = isSlotted(event);
-  }
-
   #handleHeaderSlotChange(event: Event): void {
-    this.#handleSlotChange(event, "_hasHeader");
+    this._hasHeader = isSlotted(event);
   }
 
   #handleTitleSlotChange(event: Event): void {
-    this.#handleSlotChange(event, "_hasTitle");
+    this._hasTitle = isSlotted(event);
   }
 
   #handleContentSlotChange(event: Event): void {
-    this.#handleSlotChange(event, "_hasContent");
+    this._hasContent = isSlotted(event);
   }
 
   #handleActionsSlotChange(event: Event): void {
-    this.#handleSlotChange(event, "_hasActions");
+    this._hasActions = isSlotted(event);
   }
 }
 

@@ -1,5 +1,5 @@
 import { type TemplateResult, html } from "lit";
-import { customElement, property, state } from "lit/decorators.js";
+import { customElement, property } from "lit/decorators.js";
 
 import { Dialog } from "../dialog/dialog.js";
 import { type DialogWidth } from "../dialog/types.js";
@@ -35,19 +35,16 @@ export class Sheet extends BaseSheet implements SheetProperties {
   override shape: SheetShape = "round";
 
   @property({ type: Boolean, attribute: "back-button" })
-  backButton?: boolean;
+  backButton = false;
 
   @property({ type: Boolean, attribute: "close-button" })
-  closeButton?: boolean;
+  closeButton = false;
 
   @property({ reflect: true })
   position: SheetPosition = "right";
 
   @property({ reflect: true })
   override width: DialogWidth = "extra-small";
-
-  @state()
-  _hasSheetTitle = false;
 
   override getOpenAnimation: GetAnimationMap<AnimateSheetElementMap> = () =>
     DEFAULT_SHEET_OPEN_ANIMATION;
@@ -67,22 +64,27 @@ export class Sheet extends BaseSheet implements SheetProperties {
     return [[this._dialog, sheet]];
   }
 
-  #renderDefaultHeader(): TemplateResult {
+  override renderDefaultHeader(): TemplateResult {
     return html`
       <mwc-sheet-header
-        ?hidden=${!this.backButton && !this.closeButton && !this._hasSheetTitle}
+        id=${this.headerId}
+        ?hidden=${!this.backButton && !this.closeButton && !this._hasTitle}
         ?back-button=${this.backButton}
         ?close-button=${this.closeButton}
       >
+        <slot name="back-button" slot="back-button"></slot>
+        <slot name="close-button" slot="close-button"></slot>
+
         <slot name="back-icon" slot="back-icon">
           <mwc-material-symbol>arrow_back</mwc-material-symbol>
         </slot>
-        <slot
-          name="sheet-title"
+        <mwc-sheet-title
+          id=${this.titleId}
           slot="title"
-          @slotchange=${this.#handleSlotChange}
+          ?hidden=${!this._hasTitle}
         >
-        </slot>
+          <slot name="title" @slotchange=${this.#handleSlotChange}></slot>
+        </mwc-sheet-title>
         <slot name="close-icon" slot="close-icon">
           <mwc-material-symbol>close</mwc-material-symbol>
         </slot>
@@ -91,12 +93,9 @@ export class Sheet extends BaseSheet implements SheetProperties {
     `;
   }
 
-  override render(): TemplateResult {
-    return this.renderDialog({ fallback: this.#renderDefaultHeader() });
-  }
-
   #handleSlotChange(event: Event): void {
-    this._hasSheetTitle = isSlotted(event);
+    this._hasTitle = isSlotted(event);
+    this._hasHeader = this._hasTitle || this.backButton || this.closeButton;
   }
 }
 

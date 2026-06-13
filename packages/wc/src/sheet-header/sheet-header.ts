@@ -31,15 +31,9 @@ export class SheetHeader extends LitElement implements SheetHeaderProperties {
           <mwc-material-symbol>arrow_back</mwc-material-symbol>
         </slot>
       </mwc-icon-button>
-      <mwc-typography
-        class="title"
-        color="on-surface-variant"
-        variant="title"
-        size="large"
-        margin="none"
-      >
-        <slot name="title"></slot>
-      </mwc-typography>
+      <slot name="back-button"></slot>
+      <slot name="title"></slot>
+      <slot name="close-button"></slot>
       <mwc-icon-button
         aria-label=${this.closeLabel}
         @click=${this.#close}

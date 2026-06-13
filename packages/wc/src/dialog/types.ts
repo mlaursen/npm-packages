@@ -1,6 +1,5 @@
 import { type OverridableStringUnion } from "@mlaursen/utils";
 import { type TemplateResult } from "lit";
-import { type ClassInfo } from "lit/directives/class-map.js";
 
 import {
   type PopoverInitiator,
@@ -45,8 +44,9 @@ export interface CloseDialogOptions extends ShowDialogOptions {
 }
 
 export interface RenderDialogOptions {
-  fallback?: TemplateResult;
-  classes?: ClassInfo;
+  header?: TemplateResult;
+  content?: TemplateResult;
+  actions?: TemplateResult;
 }
 
 export interface DialogProperties extends PopoverProperties {
