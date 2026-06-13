@@ -12,10 +12,23 @@ page:
   <mwc-sheet id="sheet-1" close-button>
     <h1 slot="sheet-title">Headline</h1>
     <p slot="content">Hello, world!</p>
-    <mwc-box slot="content" disable-padding>
+    <mwc-box disable-padding stacked align="start">
       <mwc-button id="toggle-position">
         Toggle Position
       </mwc-button>
+      <mwc-button id="toggle-variant">
+        Toggle Variant
+      </mwc-button>
+      <dl>
+        <dt>position</dt>
+        <dd id="position">
+          {{ sheet.positions[0] }}
+        </dd>
+        <dt>variant</dt>
+        <dd id="variant">
+          {{ sheet.variants[0] }}
+        </dd>
+      </dl>
     </mwc-box>
   </mwc-sheet>
   <mwc-button command="show-modal" commandfor="sheet-2">

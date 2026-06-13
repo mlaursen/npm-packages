@@ -7,4 +7,14 @@ export default defineConfig(
   ...configs.recommended({
     tsconfigRootDir: import.meta.dirname,
   }),
+  {
+    rules: {
+      "@typescript-eslint/consistent-type-imports": [
+        "error",
+        {
+          fixStyle: "separate-type-imports",
+        },
+      ],
+    },
+  },
 );

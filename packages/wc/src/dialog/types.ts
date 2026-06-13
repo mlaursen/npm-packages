@@ -1,4 +1,6 @@
 import { type OverridableStringUnion } from "@mlaursen/utils";
+import { type TemplateResult } from "lit";
+import { type ClassInfo } from "lit/directives/class-map.js";
 
 import {
   type PopoverInitiator,
@@ -40,6 +42,11 @@ export type ShowDialogOptions = BaseAnimateOptions<AnimateDialogElementMap>;
 export interface CloseDialogOptions extends ShowDialogOptions {
   /** @see {@link HTMLDialogElement.returnValue} */
   returnValue?: string;
+}
+
+export interface RenderDialogOptions {
+  fallback?: TemplateResult;
+  classes?: ClassInfo;
 }
 
 export interface DialogProperties extends PopoverProperties {

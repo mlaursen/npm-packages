@@ -1,5 +1,5 @@
 import { type TemplateResult, html } from "lit";
-import { customElement, property } from "lit/decorators.js";
+import { customElement, property, state } from "lit/decorators.js";
 
 import { Dialog } from "../dialog/dialog.js";
 import { type DialogWidth } from "../dialog/types.js";
@@ -19,6 +19,7 @@ import {
   type SheetPosition,
   type SheetProperties,
   type SheetShape,
+  type SheetVariant,
 } from "./types.js";
 
 const BaseSheet = Dialog;
@@ -26,6 +27,9 @@ const BaseSheet = Dialog;
 @customElement("mwc-sheet")
 export class Sheet extends BaseSheet implements SheetProperties {
   static override styles = [...BaseSheet.styles, styles];
+
+  @property({ reflect: true })
+  variant: SheetVariant = "modal";
 
   @property({ reflect: true })
   override shape: SheetShape = "round";
@@ -42,7 +46,8 @@ export class Sheet extends BaseSheet implements SheetProperties {
   @property({ reflect: true })
   override width: DialogWidth = "extra-small";
 
-  #hasTitle = false;
+  @state()
+  _hasSheetTitle = false;
 
   override getOpenAnimation: GetAnimationMap<AnimateSheetElementMap> = () =>
     DEFAULT_SHEET_OPEN_ANIMATION;
@@ -62,10 +67,10 @@ export class Sheet extends BaseSheet implements SheetProperties {
     return [[this._dialog, sheet]];
   }
 
-  override render(): TemplateResult {
-    return this.renderDialog(html`
+  #renderDefaultHeader(): TemplateResult {
+    return html`
       <mwc-sheet-header
-        ?hidden=${!this.backButton && !this.closeButton && !this.#hasTitle}
+        ?hidden=${!this.backButton && !this.closeButton && !this._hasSheetTitle}
         ?back-button=${this.backButton}
         ?close-button=${this.closeButton}
       >
@@ -83,11 +88,15 @@ export class Sheet extends BaseSheet implements SheetProperties {
         </slot>
       </mwc-sheet-header>
       <slot></slot>
-    `);
+    `;
+  }
+
+  override render(): TemplateResult {
+    return this.renderDialog({ fallback: this.#renderDefaultHeader() });
   }
 
   #handleSlotChange(event: Event): void {
-    this.#hasTitle = isSlotted(event);
+    this._hasSheetTitle = isSlotted(event);
   }
 }
 

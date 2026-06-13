@@ -1,20 +1,31 @@
+import type { Button, Sheet } from "@mlaursen/wc";
+
 import { sheet as sheetSettings } from "../../../pages/packages/wc/wc.11tydata.js";
 
-const button =
-  document.querySelector<HTMLElementTagNameMap["mwc-button"]>("#show-sheet-1");
-const sheet =
-  document.querySelector<HTMLElementTagNameMap["mwc-sheet"]>("#sheet-1");
-const togglePosition =
-  document.querySelector<HTMLElementTagNameMap["mwc-button"]>(
-    "#toggle-position",
-  );
+const button = document.querySelector<Button>("#show-sheet-1");
+const sheet = document.querySelector<Sheet>("#sheet-1");
+const togglePosition = document.querySelector<Button>("#toggle-position");
+const toggleVariant = document.querySelector<Button>("#toggle-variant");
 
-button?.addEventListener("click", () => {
-  sheet?.show();
+const position = document.querySelector("#position");
+const variant = document.querySelector("#variant");
+if (
+  !button ||
+  !sheet ||
+  !togglePosition ||
+  !toggleVariant ||
+  !position ||
+  !variant
+) {
+  throw new Error("missing nodes");
+}
+
+button.addEventListener("click", () => {
+  sheet.show();
 });
 
 let positionIndex = 0;
-togglePosition?.addEventListener("click", () => {
+togglePosition.addEventListener("click", () => {
   if (!sheet) {
     return;
   }
@@ -30,4 +41,25 @@ togglePosition?.addEventListener("click", () => {
   }
 
   sheet.position = next;
+  position.textContent = next;
+});
+
+let variantIndex = 0;
+toggleVariant.addEventListener("click", () => {
+  if (!sheet) {
+    return;
+  }
+
+  let next = sheetSettings.variants[++variantIndex];
+  if (!next) {
+    variantIndex = 0;
+    next = sheetSettings.variants[variantIndex];
+  }
+
+  if (!next) {
+    return;
+  }
+
+  sheet.variant = next;
+  variant.textContent = next;
 });

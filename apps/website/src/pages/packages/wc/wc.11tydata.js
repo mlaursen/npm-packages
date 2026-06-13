@@ -96,6 +96,9 @@ export const sheet = {
   /** @type {(import("@mlaursen/wc").SheetPosition)[]} **/
   positions: ["right", "left", "bottom", "top"],
 
+  /** @type {(import("@mlaursen/wc").SheetVariant)[]} **/
+  variants: ["modal", "detached", "inline"],
+
   /** @type {(import("@mlaursen/wc").DialogWidth)[]} **/
   widths: defaultSizes,
 };

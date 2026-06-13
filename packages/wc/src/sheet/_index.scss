@@ -11,6 +11,10 @@ $-tokens: (
   max-width: 100dvw,
   margin: 0,
 
+  detached: (
+    spacing: "spacing.large",
+  ),
+
   open: (
     from: (
       x: null,
@@ -58,10 +62,10 @@ $-configure-tokens: map.keys($-tokens);
 $-base-styles: (
   "dialog.elevation": "sheet.elevation",
   "dialog.height": "sheet.height",
-  "dialog.margin.block-end": 0,
-  "dialog.margin.block-start": 0,
-  "dialog.margin.inline-end": 0,
-  "dialog.margin.inline-start": 0,
+  "dialog.margin.block-end": "sheet.margin",
+  "dialog.margin.block-start": "sheet.margin",
+  "dialog.margin.inline-end": "sheet.margin",
+  "dialog.margin.inline-start": "sheet.margin",
   "dialog.shape.round": "sheet.shape.round",
   "dialog.shape.square": "sheet.shape.square",
   "dialog.shape.end-end": "dialog.shape.square",
@@ -80,7 +84,6 @@ $-vertical-styles: (
   "dialog.height": "dialog.vertical.height",
   "dialog.width": "sheet.vertical.width",
 );
-$-dialog-styles: ();
 $-right-styles: (
   "dialog.margin.inline-start": auto,
   "sheet.open.from.x": 100%,
@@ -114,6 +117,24 @@ $-round-top-styles: (
   "dialog.shape.end-end": "sheet.shape.round",
 );
 
+$-detached-styles: (
+  "sheet.margin": "sheet.detached.spacing",
+);
+$-detached-horizontal-styles: (
+  "sheet.max-height": 'calc(100dvh - calc("sheet.margin" * 2))',
+);
+$-detached-vertical-styles: (
+  "sheet.max-width": 'calc(100dvw - calc("sheet.margin" * 2))',
+);
+
+$-inline-styles: (
+  display: grid,
+  grid-template-columns: '1fr "sheet.horizontal.width"',
+);
+$-sheet-styles: (
+  background: "sheet.background",
+);
+
 @mixin configure() {
   @if not $-tokens-registered {
     $-tokens-registered: true !global;
@@ -134,9 +155,13 @@ $-round-top-styles: (
 @mixin host-styles {
   $styles: (
     ":host": $-base-styles,
-    "dialog": $-dialog-styles,
     ":host(:is([position=top], [position=bottom]))": $-vertical-styles,
     ":host(:is([position=left], [position=right]))": $-horizontal-styles,
+    ":host(:is([variant=detached]))": $-detached-styles,
+    ":host(:is([variant=detached], :is([position=top], [position=bottom])))":
+      $-detached-vertical-styles,
+    ":host(:is([variant=detached], :is([position=left], [position=right])))":
+      $-detached-horizontal-styles,
     ":host([position=top])": $-top-styles,
     ":host([position=right])": $-right-styles,
     ":host([position=bottom])": $-bottom-styles,
@@ -145,6 +170,8 @@ $-round-top-styles: (
     ":host([shape=round][position=right])": $-round-right-styles,
     ":host([shape=round][position=bottom])": $-round-bottom-styles,
     ":host([shape=round][position=left])": $-round-left-styles,
+    ":host([variant=inline])": $-inline-styles,
+    ".sheet": $-sheet-styles,
   );
   @include utils.host-styles($styles);
 }

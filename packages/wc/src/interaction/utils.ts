@@ -1,5 +1,5 @@
 import { Duration, Easing } from "../transition/constants.js";
-import type { AnimateElementArgs, AnimationList } from "../transition/types.js";
+import { type AnimateElementArgs } from "../transition/types.js";
 import { type Point } from "../types.js";
 import {
   RIPPLE_INITIAL_SCALE,

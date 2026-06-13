@@ -35,6 +35,7 @@ import {
   type DialogShape,
   type DialogType,
   type DialogWidth,
+  type RenderDialogOptions,
 } from "./types.js";
 
 type SlotStateName =
@@ -215,7 +216,10 @@ export class Dialog extends BaseDialog implements DialogProperties {
     return html`${this.renderPopoverTarget()}${this.renderDialog()}`;
   }
 
-  protected renderDialog(fallback = html`<slot></slot>`): TemplateResult {
+  protected renderDialog({
+    classes,
+    fallback = html`<slot></slot>`,
+  }: RenderDialogOptions = {}): TemplateResult {
     const isAlert = this.type === "alert";
     const hasHeader = this._hasHeader || this._hasTitle;
     const labelledBy =
@@ -227,6 +231,7 @@ export class Dialog extends BaseDialog implements DialogProperties {
       header: hasHeader && this._hasContent,
       actions: this._hasActions && this._hasContent,
       popover: this._hasPopoverTarget,
+      ...classes,
     });
 
     return html`

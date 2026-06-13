@@ -31,6 +31,13 @@ export type SheetPosition = OverridableStringUnion<
   SheetPositionOverrides
 >;
 
+export interface SheetVariantOverrides {}
+export type DefaultSheetVariant = "modal" | "detached" | "inline";
+export type SheetVariant = OverridableStringUnion<
+  DefaultSheetVariant,
+  SheetVariantOverrides
+>;
+
 export interface SheetProperties extends DialogProperties {
   /**
    * @defaultValue `"round"`
@@ -41,6 +48,11 @@ export interface SheetProperties extends DialogProperties {
    * @defaultValue `"right"`
    */
   position: SheetPosition;
+
+  /**
+   * @defaultValue `"modal"`
+   */
+  variant: SheetVariant;
 
   /**
    * @defaultValue `"extra-small"`
