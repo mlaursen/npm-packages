@@ -1,0 +1,71 @@
+@use "sass:map";
+
+@use "../utils";
+
+$-tokens-registered: false;
+$-tokens: (
+  background: "palette.surface-container-low",
+  elevation: 1,
+  max-width: 25rem,
+  width: 16rem,
+
+  inline: (
+    background: "palette.surface",
+    elevation: 0,
+  ),
+
+  shape: (
+    square: "shape.corner.none",
+    round: "shape.corner.large",
+  ),
+);
+
+$-configure-tokens: map.keys($-tokens);
+
+$-base-styles: (
+  "dialog.elevation": "sheet.elevation",
+  "dialog.max-width": "sheet.max-width",
+  "dialog.min-width": "sheet.width",
+);
+$-dialog-styles: (
+  border-radius: "sheet.shape.square",
+  height: 100dvh,
+  margin: 0,
+  margin-inline-start: auto,
+  max-height: 100dvh,
+);
+$-round-dialog-styles: (
+  border-start-start-radius: "sheet.shape.round",
+  border-end-start-radius: "sheet.shape.round",
+);
+
+@mixin configure() {
+  @if not $-tokens-registered {
+    $-tokens-registered: true !global;
+    @include utils.register-tokens($tokens: $-tokens, $prefix: "sheet");
+  }
+}
+
+@mixin configure-global($overrides: null) {
+  $overrides: utils.get-config-map(sheet, $overrides, $-configure-tokens);
+  @include configure();
+}
+
+@mixin css-styles {
+  $styles: ();
+  @include utils.css-styles($styles);
+}
+
+@mixin host-styles {
+  $styles: (
+    ":host": $-base-styles,
+    "dialog": $-dialog-styles,
+    ":host([shape=round]) dialog": $-round-dialog-styles,
+  );
+  @include utils.host-styles($styles);
+}
+
+@mixin styles {
+  @include css-styles;
+  @include host-styles;
+}

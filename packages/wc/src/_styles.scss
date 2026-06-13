@@ -16,6 +16,8 @@
 @use "dialog-actions";
 @use "dialog-content";
 @use "dialog-header";
+@use "sheet";
+@use "sheet-header";
 @use "tooltip";
 
 @mixin styles {
@@ -40,5 +42,7 @@
   @include dialog-actions.styles;
   @include dialog-content.styles;
   @include dialog-header.styles;
+  @include sheet.styles;
+  @include sheet-header.styles;
   @include tooltip.styles;
 }

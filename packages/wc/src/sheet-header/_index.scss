@@ -1,0 +1,86 @@
+@use "sass:map";
+
+@use "../utils";
+
+$-tokens-registered: false;
+$-tokens: (
+  header: (
+    // the "real" gap is 0.75rem, but from icon edge instead of button edge.
+    // so this is really 'calc("spacing.extra-small" - "icon-button.height" / 2)'
+    // but that's just too much
+    gap: "spacing.extra-small",
+    padding-h: "spacing.extra-large",
+    padding-v: "spacing.extra-large",
+    // the "real" padding is 1.5rem, but from icon edge instead of button edge.
+    // so this is really 'calc("spacing.large" - "icon-button.width" / 2)'
+    // but that's just too much
+    action-padding: "spacing.large",
+    // the "real" padding is 1rem, but from icon edge instead of button edge.
+    // so this is really 'calc("spacing.large" - "icon-button.width" / 2)'
+    // but that's just too much
+    back-padding: "spacing.small",
+    // the "real" padding is 1.5rem, but from icon edge instead of button edge.
+    // so this is really 'calc("spacing.extra-large" - "icon-button.width" / 2)'
+    // but that's just too much
+    close-padding: "spacing.large",
+  ),
+);
+
+$-configure-tokens: map.keys($-tokens);
+
+$-base-styles: (
+  align-items: center,
+  display: flex,
+  gap: "sheet.header.gap",
+  padding-block: "sheet.header.padding-v",
+  padding-inline: "sheet.header.padding-h",
+);
+$-title-styles: (
+  flex: 1 1 auto,
+);
+$-back-button-styles: (
+  padding-inline-start: "sheet.header.back-padding",
+);
+$-close-button-styles: (
+  padding-inline-end: "sheet.header.close-padding",
+);
+$-action-button-styles: (
+  padding-block-start: "sheet.header.action-padding",
+);
+
+@mixin configure() {
+  @if not $-tokens-registered {
+    $-tokens-registered: true !global;
+    @include utils.register-tokens($tokens: $-tokens, $prefix: "sheet");
+  }
+}
+
+@mixin configure-global($overrides: null) {
+  $overrides: utils.get-config-map(
+    sheet-header,
+    $overrides,
+    $-configure-tokens
+  );
+  @include configure();
+}
+
+@mixin css-styles {
+  $styles: ();
+  @include utils.css-styles($styles);
+}
+
+@mixin host-styles {
+  $styles: (
+    ":host": $-base-styles,
+    ".title": $-title-styles,
+    ":host([back-button])": $-back-button-styles,
+    ":host([close-button])": $-close-button-styles,
+    ":host(:is([back-button], [close-button]))": $-action-button-styles,
+  );
+  @include utils.host-styles($styles);
+}
+
+@mixin styles {
+  @include css-styles;
+  @include host-styles;
+}

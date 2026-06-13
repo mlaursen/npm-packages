@@ -8,6 +8,8 @@ export type DefaultComponentExtraSize =
   | "extra-small"
   | "extra-large";
 
+export type DefaultComponentShape = "square" | "round";
+
 export type LitConstructor<T = LitElement> = Constructor<T>;
 export type StylableLitElement<T = LitElement> = LitConstructor<T> & {
   styles?: CSSResultGroup;
