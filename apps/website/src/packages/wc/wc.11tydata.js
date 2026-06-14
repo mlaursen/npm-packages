@@ -120,4 +120,11 @@ export const eleventyComputed = {
 
     return data[slug]?.playground ?? null;
   },
+  title: (data) => {
+    if (data.page.title) {
+      return `${data.page.title} - ${packageName}`;
+    }
+
+    return data.tile || null;
+  },
 };

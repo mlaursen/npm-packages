@@ -1,5 +1,5 @@
 <mwc-app-bar class="main-header" scroll-behavior="sticky">
-  <mwc-icon-button variant="text" aria-label="Navigation" slot="nav">
+  <mwc-icon-button variant="text" aria-label="Navigation" slot="nav" command="show-modal" commandfor="navigation">
     <mwc-material-symbol>
       menu
     </mwc-material-symbol>
@@ -22,6 +22,10 @@
     </mwc-tooltip>
   </div>
 </mwc-app-bar>
+<mwc-sheet id="navigation" position="left">
+  <h2 slot="title">Navigation</h2>
+  {{ collections.all | eleventyNavigation | eleventyNavigationToHtml | safe }}
+</mwc-sheet>
 <main id="main" class="{{ mainClassName }}">
   {{ content | safe }}
 </main>
