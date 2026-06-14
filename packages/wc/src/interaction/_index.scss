@@ -10,6 +10,7 @@ $-tokens: (
   container: (
     color: null,
     opacity: null,
+    inset: 0,
   ),
   hovered: (
     container: (
@@ -35,6 +36,7 @@ $-tokens: (
     container: (
       color: "palette.on-surface",
       opacity: 0.1,
+      inset: "interaction.container.inset",
     ),
   ),
   dragged: (
@@ -75,6 +77,7 @@ $-base-styles: (
             "interaction.container.opacity"
           ),
         box-sizing: border-box,
+        inset: "interaction.container.inset",
         transition:
           '"transition.duration.short-3" background "transition.easing.linear"',
       )
@@ -85,7 +88,9 @@ $-base-ripple-styles: utils.deep-merge(
     overflow: hidden,
   ),
   (
-    "&, &::before": utils.pseudo-element(),
+    "&, &::before": utils.pseudo-element(
+        $inset: "interaction.pressed.container.inset",
+      ),
     "&::before": (
       background:
         'radial-gradient(closest-side, "interaction.pressed.container.color" max(100% - 70px, 65%), transparent 100%)',

@@ -19,10 +19,16 @@ import {
  */
 export function AriaMixin<
   T extends LitConstructor<LitElement & { disabled?: boolean | null }>,
->(Base: T, role: AriaRole): LitElementWithAriaProperties<T> {
+>(
+  Base: T,
+  role: AriaRole,
+  formAssociated = true,
+): LitElementWithAriaProperties<T> {
   class AriaElement extends Base implements AriaMixinProperties {
     @property({ reflect: true })
     override role: AriaRole = role;
+
+    static formAssociated = formAssociated;
 
     internals?: ElementInternals;
 
