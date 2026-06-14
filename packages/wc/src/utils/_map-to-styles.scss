@@ -160,6 +160,9 @@
 }
 
 ///
+/// @example scss
+///   $-remapped-styles: utils.remap-tokens(map.remove($-tokens, hovered), button);
+///
 /// @param {Map} $tokens -
 /// @param {String | null} $prefix -
 /// @return {Map} -
@@ -172,18 +175,31 @@
   @return $result;
 }
 
+/// This util is used to help update custom properties based on another set of
+/// keys.
 ///
-/// @param {String | null} $prefix -
-/// @param {String} $token -
-/// @param {String...} $variants -
+/// ```scss
+/// $-overrides: utils.remap-variants(icon-button, small, height, narrow-width, wide-width);
+/// $-is-equal-to: (
+///   "icon-button.height": "icon-button.small.height",
+///   "icon-button.narrow-width": "icon-button.small.narrow-width",
+///   "icon-button.wide-width": "icon-button.small.wide-width",
+/// );
+///
+///
+/// @param {String} $prefix - This should be the main group for the tokens.
+/// i.e. `button`
+/// @param {String} $variant-prefix - This should be the variant prefix that
+/// overrides the base tokens. i.e. `small`
+/// @param {String...} $variants - a list of keys that should be remapped
 /// @return {Map} -
-@function remap-variants($prefix, $token, $variants...) {
+@function remap-variants($prefix, $variant-prefix, $variants...) {
   $result: ();
   @each $variant in $variants {
     $result: map.set(
       $result,
       "#{$prefix}.#{$variant}",
-      "#{$prefix}.#{$token}.#{$variant}"
+      "#{$prefix}.#{$variant-prefix}.#{$variant}"
     );
   }
 

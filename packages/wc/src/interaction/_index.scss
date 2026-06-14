@@ -85,12 +85,7 @@ $-base-styles: (
 );
 $-base-ripple-styles: utils.deep-merge(
   (
-    overflow: hidden,
-  ),
-  (
-    "&, &::before": utils.pseudo-element(
-        $inset: "interaction.pressed.container.inset",
-      ),
+    "&, &::before": utils.pseudo-element(),
     "&::before": (
       background:
         'radial-gradient(closest-side, "interaction.pressed.container.color" max(100% - 70px, 65%), transparent 100%)',
@@ -98,6 +93,10 @@ $-base-ripple-styles: utils.deep-merge(
       transform-origin: center center,
       transition: opacity 375ms linear,
     ),
+  ),
+  (
+    inset: "interaction.pressed.container.inset",
+    overflow: hidden,
   )
 );
 $-clickable-styles: (

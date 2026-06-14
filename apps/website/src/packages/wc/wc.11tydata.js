@@ -96,7 +96,7 @@ export const checkbox = {
   /** @type {(import("@mlaursen/wc").CheckboxSize)[]} **/
   sizes: defaultSizes,
 
-  states: ["unchecked", "checked", "indeterminate"],
+  states: ["unchecked", "checked", "indeterminate", "error", "disabled"],
 };
 
 export const sheet = {

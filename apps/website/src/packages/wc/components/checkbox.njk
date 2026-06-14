@@ -16,9 +16,20 @@ page:
   {% for state in checkbox.states %}
     <mwc-checkbox aria-label="Checkbox {{ state }}"
                   size="{{ size }}"
-                  {{ "checked" if state == "checked" }}
-                  {{ "indeterminate" if state == "indeterminate" }}>
+                  {{ state if state !== "unchecked" }}>
     </mwc-checkbox>
+    {% if state == "error" or  state == "disabled" %}
+      <mwc-checkbox aria-label="Checkbox {{ state }} Checked"
+                    size="{{ size }}"
+                    {{ state }}
+                    checked>
+      </mwc-checkbox>
+      <mwc-checkbox aria-label="Checkbox {{ state }} indeterminate"
+                    size="{{ size }}"
+                    {{ state }}
+                    indeterminate>
+      </mwc-checkbox>
+    {% endif %}
   {% endfor %}
   {% if size !== checkbox.sizes.at(-1) %}
     <mwc-divider>

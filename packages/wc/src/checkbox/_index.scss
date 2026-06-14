@@ -8,16 +8,13 @@ $-tokens: (
   size: 3rem,
   background: "palette.primary",
   background-opacity: 0,
-
   icon: (
     color: "palette.on-primary",
     size: calc(1em * 0.375),
   ),
-
   outline: (
     color: "palette.on-surface-variant",
   ),
-
   mark: (
     rotate: null,
     scale: 1,
@@ -32,6 +29,7 @@ $-tokens: (
       size: 'hypot(calc("checkbox.mark.width" * 5.5))',
     ),
   ),
+
   checked: (
     background-opacity: 1,
     icon: (
@@ -54,13 +52,38 @@ $-tokens: (
       ),
     ),
   ),
+
+  hovered: (
+    outline: (
+      color: "palette.on-surface",
+    ),
+  ),
+  disabled: (
+    background: "palette.on-surface",
+    opacity: "interaction.disabled.container.opacity",
+    icon: (
+      color: "palette.surface",
+    ),
+    outline: (
+      color: "palette.on-surface",
+    ),
+  ),
+  error: (
+    background: "palette.error",
+    icon: (
+      color: "palette.on-error",
+    ),
+    outline: (
+      color: "palette.error",
+    ),
+  ),
 );
 
 $-configure-tokens: map.keys($-tokens);
 
 $-base-styles: (
   "interaction.container.inset": calc(1em / 12),
-  "interaction.focused.container.color": transparent,
+  "interaction.focused.container.opacity": 0,
 
   // these need to be set for the animation
   "checkbox.mark.translate": "7px, -14px",
@@ -74,6 +97,23 @@ $-base-styles: (
   height: 1em,
   justify-content: center,
   width: 1em,
+
+  "&::after": utils.deep-merge(
+      utils.pseudo-element(
+        $inset: "interaction.container.inset",
+      ),
+      (
+        "interaction.focused.container.opacity": 0.08,
+        box-sizing: border-box,
+        background: utils.get-rgb-var(
+            "interaction.focused.container.color",
+            "interaction.focused.container.opacity"
+          ),
+        opacity: 0,
+        transition:
+          '"transition.duration.short-3" opacity "transition.easing.linear"',
+      )
+    ),
 );
 $-icon-styles: (
   color: "checkbox.color",
@@ -105,12 +145,17 @@ $-long-mark-styles: (
   height: "checkbox.mark.width",
   width: "checkbox.mark.long.size",
 );
-$-checked-styles: utils.remap-variants(
-  checkbox,
-  checked,
-  "background-opacity",
-  "icon.color",
-  "mark.opacity"
+$-checked-styles: utils.deep-merge(
+  utils.remap-variants(
+    checkbox,
+    checked,
+    "background-opacity",
+    "icon.color",
+    "mark.opacity"
+  ),
+  (
+    "interaction.hovered.container.color": "checkbox.background",
+  )
 );
 $-indeterminate-styles: (
   "checkbox.mark.rotate": "checkbox.indeterminate.mark.rotate",
@@ -126,6 +171,27 @@ $-small-styles: (
 // about the same size as a large icon button
 $-large-styles: (
   font-size: 6rem,
+);
+
+$-hovered-styles: utils.remap-variants(
+  checkbox,
+  hovered,
+  utils.get-tokens-from-map(map.get($-tokens, hovered), null)...
+);
+$-disabled-styles: utils.deep-merge(
+  utils.remap-variants(
+    checkbox,
+    disabled,
+    utils.get-tokens-from-map(map.get($-tokens, disabled), null)...
+  ),
+  (
+    opacity: "checkbox.disabled.opacity",
+  )
+);
+$-error-styles: utils.remap-variants(
+  checkbox,
+  error,
+  utils.get-tokens-from-map(map.get($-tokens, error), null)...
 );
 
 @mixin configure() {
@@ -150,16 +216,24 @@ $-large-styles: (
 @mixin host-styles {
   $styles: (
     ":host": $-base-styles,
+    "@media (hover: hover) and (pointer: fine)": (
+      ":host(:hover)": $-hovered-styles,
+      ":host(:hover:focus-visible)::after": (
+        opacity: 1,
+      ),
+    ),
+    ":host(:is([checked], [indeterminate]))": $-checked-styles,
+    ":host([indeterminate])": $-indeterminate-styles,
+    ":host([size=small])": $-small-styles,
+    ":host([size=large])": $-large-styles,
+    ":host([disabled])": $-disabled-styles,
+    ":host([error])": $-error-styles,
     ".icon": $-icon-styles,
     ".background": $-background-styles,
     ".outline": $-outline-styles,
     ".mark": $-mark-styles,
     ".short": $-short-mark-styles,
     ".long": $-long-mark-styles,
-    ":host(:is([checked], [indeterminate]))": $-checked-styles,
-    ":host([indeterminate])": $-indeterminate-styles,
-    ":host([size=small])": $-small-styles,
-    ":host([size=large])": $-large-styles,
   );
   @include utils.host-styles($styles);
 }
