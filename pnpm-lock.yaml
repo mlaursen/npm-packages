@@ -35,6 +35,9 @@ importers:
 
   apps/website:
     devDependencies:
+      11ty.ts:
+        specifier: ^0.0.7
+        version: 0.0.7(@11ty/eleventy@3.1.6)
       '@11ty/eleventy':
         specifier: ^3.1.6
         version: 3.1.6
@@ -642,6 +645,11 @@ importers:
         version: 6.0.3
 
 packages:
+
+  11ty.ts@0.0.7:
+    resolution: {integrity: sha512-71Jqaimpefof8pt51lIy59Ea2GqU9Bmp3mejWznxVPxxhKBbWBIKBdVsxWSRJSoudUw3KPzpSaThw+KqR3yo3w==}
+    peerDependencies:
+      '@11ty/eleventy': ^3.0.0
 
   '@11ty/dependency-tree-esm@2.0.4':
     resolution: {integrity: sha512-MYKC0Ac77ILr1HnRJalzKDlb9Z8To3kXQCltx299pUXXUFtJ1RIONtULlknknqW8cLe19DLVgmxVCtjEFm7h0A==}
@@ -5196,6 +5204,10 @@ packages:
     resolution: {integrity: sha512-ytENFjIJFl2UwYglde2jchW2Hwm4GJFLDiSXWdTrJQBIN9Fcyp7n4DhxJEiWNAJMV1/BqWfW/kkg71UDcHJyTQ==}
 
 snapshots:
+
+  11ty.ts@0.0.7(@11ty/eleventy@3.1.6):
+    dependencies:
+      '@11ty/eleventy': 3.1.6
 
   '@11ty/dependency-tree-esm@2.0.4':
     dependencies:

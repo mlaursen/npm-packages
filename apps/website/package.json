@@ -32,6 +32,7 @@
     "start": "python3 -m http.server 8080 -d _site"
   },
   "devDependencies": {
+    "11ty.ts": "^0.0.7",
     "@11ty/eleventy": "^3.1.6",
     "@11ty/eleventy-img": "^6.0.4",
     "@lit-labs/eleventy-plugin-lit": "^1.0.6",

@@ -5,7 +5,7 @@
     "module": "nodenext",
     "target": "esnext",
     "lib": ["esnext", "DOM", "DOM.Iterable"],
-    "types": ["node", "@mlaursen/wc"],
+    "types": ["node", "@mlaursen/wc", "./eleventy-fixes.d.ts"],
     "allowJs": true,
 
     // Other Outputs

@@ -1,3 +1,5 @@
+// @ts-check
+import { defineConfig } from "11ty.ts";
 import { EleventyRenderPlugin } from "@11ty/eleventy";
 import { eleventyImageTransformPlugin } from "@11ty/eleventy-img";
 import litPlugin from "@lit-labs/eleventy-plugin-lit";
@@ -13,8 +15,7 @@ import { htmlPlugin } from "./src/_config/plugins/html.js";
 
 dotenv.config({ quiet: true, override: true });
 
-/** @param {import("@11ty/eleventy").UserConfig} eleventyConfig */
-export default async function createConfig(eleventyConfig) {
+export default defineConfig((eleventyConfig) => {
   enableLogger();
   eleventyConfig.on("eleventy.before", async () => {
     await buildScss();
@@ -53,6 +54,7 @@ export default async function createConfig(eleventyConfig) {
     });
   }
 
+  eleventyConfig.addBundle("js", { hoist: true });
   eleventyConfig.addBundle("css", { hoist: true });
 
   eleventyConfig.addFilter("slugify", slugify);
@@ -78,4 +80,4 @@ export default async function createConfig(eleventyConfig) {
       layouts: "_layouts",
     },
   };
-}
+});
