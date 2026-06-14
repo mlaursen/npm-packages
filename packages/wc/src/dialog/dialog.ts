@@ -192,6 +192,20 @@ export class Dialog extends BaseDialog implements DialogProperties {
     }
   }
 
+  protected override updated(changed: PropertyValues): void {
+    super.updated(changed);
+
+    if (!changed.has("open")) {
+      return;
+    }
+
+    if (this.open) {
+      document.documentElement.style.overflow = "hidden";
+    } else {
+      document.documentElement.style.overflow = "";
+    }
+  }
+
   override render(): TemplateResult {
     return this.renderDialog();
   }
