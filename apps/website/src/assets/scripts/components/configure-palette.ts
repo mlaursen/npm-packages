@@ -4,7 +4,13 @@ import {
   parseMaterialTheme,
 } from "@mlaursen/wc/palette/utils";
 import { spread } from "@open-wc/lit-helpers";
-import { LitElement, type TemplateResult, html, nothing } from "lit";
+import {
+  LitElement,
+  type PropertyValues,
+  type TemplateResult,
+  html,
+  nothing,
+} from "lit";
 import { customElement, state } from "lit/decorators.js";
 import { map } from "lit/directives/map.js";
 
@@ -16,7 +22,24 @@ const contrasts = ["normal", "medium", "high"] as const;
 
 const defaultTheme = parseMaterialTheme(materialTheme);
 
+const THEME_KEY = "theme";
+const CONTRAST_KEY = "materialContrast";
+const COLOR_SCHEME_KEY = "colorScheme";
+const MATERIAL_THEME_KEY = "materialThemeEnabled";
+
 type MaterialPaletteContrast = (typeof contrasts)[number];
+
+function isValidColorScheme(
+  colorScheme: string | null,
+): colorScheme is ColorScheme {
+  return colorSchemes.includes(colorScheme as ColorScheme);
+}
+
+function isValidContrast(
+  contrast: string | null,
+): contrast is MaterialPaletteContrast {
+  return contrasts.includes(contrast as MaterialPaletteContrast);
+}
 
 @customElement("configure-palette")
 export class ConfigurePalette extends LitElement {
@@ -35,16 +58,59 @@ export class ConfigurePalette extends LitElement {
   override connectedCallback(): void {
     super.connectedCallback();
 
-    const theme = localStorage.getItem("theme");
-    if (!theme) {
-      return;
+    const theme = localStorage.getItem(THEME_KEY);
+    const contrast = localStorage.getItem(CONTRAST_KEY);
+    const colorScheme = localStorage.getItem(COLOR_SCHEME_KEY);
+    const materialTheme = localStorage.getItem(MATERIAL_THEME_KEY);
+    if (theme) {
+      try {
+        this.theme = parseMaterialTheme(theme);
+        this.materialTheme = true;
+      } catch {
+        localStorage.removeItem(THEME_KEY);
+      }
     }
 
-    try {
-      this.theme = parseMaterialTheme(theme);
-      this.materialTheme = true;
-    } catch {
-      localStorage.removeItem("theme");
+    if (isValidColorScheme(colorScheme)) {
+      this.colorScheme = colorScheme;
+    } else {
+      localStorage.removeItem(COLOR_SCHEME_KEY);
+    }
+
+    if (isValidContrast(contrast)) {
+      this.contrast = contrast;
+    } else {
+      localStorage.removeItem(CONTRAST_KEY);
+    }
+
+    if (materialTheme === "true" || materialTheme === "false") {
+      this.materialTheme = materialTheme === "true";
+    } else {
+      localStorage.removeItem(MATERIAL_THEME_KEY);
+    }
+  }
+
+  protected override updated(changed: PropertyValues): void {
+    super.updated(changed);
+
+    if (changed.has("theme")) {
+      if (this.theme === defaultTheme) {
+        localStorage.removeItem(THEME_KEY);
+      } else {
+        localStorage.setItem(THEME_KEY, JSON.stringify(this.theme));
+      }
+    }
+
+    if (changed.has("contrast")) {
+      localStorage.setItem(CONTRAST_KEY, this.contrast);
+    }
+
+    if (changed.has("materialTheme")) {
+      localStorage.setItem(MATERIAL_THEME_KEY, `${this.materialTheme}`);
+    }
+
+    if (changed.has("colorScheme")) {
+      localStorage.setItem(COLOR_SCHEME_KEY, this.colorScheme);
     }
   }
 
@@ -151,7 +217,6 @@ export class ConfigurePalette extends LitElement {
       const contents = await file.text();
       this.theme = parseMaterialTheme(contents);
       this.materialTheme = true;
-      localStorage.setItem("theme", JSON.stringify(this.theme));
     }
   }
 
