@@ -21,7 +21,7 @@ export class SheetHeader extends LitElement implements SheetHeaderProperties {
   backLabel = "Back";
 
   @property({ type: Boolean, attribute: "close-button" })
-  closeButton?: boolean;
+  closeButton = false;
 
   @property({ attribute: "close-label" })
   closeLabel = "Close";

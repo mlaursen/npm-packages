@@ -2,6 +2,7 @@
 import { defineConfig } from "11ty.ts";
 import { EleventyRenderPlugin } from "@11ty/eleventy";
 import { eleventyImageTransformPlugin } from "@11ty/eleventy-img";
+import eleventyNavigationPlugin from "@11ty/eleventy-navigation";
 import litPlugin from "@lit-labs/eleventy-plugin-lit";
 import { enableLogger, log } from "@mlaursen/node-utils";
 import dotenv from "dotenv";
@@ -31,6 +32,7 @@ export default defineConfig((eleventyConfig) => {
   eleventyConfig.addLayoutAlias("page", "page.njk");
   eleventyConfig.addLayoutAlias("docs", "docs.njk");
 
+  eleventyConfig.addPlugin(eleventyNavigationPlugin);
   eleventyConfig.addPlugin(htmlPlugin);
   eleventyConfig.addPlugin(draftsPlugin);
 

@@ -27,7 +27,9 @@ async function build(entryPoint) {
     },
   });
 
-  return result.outputFiles[0].text;
+  // prevent nunjucks from attempting to parse `{{`
+  // really only an issue when minified
+  return result.outputFiles[0].text.replaceAll("{{", "{ {");
 }
 
 async function compile({ filePath, outFileName }) {

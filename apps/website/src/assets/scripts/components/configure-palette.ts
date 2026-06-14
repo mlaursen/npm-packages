@@ -8,7 +8,7 @@ import { LitElement, type TemplateResult, html, nothing } from "lit";
 import { customElement, state } from "lit/decorators.js";
 import { map } from "lit/directives/map.js";
 
-import { materialThemeBuilderUrl } from "../../../pages/packages/wc/wc.11tydata.js";
+import { materialThemeBuilderUrl } from "../../../packages/wc/wc.11tydata.js";
 import materialTheme from "../../json/material-theme.json" with { type: "json" };
 
 const colorSchemes: ColorScheme[] = ["light", "dark", "light-dark"];

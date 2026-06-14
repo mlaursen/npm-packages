@@ -1,6 +1,6 @@
 import type { Button, Sheet } from "@mlaursen/wc";
 
-import { sheet as sheetSettings } from "../../../pages/packages/wc/wc.11tydata.js";
+import { sheet as sheetSettings } from "../../../packages/wc/wc.11tydata.js";
 
 const button = document.querySelector<Button>("#show-sheet-1");
 const sheet = document.querySelector<Sheet>("#sheet-1");
