@@ -1,6 +1,5 @@
 import { EleventyRenderPlugin } from "@11ty/eleventy";
 import { eleventyImageTransformPlugin } from "@11ty/eleventy-img";
-import webc from "@11ty/eleventy-plugin-webc";
 import litPlugin from "@lit-labs/eleventy-plugin-lit";
 import { enableLogger, log } from "@mlaursen/node-utils";
 import dotenv from "dotenv";
@@ -9,7 +8,6 @@ import { ENABLE_SSR, ROOT_DIR } from "./src/_config/constants.js";
 import { buildJs } from "./src/_config/events/build-js.js";
 import { buildScss } from "./src/_config/events/build-scss.js";
 import { slugify } from "./src/_config/filters/slugify.js";
-import { sortAlphaNumeric } from "./src/_config/filters/sortAlphaNumeric.js";
 import { draftsPlugin } from "./src/_config/plugins/drafts.js";
 import { htmlPlugin } from "./src/_config/plugins/html.js";
 
@@ -26,17 +24,11 @@ export default async function createConfig(eleventyConfig) {
   eleventyConfig.addWatchTarget(
     `./${ROOT_DIR}/assets/**/*.{scss,js,ts,svg,png,jpeg}`,
   );
-  eleventyConfig.addWatchTarget(`./${ROOT_DIR}/_includes/**/*.{webc}`);
 
   eleventyConfig.addLayoutAlias("base", "base.njk");
   eleventyConfig.addLayoutAlias("base-nav", "base-nav.njk");
   eleventyConfig.addLayoutAlias("page", "page.njk");
   eleventyConfig.addLayoutAlias("docs", "docs.njk");
-
-  eleventyConfig.addPlugin(webc, {
-    components: [`./${ROOT_DIR}/_includes/webc/**/*.webc`],
-    useTransform: true,
-  });
 
   eleventyConfig.addPlugin(htmlPlugin);
   eleventyConfig.addPlugin(draftsPlugin);
@@ -64,7 +56,6 @@ export default async function createConfig(eleventyConfig) {
   eleventyConfig.addBundle("css", { hoist: true });
 
   eleventyConfig.addFilter("slugify", slugify);
-  eleventyConfig.addFilter("alphanumeric", sortAlphaNumeric);
 
   eleventyConfig.addPassthroughCopy(`${ROOT_DIR}/assets/fonts`);
   eleventyConfig.addPassthroughCopy({
