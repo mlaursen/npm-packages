@@ -1,3 +1,5 @@
+import { type PropertyValues } from "lit";
+
 import { type LitConstructor } from "../types.js";
 import {
   type AnimationList,
@@ -12,7 +14,14 @@ export function BaseAnimateMixin<T extends LitConstructor>(
     extends Base
     implements BaseAnimatedElementProperties
   {
+    _initialized = false;
     #animationController?: AbortController;
+
+    protected override firstUpdated(changed: PropertyValues): void {
+      super.firstUpdated(changed);
+
+      this._initialized = true;
+    }
 
     override disconnectedCallback(): void {
       super.disconnectedCallback();

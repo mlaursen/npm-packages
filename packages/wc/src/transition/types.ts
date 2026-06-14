@@ -26,6 +26,7 @@ export type AnimationList = readonly [
 ][];
 
 export interface BaseAnimatedElementProperties {
+  _initialized: boolean;
   _getAnimations(options: BaseAnimateOptions): AnimationList;
   _animate(options: BaseAnimateOptions): Promise<void>;
 

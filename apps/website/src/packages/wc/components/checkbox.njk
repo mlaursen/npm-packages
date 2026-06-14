@@ -1,0 +1,30 @@
+---
+layout: docs
+
+eleventyNavigation:
+  key: Checkbox
+  parent: Home
+
+page:
+  title: Checkbox
+---
+
+{% for size in checkbox.sizes %}
+  <mwc-typography variant="title" text-transform="capitalize">
+    <h3>{{ size }}{{ " (Default)" if size == "medium" }}</h3>
+  </mwc-typography>
+  {% for state in checkbox.states %}
+    <mwc-checkbox aria-label="Checkbox {{ state }}"
+                  size="{{ size }}"
+                  {{ "checked" if state == "checked" }}
+                  {{ "indeterminate" if state == "indeterminate" }}>
+    </mwc-checkbox>
+  {% endfor %}
+  {% if size !== checkbox.sizes.at(-1) %}
+    <mwc-divider>
+    </mwc-divider>
+  {% endif %}
+{% endfor %}
+{% js "defer" %}
+{% include "scripts/wc/checkbox.js" %}
+{% endjs %}

@@ -1,6 +1,6 @@
 export function getVar(
   name: `${string}.${string}`,
-  fallback?: string | number,
+  fallback: string | number = "",
 ): string {
   let suffix = "";
   if (fallback !== "") {

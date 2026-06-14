@@ -1,0 +1,170 @@
+@use "sass:map";
+@use "sass:math";
+
+@use "../utils";
+
+$-tokens-registered: false;
+$-tokens: (
+  size: 3rem,
+  background: "palette.primary",
+  background-opacity: 0,
+
+  icon: (
+    color: "palette.on-primary",
+    size: calc(1em * 0.375),
+  ),
+
+  outline: (
+    color: "palette.on-surface-variant",
+  ),
+
+  mark: (
+    rotate: null,
+    scale: 1,
+    translate: null,
+    opacity: 0,
+    width: 2px,
+
+    short: (
+      size: 'hypot(calc("checkbox.mark.width" * 2.5))',
+    ),
+    long: (
+      size: 'hypot(calc("checkbox.mark.width" * 5.5))',
+    ),
+  ),
+  checked: (
+    background-opacity: 1,
+    icon: (
+      color: "palette.on-primary",
+    ),
+    mark: (
+      opacity: 1,
+    ),
+  ),
+  indeterminate: (
+    mark: (
+      rotate: 0deg,
+      translate: "4px, -10px",
+
+      short: (
+        size: 2px,
+      ),
+      long: (
+        size: 10px,
+      ),
+    ),
+  ),
+);
+
+$-configure-tokens: map.keys($-tokens);
+
+$-base-styles: (
+  "interaction.container.inset": calc(1em / 12),
+  "interaction.focused.container.color": transparent,
+
+  // these need to be set for the animation
+  "checkbox.mark.translate": "7px, -14px",
+  "checkbox.mark.rotate": "45deg",
+
+  align-items: center,
+  border-radius: "shape.full",
+  display: inline-flex,
+  flex-shrink: 0,
+  font-size: "checkbox.size",
+  height: 1em,
+  justify-content: center,
+  width: 1em,
+);
+$-icon-styles: (
+  color: "checkbox.color",
+  font-size: "checkbox.icon.size",
+  height: 1em,
+  width: 1em,
+);
+$-background-styles: (
+  fill: "checkbox.background",
+  height: 100%,
+  opacity: "checkbox.background-opacity",
+  width: 100%,
+);
+$-outline-styles: (
+  fill: none,
+  stroke: "checkbox.outline.color",
+);
+$-mark-styles: (
+  fill: "checkbox.icon.color",
+  opacity: "checkbox.mark.opacity",
+  transform:
+    'scaleY(-1) translate("checkbox.mark.translate") rotate("checkbox.mark.rotate")',
+);
+$-short-mark-styles: (
+  height: "checkbox.mark.short.size",
+  width: "checkbox.mark.width",
+);
+$-long-mark-styles: (
+  height: "checkbox.mark.width",
+  width: "checkbox.mark.long.size",
+);
+$-checked-styles: utils.remap-variants(
+  checkbox,
+  checked,
+  "background-opacity",
+  "icon.color",
+  "mark.opacity"
+);
+$-indeterminate-styles: (
+  "checkbox.mark.rotate": "checkbox.indeterminate.mark.rotate",
+  "checkbox.mark.translate": "checkbox.indeterminate.mark.translate",
+  "checkbox.mark.short.size": "checkbox.indeterminate.mark.short.size",
+  "checkbox.mark.long.size": "checkbox.indeterminate.mark.long.size",
+);
+
+// about the same size as an extra-small icon button
+$-small-styles: (
+  font-size: 2.375rem,
+);
+// about the same size as a large icon button
+$-large-styles: (
+  font-size: 6rem,
+);
+
+@mixin configure() {
+  @if not $-tokens-registered {
+    $-tokens-registered: true !global;
+    @include utils.register-tokens($tokens: $-tokens, $prefix: "checkbox");
+  }
+}
+
+@mixin configure-global($overrides: null) {
+  $overrides: utils.get-config-map(checkbox, $overrides, $-configure-tokens);
+  @include configure();
+}
+
+@mixin css-styles {
+  $styles: (
+    "&checkbox": $-base-styles,
+  );
+  @include utils.css-styles($styles);
+}
+
+@mixin host-styles {
+  $styles: (
+    ":host": $-base-styles,
+    ".icon": $-icon-styles,
+    ".background": $-background-styles,
+    ".outline": $-outline-styles,
+    ".mark": $-mark-styles,
+    ".short": $-short-mark-styles,
+    ".long": $-long-mark-styles,
+    ":host(:is([checked], [indeterminate]))": $-checked-styles,
+    ":host([indeterminate])": $-indeterminate-styles,
+    ":host([size=small])": $-small-styles,
+    ":host([size=large])": $-large-styles,
+  );
+  @include utils.host-styles($styles);
+}
+
+@mixin styles {
+  @include css-styles;
+  @include host-styles;
+}

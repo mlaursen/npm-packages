@@ -12,6 +12,7 @@
 @use "box";
 @use "button";
 @use "icon-button";
+@use "checkbox";
 @use "dialog";
 @use "dialog-actions";
 @use "dialog-content";
@@ -38,6 +39,7 @@
   @include button.styles;
   @include icon-button.styles;
   @include link.styles;
+  @include checkbox.styles;
   @include dialog.styles;
   @include dialog-actions.styles;
   @include dialog-content.styles;

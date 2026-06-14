@@ -92,6 +92,13 @@ export const dialog = {
   widths: defaultSizes,
 };
 
+export const checkbox = {
+  /** @type {(import("@mlaursen/wc").CheckboxSize)[]} **/
+  sizes: defaultSizes,
+
+  states: ["unchecked", "checked", "indeterminate"],
+};
+
 export const sheet = {
   /** @type {(import("@mlaursen/wc").SheetShape)[]} **/
   shapes: defaultShapes,
