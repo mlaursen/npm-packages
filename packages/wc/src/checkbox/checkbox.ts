@@ -237,14 +237,28 @@ export class Checkbox extends BaseCheckbox implements CheckboxProperties {
       : `${this.checked}`;
     this.internals.ariaRequired = this.required ? "true" : null;
     this.internals.ariaInvalid = this.error ? "true" : null;
-    this.internals.setFormValue(this.value);
+    this.internals.setFormValue(this.checked ? this.value : null);
+
+    if (!this.checked && this.required) {
+      this.internals.setValidity(
+        { valueMissing: true },
+        "Please select an option.",
+        this,
+      );
+    } else {
+      this.internals.setValidity();
+    }
   }
 
   #handleReset = (): void => {
     const defaultChecked = this.hasAttribute("checked");
-    this.#reset = this.checked !== defaultChecked;
+    const defaultIndeterminate = this.hasAttribute("indeterminate");
+
+    this.#reset =
+      this.checked !== defaultChecked ||
+      this.indeterminate !== defaultIndeterminate;
     this.checked = defaultChecked;
-    this.indeterminate = this.hasAttribute("indeterminate");
+    this.indeterminate = defaultIndeterminate;
   };
 }
 

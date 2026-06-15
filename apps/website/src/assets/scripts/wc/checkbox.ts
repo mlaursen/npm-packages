@@ -3,6 +3,7 @@ import type { Checkbox } from "@mlaursen/wc";
 const checkboxes = document.querySelectorAll<Checkbox>(
   "mwc-checkbox[indeterminate]",
 );
+const form = document.querySelector("form");
 
 for (const checkbox of checkboxes) {
   let forceIndeterminate = false;
@@ -14,5 +15,8 @@ for (const checkbox of checkboxes) {
     } else if (!checkbox.checked) {
       forceIndeterminate = true;
     }
+  });
+  form?.addEventListener("reset", () => {
+    forceIndeterminate = false;
   });
 }
