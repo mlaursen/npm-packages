@@ -216,12 +216,6 @@ $-error-styles: utils.remap-variants(
 @mixin host-styles {
   $styles: (
     ":host": $-base-styles,
-    "@media (hover: hover) and (pointer: fine)": (
-      ":host(:hover)": $-hovered-styles,
-      ":host(:hover:focus-visible)::after": (
-        opacity: 1,
-      ),
-    ),
     ":host(:is([checked], [indeterminate]))": $-checked-styles,
     ":host([indeterminate])": $-indeterminate-styles,
     ":host([size=small])": $-small-styles,

@@ -117,7 +117,7 @@ export class Checkbox extends BaseCheckbox implements CheckboxProperties {
           <rect class="mark long" />
         </svg>
       </slot>
-      ${this.renderRipple()}
+      ${this.renderStateLayer()} ${this.renderRipple()}
     `;
   }
 

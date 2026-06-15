@@ -30,6 +30,7 @@ const enum RippleState {
 
 export function InteractionMixin<T extends StylableLitElement>(
   Base: T,
+  disableTabIndex = false,
 ): StyledLitElementWithProperties<Interactable, T> {
   let styles: CSSResultArray = [interactionStyles];
   if (Base.styles) {
@@ -52,6 +53,9 @@ export function InteractionMixin<T extends StylableLitElement>(
     @query(".ripple")
     _ripple?: HTMLSpanElement;
 
+    @query(".state-layer")
+    _stateLayer?: HTMLSpanElement;
+
     @state()
     _pressed = false;
 
@@ -61,7 +65,7 @@ export function InteractionMixin<T extends StylableLitElement>(
     #animationController?: AbortController;
 
     override willUpdate(changed: PropertyValues): void {
-      if (changed.has("disabled")) {
+      if (changed.has("disabled") && !disableTabIndex) {
         this.tabIndex = this.disabled ? -1 : 0;
       }
     }
@@ -81,17 +85,27 @@ export function InteractionMixin<T extends StylableLitElement>(
       this.#bindRippleHandlers(false);
     }
 
+    renderStateLayer(): TemplateResult {
+      return html`
+        <span class="state-layer ${this.#getStateLayerClassName()}"></span>
+      `;
+    }
+
     renderRipple(): TemplateResult | null {
       if (this.disableRipple) {
         return null;
       }
 
-      const className = classMap({
+      return html`
+        <span class="ripple ${this.#getStateLayerClassName()}"></span>
+      `;
+    }
+
+    #getStateLayerClassName(): ReturnType<typeof classMap> {
+      return classMap({
         disabled: this.disabled,
         pressed: this._pressed,
       });
-
-      return html`<span class="ripple ${className}"></span>`;
     }
 
     #bindRippleHandlers(add: boolean): void {

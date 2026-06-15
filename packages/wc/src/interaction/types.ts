@@ -20,8 +20,10 @@ export interface InteractionProperties {
 }
 
 export interface Interactable extends InteractionProperties {
-  _ripple?: HTMLSpanElement;
   _pressed: boolean;
+  _ripple?: HTMLSpanElement;
+  _stateLayer?: HTMLSpanElement;
 
   renderRipple(): TemplateResult | null;
+  renderStateLayer(): TemplateResult;
 }
