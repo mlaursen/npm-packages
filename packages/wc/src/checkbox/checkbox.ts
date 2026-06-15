@@ -33,6 +33,9 @@ const BaseStyledCheckbox = BaseAnimateMixin(
 );
 const BaseCheckbox = AriaMixin(BaseStyledCheckbox, "checkbox");
 
+const CHECKED = Symbol("checked");
+const INDETERMINATE = Symbol("indeterminate");
+
 @customElement("mwc-checkbox")
 export class Checkbox extends BaseCheckbox implements CheckboxProperties {
   static override styles = [...BaseCheckbox.styles, styles];
@@ -40,14 +43,46 @@ export class Checkbox extends BaseCheckbox implements CheckboxProperties {
   @property()
   size: CheckboxSize = "medium";
 
-  @property({ type: Boolean, reflect: true })
-  checked = false;
+  @property({ type: Boolean })
+  error = false;
+
+  @property({ type: Boolean })
+  get checked(): boolean {
+    return this[CHECKED];
+  }
+  set checked(checked: boolean) {
+    const prevChecked = this.checked;
+    if (prevChecked === checked) {
+      return;
+    }
+
+    this[CHECKED] = checked;
+    this.requestUpdate("checked", prevChecked);
+  }
+
+  [CHECKED] = false;
+
+  @property({ type: Boolean })
+  get indeterminate(): boolean {
+    return this[INDETERMINATE];
+  }
+  set indeterminate(indeterminate: boolean) {
+    const prevIndeterminate = this.indeterminate;
+    if (prevIndeterminate === indeterminate) {
+      return;
+    }
+
+    this[INDETERMINATE] = indeterminate;
+    this.requestUpdate("indeterminate", prevIndeterminate);
+  }
+
+  [INDETERMINATE] = false;
 
   @property({ type: Boolean })
   required = false;
 
-  @property({ type: Boolean, reflect: true })
-  indeterminate = false;
+  @property()
+  value = "on";
 
   @query(".icon")
   _icon?: HTMLElement;
@@ -64,6 +99,8 @@ export class Checkbox extends BaseCheckbox implements CheckboxProperties {
   @query(".mark.long")
   _longMark?: HTMLElement;
 
+  #reset = false;
+
   getCheckedAnimation: GetAnimationMap<AnimateCheckboxElementMap> = () =>
     DEFAULT_CHECKBOX_CHECKED_ANIMATION;
   getUncheckedAnimation: GetAnimationMap<AnimateCheckboxElementMap> = () =>
@@ -75,16 +112,23 @@ export class Checkbox extends BaseCheckbox implements CheckboxProperties {
     super.connectedCallback();
 
     this.#updateInternals();
+    this.internals?.form?.addEventListener("reset", this.#handleReset);
+  }
+
+  override disconnectedCallback(): void {
+    super.disconnectedCallback();
+
+    this.internals?.form?.removeEventListener("reset", this.#handleReset);
   }
 
   protected override willUpdate(changed: PropertyValues): void {
     super.willUpdate(changed);
 
-    if (
-      this._initialized &&
-      (changed.has("checked") || changed.has("indeterminate"))
-    ) {
-      this._animate({});
+    if (changed.has("checked") || changed.has("indeterminate")) {
+      this.classList.toggle("checked", this.checked);
+      this.classList.toggle("indeterminate", this.indeterminate);
+      this._animate({ animate: this._initialized && !this.#reset });
+      this.#reset = false;
     }
   }
 
@@ -165,6 +209,12 @@ export class Checkbox extends BaseCheckbox implements CheckboxProperties {
         composed: true,
       }),
     );
+    this.dispatchEvent(
+      new Event("input", {
+        bubbles: true,
+        composed: true,
+      }),
+    );
   }
 
   override handleKeyDown(event: KeyboardEvent): void {
@@ -177,6 +227,7 @@ export class Checkbox extends BaseCheckbox implements CheckboxProperties {
   }
 
   #updateInternals(): void {
+    this[CHECKED] = this.checked;
     if (!this.internals) {
       return;
     }
@@ -185,8 +236,16 @@ export class Checkbox extends BaseCheckbox implements CheckboxProperties {
       ? "mixed"
       : `${this.checked}`;
     this.internals.ariaRequired = this.required ? "true" : null;
-    this.internals.setFormValue(this.checked ? "on" : null);
+    this.internals.ariaInvalid = this.error ? "true" : null;
+    this.internals.setFormValue(this.value);
   }
+
+  #handleReset = (): void => {
+    const defaultChecked = this.hasAttribute("checked");
+    this.#reset = this.checked !== defaultChecked;
+    this.checked = defaultChecked;
+    this.indeterminate = this.hasAttribute("indeterminate");
+  };
 }
 
 declare global {

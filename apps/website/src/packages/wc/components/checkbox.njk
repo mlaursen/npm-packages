@@ -9,33 +9,46 @@ page:
   title: Checkbox
 ---
 
-{% for size in checkbox.sizes %}
-  <mwc-typography variant="title" text-transform="capitalize">
-    <h3>{{ size }}{{ " (Default)" if size == "medium" }}</h3>
-  </mwc-typography>
-  {% for state in checkbox.states %}
-    <mwc-checkbox aria-label="Checkbox {{ state }}"
-                  size="{{ size }}"
-                  {{ state if state !== "unchecked" }}>
-    </mwc-checkbox>
-    {% if state == "error" or  state == "disabled" %}
-      <mwc-checkbox aria-label="Checkbox {{ state }} Checked"
+<form>
+  {% for size in checkbox.sizes %}
+    <mwc-typography variant="title" text-transform="capitalize">
+      <h3>{{ size }}{{ " (Default)" if size == "medium" }}</h3>
+    </mwc-typography>
+    {% for state in checkbox.states %}
+      <mwc-checkbox aria-label="Checkbox {{ state }}"
                     size="{{ size }}"
-                    {{ state }}
-                    checked>
+                    name="{{ size }}"
+                    {{ state if state !== "unchecked" }}>
       </mwc-checkbox>
-      <mwc-checkbox aria-label="Checkbox {{ state }} indeterminate"
-                    size="{{ size }}"
-                    {{ state }}
-                    indeterminate>
-      </mwc-checkbox>
+      {% if state == "error" or  state == "disabled" %}
+        <mwc-checkbox aria-label="Checkbox {{ state }} Checked"
+                      size="{{ size }}"
+                      name="{{ size }}"
+                      {{ state }}
+                      checked>
+        </mwc-checkbox>
+        <mwc-checkbox aria-label="Checkbox {{ state }} indeterminate"
+                      size="{{ size }}"
+                      name="{{ size }}"
+                      {{ state }}
+                      indeterminate>
+        </mwc-checkbox>
+      {% endif %}
+    {% endfor %}
+    {% if size !== checkbox.sizes.at(-1) %}
+      <mwc-divider>
+      </mwc-divider>
     {% endif %}
   {% endfor %}
-  {% if size !== checkbox.sizes.at(-1) %}
-    <mwc-divider>
-    </mwc-divider>
-  {% endif %}
-{% endfor %}
+  <mwc-box>
+    <mwc-tonal-button type="reset">
+      Reset
+    </mwc-tonal-button>
+    <mwc-button type="submit">
+      Submit
+    </mwc-button>
+  </mwc-box>
+</form>
 {% js "defer" %}
 {% include "scripts/wc/checkbox.js" %}
 {% endjs %}

@@ -23,6 +23,7 @@ export type AnimateCheckboxOptions =
 
 export interface CheckboxProperties {
   size: CheckboxSize;
+  error: boolean;
   checked: boolean;
   indeterminate: boolean;
 

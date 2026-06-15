@@ -10,7 +10,8 @@ $-tokens: (
   background-opacity: 0,
   icon: (
     color: "palette.on-primary",
-    size: calc(1em * 0.375),
+    // icon viewbox / container size
+    size: calc(1em * 18 / 48),
   ),
   outline: (
     color: "palette.on-surface-variant",
@@ -82,6 +83,8 @@ $-tokens: (
 $-configure-tokens: map.keys($-tokens);
 
 $-base-styles: (
+  // container-size / ((container size - state-layer-size) / 2)
+  // 48px / ((48px - 40px) / 2)
   "interaction.container.inset": calc(1em / 12),
   "interaction.focused.container.opacity": 0,
 
@@ -113,10 +116,9 @@ $-base-styles: (
         transition:
           '"transition.duration.short-3" opacity "transition.easing.linear"',
       )
-    ),
+    )
 );
 $-icon-styles: (
-  color: "checkbox.color",
   font-size: "checkbox.icon.size",
   height: 1em,
   width: 1em,
@@ -130,6 +132,7 @@ $-background-styles: (
 $-outline-styles: (
   fill: none,
   stroke: "checkbox.outline.color",
+  transition: '"transition.duration.short-3" stroke "transition.easing.linear"',
 );
 $-mark-styles: (
   fill: "checkbox.icon.color",
@@ -182,7 +185,10 @@ $-disabled-styles: utils.deep-merge(
   utils.remap-variants(
     checkbox,
     disabled,
-    utils.get-tokens-from-map(map.get($-tokens, disabled), null)...
+    utils.get-tokens-from-map(
+        map.remove(map.get($-tokens, disabled), opacity),
+        null
+      )...
   ),
   (
     opacity: "checkbox.disabled.opacity",
@@ -216,12 +222,13 @@ $-error-styles: utils.remap-variants(
 @mixin host-styles {
   $styles: (
     ":host": $-base-styles,
-    ":host(:is([checked], [indeterminate]))": $-checked-styles,
-    ":host([indeterminate])": $-indeterminate-styles,
+    ":host(:is(.checked, .indeterminate))": $-checked-styles,
+    ":host(.indeterminate)": $-indeterminate-styles,
     ":host([size=small])": $-small-styles,
     ":host([size=large])": $-large-styles,
     ":host([disabled])": $-disabled-styles,
     ":host([error])": $-error-styles,
+    "host-hover": $-hovered-styles,
     ".icon": $-icon-styles,
     ".background": $-background-styles,
     ".outline": $-outline-styles,
