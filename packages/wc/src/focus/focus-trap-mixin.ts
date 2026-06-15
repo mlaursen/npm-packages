@@ -2,12 +2,9 @@ import { type TemplateResult, html } from "lit";
 import { property, query } from "lit/decorators.js";
 
 import { type LitConstructor } from "../types.js";
+import { isWithinRoot } from "../utils/traverse.js";
 import { type FocusTrapProperties } from "./types.js";
-import {
-  getAutoFocusElement,
-  getFocusableElements,
-  isWithinRoot,
-} from "./utils.js";
+import { getAutoFocusElement, getFocusableElements } from "./utils.js";
 
 export function FocusTrapMixin<T extends LitConstructor>(
   Base: T,
