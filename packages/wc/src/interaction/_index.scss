@@ -143,14 +143,15 @@ $-hovered-styles: utils.remap-variants(interaction, hovered, $-state-keys...);
 $-focused-styles: utils.remap-variants(interaction, focused, $-state-keys...);
 $-focused-inward-styles: (
   "interaction.focused.animation-name": "inward-grow, inward-shrink",
-  "interaction.focused.border": '"interaction.focused.width" solid currentcolor',
+  "interaction.focused.border":
+    '"interaction.focused.width" solid "interaction.focused.color"',
   "interaction.focused.inset": "interaction.focused.inward-offset",
 );
 $-focused-outward-styles: (
   "interaction.focused.animation-name": "outward-grow, outward-shrink",
   "interaction.focused.inset": 'calc(-1 * "interaction.focused.outward-offset")',
   "interaction.focused.outline":
-    '"interaction.focused.width" solid currentcolor',
+    '"interaction.focused.width" solid "interaction.focused.color"',
 );
 $-pressed-styles: (
   "interaction.pressed.ripple.opacity": "interaction.pressed.container.opacity",
