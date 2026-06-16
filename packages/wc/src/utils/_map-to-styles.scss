@@ -192,7 +192,7 @@
 /// i.e. `button`
 /// @param {String} $variant-prefix - This should be the variant prefix that
 /// overrides the base tokens. i.e. `small`
-/// @param {String...} $variants - a list of keys that should be remapped
+/// @param {String|List|Map...} $variants - a list of keys that should be remapped
 /// @return {Map} -
 @function remap-variants($prefix, $variant-prefix, $variants...) {
   $result: ();
@@ -201,6 +201,11 @@
       $tokens: get-tokens-from-map($variant);
       $remapped: remap-variants($prefix, $variant-prefix, $tokens...);
       $result: deep-merge($result, $remapped);
+    } @else if meta.type-of($variant) == list {
+      $result: deep-merge(
+        $result,
+        remap-variants($prefix, $variant-prefix, $variant...)
+      );
     } @else {
       $result: map.set(
         $result,

@@ -76,7 +76,7 @@ export const button = {
   /** @type {import("@mlaursen/wc").ButtonVariant[]} */
   variants: ["tonal", "text", "outlined", "filled", "elevated"],
 
-  playground: true,
+  states: ["normal", "unselected", "selected"],
 };
 
 export const iconButton = {

@@ -42,3 +42,16 @@
 
   @return $result;
 }
+
+///
+/// @param {List} $list -
+/// @param {String} $prefix -
+/// @return {List} -
+@function list-prefix-values($list, $prefix) {
+  $result: ();
+  @each $item in $list {
+    $result: list.append($result, $prefix + $item);
+  }
+
+  @return $result;
+}

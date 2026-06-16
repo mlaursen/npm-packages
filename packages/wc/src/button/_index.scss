@@ -107,7 +107,18 @@ $-base-styles: map.deep-merge(
     padding-inline-end: "button.padding-right",
     place-content: center,
     place-items: center,
+    user-select: none,
   )
+);
+$-selected-styles: utils.remap-variants(
+  button,
+  selected,
+  tokens.$selection-variants
+);
+$-unselected-styles: utils.remap-variants(
+  button,
+  unselected,
+  tokens.$selection-variants
 );
 $-base-disabled-styles: utils.remap-variants(
   button,
@@ -129,6 +140,11 @@ $-round-styles: (
 $-square-styles: (
   border-radius: "button.shape.square",
 );
+$-remove-background-styles: (
+  background: transparent,
+);
+
+$-is-disabled: ":is([disabled], [aria-disabled=true])";
 
 @mixin configure() {
   @if not $-tokens-registered {
@@ -154,19 +170,17 @@ $-square-styles: (
     "&button--square": $-round-styles,
     "&button--text": tokens.$text-styles,
     "&button--outlined": tokens.$outlined-styles,
-    "&button--outlined:is(:disabled, [aria-disabled=true])":
-      tokens.$outlined-disabled-styles,
+    "&button--outlined#{$-is-disabled}": tokens.$outlined-disabled-styles,
     "&button--tonal": tokens.$tonal-styles,
     "&button--filled": tokens.$filled-styles,
     "&button--elevated": tokens.$elevated-styles,
-    "&button:is(:disabled, [aria-disabled=true])": $-base-disabled-styles,
+    "&button#{$-is-disabled}": $-base-disabled-styles,
     "&button:disabled": $-disabled-styles,
   );
   @include utils.css-styles($styles, $-short-names);
 }
 
 @mixin host-styles {
-  $is-disabled: ":is([disabled], [aria-disabled=true])";
   $styles: (
     ":host": $-base-styles,
     ":host([size=extra-small])": tokens.$extra-small-styles,
@@ -178,11 +192,16 @@ $-square-styles: (
     ":host([shape=square])": $-square-styles,
     ":host([variant=text])": tokens.$text-styles,
     ":host([variant=outlined])": tokens.$outlined-styles,
-    ":host([variant=outlined]#{$is-disabled})": tokens.$outlined-disabled-styles,
+    ":host([variant=outlined]#{$-is-disabled})":
+      tokens.$outlined-disabled-styles,
     ":host([variant=tonal])": tokens.$tonal-styles,
     ":host([variant=filled])": tokens.$filled-styles,
     ":host([variant=elevated])": tokens.$elevated-styles,
-    ":host(#{$is-disabled})": $-base-disabled-styles,
+    ":host(:is([variant=outlined], [variant=text]):is(:not([aria-pressed=true])))":
+      $-remove-background-styles,
+    ":host([aria-pressed=true])": $-selected-styles,
+    ":host([aria-pressed=false])": $-unselected-styles,
+    ":host(#{$-is-disabled})": $-base-disabled-styles,
     ":host([disabled])": $-disabled-styles,
   );
 

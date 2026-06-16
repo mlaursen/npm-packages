@@ -21,21 +21,64 @@ icons:
     trailing: true
 ---
 
-<mwc-text-container>
-  <mwc-box grid="2">
-    {% for variant in button.variants %}
-      {% for isDisabled in disabled %}
-        <div>
-          <mwc-button variant="{{ variant }}" {{ "disabled" if isDisabled }}>
-            <mwc-material-symbol>
-              favorite
-            </mwc-material-symbol>
-            {{ variant | capitalize }}
-          </mwc-button>
-        </div>
-      {% endfor %}
+<mwc-box grid="2">
+  {% for variant in button.variants %}
+    {% for isDisabled in disabled %}
+      <div>
+        <mwc-button variant="{{ variant }}" {{ "disabled" if isDisabled }}>
+          <mwc-material-symbol>
+            favorite
+          </mwc-material-symbol>
+          {{ variant | capitalize }}
+        </mwc-button>
+      </div>
     {% endfor %}
-  </mwc-box>
+  {% endfor %}
+</mwc-box>
+<mwc-divider>
+</mwc-divider>
+<mwc-box grid="4">
+  <mwc-typography>
+    Unselected
+  </mwc-typography>
+  <mwc-typography>
+    Selected
+  </mwc-typography>
+  <mwc-typography>
+    Unselected (Disabled)
+  </mwc-typography>
+  <mwc-typography>
+    Selected (Disabled)
+  </mwc-typography>
+  {% for variant in button.variants %}
+    {% if variant != "text" %}
+      {% for isDisabled in disabled %}
+        {% for state in button.states %}
+          {% if state != "normal" %}
+            <div>
+              {% set pressed = state == "selected" %}
+              <mwc-button aria-pressed="{{ pressed }}"
+                          variant="{{ variant }}"
+                          {{ "disabled" if isDisabled }}>
+                <mwc-material-symbol>
+                  favorite
+                </mwc-material-symbol>
+                {{ variant | capitalize }}
+              </mwc-button>
+            </div>
+          {% endif %}
+        {% endfor %}
+      {% endfor %}
+    {% else %}
+      <mwc-typography style="grid-column: 1 / -1" color="error">
+        <p>{{ variant |capitalize }} buttons do not support selected states.</p>
+      </mwc-typography>
+    {% endif %}
+  {% endfor %}
+</mwc-box>
+<mwc-divider>
+</mwc-divider>
+<mwc-text-container>
   <mwc-typography variant="headline">
     <h2>Buttons</h2>
   </mwc-typography>

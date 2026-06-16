@@ -4,20 +4,43 @@
 
 @use "../../utils";
 
-$-color-variants: (
-  color,
+$selection-variants: (
+  "background",
+  "color",
   "icon.color",
-  "disabled.background",
-  "disabled.background-opacity",
-  "disabled.color",
-  "disabled.color-opacity",
-  "hovered.interaction.color",
-  "hovered.interaction.opacity",
+  "interaction.color",
   "hovered.color",
+  "hovered.icon.color",
+  "hovered.interaction.color",
+  "focused.icon.color",
   "focused.interaction.color",
-  "focused.interaction.opacity",
-  "pressed.interaction.color",
-  "pressed.interaction.opacity"
+  "pressed.icon.color",
+  "pressed.interaction.color"
+);
+$-color-variants: utils.list-concat(
+  (
+    color,
+    "icon.color",
+    "disabled.background",
+    "disabled.background-opacity",
+    "disabled.color",
+    "disabled.color-opacity",
+    "hovered.interaction.color",
+    "hovered.interaction.opacity",
+    "hovered.color",
+    "focused.interaction.color",
+    "focused.interaction.opacity",
+    "pressed.interaction.color",
+    "pressed.interaction.opacity"
+  ),
+  utils.list-prefix-values($selection-variants, "unselected."),
+  utils.list-prefix-values($selection-variants, "selected.")
+);
+$-color-variants-without-backgrounds: utils.list-filter(
+  $-color-variants,
+  background,
+  "disabled.background",
+  "unselected.background"
 );
 
 $text-tokens: (
@@ -51,10 +74,11 @@ $text-tokens: (
   ),
 );
 $text-styles: utils.deep-merge(
-  (
-    "button.background-opacity": 0,
-  ),
-  utils.remap-variants(button, text, $-color-variants...)
+  utils.remap-variants(
+    button,
+    text,
+    utils.list-filter($-color-variants, $selection-variants...)
+  )
 );
 
 $outlined-tokens: (
@@ -71,9 +95,7 @@ $outlined-tokens: (
     color: currentcolor,
   ),
   disabled: (
-    // should only be while selected
-    // background-opacity: 0.1,
-    background-opacity: 0,
+    background-opacity: 0.1,
     color: "palette.on-surface",
     color-opacity: 0.38,
     outline: (
@@ -109,12 +131,98 @@ $outlined-tokens: (
       color: "palette.outline-variant",
     ),
   ),
+
+  unselected: (
+    color: "palette.on-surface-variant",
+
+    icon: (
+      color: "palette.on-surface-variant",
+    ),
+
+    hovered: (
+      color: "palette.on-surface-variant",
+
+      icon: (
+        color: "palette.on-surface-variant",
+      ),
+
+      interaction: (
+        color: "palette.on-surface-variant",
+      ),
+    ),
+    focused: (
+      color: "palette.on-surface-variant",
+
+      icon: (
+        color: "palette.on-surface-variant",
+      ),
+
+      interaction: (
+        color: "palette.on-surface-variant",
+      ),
+    ),
+    pressed: (
+      color: "palette.on-surface-variant",
+
+      icon: (
+        color: "palette.on-surface-variant",
+      ),
+
+      interaction: (
+        color: "palette.on-surface-variant",
+      ),
+    ),
+  ),
+  selected: (
+    background: "palette.inverse-surface",
+    color: "palette.inverse-on-surface",
+
+    icon: (
+      color: "palette.inverse-on-surface",
+    ),
+
+    disabled: (
+      background: "palette.on-surface",
+      color: "palette.on-surface",
+    ),
+
+    hovered: (
+      color: "palette.inverse-on-surface",
+
+      icon: (
+        color: "palette.inverse-on-surface",
+      ),
+
+      interaction: (
+        color: "palette.inverse-on-surface",
+      ),
+    ),
+    focused: (
+      color: "palette.inverse-on-surface",
+
+      icon: (
+        color: "palette.inverse-on-surface",
+      ),
+
+      interaction: (
+        color: "palette.inverse-on-surface",
+      ),
+    ),
+    pressed: (
+      color: "palette.inverse-on-surface",
+
+      icon: (
+        color: "palette.inverse-on-surface",
+      ),
+
+      interaction: (
+        color: "palette.inverse-on-surface",
+      ),
+    ),
+  ),
 );
 $outlined-styles: utils.deep-merge(
-  (
-    "button.background-opacity": 0,
-  ),
-  utils.remap-variants(button, outlined, $-color-variants...),
+  utils.remap-variants(button, outlined, $-color-variants-without-backgrounds),
   (
     "&::after": map.merge(
         utils.pseudo-element(),
@@ -151,6 +259,91 @@ $tonal-tokens: (
   pressed: (
     color: "palette.on-secondary-container",
   ),
+
+  unselected: (
+    background: "palette.secondary-container",
+    color: "palette.on-secondary-container",
+
+    icon: (
+      color: "palette.on-secondary-container",
+    ),
+
+    hovered: (
+      color: "palette.on-secondary-container",
+
+      icon: (
+        color: "palette.on-secondary-container",
+      ),
+
+      interaction: (
+        color: "palette.on-secondary-container",
+      ),
+    ),
+    focused: (
+      color: "palette.on-secondary-container",
+
+      icon: (
+        color: "palette.on-secondary-container",
+      ),
+
+      interaction: (
+        color: "palette.on-secondary-container",
+      ),
+    ),
+    pressed: (
+      color: "palette.on-secondary-container",
+
+      icon: (
+        color: "palette.on-secondary-container",
+      ),
+
+      interaction: (
+        color: "palette.on-secondary-container",
+      ),
+    ),
+  ),
+  selected: (
+    background: "palette.secondary",
+    color: "palette.on-secondary",
+
+    icon: (
+      color: "palette.on-secondary",
+    ),
+
+    hovered: (
+      color: "palette.on-secondary",
+
+      icon: (
+        color: "palette.on-secondary",
+      ),
+
+      interaction: (
+        color: "palette.on-secondary",
+      ),
+    ),
+    focused: (
+      color: "palette.on-secondary",
+
+      icon: (
+        color: "palette.on-secondary",
+      ),
+
+      interaction: (
+        color: "palette.on-secondary",
+      ),
+    ),
+    pressed: (
+      color: "palette.on-secondary",
+
+      icon: (
+        color: "palette.on-secondary",
+      ),
+
+      interaction: (
+        color: "palette.on-secondary",
+      ),
+    ),
+  ),
 );
 $tonal-styles: utils.remap-variants(
   button,
@@ -171,14 +364,98 @@ $filled-tokens: (
   background: "palette.primary",
   color: "palette.on-primary",
 
-  selected: (
-    color: "palette.on-primary",
-  ),
   unselected: (
+    background: "palette.surface-container",
     color: "palette.on-surface-variant",
+
+    icon: (
+      color: "palette.on-surface-variant",
+    ),
+
+    hovered: (
+      background: "palette.surface-container",
+      color: "palette.on-surface-variant",
+
+      icon: (
+        color: "palette.on-surface-variant",
+      ),
+
+      interaction: (
+        color: "palette.on-surface-variant",
+      ),
+    ),
+    focused: (
+      background: "palette.on-surface-variant",
+      color: "palette.on-surface-variant",
+
+      icon: (
+        color: "palette.on-surface-variant",
+      ),
+
+      interaction: (
+        color: "palette.on-surface-variant",
+      ),
+    ),
+    pressed: (
+      background: "palette.on-surface-variant",
+      color: "palette.on-surface-variant",
+
+      icon: (
+        color: "palette.on-surface-variant",
+      ),
+
+      interaction: (
+        color: "palette.on-surface-variant",
+      ),
+    ),
+  ),
+  selected: (
+    background: "palette.primary",
+    color: "palette.on-primary",
+
+    icon: (
+      color: "palette.on-primary",
+    ),
+
+    hovered: (
+      background: "palette.primary",
+      color: "palette.on-primary",
+
+      icon: (
+        color: "palette.on-primary",
+      ),
+
+      interaction: (
+        color: "palette.on-primary",
+      ),
+    ),
+    focused: (
+      background: "palette.on-primary",
+      color: "palette.on-primary",
+
+      icon: (
+        color: "palette.on-primary",
+      ),
+
+      interaction: (
+        color: "palette.on-primary",
+      ),
+    ),
+    pressed: (
+      background: "palette.on-primary",
+      color: "palette.on-primary",
+
+      icon: (
+        color: "palette.on-primary",
+      ),
+
+      interaction: (
+        color: "palette.on-primary",
+      ),
+    ),
   ),
 );
-$filled-styles: utils.remap-variants(button, filled, background, color);
+$filled-styles: utils.remap-variants(button, filled, $filled-tokens);
 
 $elevated-tokens: (
   background: "palette.surface-container-low",
@@ -211,6 +488,80 @@ $elevated-tokens: (
     interaction: (
       color: "palette.primary",
       opacity: 0.1,
+    ),
+  ),
+
+  unselected: (
+    background: "palette.surface-container-low",
+    color: "palette.primary",
+
+    icon: (
+      color: "palette.primary",
+    ),
+
+    hovered: (
+      color: "palette.primary",
+
+      icon: (
+        color: "palette.on-primary",
+      ),
+
+      interaction: (
+        color: "palette.primary",
+      ),
+    ),
+    focused: (
+      color: "palette.primary",
+
+      icon: (
+        color: "palette.on-primary",
+      ),
+
+      interaction: (
+        color: "palette.primary",
+      ),
+    ),
+  ),
+  selected: (
+    background: "palette.primary",
+    color: "palette.on-primary",
+
+    icon: (
+      color: "palette.on-primary",
+    ),
+
+    hovered: (
+      color: "palette.on-primary",
+
+      icon: (
+        color: "palette.on-primary",
+      ),
+
+      interaction: (
+        color: "palette.on-primary",
+      ),
+    ),
+    focused: (
+      color: "palette.on-primary",
+
+      icon: (
+        color: "palette.on-primary",
+      ),
+
+      interaction: (
+        color: "palette.on-primary",
+      ),
+    ),
+    pressed: (
+      color: "palette.on-primary",
+
+      icon: (
+        color: "palette.on-primary",
+      ),
+
+      interaction: (
+        color: "palette.on-primary",
+      ),
     ),
   ),
 );

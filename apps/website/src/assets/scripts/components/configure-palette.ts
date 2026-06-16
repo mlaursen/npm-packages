@@ -141,12 +141,12 @@ export class ConfigurePalette extends LitElement {
         ${map(colorSchemes, (colorScheme) => {
           const active = this.colorScheme === colorScheme;
           return html`
-            <mwc-button
-              variant=${active ? "filled" : "outlined"}
+            <mwc-outlined-button
+              aria-pressed="${active}"
               @click=${() => this.#changeColorScheme(colorScheme)}
             >
               ${colorScheme}
-            </mwc-button>
+            </mwc-outlined-button>
           `;
         })}
       </mwc-box>
@@ -162,12 +162,12 @@ export class ConfigurePalette extends LitElement {
         ${map(contrasts, (contrast) => {
           const active = this.materialTheme && this.contrast === contrast;
           return html`
-            <mwc-button
-              variant=${active ? "filled" : "outlined"}
+            <mwc-outlined-button
+              aria-pressed="${active}"
               @click=${() => this.#changeMaterialColor(contrast)}
             >
               ${contrast}
-            </mwc-button>
+            </mwc-outlined-button>
           `;
         })}
       </mwc-box>

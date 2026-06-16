@@ -117,6 +117,7 @@ $-base-interaction-layer-styles: utils.deep-merge(
   )
 );
 // hover and focus states. can also support fallback pressed states if not using the ripple
+// NOTE: I need to update this to support splitting hover and focus states
 $-base-state-layer-styles: (
   "&::before": (
     background: utils.get-rgb-var(
