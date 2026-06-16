@@ -3,6 +3,7 @@
 @use "sass:meta";
 @use "sass:string";
 
+@use "map" as *;
 @use "mouse" as *;
 @use "setup" as *;
 @use "string" as *;
@@ -138,7 +139,7 @@
 /// @param {Map} $map -
 /// @param {String|null} $prefix -
 /// @return {List} -
-@function get-tokens-from-map($map, $prefix) {
+@function get-tokens-from-map($map, $prefix: null) {
   $tokens: ();
   @each $key, $value in $map {
     $name: $key;
@@ -196,11 +197,17 @@
 @function remap-variants($prefix, $variant-prefix, $variants...) {
   $result: ();
   @each $variant in $variants {
-    $result: map.set(
-      $result,
-      "#{$prefix}.#{$variant}",
-      "#{$prefix}.#{$variant-prefix}.#{$variant}"
-    );
+    @if meta.type-of($variant) == map {
+      $tokens: get-tokens-from-map($variant);
+      $remapped: remap-variants($prefix, $variant-prefix, $tokens...);
+      $result: deep-merge($result, $remapped);
+    } @else {
+      $result: map.set(
+        $result,
+        "#{$prefix}.#{$variant}",
+        "#{$prefix}.#{$variant-prefix}.#{$variant}"
+      );
+    }
   }
 
   @return $result;

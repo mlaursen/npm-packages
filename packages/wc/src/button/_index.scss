@@ -30,8 +30,8 @@ $-tokens: utils.deep-merge(
     disabled: (
       elevation: 0,
       icon: (
-        color: currentcolor,
-        opacity: 1,
+        color: "button.disabled.color",
+        opacity: "button.disabled.color-opacity",
       ),
     ),
     hovered: (
@@ -166,6 +166,7 @@ $-square-styles: (
 }
 
 @mixin host-styles {
+  $is-disabled: ":is([disabled], [aria-disabled=true])";
   $styles: (
     ":host": $-base-styles,
     ":host([size=extra-small])": tokens.$extra-small-styles,
@@ -177,12 +178,11 @@ $-square-styles: (
     ":host([shape=square])": $-square-styles,
     ":host([variant=text])": tokens.$text-styles,
     ":host([variant=outlined])": tokens.$outlined-styles,
-    ":host([variant=outlined]:is([disabled], [aria-disabled=true]))":
-      tokens.$outlined-disabled-styles,
+    ":host([variant=outlined]#{$is-disabled})": tokens.$outlined-disabled-styles,
     ":host([variant=tonal])": tokens.$tonal-styles,
     ":host([variant=filled])": tokens.$filled-styles,
     ":host([variant=elevated])": tokens.$elevated-styles,
-    ":host(:is([disabled], [aria-disabled=true]))": $-base-disabled-styles,
+    ":host(#{$is-disabled})": $-base-disabled-styles,
     ":host([disabled])": $-disabled-styles,
   );
 

@@ -24,6 +24,17 @@ page:
         </mwc-radio>
       {% endfor %}
     </mwc-radio-group>
+    <mwc-radio-group aria-label="Additional States">
+      {% for i in range(1, 5) %}
+        <mwc-radio aria-label="Errored {{ state }}"
+                   error
+                   name="{{ size }}-fake"
+                   size="{{ size }}"
+                   {{ "checked" if i % 2 == 0 }}
+                   {{ "disabled" if i >= 3 }}>
+        </mwc-radio>
+      {% endfor %}
+    </mwc-radio-group>
     {% if size !== radio.sizes.at(-1) %}
       <mwc-divider>
       </mwc-divider>

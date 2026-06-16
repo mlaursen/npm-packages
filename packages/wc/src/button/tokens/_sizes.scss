@@ -12,7 +12,7 @@ $extra-small-tokens: (
   ),
   outline-width: 1px,
 );
-$size-token-remaps: utils.get-tokens-from-map($extra-small-tokens, null);
+$size-token-remaps: utils.get-tokens-from-map($extra-small-tokens);
 $extra-small-styles: utils.remap-variants(
   button,
   extra-small,

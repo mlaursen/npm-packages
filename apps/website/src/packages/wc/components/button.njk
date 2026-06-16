@@ -22,6 +22,20 @@ icons:
 ---
 
 <mwc-text-container>
+  <mwc-box grid="2">
+    {% for variant in button.variants %}
+      {% for isDisabled in disabled %}
+        <div>
+          <mwc-button variant="{{ variant }}" {{ "disabled" if isDisabled }}>
+            <mwc-material-symbol>
+              favorite
+            </mwc-material-symbol>
+            {{ variant | capitalize }}
+          </mwc-button>
+        </div>
+      {% endfor %}
+    {% endfor %}
+  </mwc-box>
   <mwc-typography variant="headline">
     <h2>Buttons</h2>
   </mwc-typography>

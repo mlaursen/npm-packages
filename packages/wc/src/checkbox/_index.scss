@@ -179,26 +179,19 @@ $-large-styles: (
 $-hovered-styles: utils.remap-variants(
   checkbox,
   hovered,
-  utils.get-tokens-from-map(map.get($-tokens, hovered), null)...
+  map.get($-tokens, hovered)
 );
 $-disabled-styles: utils.deep-merge(
   utils.remap-variants(
     checkbox,
     disabled,
-    utils.get-tokens-from-map(
-        map.remove(map.get($-tokens, disabled), opacity),
-        null
-      )...
+    map.remove(map.get($-tokens, disabled), opacity)
   ),
   (
     opacity: "checkbox.disabled.opacity",
   )
 );
-$-error-styles: utils.remap-variants(
-  checkbox,
-  error,
-  utils.get-tokens-from-map(map.get($-tokens, error), null)...
-);
+$-error-styles: utils.remap-variants(checkbox, error, map.get($-tokens, error));
 
 @mixin configure() {
   @if not $-tokens-registered {

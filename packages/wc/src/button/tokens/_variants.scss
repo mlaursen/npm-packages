@@ -71,11 +71,13 @@ $outlined-tokens: (
     color: currentcolor,
   ),
   disabled: (
-    background-opacity: 0.1,
+    // should only be while selected
+    // background-opacity: 0.1,
+    background-opacity: 0,
     color: "palette.on-surface",
     color-opacity: 0.38,
     outline: (
-      color: "palette.on-surface",
+      color: "palette.outline-variant",
     ),
   ),
   hovered: (
@@ -158,6 +160,11 @@ $tonal-styles: utils.remap-variants(
   elevation,
   color,
   "icon.color"
+);
+$tonal-disabled-styles: utils.remap-variants(
+  button,
+  disabled,
+  map.keys(map.get($tonal-tokens, disabled))...
 );
 
 $filled-tokens: (
