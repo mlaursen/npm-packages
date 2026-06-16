@@ -124,7 +124,7 @@ $-base-state-layer-styles: (
         "interaction.container.opacity"
       ),
     transition:
-      '"transition.duration.short-3" background "transition.easing.linear"',
+      'background "transition.duration.short-3" "transition.easing.linear"',
   ),
 );
 // pressed states

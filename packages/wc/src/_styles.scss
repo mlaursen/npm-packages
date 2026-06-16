@@ -13,6 +13,7 @@
 @use "button";
 @use "icon-button";
 @use "checkbox";
+@use "radio";
 @use "dialog";
 @use "dialog-actions";
 @use "dialog-content";
@@ -40,6 +41,7 @@
   @include icon-button.styles;
   @include link.styles;
   @include checkbox.styles;
+  @include radio.styles;
   @include dialog.styles;
   @include dialog-actions.styles;
   @include dialog-content.styles;

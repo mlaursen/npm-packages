@@ -1,0 +1,69 @@
+---
+layout: docs
+
+eleventyNavigation:
+  key: Radio
+  parent: Home
+
+page:
+  title: Radio
+---
+
+<form>
+  {% for size in radio.sizes %}
+    <mwc-typography variant="title" text-transform="capitalize">
+      <h3 id="{{ size }}-title">{{ size }}{{ " (Default)" if size == "medium" }}</h3>
+    </mwc-typography>
+    <mwc-radio-group aria-labelledby="{{ size }}-title">
+      {% for i in range(1, 5) %}
+        <mwc-radio aria-label="Radio {{ state }} {{ i }}"
+                   name="{{ size }}"
+                   size="{{ size }}"
+                   {{ "disabled" if i == 4 }}
+                   required>
+        </mwc-radio>
+      {% endfor %}
+    </mwc-radio-group>
+    {% if size !== radio.sizes.at(-1) %}
+      <mwc-divider>
+      </mwc-divider>
+    {% endif %}
+  {% endfor %}
+  <mwc-tonal-button type="reset">
+    Reset
+  </mwc-tonal-button>
+  <mwc-button type="submit">
+    Submit
+  </mwc-button>
+</form>
+<form>
+  <label>
+    Apple
+    <input type="radio" required name="fruit" value="apple">
+  </label>
+  <label>
+    Orange
+    <input type="radio" required name="fruit" value="orange">
+  </label>
+  <label>
+    Banana
+    <input type="radio" required name="fruit" value="banana">
+  </label>
+  <label>
+    Consent
+    <input type="checkbox" required name="consent" />
+  </label>
+  <label>
+    Consent 3
+    <input type="checkbox" name="consent-3" />
+  </label>
+  <label for="consent-2">Consent 2</label>
+  <mwc-checkbox id="consent-2" name="consent-2">
+  </mwc-checkbox>
+  <mwc-tonal-button type="reset">
+    Reset
+  </mwc-tonal-button>
+  <mwc-button type="submit">
+    Submit
+  </mwc-button>
+</form>

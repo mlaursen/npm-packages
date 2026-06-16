@@ -99,6 +99,11 @@ export const checkbox = {
   states: ["unchecked", "checked", "indeterminate", "error", "disabled"],
 };
 
+export const radio = {
+  /** @type {(import("@mlaursen/wc").RadioSize)[]} **/
+  sizes: defaultSizes,
+};
+
 export const sheet = {
   /** @type {(import("@mlaursen/wc").SheetShape)[]} **/
   shapes: defaultShapes,

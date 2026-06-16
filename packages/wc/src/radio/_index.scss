@@ -1,0 +1,148 @@
+@use "sass:map";
+
+@use "../utils";
+
+$-tokens-registered: false;
+$-tokens: (
+  size: 3rem,
+
+  icon: (
+    color: "palette.on-surface-variant",
+    // icon viewbox / container size
+    size: calc(1em * 20 / 48),
+  ),
+
+  mark: (
+    opacity: 0,
+  ),
+
+  checked: (
+    icon: (
+      color: "palette.primary",
+    ),
+  ),
+  disabled: (
+    opacity: "interaction.disabled.container.opacity",
+    icon: (
+      color: "palette.on-surface",
+    ),
+  ),
+);
+
+$-configure-tokens: map.keys($-tokens);
+
+$-base-styles: (
+  // container-size / ((container size - state-layer-size) / 2)
+  // 48px / ((48px - 40px) / 2)
+  "interaction.container.inset": calc(1em / 12),
+  "interaction.focused.container.opacity": 0,
+  align-items: center,
+  border-radius: "shape.full",
+  display: inline-flex,
+  flex-shrink: 0,
+  font-size: "radio.size",
+  height: 1em,
+  justify-content: center,
+  width: 1em
+);
+$-checked-styles: utils.deep-merge(
+  utils.remap-variants(radio, checked, "icon.color"),
+  (
+    "radio.mark.opacity": 1,
+  )
+);
+$-icon-styles: (
+  fill: "radio.icon.color",
+  font-size: "radio.icon.size",
+  height: 1em,
+  width: 1em,
+);
+$-outline-styles: (
+  transition: 'fill "transition.duration.short-1" "transition.easing.linear"',
+);
+$-mark-styles: (
+  opacity: "radio.mark.opacity",
+  transform-origin: center,
+);
+
+// about the same size as an extra-small icon button
+$-small-styles: (
+  font-size: 2.375rem,
+);
+// about the same size as a large icon button
+$-large-styles: (
+  font-size: 6rem,
+);
+
+$-hovered-styles: ();
+$-disabled-styles: utils.deep-merge(
+  utils.remap-variants(
+    checkbox,
+    disabled,
+    utils.get-tokens-from-map(
+        map.remove(map.get($-tokens, disabled), opacity),
+        null
+      )...
+  ),
+  (
+    opacity: "radio.disabled.opacity",
+  )
+);
+$-error-styles: ();
+// $-hovered-styles: utils.remap-variants(
+//   radio,
+//   hovered,
+//   utils.get-tokens-from-map(map.get($-tokens, hovered), null)...
+// );
+// $-disabled-styles: utils.deep-merge(
+//   utils.remap-variants(
+//     radio,
+//     disabled,
+//     utils.get-tokens-from-map(map.get($-tokens, disabled), null)...
+//   ),
+//   (
+//     opacity: "radio.disabled.opacity",
+//   )
+// );
+// $-error-styles: utils.remap-variants(
+//   radio,
+//   error,
+//   utils.get-tokens-from-map(map.get($-tokens, error), null)...
+// );
+
+@mixin configure() {
+  @if not $-tokens-registered {
+    $-tokens-registered: true !global;
+    @include utils.register-tokens($tokens: $-tokens, $prefix: "radio");
+  }
+}
+
+@mixin configure-global($overrides: null) {
+  $overrides: utils.get-config-map(radio, $overrides, $-configure-tokens);
+  @include configure();
+}
+
+@mixin css-styles {
+  $styles: ();
+  @include utils.css-styles($styles);
+}
+
+@mixin host-styles {
+  $styles: (
+    ":host": $-base-styles,
+    ":host(.checked)": $-checked-styles,
+    ":host([size=small])": $-small-styles,
+    ":host([size=large])": $-large-styles,
+    ":host([disabled])": $-disabled-styles,
+    ":host([error])": $-error-styles,
+    ".icon": $-icon-styles,
+    ".outline": $-outline-styles,
+    ".mark": $-mark-styles,
+  );
+  @include utils.host-styles($styles);
+}
+
+@mixin styles {
+  @include css-styles;
+  @include host-styles;
+}

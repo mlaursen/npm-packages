@@ -41,7 +41,7 @@ $-base-link-styles: (
   color: "link.color",
   display: inline-flex,
   gap: "link.gap",
-  transition: '"transition.duration.short-3" color "transition.easing.linear"',
+  transition: 'color "transition.duration.short-3" "transition.easing.linear"',
 );
 $-inline-styles: (
   display: inline,

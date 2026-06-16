@@ -114,7 +114,7 @@ $-base-styles: (
           ),
         opacity: 0,
         transition:
-          '"transition.duration.short-3" opacity "transition.easing.linear"',
+          'opacity "transition.duration.short-3" "transition.easing.linear"',
       )
     )
 );
@@ -132,7 +132,7 @@ $-background-styles: (
 $-outline-styles: (
   fill: none,
   stroke: "checkbox.outline.color",
-  transition: '"transition.duration.short-3" stroke "transition.easing.linear"',
+  transition: 'stroke "transition.duration.short-3" "transition.easing.linear"',
 );
 $-mark-styles: (
   fill: "checkbox.icon.color",

@@ -65,19 +65,3 @@ export function getAutoFocusElement(root: Node): HTMLElement | undefined {
     },
   });
 }
-
-/**
- * @private
- */
-export function isWithinRoot(root: Node, node: Node): boolean {
-  let current: Node | null = node;
-  while (current) {
-    if (current === root) {
-      return true;
-    }
-
-    current = current.parentNode ?? (current as ShadowRoot).host;
-  }
-
-  return false;
-}

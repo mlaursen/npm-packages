@@ -130,12 +130,12 @@ export class Checkbox extends BaseCheckbox implements CheckboxProperties {
       this._animate({ animate: this._initialized && !this.#reset });
       this.#reset = false;
     }
-  }
-
-  protected override updated(changed: PropertyValues): void {
-    super.updated(changed);
-
-    if (changed.has("checked")) {
+    if (
+      changed.has("error") ||
+      changed.has("checked") ||
+      changed.has("required") ||
+      changed.has("indeterminate")
+    ) {
       this.#updateInternals();
     }
   }
