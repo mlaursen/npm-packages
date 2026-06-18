@@ -1,3 +1,4 @@
+export * from "./alphaNumericSort.js";
 export * from "./camelCase.js";
 export * from "./kebabCase.js";
 export * from "./pascalCase.js";
