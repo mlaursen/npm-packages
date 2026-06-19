@@ -247,15 +247,14 @@ $-keyframes: (
       "&::before": $-base-focusable-animation-styles,
     )
   );
+  $focus-visible: ":is(:focus-visible, [focus-visible])";
 
   $styles: (
     ":host, .state-layer-target": $host-styles,
     "host-hover": $-hovered-styles,
-    ":host(:focus-visible), .state-layer-target:focus-visible": $-focused-styles,
-    ":host([interaction=inward]:focus-visible), :host([interaction=inward]) .state-layer-target:focus-visible":
-      $-focused-inward-styles,
-    ":host([interaction=outward]:focus-visible), :host([interaction=outward]) .state-layer-target:focus-visible":
-      $-focused-outward-styles,
+    ":host(#{$focus-visible})": $-focused-styles,
+    ":host([interaction=inward]#{$focus-visible})": $-focused-inward-styles,
+    ":host([interaction=outward]#{$focus-visible})": $-focused-outward-styles,
     ":host(:is([disabled], [aria-disabled=true]))": $-base-disabled-styles,
     ".state-layer, .ripple": $-base-interaction-layer-styles,
     ".state-layer": $state-layer-styles,

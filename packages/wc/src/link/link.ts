@@ -14,7 +14,7 @@ const BaseLink = InteractionMixin(PaletteMixin(MarginMixin(LitElement)), true);
 @customElement("mwc-link")
 export class Link extends BaseLink implements LinkProperties {
   static override styles = [...BaseLink.styles, styles];
-  shadowRootOptions: ShadowRootInit = {
+  static override shadowRootOptions: ShadowRootInit = {
     ...BaseLink.shadowRootOptions,
     delegatesFocus: true,
   };
@@ -56,9 +56,14 @@ export class Link extends BaseLink implements LinkProperties {
     }
 
     return html`
-      <a ${spread(props)} class="state-layer-target">
+      <a
+        ${spread(props)}
+        class="state-layer-target"
+        @focus=${this._updateFocusVisible}
+        @blur=${this._updateFocusVisible}
+      >
         <slot></slot>
-        ${this.renderStateLayer()}
+        ${this._renderStateLayer()}
       </a>
     `;
   }

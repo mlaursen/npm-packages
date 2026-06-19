@@ -146,7 +146,7 @@ export class Radio extends BaseRadio implements RadioProperties {
           <circle class="mark" cx="10" cy="10" r="5" />
         </svg>
       </slot>
-      ${this.renderStateLayer()} ${this.renderRipple()}
+      ${this._renderStateLayer()} ${this._renderRipple()}
     `;
   }
 

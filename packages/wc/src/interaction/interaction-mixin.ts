@@ -50,6 +50,9 @@ export function InteractionMixin<T extends StylableLitElement>(
     @property({ type: Boolean, attribute: "disable-ripple" })
     disableRipple = false;
 
+    @property({ type: Boolean, reflect: true, attribute: "focus-visible" })
+    _focusVisible = false;
+
     @query(".ripple")
     _ripple?: HTMLSpanElement;
 
@@ -85,13 +88,13 @@ export function InteractionMixin<T extends StylableLitElement>(
       this.#bindRippleHandlers(false);
     }
 
-    renderStateLayer(): TemplateResult {
+    _renderStateLayer(): TemplateResult {
       return html`
         <span class="state-layer ${this.#getStateLayerClassName()}"></span>
       `;
     }
 
-    renderRipple(): TemplateResult | null {
+    _renderRipple(): TemplateResult | null {
       if (this.disableRipple) {
         return null;
       }
@@ -99,6 +102,13 @@ export function InteractionMixin<T extends StylableLitElement>(
       return html`
         <span class="ripple ${this.#getStateLayerClassName()}"></span>
       `;
+    }
+
+    _updateFocusVisible(event: FocusEvent): void {
+      const target = event.currentTarget;
+
+      this._focusVisible =
+        target instanceof HTMLElement && target.matches(":focus-visible");
     }
 
     #getStateLayerClassName(): ReturnType<typeof classMap> {

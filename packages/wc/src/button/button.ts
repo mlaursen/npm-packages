@@ -131,7 +131,7 @@ export class Button extends BaseButton implements ButtonProperties {
     return html`
       <slot></slot>
       <mwc-elevation></mwc-elevation>
-      ${this.renderStateLayer()} ${this.renderRipple()}
+      ${this._renderStateLayer()} ${this._renderRipple()}
     `;
   }
 
