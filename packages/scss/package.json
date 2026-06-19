@@ -54,15 +54,15 @@
   "license": "MIT",
   "dependencies": {
     "postcss": "^8.5.14",
-    "postcss-selector-parser": "^7.1.1",
-    "sass": "^1.99.0"
+    "postcss-selector-parser": "^7.1.4",
+    "sass": "^1.101.0"
   },
   "devDependencies": {
     "@mlaursen/eslint-config": "workspace:*",
     "@mlaursen/simple-docs": "workspace:*",
     "@rollup/plugin-node-resolve": "^16.0.3",
     "@trivago/prettier-plugin-sort-imports": "^6.0.2",
-    "@types/node": "^24.12.2",
+    "@types/node": "^24.13.2",
     "@vitest/coverage-v8": "^4.1.9",
     "concurrently": "^10.0.3",
     "eslint": "^9.39.4",

@@ -58,7 +58,7 @@
   },
   "devDependencies": {
     "@rollup/plugin-node-resolve": "^16.0.3",
-    "@types/node": "^24.12.2",
+    "@types/node": "^24.13.2",
     "concurrently": "^10.0.3",
     "prettier": "^3.8.4",
     "rollup": "^4.62.0",
