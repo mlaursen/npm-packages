@@ -1,5 +1,11 @@
 # @mlaursen/node-utils
 
+## 0.2.1
+
+### Patch Changes
+
+- bb829fe: Bumped dependencies to latest
+
 ## 0.2.0
 
 ### Minor Changes

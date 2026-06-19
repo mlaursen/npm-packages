@@ -1,5 +1,15 @@
 # @mlaursen/utils
 
+## 0.2.0
+
+### Minor Changes
+
+- ce0bc37: Added alphaNumericSort util
+
+### Patch Changes
+
+- bb829fe: Bumped dependencies to latest
+
 ## 0.1.0
 
 ### Minor Changes

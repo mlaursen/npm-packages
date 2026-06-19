@@ -1,5 +1,11 @@
 # @mlaursen/scss
 
+## 0.0.5
+
+### Patch Changes
+
+- bb829fe: Bumped dependencies to latest
+
 ## 0.0.4
 
 ### Patch Changes

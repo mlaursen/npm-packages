@@ -1,5 +1,12 @@
 # @mlaursen/eslint-config
 
+## 12.0.11
+
+### Patch Changes
+
+- 25fb66c: Bumped rules to latest
+- bb829fe: Bumped dependencies to latest
+
 ## 12.0.10
 
 ### Patch Changes
