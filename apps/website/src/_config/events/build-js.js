@@ -7,7 +7,6 @@ import {
   NODE_ENV,
   SCRIPTS_DIR,
   SCRIPTS_OUT_DIR,
-  WC_ROOT,
 } from "../constants.js";
 
 /**
@@ -45,7 +44,7 @@ async function compile({ filePath, outFileName }) {
 export async function buildJs() {
   const tasks = [
     compile({
-      filePath: `${WC_ROOT}/src/index.ts`,
+      filePath: `${SCRIPTS_DIR}/main.ts`,
       outFileName: "main",
     }),
   ];

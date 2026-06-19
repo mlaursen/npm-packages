@@ -26,9 +26,13 @@
   <h2 slot="title">Navigation</h2>
   {{ collections.all | eleventyNavigation | eleventyNavigationToHtml | safe }}
 </mwc-sheet>
-<main id="main" class="{{ mainClassName }}">
+{% if disableDefaultMain %}
   {{ content | safe }}
-</main>
+{% else %}
+  <main id="main" class="{{ mainClassName }}">
+    {{ content | safe }}
+  </main>
+{% endif %}
 <mwc-sheet id="configuration-sheet" close-button width="extra-large">
   <h2 slot="title">Configuration</h2>
   <configure-palette slot="content"></configure-palette>
