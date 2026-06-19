@@ -3,6 +3,7 @@ import {
   type PropertyValues,
   type TemplateResult,
   html,
+  isServer,
 } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
 
@@ -107,6 +108,10 @@ export class Radio extends BaseRadio implements RadioProperties {
 
   protected override willUpdate(changed: PropertyValues): void {
     super.willUpdate(changed);
+
+    if (isServer) {
+      return;
+    }
 
     if (changed.has("checked")) {
       this.classList.toggle("checked", this.checked);

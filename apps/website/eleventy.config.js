@@ -7,7 +7,7 @@ import litPlugin from "@lit-labs/eleventy-plugin-lit";
 import { enableLogger, log } from "@mlaursen/node-utils";
 import dotenv from "dotenv";
 
-import { ENABLE_SSR, ROOT_DIR } from "./src/_config/constants.js";
+import { ENABLE_SSR, ROOT_DIR, WC_ROOT } from "./src/_config/constants.js";
 import { buildJs } from "./src/_config/events/build-js.js";
 import { buildScss } from "./src/_config/events/build-scss.js";
 import { slugify } from "./src/_config/filters/slugify.js";
@@ -52,7 +52,7 @@ export default defineConfig((eleventyConfig) => {
     log("Enabling SSR for web components");
     eleventyConfig.addPlugin(litPlugin, {
       mode: "worker",
-      componentModules: [`${ROOT_DIR}/assets/scripts/main.js`],
+      componentModules: [`${WC_ROOT}/dist/index.js`],
     });
   }
 

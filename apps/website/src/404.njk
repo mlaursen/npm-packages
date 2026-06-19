@@ -128,6 +128,9 @@ title: Page Not Found
     <h2>Sorry, that page does't exist!</h2>
   </mwc-typography>
   <mwc-typography variant="title">
-    <a href="/">Please try to visit the home page.</a>
+    <a id="home-link" href="/">Please try to visit the home page.</a>
   </mwc-typography>
 </mwc-text-container>
+{% js "defer" %}
+{% include "scripts/404.js" %}
+{% endjs %}

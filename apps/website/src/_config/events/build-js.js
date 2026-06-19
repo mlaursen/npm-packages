@@ -50,6 +50,7 @@ export async function buildJs() {
   ];
   const globals = await glob("**/*.ts", {
     cwd: SCRIPTS_DIR,
+    ignore: "**/main.ts",
   });
   for (const filePath of globals) {
     tasks.push(

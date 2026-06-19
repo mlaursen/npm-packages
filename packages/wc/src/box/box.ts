@@ -3,6 +3,7 @@ import {
   type PropertyValues,
   type TemplateResult,
   html,
+  isServer,
 } from "lit";
 import { customElement, property } from "lit/decorators.js";
 
@@ -51,15 +52,6 @@ export class Box extends BaseBox implements BoxProperties {
   @property({ reflect: true })
   padding: BoxPadding = "all";
 
-  #updateGridColumns(): void {
-    const property = "--mwc-box-columns";
-    if (typeof this.grid === "string" && /^\d+$/.test(this.grid)) {
-      this.style.setProperty(property, this.grid);
-    } else {
-      this.style.removeProperty(property);
-    }
-  }
-
   override connectedCallback(): void {
     super.connectedCallback();
 
@@ -67,6 +59,12 @@ export class Box extends BaseBox implements BoxProperties {
   }
 
   protected override willUpdate(changed: PropertyValues): void {
+    super.willUpdate(changed);
+
+    if (isServer) {
+      return;
+    }
+
     if (changed.has("grid")) {
       this.#updateGridColumns();
     }
@@ -74,6 +72,15 @@ export class Box extends BaseBox implements BoxProperties {
 
   override render(): TemplateResult {
     return html`<slot></slot>`;
+  }
+
+  #updateGridColumns(): void {
+    const property = "--mwc-box-columns";
+    if (typeof this.grid === "string" && /^\d+$/.test(this.grid)) {
+      this.style.setProperty(property, this.grid);
+    } else {
+      this.style.removeProperty(property);
+    }
   }
 }
 
