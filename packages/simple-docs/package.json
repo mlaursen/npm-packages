@@ -46,7 +46,7 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "commander": "^14.0.3",
+    "commander": "^15.0.0",
     "prettier": "^3.8.4",
     "typedoc": "^0.28.19"
   },

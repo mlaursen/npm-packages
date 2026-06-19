@@ -24,7 +24,7 @@
   "dependencies": {
     "@mlaursen/copy-scss-files": "workspace:*",
     "@mlaursen/node-utils": "workspace:*",
-    "commander": "^14.0.3"
+    "commander": "^15.0.0"
   },
   "devDependencies": {
     "@mlaursen/eslint-config": "workspace:*",
