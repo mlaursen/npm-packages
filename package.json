@@ -26,6 +26,7 @@
     "clean-root": "rm -rf .turbo node_modules",
     "clean": "pnpm clean-other && pnpm clean-root",
     "create-favicons": "pnpm --filter website create-favicons",
+    "update-material-symbols": "pnpm --filter website update-material-symbols",
     "website-build": "pnpm turbo-s build --filter website",
     "website-clean": "pnpm clean-dist --filter website",
     "website-dev": "pnpm --filter website dev",

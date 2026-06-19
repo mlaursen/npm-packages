@@ -12,6 +12,7 @@
     "clean-cache": "rm -rf .turbo node_modules",
     "clean": "concurrently 'pnpm clean-dist' 'pnpm clean-cache'",
     "create-favicons": "pnpm node-run scripts/create-favicons.ts",
+    "update-material-symbols": "pnpm node-run scripts/update-material-symbols.ts",
     "format": "prettier --write .",
     "check-format": "prettier --check .",
     "lint": "eslint .",
@@ -61,7 +62,8 @@
     "sharp-ico": "^0.1.5",
     "slugify": "^1.6.9",
     "ts-lit-plugin": "^2.0.2",
-    "typescript": "^6.0.3"
+    "typescript": "^6.0.3",
+    "zod": "^4.4.3"
   },
   "volta": {
     "node": "24.15.0",
