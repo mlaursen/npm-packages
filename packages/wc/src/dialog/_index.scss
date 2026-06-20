@@ -59,8 +59,8 @@ $-tokens: (
 $-configure-tokens: map.keys($-tokens);
 
 $-remap-tokens: utils.remap-tokens(
-  utils.pick-keys($-tokens, ("margin", "shape")),
-  dialog
+  dialog,
+  utils.pick-keys($-tokens, ("margin", "shape"))
 );
 
 $-base-styles: $-remap-tokens;

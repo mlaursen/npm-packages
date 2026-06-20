@@ -49,7 +49,7 @@ $-short-var-names: true;
 
   $hyphenated-name: str-replace($name, ".", "-");
 
-  // I do not want to display the palette prefix
+  // I do not want to display the palette or transition prefix
   @if string.index($hyphenated-name, "palette-") == 1 {
     $hyphenated-name: string.slice($hyphenated-name, 9);
   } @else if string.index($hyphenated-name, "transition-") == 1 {

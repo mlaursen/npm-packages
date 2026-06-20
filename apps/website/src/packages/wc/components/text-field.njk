@@ -9,17 +9,25 @@ page:
   title: Text Field
 ---
 
-<mwc-box stacked style="display: inline-flex; align-items: initial">
-  {% for variant in textField.variants %}
-    {% for shape in textField.shapes %}
+<form>
+  <mwc-box stacked style="display: inline-flex; align-items: initial">
+    {% for variant in textField.variants %}
+      <mwc-typography margin="top">
+        <h3>{{ shape | capitalize }}</h3>
+      </mwc-typography>
+      {% set tagName = "mwc-" + variant + "-text-field" %}
       {% for state in textField.states %}
-        {% set tagName = "mwc-" + variant + "-text-field" %}
-        <{{ tagName }} {{ state if state != "normal" }} shape="{{ shape }}">
+        <{{ tagName }} {{ state if state != "normal" }} shape="{{ shape }}" value="{{ "Hello, world!" }}">
         <span slot="label">{{ variant | capitalize }} {{ state | capitalize if state != "normal" }}</span>
         </{{ tagName }}>
       {% endfor %}
-      <mwc-divider>
-      </mwc-divider>
+      <{{ tagName }} value="{{ "Hello, world!" }}">
+      <span slot="label">This is a really long label that will cause issues!</span>
+      </{{ tagName }}>
+      {% if variant != textField.variants.at(-1) %}
+        <mwc-divider>
+        </mwc-divider>
+      {% endif %}
     {% endfor %}
-  {% endfor %}
-</mwc-box>
+  </mwc-box>
+</form>

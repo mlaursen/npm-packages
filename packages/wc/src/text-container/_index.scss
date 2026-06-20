@@ -12,7 +12,7 @@ $-tokens: (
 );
 
 $-configure-tokens: list.append(map.keys($-tokens), "styles");
-$-remapped-styles: utils.remap-tokens($-tokens, "text-container");
+$-remapped-styles: utils.remap-tokens(text-container, $-tokens);
 $-short-names: map.keys($-remapped-styles);
 
 $-styles: utils.deep-merge(

@@ -3,6 +3,7 @@
 @use "sass:meta";
 
 @use "../../utils";
+@use "../../typography";
 
 $outlined-tokens: (
   color: "palette.on-surface-variant",
@@ -18,11 +19,21 @@ $outlined-tokens: (
     ),
   ),
 
+  floating: (
+    outline: (
+      width: 1px,
+    ),
+
+    label: (
+      padding-inline: "spacing.extra-small",
+    ),
+  ),
+
   disabled: (
     outline: (
-      color: "text-field.outline.color",
+      color: "palette.outline",
       opacity: 0.12,
-      width: "text-field.outline.width",
+      width: 1px,
     ),
   ),
   hovered: (
@@ -40,7 +51,6 @@ $outlined-tokens: (
     outline: (
       color: "palette.primary",
       width: 3px,
-      opacity: 1,
     ),
 
     label: (
@@ -57,4 +67,72 @@ $outlined-tokens: (
 );
 $outlined-styles: utils.deep-merge(
   utils.remap-variants(text-field, outlined, $outlined-tokens)
+);
+$outlined-floating-styles: (
+  "text-field.outlined.outline.opacity": 0,
+  "text-field.outlined.floating.outline.width": 0,
+);
+
+$outlined-outline-styles: (
+  border-radius: inherit,
+  display: grid,
+  grid-template-columns:
+    'calc("text-field.padding.inline-start" - "text-field.floating.label.padding-inline") auto minmax("text-field.padding.inline-start", 1fr)',
+  inset: 0,
+  position: absolute,
+  pointer-events: none,
+);
+
+$outlined-notch-styles: (
+  border-radius: inherit,
+  position: relative,
+
+  "&::before, &::after": utils.pseudo-element(),
+  "&::before": (
+    border: '"text-field.outline.width" solid "text-field.outline.color"',
+  ),
+  "&::after": (
+    border:
+      '"text-field.focused.outline.width" solid "text-field.focused.outline.color"',
+    opacity: "text-field.focused.outline.opacity",
+  ),
+);
+$outlined-notch-1-styles: (
+  "&::before, &::after": (
+    border-right: 0,
+    border-start-end-radius: 0,
+    border-end-end-radius: 0,
+  ),
+);
+$outlined-notch-2-styles: utils.deep-merge(
+  typography.get-font-and-letter-spacing(
+    $font-weight: "weight.regular",
+    $font-size: "text-field.populated.label.size",
+    $line-height: "text-field.populated.label.line-height",
+    $font-family: "font.plain",
+    $letter-spacing: "body-large.tracking",
+  ),
+  (
+    padding-inline: "text-field.floating.label.padding-inline",
+
+    "*": (
+      opacity: 0,
+    ),
+    "&::before, &::after": (
+      border-left: 0,
+      border-radius: 0,
+      border-right: 0,
+      border-top-width: "text-field.outlined.floating.outline.width",
+    ),
+    "&::before": (
+      border-top-width: "text-field.outlined.floating.outline.width",
+    ),
+  )
+);
+$outlined-notch-3-styles: (
+  "&::before, &::after": (
+    border-end-start-radius: 0,
+    border-left: 0,
+    border-start-start-radius: 0,
+  ),
 );

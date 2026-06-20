@@ -9,8 +9,14 @@ $-tokens: (
     // so this is really 'calc("spacing.extra-small" - "icon-button.height" / 2)'
     // but that's just too much
     gap: "spacing.extra-small",
-    padding-h: "spacing.extra-large",
-    padding-v: "spacing.extra-large",
+
+    padding: (
+      block-start: "spacing.extra-large",
+      block-end: "spacing.extra-large",
+      inline-start: "spacing.extra-large",
+      inline-end: "spacing.extra-large",
+    ),
+
     // the "real" padding is 1.5rem, but from icon edge instead of button edge.
     // so this is really 'calc("spacing.large" - "icon-button.width" / 2)'
     // but that's just too much
@@ -32,20 +38,22 @@ $-base-styles: (
   align-items: center,
   display: flex,
   gap: "sheet.header.gap",
-  padding-block: "sheet.header.padding-v",
-  padding-inline: "sheet.header.padding-h",
+  padding-block-end: "sheet.header.padding.block-end",
+  padding-block-start: "sheet.header.padding.block-start",
+  padding-inline-end: "sheet.header.padding.inline-end",
+  padding-inline-start: "sheet.header.padding.inline-start",
 );
 $-title-styles: (
   flex: 1 1 auto,
 );
 $-back-button-styles: (
-  padding-inline-start: "sheet.header.back-padding",
+  "sheet.header.padding.inline-start": "sheet.header.back-padding",
 );
 $-close-button-styles: (
-  padding-inline-end: "sheet.header.close-padding",
+  "sheet.header.padding.inline-end": "sheet.header.close-padding",
 );
 $-action-button-styles: (
-  padding-block-start: "sheet.header.action-padding",
+  "sheet.header.padding.block-start": "sheet.header.action-padding",
 );
 
 @mixin configure() {

@@ -162,12 +162,12 @@
 
 ///
 /// @example scss
-///   $-remapped-styles: utils.remap-tokens(map.remove($-tokens, hovered), button);
+///   $-remapped-styles: utils.remap-tokens(button, map.remove($-tokens, hovered));
 ///
-/// @param {Map} $tokens -
 /// @param {String | null} $prefix -
+/// @param {Map} $tokens -
 /// @return {Map} -
-@function remap-tokens($tokens, $prefix) {
+@function remap-tokens($prefix, $tokens) {
   $result: ();
   @each $name in get-tokens-from-map($tokens, $prefix) {
     $result: map.set($result, $name, $name);

@@ -15,6 +15,9 @@ export const materialThemeBuilderUrl =
 /** @type {import("@mlaursen/wc").DefaultComponentSize[]} */
 export const defaultSizes = ["small", "medium", "large"];
 
+/** @type {import("@mlaursen/wc").Margin[]} */
+export const margins = ["none", "top", "bottom", "centered", "start", "end"];
+
 /** @type {import("@mlaursen/wc").DefaultComponentExtraSize[]} */
 export const defaultExtraSizes = [
   "extra-small",
@@ -127,9 +130,6 @@ export const textField = {
 
   /** @type {import("@mlaursen/wc").SupportedInputType[]} */
   types: ["text", "number", "email", "search", "tel", "url"],
-
-  /** @type {import("@mlaursen/wc").TextFieldShape[]} */
-  shapes: ["round", "square"],
 
   states: ["normal", "disabled", "readOnly", "error"],
 };

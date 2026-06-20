@@ -1,7 +1,5 @@
 import type { OverridableStringUnion } from "@mlaursen/utils";
 
-import type { DefaultComponentShape } from "../types.js";
-
 export interface TextFieldSizeOverrides {}
 export type DefaultTextFieldSize = "small" | "normal";
 export type TextFieldSize = OverridableStringUnion<
@@ -10,7 +8,7 @@ export type TextFieldSize = OverridableStringUnion<
 >;
 
 export interface TextFieldShapeOverrides {}
-export type DefaultTextFieldShape = DefaultComponentShape;
+export type DefaultTextFieldShape = "square";
 export type TextFieldShape = OverridableStringUnion<
   DefaultTextFieldShape,
   TextFieldShapeOverrides

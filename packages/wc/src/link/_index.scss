@@ -22,8 +22,8 @@ $-color-variants: map.keys(map.get($-tokens, visited));
 $-configure-tokens: map.keys($-tokens);
 
 $-remapped-styles: utils.remap-tokens(
-  map.remove($-tokens, hovered, visited),
-  link
+  link,
+  map.remove($-tokens, hovered, visited)
 );
 $-short-names: map.keys($-remapped-styles);
 

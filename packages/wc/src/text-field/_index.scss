@@ -15,9 +15,7 @@ $-tokens: (
   filled: tokens.$filled-tokens,
   outlined: tokens.$outlined-tokens,
   shape: (
-    all: "text-field.shape.square",
-    round: "shape.corner.full",
-    square: "shape.corner.extra-small",
+    all: "shape.corner.extra-small",
 
     start-start: "text-field.shape.all",
     start-end: "text-field.shape.all",
@@ -86,9 +84,39 @@ $-tokens: (
       translate: -50%,
     ),
   ),
+  floating: (
+    label: (
+      padding-inline: 0px,
+    ),
+
+    outline: (
+      opacity: 0,
+    ),
+  ),
 
   disabled: (
+    color: "palette.on-surface",
+    color-opacity: "interaction.disabled.container.opacity",
+
+    outline: (
+      color: null,
+      opacity: null,
+      width: null,
+    ),
+
     label: (
+      color: "palette.on-surface",
+      opacity: "interaction.disabled.container.opacity",
+    ),
+    leading-icon: (
+      color: "palette.on-surface",
+      opacity: "interaction.disabled.container.opacity",
+    ),
+    trailing-icon: (
+      color: "palette.on-surface",
+      opacity: "interaction.disabled.container.opacity",
+    ),
+    supporting-text: (
       color: "palette.on-surface",
       opacity: "interaction.disabled.container.opacity",
     ),
@@ -101,6 +129,10 @@ $-tokens: (
     outline: (
       color: "palette.on-surface",
       width: 1px,
+    ),
+
+    label: (
+      color: "palette.on-surface-variant",
     ),
 
     leading-icon: (
@@ -117,7 +149,7 @@ $-tokens: (
       color: "text-field.error.color",
 
       outline: (
-        color: "text-field.error.outline.color",
+        color: "palette.on-error-container",
         width: "text-field.error.outline.width",
       ),
 
@@ -126,7 +158,7 @@ $-tokens: (
       ),
 
       label: (
-        color: "text-field.error.label.color",
+        color: "palette.on-error-container",
       ),
 
       leading-icon: (
@@ -189,8 +221,8 @@ $-tokens: (
     color: "palette.on-surface",
 
     outline: (
-      color: null,
-      width: null,
+      color: "palette.error",
+      width: "text-field.outlined.outline.width",
     ),
 
     caret: (
@@ -227,29 +259,8 @@ $-base-styles: (
   padding-inline-end: "text-field.padding.inline-end",
   padding-inline-start: "text-field.padding.inline-start",
   position: relative,
-
-  "&::before, &::after": utils.deep-merge(utils.pseudo-element(), ()),
-  "&::before": (
-    background: utils.get-rgb-var(
-        "text-field.background",
-        "text-field.background-opacity"
-      ),
-    border-color: utils.get-rgb-var(
-        "text-field.outline.color",
-        "text-field.outline.opacity"
-      ),
-    border-width: "text-field.outline.width",
-    border-style: solid,
-    transition:
-      'all "transition.duration.short-3" "transition.easing.emphasized"',
-  ),
-  "&::after": (
-    border:
-      '"text-field.focused.outline.width" solid "text-field.focused.outline.color"',
-    opacity: 0,
-    transition:
-      'opacity "transition.duration.short-3" "transition.easing.linear"',
-  ),
+  flex: 1 1 auto,
+  max-width: 100%,
 );
 $-base-input-styles: (
   background: transparent,
@@ -275,12 +286,17 @@ $-base-label-styles: utils.deep-merge(
         "text-field.label.color",
         "text-field.label.opacity"
       ),
+    max-width:
+      'calc(100% - "text-field.padding.inline-start" - "text-field.padding.inline-end" - "text-field.floating.label.padding-inline")',
+    overflow: hidden,
     position: absolute,
+    text-overflow: ellipsis,
     top: "text-field.label.top",
     transform:
       'translateY("text-field.label.offset") translateY("text-field.label.translate")',
     transition:
       'all "transition.duration.short-3" "transition.easing.emphasized"',
+    white-space: nowrap,
   )
 );
 
@@ -302,6 +318,9 @@ $-base-disabled-styles: utils.deep-merge(
     "color-opacity",
     "label.color",
     "label.opacity",
+    "outline.color",
+    "outline.width",
+    "outline.opacity",
     "leading-icon.color",
     "leading-icon.opacity",
     "trailing-icon.color",
@@ -325,23 +344,42 @@ $-base-hovered-styles: utils.remap-variants(
   "trailing-icon.color",
   "supporting-text.color"
 );
-$-base-focused-styles: (
-  "&::after": (
-    opacity: "text-field.focused.outline.opacity",
+$-base-focused-styles: utils.deep-merge(
+  utils.remap-variants(
+    text-field,
+    focused,
+    "label.color",
+    "leading-icon.color",
+    "trailing-icon.color",
+    "supporting-text.color"
   ),
+  (
+    "text-field.focused.outline.opacity": 1,
+  )
 );
-$-base-floating-styles: utils.remap-variants(
-  text-field,
-  populated,
-  map.get($-tokens, populated)
+$-base-floating-styles: utils.deep-merge(
+  utils.remap-variants(text-field, populated, map.get($-tokens, populated)),
+  (
+    "text-field.floating.outline.opacity": 1,
+  ),
+  tokens.$outlined-floating-styles
 );
 
 $-base-error-styles: utils.deep-merge(
   utils.remap-variants(text-field, error, map.get($-tokens, error)),
   (
+    "text-field.hovered.label.color": "text-field.hovered.error.label.color",
     "text-field.hovered.outline.color": "text-field.hovered.error.outline.color",
     "text-field.hovered.outline.width": "text-field.hovered.error.outline.width",
     "text-field.focused.outline.color": "text-field.focused.error.outline.color",
+    "text-field.focused.color": "text-field.focused.error.color",
+    "text-field.focused.label.color": "text-field.focused.error.label.color",
+    "text-field.focused.leading-icon.color":
+      "text-field.focused.error.leading-icon.color",
+    "text-field.focused.trailing-icon.color":
+      "text-field.focused.error.trailing-icon.color",
+    "text-field.focused.supporting-text.color":
+      "text-field.focused.error.supporting-text.color",
   )
 );
 
@@ -371,9 +409,14 @@ $-base-error-styles: utils.deep-merge(
     "host-hover": $-base-hovered-styles,
     ":host([disabled])": $-base-disabled-styles,
     ":host([focus-visible])": $-base-focused-styles,
-    ":host(:is([populated], [focus-visible]))": $-base-floating-styles,
+    ":host(:is([floating], [focus-visible]))": $-base-floating-styles,
     ".input": $-base-input-styles,
     ".label": $-base-label-styles,
+    ".outline": tokens.$outlined-outline-styles,
+    "[class^=notch]": tokens.$outlined-notch-styles,
+    ".notch-1": tokens.$outlined-notch-1-styles,
+    ".notch-2": tokens.$outlined-notch-2-styles,
+    ".notch-3": tokens.$outlined-notch-3-styles,
   );
   @include utils.host-styles($styles);
 }

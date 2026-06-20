@@ -98,11 +98,14 @@ export class TextField extends BaseTextField implements TextFieldProperties {
   @query("#field")
   _field?: HTMLInputElement | HTMLTextAreaElement;
 
-  @property({ type: Boolean, reflect: true, attribute: "focus-visible" })
-  _focusVisible = false;
+  @query(".notch-2")
+  _notchWithLabel?: HTMLDivElement;
 
-  @property({ type: Boolean, reflect: true, attribute: "populated" })
-  _populated = !!this.value;
+  @property({ type: Boolean, reflect: true, attribute: "focus-visible" })
+  focusVisible = false;
+
+  @property({ type: Boolean, reflect: true, attribute: "floating" })
+  floating = !!this.value;
 
   @state()
   _hasLabel = false;
@@ -110,15 +113,13 @@ export class TextField extends BaseTextField implements TextFieldProperties {
   protected override willUpdate(changed: PropertyValues): void {
     super.willUpdate(changed);
 
-    if (changed.has("value")) {
-      this._populated = !!this.value;
+    if (changed.has("value") || changed.has("focusVisible")) {
+      this.floating = !!this.value || this.focusVisible;
     }
   }
 
   override render(): TemplateResult {
-    return html`
-      ${this.#renderLabel()} ${this.#renderInput()} ${this.#renderTextArea()}
-    `;
+    return html`${this.#renderLabel()}${this.#renderInput()}${this.#renderTextArea()}${this.#renderOutline()}`;
   }
 
   override focus(options?: FocusOptions): void {
@@ -248,8 +249,33 @@ export class TextField extends BaseTextField implements TextFieldProperties {
     return html``;
   }
 
+  #renderOutline(): TemplateResult | null {
+    if (this.variant !== "outlined") {
+      return null;
+    }
+
+    return html`
+      <div aria-hidden="true" class="outline">
+        <div class="notch-1"></div>
+        <div class="notch-2"></div>
+        <div class="notch-3"></div>
+      </div>
+    `;
+  }
+
   #handleLabelSlotChange(event: Event): void {
-    this._hasLabel = isSlotted(event);
+    const elements =
+      (event.currentTarget as HTMLSlotElement | null)?.assignedElements({
+        flatten: true,
+      }) ?? [];
+    this._hasLabel = elements.length > 0;
+
+    if (this._notchWithLabel && this.variant === "outlined") {
+      this._notchWithLabel.replaceChildren();
+      for (const element of elements) {
+        this._notchWithLabel.append(element.cloneNode(true));
+      }
+    }
   }
 
   #handleInput(event: InputEvent): void {
@@ -258,6 +284,6 @@ export class TextField extends BaseTextField implements TextFieldProperties {
   }
 
   #handleFocusChange(): void {
-    this._focusVisible = this._field?.matches(":focus-visible") ?? false;
+    this.focusVisible = this._field?.matches(":focus-visible") ?? false;
   }
 }

@@ -70,8 +70,8 @@ $-tokens: utils.deep-merge(
 $-configure-tokens: map.keys($-tokens);
 
 $-remapped-styles: utils.remap-tokens(
-  map.remove($-tokens, utils.list-concat(tokens.$sizes, tokens.$variants)...),
-  button
+  button,
+  map.remove($-tokens, utils.list-concat(tokens.$sizes, tokens.$variants)...)
 );
 $-short-names: map.keys($-remapped-styles);
 $-base-styles: map.deep-merge(

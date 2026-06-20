@@ -33,7 +33,10 @@
     {{ content | safe }}
   </main>
 {% endif %}
-<mwc-sheet id="configuration-sheet" close-button width="extra-large">
+<mwc-sheet id="configuration-sheet"
+           close-button
+           width="extra-large"
+           style="--mwc-sheet-header-padding-block-end: 0">
   <h2 slot="title">Configuration</h2>
   <configure-palette slot="content"></configure-palette>
 </mwc-sheet>
