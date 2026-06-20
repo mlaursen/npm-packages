@@ -5,12 +5,12 @@ import {
   html,
 } from "lit";
 import { property, query, state } from "lit/decorators.js";
+import { classMap } from "lit/directives/class-map.js";
 import { ifDefined } from "lit/directives/if-defined.js";
 import { live } from "lit/directives/live.js";
 
 import { MarginMixin } from "../margin/margin-mixin.js";
 import { PaletteMixin } from "../palette/palette-mixin.js";
-import { isSlotted } from "../utils/slots.js";
 import styles from "./text-field-styles.js";
 import type {
   AutoCapitalize,
@@ -218,7 +218,7 @@ export class TextField extends BaseTextField implements TextFieldProperties {
     return html`
       <input
         id=${this.#fieldId}
-        class="input"
+        class="input ${classMap({ labeled: this._hasLabel })}"
         type=${this.type}
         .value=${live(this.value)}
         autocomplete=${ifDefined(this.autocomplete || undefined) as "on"}

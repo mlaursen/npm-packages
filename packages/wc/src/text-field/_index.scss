@@ -36,12 +36,15 @@ $-tokens: (
 
   prefix: (
     color: "palette.on-surface-variant",
+    opacity: 1,
   ),
   suffix: (
     color: "palette.on-surface-variant",
+    opacity: 1,
   ),
   placeholder: (
     color: "palette.on-surface-variant",
+    opacity: 1,
   ),
   label: (
     color: "palette.on-surface-variant",
@@ -104,21 +107,33 @@ $-tokens: (
       width: null,
     ),
 
+    prefix: (
+      color: "palette.on-surface",
+      opacity: 0.38,
+    ),
+    suffix: (
+      color: "palette.on-surface",
+      opacity: 0.38,
+    ),
+    placeholder: (
+      color: "palette.on-surface",
+      opacity: 0.38,
+    ),
     label: (
       color: "palette.on-surface",
-      opacity: "interaction.disabled.container.opacity",
+      opacity: 0.38,
     ),
     leading-icon: (
       color: "palette.on-surface",
-      opacity: "interaction.disabled.container.opacity",
+      opacity: 0.38,
     ),
     trailing-icon: (
       color: "palette.on-surface",
-      opacity: "interaction.disabled.container.opacity",
+      opacity: 0.38,
     ),
     supporting-text: (
       color: "palette.on-surface",
-      opacity: "interaction.disabled.container.opacity",
+      opacity: 0.38,
     ),
   ),
   hovered: (
@@ -268,10 +283,38 @@ $-base-input-styles: (
   caret-color: "text-field.caret.color",
   color: utils.get-rgb-var("text-field.color", "text-field.color-opacity"),
   font: typography.typescale(body-large),
-  padding: 0,
   outline: none,
-  z-index: 0,
+  padding: 0,
   width: 100%,
+  z-index: 0,
+
+  "&::placeholder": (
+    color: utils.get-rgb-var(
+        "text-field.placeholder.color",
+        "text-field.placeholder.opacity"
+      ),
+    // want to gain the same font styles as the input/textarea itself,
+    // just apply different colors as needed instead. Can't just do font: inherit
+    // since it'll break the styles in firefox.
+    font-family: inherit,
+    font-size: inherit,
+    font-weight: inherit,
+    letter-spacing: inherit,
+    line-height: inherit,
+
+    overflow: hidden,
+    text-overflow: ellipsis,
+
+    // unable to animate placeholder text at this time so ignoring for now.
+     // transition: 'color "transition.duration.short-3" "transition.easing.linear"',
+  ),
+);
+$-base-labeled-input-styles: (
+  "text-field.placeholder.opacity": 0,
+
+  "&:focus": (
+    "text-field.placeholder.opacity": 1,
+  ),
 );
 $-base-label-styles: utils.deep-merge(
   typography.get-font-and-letter-spacing(
@@ -318,6 +361,12 @@ $-base-disabled-styles: utils.deep-merge(
     "color-opacity",
     "label.color",
     "label.opacity",
+    "prefix.color",
+    "prefix.opacity",
+    "suffix.color",
+    "suffix.opacity",
+    "placeholder.color",
+    "placeholder.opacity",
     "outline.color",
     "outline.width",
     "outline.opacity",
@@ -411,9 +460,11 @@ $-base-error-styles: utils.deep-merge(
     ":host([focus-visible])": $-base-focused-styles,
     ":host(:is([floating], [focus-visible]))": $-base-floating-styles,
     ".input": $-base-input-styles,
+    ".input.labeled": $-base-labeled-input-styles,
     ".label": $-base-label-styles,
     ".outline": tokens.$outlined-outline-styles,
     "[class^=notch]": tokens.$outlined-notch-styles,
+    "[class^=notch], .no-notches": tokens.$outlined-notch-pseudo-styles,
     ".notch-1": tokens.$outlined-notch-1-styles,
     ".notch-2": tokens.$outlined-notch-2-styles,
     ".notch-3": tokens.$outlined-notch-3-styles,

@@ -86,7 +86,8 @@ $outlined-outline-styles: (
 $outlined-notch-styles: (
   border-radius: inherit,
   position: relative,
-
+);
+$outlined-notch-pseudo-styles: (
   "&::before, &::after": utils.pseudo-element(),
   "&::before": (
     border: '"text-field.outline.width" solid "text-field.outline.color"',

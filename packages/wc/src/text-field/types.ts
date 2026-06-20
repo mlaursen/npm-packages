@@ -1,5 +1,7 @@
 import type { OverridableStringUnion } from "@mlaursen/utils";
 
+import type { DefaultComponentShape } from "../types.js";
+
 export interface TextFieldSizeOverrides {}
 export type DefaultTextFieldSize = "small" | "normal";
 export type TextFieldSize = OverridableStringUnion<
@@ -8,7 +10,7 @@ export type TextFieldSize = OverridableStringUnion<
 >;
 
 export interface TextFieldShapeOverrides {}
-export type DefaultTextFieldShape = "square";
+export type DefaultTextFieldShape = DefaultComponentShape;
 export type TextFieldShape = OverridableStringUnion<
   DefaultTextFieldShape,
   TextFieldShapeOverrides
@@ -38,6 +40,9 @@ export type ForwardedInputProperties = Pick<
   // these are more getters and setters
   | "selectionStart"
   | "selectionEnd"
+  | "selectionDirection"
+  | "valueAsNumber"
+  | "valueAsDate"
 >;
 
 export type OverriddenInputMethods = Pick<
