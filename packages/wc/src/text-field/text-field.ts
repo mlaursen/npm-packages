@@ -93,6 +93,12 @@ export class TextField extends BaseTextField implements TextFieldProperties {
   @property({ type: Boolean })
   required = false;
 
+  @property({ type: Number })
+  rows?: number;
+
+  @property({ type: Number })
+  cols?: number;
+
   #fieldId = "field";
 
   @query("#field")
@@ -118,16 +124,21 @@ export class TextField extends BaseTextField implements TextFieldProperties {
     }
   }
 
-  override render(): TemplateResult {
-    return html`${this.#renderLabel()}${this.#renderInput()}${this.#renderTextArea()}${this.#renderOutline()}`;
-  }
-
   override focus(options?: FocusOptions): void {
     this._field?.focus(options);
   }
 
   select(): void {
     this._field?.select();
+  }
+
+  get selectionDirection(): "none" | "forward" | "backward" | null {
+    return this._field?.selectionDirection ?? null;
+  }
+  set selectionDirection(value: "none" | "forward" | "backward" | null) {
+    if (this._field) {
+      this._field.selectionDirection = value;
+    }
   }
 
   get selectionStart(): number | null {
@@ -146,6 +157,42 @@ export class TextField extends BaseTextField implements TextFieldProperties {
     if (this._field) {
       this._field.selectionEnd = selectionEnd;
     }
+  }
+
+  get valueAsNumber(): number {
+    const input = this._field;
+    if (!(input instanceof HTMLInputElement)) {
+      return Number.NaN;
+    }
+
+    return input.valueAsNumber;
+  }
+  set valueAsNumber(value: number) {
+    const input = this._field;
+    if (!(input instanceof HTMLInputElement)) {
+      return;
+    }
+
+    input.valueAsNumber = value;
+    this.value = input.value;
+  }
+
+  get valueAsDate(): Date | null {
+    const input = this._field;
+    if (!(input instanceof HTMLInputElement)) {
+      return null;
+    }
+
+    return input.valueAsDate;
+  }
+  set valueAsDate(value: Date | null) {
+    const input = this._field;
+    if (!(input instanceof HTMLInputElement)) {
+      return;
+    }
+
+    input.valueAsDate = value;
+    this.value = input.value;
   }
 
   showPicker(): void {
@@ -201,6 +248,10 @@ export class TextField extends BaseTextField implements TextFieldProperties {
     );
   }
 
+  override render(): TemplateResult {
+    return html`${this.#renderLabel()}${this.#renderInput()}${this.#renderTextArea()}${this.#renderOutline()}`;
+  }
+
   #renderLabel(): TemplateResult {
     return html`
       <label for=${this.#fieldId} ?hidden=${!this._hasLabel} class="label">
@@ -220,7 +271,8 @@ export class TextField extends BaseTextField implements TextFieldProperties {
         id=${this.#fieldId}
         class="input ${classMap({ labeled: this._hasLabel })}"
         type=${this.type}
-        .value=${live(this.value)}
+        name=${ifDefined(this.name || undefined)}
+        inputmode=${this.inputMode}
         autocomplete=${ifDefined(this.autocomplete || undefined) as "on"}
         autocapitalize=${ifDefined(this.autocapitalize || undefined)}
         pattern=${ifDefined(this.pattern || undefined)}
@@ -234,6 +286,7 @@ export class TextField extends BaseTextField implements TextFieldProperties {
         step=${ifDefined(this.step)}
         maxlength=${ifDefined(this.maxLength)}
         minlength=${ifDefined(this.minLength)}
+        .value=${live(this.value)}
         @focus=${this.#handleFocusChange}
         @blur=${this.#handleFocusChange}
         @input=${this.#handleInput}
@@ -246,7 +299,29 @@ export class TextField extends BaseTextField implements TextFieldProperties {
       return null;
     }
 
-    return html``;
+    // NOTE: remove the `as "on"` typecast for autocomplete once `ts-plugin-lit` is updated
+    return html`
+      <textarea
+        id=${this.#fieldId}
+        class="input ${classMap({ labeled: this._hasLabel })}"
+        name=${ifDefined(this.name || undefined)}
+        autocomplete=${ifDefined(this.autocomplete || undefined) as "on"}
+        autocapitalize=${ifDefined(this.autocapitalize || undefined)}
+        placeholder=${ifDefined(this.placeholder || undefined)}
+        ?required=${this.required}
+        ?readonly=${this.readOnly}
+        ?disabled=${this.disabled}
+        ?multiple=${this.multiple}
+        rows=${ifDefined(this.rows)}
+        cols=${ifDefined(this.cols)}
+        maxlength=${ifDefined(this.maxLength)}
+        minlength=${ifDefined(this.minLength)}
+        .value=${live(this.value)}
+        @focus=${this.#handleFocusChange}
+        @blur=${this.#handleFocusChange}
+        @input=${this.#handleInput}
+      ></textarea>
+    `;
   }
 
   #renderOutline(): TemplateResult | null {
@@ -254,11 +329,17 @@ export class TextField extends BaseTextField implements TextFieldProperties {
       return null;
     }
 
+    // this is an interesting one... I can't dynamically render the inner
+    // notches since the lit comment breaks the `display: grid` styling
+    const isGapRequired = this._hasLabel && this.shape === "square";
     return html`
-      <div aria-hidden="true" class="outline">
-        <div class="notch-1"></div>
-        <div class="notch-2"></div>
-        <div class="notch-3"></div>
+      <div
+        aria-hidden="true"
+        class="outline ${classMap({ "no-notches": !isGapRequired })}"
+      >
+        <div class="notch-1" ?hidden=${!isGapRequired}></div>
+        <div class="notch-2" ?hidden=${!isGapRequired}></div>
+        <div class="notch-3" ?hidden=${!isGapRequired}></div>
       </div>
     `;
   }
