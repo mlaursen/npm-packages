@@ -1,0 +1,68 @@
+@use "sass:map";
+@use "sass:list";
+@use "sass:meta";
+
+@use "../../utils";
+
+$filled-tokens: (
+  background: "palette.surface-container-highest",
+  background-opacity: 1,
+  color: "palette.on-surface-variant",
+
+  shape: (
+    end-start: "shape.corner.none",
+    end-end: "shape.corner.none",
+  ),
+
+  outline: (
+    inset: 'calc(100% - "text-field.outline.width") 0 0',
+    color: "palette.on-surface-variant",
+    width: 1px,
+  ),
+
+  padding: (
+    block-start: "spacing.extra-large",
+    block-end: "spacing.small",
+  ),
+
+  hovered: (
+    background: "interaction.hovered.container.color",
+    background-opacity: "interaction.hovered.container.opacity",
+  ),
+
+  disabled: (
+    background: "palette.on-surface",
+    background-opacity: 0.04,
+
+    outline: (
+      color: "palette.on-surface-variant",
+      opacity: 0.38,
+    ),
+  ),
+
+  focused: (
+    color: "palette.on-surface",
+
+    label: (
+      color: "palette.primary",
+    ),
+
+    outline: (
+      color: "palette.primary",
+      width: 3px,
+      opacity: 1,
+    ),
+  ),
+);
+
+$filled-styles: utils.deep-merge(
+  utils.remap-variants(text-field, filled, $filled-tokens),
+  (
+    "&::before, &::after": (
+      border-left: 0,
+      border-radius: 0,
+      border-right: 0,
+      border-top: 0,
+    ),
+  )
+);

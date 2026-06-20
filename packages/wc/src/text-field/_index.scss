@@ -1,0 +1,384 @@
+@use "sass:map";
+
+@use "../utils";
+@use "../typography";
+
+@use "tokens";
+
+$-tokens-registered: false;
+$-tokens: (
+  background: null,
+  background-opacity: 0,
+  color: "palette.on-surface",
+  color-opacity: 1,
+
+  filled: tokens.$filled-tokens,
+  outlined: tokens.$outlined-tokens,
+  shape: (
+    all: "text-field.shape.square",
+    round: "shape.corner.full",
+    square: "shape.corner.extra-small",
+
+    start-start: "text-field.shape.all",
+    start-end: "text-field.shape.all",
+    end-start: "text-field.shape.all",
+    end-end: "text-field.shape.all",
+  ),
+
+  outline: (
+    color: null,
+    inset: 0,
+    opacity: 1,
+    width: 0,
+  ),
+
+  caret: (
+    color: "palette.primary",
+  ),
+
+  prefix: (
+    color: "palette.on-surface-variant",
+  ),
+  suffix: (
+    color: "palette.on-surface-variant",
+  ),
+  placeholder: (
+    color: "palette.on-surface-variant",
+  ),
+  label: (
+    color: "palette.on-surface-variant",
+    opacity: 1,
+    offset: 0,
+    translate: 0,
+
+    size: "body-large.size",
+    line-height: "body-large.line-height",
+
+    top: "spacing.large",
+  ),
+  leading-icon: (
+    color: "palette.on-surface-variant",
+    opacity: 1,
+    size: 1.5rem,
+  ),
+  trailing-icon: (
+    color: "palette.on-surface-variant",
+    opacity: 1,
+    size: 1.5rem,
+  ),
+  supporting-text: (
+    color: "palette.on-surface-variant",
+    opacity: 1,
+  ),
+
+  padding: (
+    block-end: "spacing.large",
+    block-start: "spacing.large",
+    inline-end: "spacing.large",
+    inline-start: "spacing.large",
+  ),
+
+  populated: (
+    label: (
+      offset: 0,
+      size: "body-small.size",
+      line-height: "body-small.line-height",
+      translate: -50%,
+    ),
+  ),
+
+  disabled: (
+    label: (
+      color: "palette.on-surface",
+      opacity: "interaction.disabled.container.opacity",
+    ),
+  ),
+  hovered: (
+    background: null,
+    background-opacity: null,
+    color: "palette.on-surface",
+
+    outline: (
+      color: "palette.on-surface",
+      width: 1px,
+    ),
+
+    leading-icon: (
+      color: "palette.on-surface-variant",
+    ),
+    trailing-icon: (
+      color: "palette.on-surface-variant",
+    ),
+    supporting-text: (
+      color: "palette.on-surface-variant",
+    ),
+
+    error: (
+      color: "text-field.error.color",
+
+      outline: (
+        color: "text-field.error.outline.color",
+        width: "text-field.error.outline.width",
+      ),
+
+      caret: (
+        color: "text-field.error.caret.color",
+      ),
+
+      label: (
+        color: "text-field.error.label.color",
+      ),
+
+      leading-icon: (
+        color: "text-field.error.leading-icon.color",
+      ),
+      trailing-icon: (
+        color: "text-field.error.trailing-icon.color",
+      ),
+      supporting-text: (
+        color: "text-field.error.supporting-text.color",
+      ),
+    ),
+  ),
+  focused: (
+    color: "palette.on-surface",
+
+    outline: (
+      color: null,
+      width: null,
+      opacity: 0,
+    ),
+
+    leading-icon: (
+      color: "palette.on-surface-variant",
+    ),
+    trailing-icon: (
+      color: "palette.on-surface-variant",
+    ),
+    supporting-text: (
+      color: "palette.on-surface-variant",
+    ),
+
+    error: (
+      color: "text-field.error.color",
+
+      outline: (
+        color: "text-field.error.outline.color",
+      ),
+
+      caret: (
+        color: "text-field.error.caret.color",
+      ),
+
+      label: (
+        color: "text-field.error.label.color",
+      ),
+
+      leading-icon: (
+        color: "text-field.error.leading-icon.color",
+      ),
+      trailing-icon: (
+        color: "text-field.error.trailing-icon.color",
+      ),
+      supporting-text: (
+        color: "text-field.error.supporting-text.color",
+      ),
+    ),
+  ),
+  error: (
+    color: "palette.on-surface",
+
+    outline: (
+      color: null,
+      width: null,
+    ),
+
+    caret: (
+      color: "palette.error",
+    ),
+
+    label: (
+      color: "palette.error",
+    ),
+
+    leading-icon: (
+      color: "palette.on-surface-variant",
+    ),
+    trailing-icon: (
+      color: "palette.error",
+    ),
+    supporting-text: (
+      color: "palette.error",
+    ),
+  ),
+);
+
+$-configure-tokens: map.keys($-tokens);
+
+$-base-styles: (
+  border-end-end-radius: "text-field.shape.end-end",
+  border-end-start-radius: "text-field.shape.end-start",
+  border-start-end-radius: "text-field.shape.start-end",
+  border-start-start-radius: "text-field.shape.start-start",
+  cursor: text,
+  display: inline-flex,
+  padding-block-end: "text-field.padding.block-end",
+  padding-block-start: "text-field.padding.block-start",
+  padding-inline-end: "text-field.padding.inline-end",
+  padding-inline-start: "text-field.padding.inline-start",
+  position: relative,
+
+  "&::before, &::after": utils.deep-merge(utils.pseudo-element(), ()),
+  "&::before": (
+    background: utils.get-rgb-var(
+        "text-field.background",
+        "text-field.background-opacity"
+      ),
+    border-color: utils.get-rgb-var(
+        "text-field.outline.color",
+        "text-field.outline.opacity"
+      ),
+    border-width: "text-field.outline.width",
+    border-style: solid,
+    transition:
+      'all "transition.duration.short-3" "transition.easing.emphasized"',
+  ),
+  "&::after": (
+    border:
+      '"text-field.focused.outline.width" solid "text-field.focused.outline.color"',
+    opacity: 0,
+    transition:
+      'opacity "transition.duration.short-3" "transition.easing.linear"',
+  ),
+);
+$-base-input-styles: (
+  background: transparent,
+  border: 0,
+  caret-color: "text-field.caret.color",
+  color: utils.get-rgb-var("text-field.color", "text-field.color-opacity"),
+  font: typography.typescale(body-large),
+  padding: 0,
+  outline: none,
+  z-index: 0,
+  width: 100%,
+);
+$-base-label-styles: utils.deep-merge(
+  typography.get-font-and-letter-spacing(
+    $font-weight: "weight.regular",
+    $font-size: "text-field.label.size",
+    $line-height: "text-field.label.line-height",
+    $font-family: "font.plain",
+    $letter-spacing: "body-large.tracking",
+  ),
+  (
+    color: utils.get-rgb-var(
+        "text-field.label.color",
+        "text-field.label.opacity"
+      ),
+    position: absolute,
+    top: "text-field.label.top",
+    transform:
+      'translateY("text-field.label.offset") translateY("text-field.label.translate")',
+    transition:
+      'all "transition.duration.short-3" "transition.easing.emphasized"',
+  )
+);
+
+$-base-supporting-text-styles: utils.deep-merge(
+  (
+    color: utils.get-rgb-var(
+        "text-field.supporting-text.color",
+        "text-field.supporting-text.opacity"
+      ),
+    font: typography.typescale(body-small),
+  )
+);
+
+$-base-disabled-styles: utils.deep-merge(
+  utils.remap-variants(
+    text-field,
+    disabled,
+    "color",
+    "color-opacity",
+    "label.color",
+    "label.opacity",
+    "leading-icon.color",
+    "leading-icon.opacity",
+    "trailing-icon.color",
+    "trailing-icon.opacity",
+    "supporting-text.color",
+    "supporting-text.opacity"
+  ),
+  (
+    pointer-events: none,
+  )
+);
+$-base-hovered-styles: utils.remap-variants(
+  text-field,
+  hovered,
+  "background",
+  "background-opacity",
+  "outline.color",
+  "outline.width",
+  "label.color",
+  "leading-icon.color",
+  "trailing-icon.color",
+  "supporting-text.color"
+);
+$-base-focused-styles: (
+  "&::after": (
+    opacity: "text-field.focused.outline.opacity",
+  ),
+);
+$-base-floating-styles: utils.remap-variants(
+  text-field,
+  populated,
+  map.get($-tokens, populated)
+);
+
+$-base-error-styles: utils.deep-merge(
+  utils.remap-variants(text-field, error, map.get($-tokens, error)),
+  (
+    "text-field.hovered.outline.color": "text-field.hovered.error.outline.color",
+    "text-field.hovered.outline.width": "text-field.hovered.error.outline.width",
+    "text-field.focused.outline.color": "text-field.focused.error.outline.color",
+  )
+);
+
+@mixin configure() {
+  @if not $-tokens-registered {
+    $-tokens-registered: true !global;
+    @include utils.register-tokens($tokens: $-tokens, $prefix: "text-field");
+  }
+}
+
+@mixin configure-global($overrides: null) {
+  $overrides: utils.get-config-map(text-field, $overrides, $-configure-tokens);
+  @include configure();
+}
+
+@mixin css-styles {
+  $styles: ();
+  @include utils.css-styles($styles);
+}
+
+@mixin host-styles {
+  $styles: (
+    ":host": $-base-styles,
+    ":host([variant=outlined])": tokens.$outlined-styles,
+    ":host([variant=filled])": tokens.$filled-styles,
+    ":host([error])": $-base-error-styles,
+    "host-hover": $-base-hovered-styles,
+    ":host([disabled])": $-base-disabled-styles,
+    ":host([focus-visible])": $-base-focused-styles,
+    ":host(:is([populated], [focus-visible]))": $-base-floating-styles,
+    ".input": $-base-input-styles,
+    ".label": $-base-label-styles,
+  );
+  @include utils.host-styles($styles);
+}
+
+@mixin styles {
+  @include css-styles;
+  @include host-styles;
+}

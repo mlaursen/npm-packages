@@ -419,7 +419,7 @@ $-configure-tokens: $-variants;
   );
 }
 
-@function -get-font-and-letter-spacing(
+@function get-font-and-letter-spacing(
   $font-weight,
   $font-size,
   $line-height,
@@ -458,13 +458,13 @@ $-configure-tokens: $-variants;
   $font-family: map.get($properties, font);
   $letter-spacing: map.get($properties, tracking);
   @return map.deep-merge(
-    -get-font-and-letter-spacing(
-        $font-weight,
-        $font-size,
-        $line-height,
-        $font-family,
-        $letter-spacing
-      ),
+    get-font-and-letter-spacing(
+      $font-weight,
+      $font-size,
+      $line-height,
+      $font-family,
+      $letter-spacing
+    ),
     $overrides
   );
 }

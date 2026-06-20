@@ -118,6 +118,22 @@ export const sheet = {
   widths: defaultSizes,
 };
 
+export const textField = {
+  /** @type {import("@mlaursen/wc").TextFieldSize[]} */
+  sizes: defaultSizes,
+
+  /** @type {import("@mlaursen/wc").TextFieldVariant[]} */
+  variants: ["filled", "outlined"],
+
+  /** @type {import("@mlaursen/wc").SupportedInputType[]} */
+  types: ["text", "number", "email", "search", "tel", "url"],
+
+  /** @type {import("@mlaursen/wc").TextFieldShape[]} */
+  shapes: ["round", "square"],
+
+  states: ["normal", "disabled", "readOnly", "error"],
+};
+
 export const typography = {
   /** @type {import("@mlaursen/wc").TypographySize[]} */
   sizes: defaultSizes.toReversed(),

@@ -20,6 +20,7 @@
 @use "dialog-header";
 @use "sheet";
 @use "sheet-header";
+@use "text-field";
 @use "tooltip";
 
 @mixin styles {
@@ -48,5 +49,6 @@
   @include dialog-header.styles;
   @include sheet.styles;
   @include sheet-header.styles;
+  @include text-field.styles;
   @include tooltip.styles;
 }

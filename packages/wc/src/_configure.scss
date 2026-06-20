@@ -33,6 +33,7 @@
 @use "dialog-header";
 @use "sheet";
 @use "sheet-header";
+@use "text-field";
 @use "tooltip";
 
 @mixin configure(
@@ -69,6 +70,7 @@
   $dialog-content: null,
   $sheet: null,
   $sheet-header: null,
+  $text-field: null,
   $tooltip: null
 ) {
   @include utils.configure-setup(
@@ -107,5 +109,6 @@
   @include dialog-header.configure-global($dialog-header);
   @include sheet.configure-global($sheet);
   @include sheet-header.configure-global($sheet-header);
+  @include text-field.configure-global($text-field);
   @include tooltip.configure-global($tooltip);
 }

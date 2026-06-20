@@ -1,0 +1,60 @@
+@use "sass:map";
+@use "sass:list";
+@use "sass:meta";
+
+@use "../../utils";
+
+$outlined-tokens: (
+  color: "palette.on-surface-variant",
+
+  outline: (
+    color: "palette.outline",
+    width: 1px,
+  ),
+
+  populated: (
+    label: (
+      offset: 'calc("text-field.label.top" * -1)',
+    ),
+  ),
+
+  disabled: (
+    outline: (
+      color: "text-field.outline.color",
+      opacity: 0.12,
+      width: "text-field.outline.width",
+    ),
+  ),
+  hovered: (
+    error: (
+      outline: (
+        color: "palette.on-error-container",
+      ),
+
+      label: (
+        color: "palette.on-error-container",
+      ),
+    ),
+  ),
+  focused: (
+    outline: (
+      color: "palette.primary",
+      width: 3px,
+      opacity: 1,
+    ),
+
+    label: (
+      color: "palette.primary",
+    ),
+  ),
+
+  error: (
+    outline: (
+      color: "palette.error",
+      width: 1px,
+    ),
+  ),
+);
+$outlined-styles: utils.deep-merge(
+  utils.remap-variants(text-field, outlined, $outlined-tokens)
+);

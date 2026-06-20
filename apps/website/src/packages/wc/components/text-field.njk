@@ -1,0 +1,25 @@
+---
+layout: docs
+
+eleventyNavigation:
+  key: Text Field
+  parent: Home
+
+page:
+  title: Text Field
+---
+
+<mwc-box stacked style="display: inline-flex; align-items: initial">
+  {% for variant in textField.variants %}
+    {% for shape in textField.shapes %}
+      {% for state in textField.states %}
+        {% set tagName = "mwc-" + variant + "-text-field" %}
+        <{{ tagName }} {{ state if state != "normal" }} shape="{{ shape }}">
+        <span slot="label">{{ variant | capitalize }} {{ state | capitalize if state != "normal" }}</span>
+        </{{ tagName }}>
+      {% endfor %}
+      <mwc-divider>
+      </mwc-divider>
+    {% endfor %}
+  {% endfor %}
+</mwc-box>
