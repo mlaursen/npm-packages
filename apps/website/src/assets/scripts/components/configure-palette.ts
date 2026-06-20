@@ -19,6 +19,7 @@ import materialTheme from "../../json/material-theme.json" with { type: "json" }
 
 const colorSchemes: ColorScheme[] = ["light", "dark", "light-dark"];
 const contrasts = ["normal", "medium", "high"] as const;
+const dirs = ["ltr", "rtl"] as const;
 
 const defaultTheme = parseMaterialTheme(materialTheme);
 
@@ -28,6 +29,7 @@ const COLOR_SCHEME_KEY = "colorScheme";
 const MATERIAL_THEME_KEY = "materialThemeEnabled";
 
 type MaterialPaletteContrast = (typeof contrasts)[number];
+type Dir = (typeof dirs)[number];
 
 function isValidColorScheme(
   colorScheme: string | null,
@@ -54,6 +56,9 @@ export class ConfigurePalette extends LitElement {
 
   @state()
   theme = defaultTheme;
+
+  @state()
+  override dir: Dir = "ltr";
 
   override connectedCallback(): void {
     super.connectedCallback();
@@ -112,6 +117,10 @@ export class ConfigurePalette extends LitElement {
     if (changed.has("colorScheme")) {
       localStorage.setItem(COLOR_SCHEME_KEY, this.colorScheme);
     }
+
+    if (changed.has("dir")) {
+      document.documentElement.setAttribute("dir", this.dir);
+    }
   }
 
   override render(): TemplateResult {
@@ -129,7 +138,7 @@ export class ConfigurePalette extends LitElement {
           ${spread(theme)}
         ></mwc-update-palette>
         ${this.#renderColorScheme()} ${this.#renderMaterialColors()}
-        ${this.#renderCustomTheme()}
+        ${this.#renderCustomTheme()} ${this.#renderOrientation()}
       </mwc-box>
     `;
   }
@@ -204,6 +213,25 @@ export class ConfigurePalette extends LitElement {
     `;
   }
 
+  #renderOrientation(): TemplateResult {
+    return html`
+      <mwc-typography variant="title" size="medium">Orientation</mwc-typography>
+      <mwc-box>
+        ${map(dirs, (dir) => {
+          const active = this.dir === dir;
+          return html`
+            <mwc-outlined-button
+              aria-pressed="${active}"
+              @click=${() => this.#changeDir(dir)}
+            >
+              ${dir}
+            </mwc-outlined-button>
+          `;
+        })}
+      </mwc-box>
+    `;
+  }
+
   async #handleFileUpload(event: InputEvent): Promise<void> {
     if (
       !(event.currentTarget instanceof HTMLInputElement) ||
@@ -232,6 +260,10 @@ export class ConfigurePalette extends LitElement {
 
   #changeColorScheme(colorScheme: ColorScheme): void {
     this.colorScheme = colorScheme;
+  }
+
+  #changeDir(dir: Dir): void {
+    this.dir = dir;
   }
 }
 
