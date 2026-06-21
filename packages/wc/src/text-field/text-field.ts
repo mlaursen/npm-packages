@@ -127,6 +127,10 @@ export class TextField extends BaseTextField implements TextFieldProperties {
     if (changed.has("value") || changed.has("focusVisible")) {
       this.floating = !!this.value || this.focusVisible;
     }
+
+    if (changed.has("_hasLabel")) {
+      this.toggleAttribute("has-label", this._hasLabel);
+    }
   }
 
   override focus(options?: FocusOptions): void {

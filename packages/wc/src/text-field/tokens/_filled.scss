@@ -25,6 +25,16 @@ $filled-tokens: (
     block-end: "spacing.small",
   ),
 
+  small: (
+    label: (
+      y: "spacing.medium",
+    ),
+    padding: (
+      block-start: 1.25rem,
+      block-end: "spacing.extra-small",
+    ),
+  ),
+
   hovered: (
     background: "interaction.hovered.container.color",
     background-opacity: "interaction.hovered.container.opacity",
@@ -88,4 +98,14 @@ $filled-styles: utils.deep-merge(
           'opacity "transition.duration.short-3" "transition.easing.linear"',
       ),
   )
+);
+$filled-small-label-styles: (
+  "text-field.label.y": "text-field.filled.small.label.y",
+  "text-field.padding.block-start":
+    "text-field.filled.small.padding.block-start",
+  "text-field.padding.block-end": "text-field.filled.small.padding.block-end",
+);
+$filled-small-styles: (
+  "text-field.padding.block-start": "spacing.small",
+  "text-field.padding.block-end": "spacing.small",
 );

@@ -13,6 +13,10 @@ $outlined-tokens: (
     width: 1px,
   ),
 
+  label: (
+    y: "text-field.padding.block-start",
+  ),
+
   populated: (
     label: (
       offset: 'calc("text-field.label.y" * -1)',

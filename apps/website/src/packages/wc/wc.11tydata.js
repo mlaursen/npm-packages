@@ -123,7 +123,7 @@ export const sheet = {
 
 export const textField = {
   /** @type {import("@mlaursen/wc").TextFieldSize[]} */
-  sizes: defaultSizes,
+  sizes: ["normal", "small"],
 
   /** @type {import("@mlaursen/wc").TextFieldVariant[]} */
   variants: ["filled", "outlined"],

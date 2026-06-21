@@ -26,37 +26,39 @@ types:
                 display: inline-grid">
   {% for type in types %}
     {% for variant in textField.variants %}
-      {% for shape in textField.shapes %}
-        <mwc-box style="display: inline-flex;
-                        align-items: initial"
-                 padding="none"
-                 stacked>
-          <mwc-typography margin="top">
-            <h3>{{ shape | capitalize }}</h3>
-          </mwc-typography>
-          {% set tagName = "mwc-" + variant + "-text-field" %}
-          {% for state in textField.states %}
-            <{{ tagName }} placeholder="Placeholder" {{ state if state != "normal" }} type="{{ type }}">
-            <span slot="label">Label</span>
+      {% for size in textField.sizes %}
+        {% for shape in textField.shapes %}
+          <mwc-box style="display: inline-flex;
+                          align-items: initial"
+                   padding="none"
+                   stacked>
+            <mwc-typography margin="top">
+              <h3>{{ shape | capitalize }} {{ size | capitalize }}</h3>
+            </mwc-typography>
+            {% set tagName = "mwc-" + variant + "-text-field" %}
+            {% for state in textField.states %}
+              <{{ tagName }} placeholder="Placeholder" {{ state if state != "normal" }} type="{{ type }}" shape="{{ shape }}" size="{{ size }}">
+              <span slot="label">Label</span>
+              </{{ tagName }}>
+              <{{ tagName }} placeholder="Placeholder only" {{ state if state != "normal" }} type="{{ type }}" shape="{{ shape }}" size="{{ size }}">
+              </{{ tagName }}>
+              <{{ tagName }} {{ state if state != "normal" }} value="{{ "Hello, world!" }}" type="{{ type }}" shape="{{ shape }}" size="{{ size }}">
+              <span slot="label">{{ variant | capitalize }} {{ state | capitalize if state != "normal" }}</span>
+              </{{ tagName }}>
+              <{{ tagName }} placeholder="Placeholder only" {{ state if state != "normal" }} value="{{ "Placeholder only with value" }}" type="{{ type }}" shape="{{ shape }}" size="{{ size }}">
+              </{{ tagName }}>
+              <mwc-divider>
+              </mwc-divider>
+            {% endfor %}
+            <{{ tagName }} value="{{ "Hello, world!" }}" type="{{ type }}" shape="{{ shape }}" size="{{ size }}">
+            <span slot="label">This is a really long label that will cause issues!</span>
             </{{ tagName }}>
-            <{{ tagName }} placeholder="Placeholder only" {{ state if state != "normal" }} type="{{ type }}">
-            </{{ tagName }}>
-            <{{ tagName }} {{ state if state != "normal" }} value="{{ "Hello, world!" }}" type="{{ type }}">
-            <span slot="label">{{ variant | capitalize }} {{ state | capitalize if state != "normal" }}</span>
-            </{{ tagName }}>
-            <{{ tagName }} placeholder="Placeholder only" {{ state if state != "normal" }} value="{{ "Placeholder only with value" }}" type="{{ type }}">
-            </{{ tagName }}>
-            <mwc-divider>
-            </mwc-divider>
-          {% endfor %}
-          <{{ tagName }} value="{{ "Hello, world!" }}">
-          <span slot="label">This is a really long label that will cause issues!</span>
-          </{{ tagName }}>
-          {% if variant != textField.variants.at(-1) %}
-            <mwc-divider>
-            </mwc-divider>
-          {% endif %}
-        </mwc-box>
+            {% if variant != textField.variants.at(-1) %}
+              <mwc-divider>
+              </mwc-divider>
+            {% endif %}
+          </mwc-box>
+        {% endfor %}
       {% endfor %}
     {% endfor %}
   {% endfor %}
@@ -75,8 +77,8 @@ toggle.addEventListener("click", () => {
 const nextPressed = toggle.ariaPressed === "false";
 toggle.ariaPressed = `${nextPressed}`
 if (nextPressed) {
-grid.removeAttribute("style");
 grid.setAttribute("grid", "true");
+grid.setAttribute("style", "--mwc-box-item-min-size: 10rem")
 } else {
 grid.setAttribute("grid", "2");
 grid.setAttribute("style", "align-items: initial; display: inline-grid");

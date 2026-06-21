@@ -104,6 +104,13 @@ $-tokens: (
     inline-start: "text-field.padding.all",
   ),
 
+  small: (
+    padding: (
+      block-start: "spacing.small",
+      block-end: "spacing.small",
+    ),
+  ),
+
   populated: (
     label: (
       offset: 0,
@@ -302,6 +309,11 @@ $-base-styles: (
   padding-inline-start: "text-field.padding.inline-start",
   position: relative,
   writing-mode: horizontal-tb,
+);
+$-small-styles: utils.remap-variants(
+  text-field,
+  small,
+  map.get($-tokens, small)
 );
 $-base-textarea-container-styles: (
   // shift the horizontal padding down to the textarea itself and shift the
@@ -516,6 +528,10 @@ $-base-error-styles: utils.deep-merge(
     ":host([type=textarea])": $-base-textarea-container-styles,
     ":host([variant=outlined])": tokens.$outlined-styles,
     ":host([variant=filled])": tokens.$filled-styles,
+    ":host([size=small])": $-small-styles,
+    ":host([variant=filled][size=small])": tokens.$filled-small-styles,
+    ":host([variant=filled][size=small][has-label])":
+      tokens.$filled-small-label-styles,
     ":host([error])": $-base-error-styles,
     "host-hover": $-base-hovered-styles,
     ":host([disabled])": $-base-disabled-styles,
