@@ -31,15 +31,11 @@ interface CheckableElement extends HTMLElement {
 export class RadioGroup extends Box {
   static formAssociated = true;
 
-  #internals?: ElementInternals;
+  #internals = this.attachInternals();
 
   constructor() {
     super();
-    if (isServer) {
-      return;
-    }
 
-    this.#internals = this.attachInternals();
     this.#internals.role = "radiogroup";
   }
 
@@ -52,7 +48,7 @@ export class RadioGroup extends Box {
     this.addEventListener("focusin", this.#handleFocusIn);
     this.addEventListener("focusout", this.#handleFocusOut);
 
-    this.#internals?.form?.addEventListener("reset", this.#handleReset);
+    this.#internals.form?.addEventListener("reset", this.#handleReset);
     queueMicrotask(() => {
       this.#syncTabIndices();
     });
@@ -66,7 +62,7 @@ export class RadioGroup extends Box {
     this.removeEventListener("focusin", this.#handleFocusIn);
     this.removeEventListener("focusout", this.#handleFocusOut);
 
-    this.#internals?.form?.removeEventListener("reset", this.#handleReset);
+    this.#internals.form?.removeEventListener("reset", this.#handleReset);
   }
 
   override render(): TemplateResult {

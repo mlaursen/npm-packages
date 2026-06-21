@@ -103,7 +103,7 @@ export class Radio extends BaseRadio implements RadioProperties {
     super.connectedCallback();
 
     this.#updateInternals();
-    this.internals?.form?.addEventListener("reset", this.#handleReset);
+    this.internals.form?.addEventListener("reset", this.#handleReset);
   }
 
   protected override willUpdate(changed: PropertyValues): void {
@@ -131,7 +131,7 @@ export class Radio extends BaseRadio implements RadioProperties {
   override disconnectedCallback(): void {
     super.disconnectedCallback();
 
-    this.internals?.form?.removeEventListener("reset", this.#handleReset);
+    this.internals.form?.removeEventListener("reset", this.#handleReset);
   }
 
   override render(): TemplateResult {
@@ -187,7 +187,7 @@ export class Radio extends BaseRadio implements RadioProperties {
 
   override handleKeyDown(event: KeyboardEvent): void {
     if (event.key === "Enter") {
-      this.internals?.form?.requestSubmit();
+      this.internals.form?.requestSubmit();
       return;
     }
 

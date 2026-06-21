@@ -1,4 +1,4 @@
-import { type LitElement, isServer } from "lit";
+import { type LitElement } from "lit";
 import { property } from "lit/decorators.js";
 
 import { type LitConstructor } from "../types.js";
@@ -30,16 +30,12 @@ export function AriaMixin<
 
     static formAssociated = formAssociated;
 
-    internals?: ElementInternals;
+    internals = this.attachInternals();
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     constructor(...args: any[]) {
       super(...args);
-      if (isServer) {
-        return;
-      }
 
-      this.internals = this.attachInternals();
       this.internals.role = role;
     }
 

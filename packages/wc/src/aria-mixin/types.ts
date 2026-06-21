@@ -89,7 +89,7 @@ export type AriaRole =
 
 export interface AriaMixinProperties {
   role: AriaRole;
-  internals?: ElementInternals;
+  internals: ElementInternals;
 
   isDisabled(): boolean;
   handleClick(event: MouseEvent): void;

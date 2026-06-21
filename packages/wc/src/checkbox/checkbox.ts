@@ -113,13 +113,13 @@ export class Checkbox extends BaseCheckbox implements CheckboxProperties {
     super.connectedCallback();
 
     this.#updateInternals();
-    this.internals?.form?.addEventListener("reset", this.#handleReset);
+    this.internals.form?.addEventListener("reset", this.#handleReset);
   }
 
   override disconnectedCallback(): void {
     super.disconnectedCallback();
 
-    this.internals?.form?.removeEventListener("reset", this.#handleReset);
+    this.internals.form?.removeEventListener("reset", this.#handleReset);
   }
 
   protected override willUpdate(changed: PropertyValues): void {
@@ -152,7 +152,7 @@ export class Checkbox extends BaseCheckbox implements CheckboxProperties {
     // it will really have a size of 20x20
     return html`
       <slot name="icon">
-        <svg aria-hidden class="icon" viewBox="0 0 18 18">
+        <svg aria-hidden="true" class="icon" viewBox="0 0 18 18">
           <rect
             x="1"
             y="1"
@@ -224,7 +224,7 @@ export class Checkbox extends BaseCheckbox implements CheckboxProperties {
 
   override handleKeyDown(event: KeyboardEvent): void {
     if (event.key === "Enter") {
-      this.internals?.form?.requestSubmit();
+      this.internals.form?.requestSubmit();
       return;
     }
 

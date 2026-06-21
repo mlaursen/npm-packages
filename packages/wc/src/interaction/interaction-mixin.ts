@@ -90,7 +90,10 @@ export function InteractionMixin<T extends StylableLitElement>(
 
     _renderStateLayer(): TemplateResult {
       return html`
-        <span class="state-layer ${this.#getStateLayerClassName()}"></span>
+        <span
+          aria-hidden="true"
+          class="state-layer ${this.#getStateLayerClassName()}"
+        ></span>
       `;
     }
 
@@ -100,7 +103,10 @@ export function InteractionMixin<T extends StylableLitElement>(
       }
 
       return html`
-        <span class="ripple ${this.#getStateLayerClassName()}"></span>
+        <span
+          aria-hidden="true"
+          class="ripple ${this.#getStateLayerClassName()}"
+        ></span>
       `;
     }
 

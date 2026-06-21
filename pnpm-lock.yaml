@@ -564,9 +564,6 @@ importers:
       '@mlaursen/utils':
         specifier: workspace:*
         version: link:../utils
-      '@open-wc/form-control':
-        specifier: ^1.0.0
-        version: 1.0.0
       '@open-wc/lit-helpers':
         specifier: ^0.7.0
         version: 0.7.0(lit@3.3.3)
@@ -1657,9 +1654,6 @@ packages:
 
   '@octokit/types@17.0.0':
     resolution: {integrity: sha512-ByP1v7YL5SMveFPP7+sj0/ZuWCOOg/Chs4NafOMpq6WNIM/hdGY0S7C0TCGDBWu1aGmOxmUIhMx3cO+IdwYZ1Q==}
-
-  '@open-wc/form-control@1.0.0':
-    resolution: {integrity: sha512-4QW7FZcq1r7vKzs+ULAqc8vcjs+15kiGksoLiNMi1lbHX52MC+jonveEhvzX1rs0QUXv57V7F6rGt/q+UZh61Q==}
 
   '@open-wc/lit-helpers@0.7.0':
     resolution: {integrity: sha512-4NBlx5ve0EvZplCRJbESm0MdMbRCw16alP2y76KAAAwzmFFXXrUj5hFwhw55+sSg5qaRRx6sY+s7usKgnNo3TQ==}
@@ -6228,8 +6222,6 @@ snapshots:
   '@octokit/types@17.0.0':
     dependencies:
       '@octokit/openapi-types': 28.0.0
-
-  '@open-wc/form-control@1.0.0': {}
 
   '@open-wc/lit-helpers@0.7.0(lit@3.3.3)':
     dependencies:

@@ -148,7 +148,7 @@ export class Button extends BaseButton implements ButtonProperties {
     }
 
     const internals = this.internals;
-    const form = internals?.form;
+    const form = internals.form;
     if (!form || this.type === "button") {
       return;
     }
