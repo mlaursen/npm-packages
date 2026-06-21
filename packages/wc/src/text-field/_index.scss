@@ -326,6 +326,7 @@ $-base-textarea-container-styles: (
   "text-field.label.x": "text-field.padding.inline-start",
 
   min-height: "text-field.min-height",
+  min-width: "text-field.min-width",
 
   padding: 0,
   // allow the entire container to be resized instead of the textarea since
@@ -409,8 +410,8 @@ $-base-label-styles: utils.deep-merge(
 );
 $-base-textarea-resize-styles: (
   inset: 0,
-  min-height: "text-field.min-height",
-  min-width: "text-field.min-width",
+  min-height: inherit,
+  min-width: inherit,
   overflow: hidden,
   position: absolute,
   resize: inherit,

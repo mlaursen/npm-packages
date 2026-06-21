@@ -100,6 +100,8 @@ export class TextField extends BaseTextField implements TextFieldProperties {
   cols?: number;
 
   #fieldId = "field";
+  #resizeObserver?: ResizeObserver;
+  #observedOnce = false;
 
   @query("#field")
   _field?: HTMLInputElement | HTMLTextAreaElement;
@@ -257,37 +259,16 @@ export class TextField extends BaseTextField implements TextFieldProperties {
     );
   }
 
-  protected override firstUpdated(changed: PropertyValues): void {
-    super.firstUpdated(changed);
+  protected override willUpdate(changed: PropertyValues): void {
+    super.willUpdate(changed);
 
-    if (!this._resize) {
-      return;
+    if (changed.has("value") || changed.has("focusVisible")) {
+      this.floating = !!this.value || this.focusVisible;
     }
 
-    let observedOnce = false;
-    this.#resizeObserver = new ResizeObserver((entries) => {
-      if (!observedOnce) {
-        observedOnce = true;
-        return;
-      }
-
-      const resize = this._resize;
-      const entry = entries[0];
-      if (!resize || entry?.target !== resize) {
-        return;
-      }
-
-      const { width, height } = entry.contentRect;
-      this.style.width = `${width}px`;
-      this.style.height = `${height}px`;
-      const nextRect = this.getBoundingClientRect();
-
-      this.style.width = `${nextRect.width}px`;
-      this.style.height = `${nextRect.height}px`;
-      resize.style.width = this.style.width;
-      resize.style.height = this.style.height;
-    });
-    this.#resizeObserver.observe(this._resize);
+    if (changed.has("_hasLabel")) {
+      this.toggleAttribute("has-label", this._hasLabel);
+    }
   }
 
   override disconnectedCallback(): void {
@@ -369,7 +350,12 @@ export class TextField extends BaseTextField implements TextFieldProperties {
         @blur=${this.#handleFocusChange}
         @input=${this.#handleInput}
       ></textarea>
-      <div class="resize"></div>
+      <div
+        class="resize"
+        @pointerdown=${this.#startObserving}
+        @pointercancel=${this.#stopObserving}
+        @pointerup=${this.#stopObserving}
+      ></div>
     `;
   }
 
@@ -415,5 +401,95 @@ export class TextField extends BaseTextField implements TextFieldProperties {
 
   #handleFocusChange(): void {
     this.focusVisible = this._field?.matches(":focus-visible") ?? false;
+  }
+
+  #startObserving(event: PointerEvent): void {
+    if (!event.isPrimary) {
+      return;
+    }
+
+    this.#initializeResizeHandle();
+  }
+
+  #stopObserving(): void {
+    this.#resizeObserver?.disconnect();
+    if (!this._resize) {
+      return;
+    }
+
+    this._resize.removeAttribute("style");
+  }
+
+  /**
+   * This is required since the `textarea` itself cannot be resizable due to
+   * having margin applied so the text inside does not clip and the drag handle
+   * is misplaced due to that margin. So as the user drags the resize handle,
+   * need to sync the size with the entire mwc-text-field.
+   *
+   * This works pretty well except when there is a grid with a lot of resizable
+   * textarea. it will sometimes "lag"/freeze and jump when adjusting to be too
+   * small. This is good enough to me for now as that's an edge case.
+   */
+  #initializeResizeHandle(): void {
+    const resize = this._resize;
+    if (!resize) {
+      return;
+    }
+
+    // skip the initial resize observer callback so it is only once the user
+    // starts resizing that it updates
+    this.#resizeObserver ??= new ResizeObserver((entries) => {
+      if (!this.#observedOnce) {
+        this.#observedOnce = true;
+        return;
+      }
+
+      for (const entry of entries) {
+        // when the size of the textfield itself has changed, just sync back to
+        // the resize handle
+        if (entry.target === this) {
+          const { width, height } = entry.contentRect;
+          resize.style.width = `${width}px`;
+          resize.style.height = `${height}px`;
+        } else if (entry.target === resize) {
+          this.#syncHandleWithTextArea(resize, entry.contentRect);
+        }
+      }
+    });
+    this.#resizeObserver.observe(this);
+    this.#resizeObserver.observe(resize);
+  }
+
+  #syncHandleWithTextArea(
+    resize: HTMLDivElement,
+    contentRect: DOMRectReadOnly,
+  ): void {
+    const { width, height } = contentRect;
+    this.style.width = `${width}px`;
+    this.style.height = `${height}px`;
+
+    // once the new size has been set, need to check if the size was actually
+    // applied as-is or constrained to new values. This can happen when:
+    // - there is a min/max (optional) height/width applied
+    // - resized to an edge of the container
+    // - the mwc-text-field is in a flex or grid container that limits the
+    //   size
+    const { width: nextWidth, height: nextHeight } =
+      this.getBoundingClientRect();
+    if (nextWidth !== width) {
+      if (nextWidth < width) {
+        resize.style.maxWidth = `${nextWidth}px`;
+      }
+
+      resize.style.width = `${nextWidth}px`;
+    }
+
+    if (nextHeight !== height) {
+      if (nextHeight < height) {
+        resize.style.maxHeight = `${nextHeight}px`;
+      }
+
+      resize.style.height = `${nextHeight}px`;
+    }
   }
 }
