@@ -107,6 +107,11 @@ export class TextField extends BaseTextField implements TextFieldProperties {
   @query(".notch-2")
   _notchWithLabel?: HTMLDivElement;
 
+  @query(".resize")
+  _resize?: HTMLDivElement;
+
+  #resizeObserver?: ResizeObserver;
+
   @property({ type: Boolean, reflect: true, attribute: "focus-visible" })
   focusVisible = false;
 
@@ -248,6 +253,45 @@ export class TextField extends BaseTextField implements TextFieldProperties {
     );
   }
 
+  protected override firstUpdated(changed: PropertyValues): void {
+    super.firstUpdated(changed);
+
+    if (!this._resize) {
+      return;
+    }
+
+    let observedOnce = false;
+    this.#resizeObserver = new ResizeObserver((entries) => {
+      if (!observedOnce) {
+        observedOnce = true;
+        return;
+      }
+
+      const resize = this._resize;
+      const entry = entries[0];
+      if (!resize || entry?.target !== resize) {
+        return;
+      }
+
+      const { width, height } = entry.contentRect;
+      this.style.width = `${width}px`;
+      this.style.height = `${height}px`;
+      const nextRect = this.getBoundingClientRect();
+
+      this.style.width = `${nextRect.width}px`;
+      this.style.height = `${nextRect.height}px`;
+      resize.style.width = this.style.width;
+      resize.style.height = this.style.height;
+    });
+    this.#resizeObserver.observe(this._resize);
+  }
+
+  override disconnectedCallback(): void {
+    super.disconnectedCallback();
+
+    this.#resizeObserver?.disconnect();
+  }
+
   override render(): TemplateResult {
     return html`${this.#renderLabel()}${this.#renderInput()}${this.#renderTextArea()}${this.#renderOutline()}`;
   }
@@ -321,6 +365,7 @@ export class TextField extends BaseTextField implements TextFieldProperties {
         @blur=${this.#handleFocusChange}
         @input=${this.#handleInput}
       ></textarea>
+      <div class="resize"></div>
     `;
   }
 
@@ -331,7 +376,7 @@ export class TextField extends BaseTextField implements TextFieldProperties {
 
     // this is an interesting one... I can't dynamically render the inner
     // notches since the lit comment breaks the `display: grid` styling
-    const isGapRequired = this._hasLabel && this.shape === "square";
+    const isGapRequired = this._hasLabel; // && this.shape === "square";
     return html`
       <div
         aria-hidden="true"

@@ -23,6 +23,13 @@ $-tokens: (
     end-end: "text-field.shape.all",
   ),
 
+  min-height: "text-field.size.normal",
+  min-width: 4.75rem,
+  size: (
+    small: 2.5rem,
+    normal: 3.5rem,
+  ),
+
   outline: (
     color: null,
     inset: 0,
@@ -30,6 +37,22 @@ $-tokens: (
     width: 0,
   ),
 
+  input: (
+    margin: (
+      all: 0,
+      block-end: "text-field.input.margin.all",
+      block-start: "text-field.input.margin.all",
+      inline-end: "text-field.input.margin.all",
+      inline-start: "text-field.input.margin.all",
+    ),
+    padding: (
+      all: 0,
+      block-end: "text-field.input.padding.all",
+      block-start: "text-field.input.padding.all",
+      inline-end: "text-field.input.padding.all",
+      inline-start: "text-field.input.padding.all",
+    ),
+  ),
   caret: (
     color: "palette.primary",
   ),
@@ -55,7 +78,8 @@ $-tokens: (
     size: "body-large.size",
     line-height: "body-large.line-height",
 
-    top: "spacing.large",
+    x: auto,
+    y: "spacing.large",
   ),
   leading-icon: (
     color: "palette.on-surface-variant",
@@ -73,10 +97,11 @@ $-tokens: (
   ),
 
   padding: (
-    block-end: "spacing.large",
-    block-start: "spacing.large",
-    inline-end: "spacing.large",
-    inline-start: "spacing.large",
+    all: "spacing.large",
+    block-end: "text-field.padding.all",
+    block-start: "text-field.padding.all",
+    inline-end: "text-field.padding.all",
+    inline-start: "text-field.padding.all",
   ),
 
   populated: (
@@ -269,13 +294,32 @@ $-base-styles: (
   border-start-start-radius: "text-field.shape.start-start",
   cursor: text,
   display: inline-flex,
+  flex: 1 1 auto,
+  max-width: 100%,
   padding-block-end: "text-field.padding.block-end",
   padding-block-start: "text-field.padding.block-start",
   padding-inline-end: "text-field.padding.inline-end",
   padding-inline-start: "text-field.padding.inline-start",
   position: relative,
-  flex: 1 1 auto,
-  max-width: 100%,
+  writing-mode: horizontal-tb,
+);
+$-base-textarea-container-styles: (
+  // shift the horizontal padding down to the textarea itself and shift the
+  // vertical padding down as margin. the vertical padding has to be margin
+  // so the text content isn't clipped
+  "text-field.input.margin-block-start": "text-field.padding.block-start",
+  "text-field.input.margin-block-end": "text-field.padding.block-end",
+  "text-field.input.padding.inline-end": "text-field.padding.inline-end",
+  "text-field.input.padding.inline-start": "text-field.padding.inline-start",
+  "text-field.label.x": "text-field.padding.inline-start",
+
+  min-height: "text-field.min-height",
+
+  padding: 0,
+  // allow the entire container to be resized instead of the textarea since
+  // margin is applied to the textarea which would cause the drag handle to be
+  // positioned incorrectly
+  resize: both
 );
 $-base-input-styles: (
   background: transparent,
@@ -283,8 +327,16 @@ $-base-input-styles: (
   caret-color: "text-field.caret.color",
   color: utils.get-rgb-var("text-field.color", "text-field.color-opacity"),
   font: typography.typescale(body-large),
+  margin-block-end: "text-field.input.margin.block-end",
+  margin-block-start: "text-field.input.margin.block-start",
+  margin-inline-end: "text-field.input.margin.inline-end",
+  margin-inline-start: "text-field.input.margin.inline-start",
   outline: none,
-  padding: 0,
+  padding-block-end: "text-field.input.padding.block-end",
+  padding-block-start: "text-field.input.padding.block-start",
+  padding-inline-end: "text-field.input.padding.inline-end",
+  padding-inline-start: "text-field.input.padding.inline-start",
+  resize: none,
   width: 100%,
   z-index: 0,
 
@@ -329,18 +381,27 @@ $-base-label-styles: utils.deep-merge(
         "text-field.label.color",
         "text-field.label.opacity"
       ),
+    left: "text-field.label.x",
     max-width:
       'calc(100% - "text-field.padding.inline-start" - "text-field.padding.inline-end" - "text-field.floating.label.padding-inline")',
     overflow: hidden,
     position: absolute,
     text-overflow: ellipsis,
-    top: "text-field.label.top",
+    top: "text-field.label.y",
     transform:
       'translateY("text-field.label.offset") translateY("text-field.label.translate")',
     transition:
       'all "transition.duration.short-3" "transition.easing.emphasized"',
     white-space: nowrap,
   )
+);
+$-base-textarea-resize-styles: (
+  inset: 0,
+  min-height: "text-field.min-height",
+  min-width: "text-field.min-width",
+  overflow: hidden,
+  position: absolute,
+  resize: inherit,
 );
 
 $-base-supporting-text-styles: utils.deep-merge(
@@ -452,6 +513,7 @@ $-base-error-styles: utils.deep-merge(
 @mixin host-styles {
   $styles: (
     ":host": $-base-styles,
+    ":host([type=textarea])": $-base-textarea-container-styles,
     ":host([variant=outlined])": tokens.$outlined-styles,
     ":host([variant=filled])": tokens.$filled-styles,
     ":host([error])": $-base-error-styles,
@@ -463,6 +525,7 @@ $-base-error-styles: utils.deep-merge(
     ".input.labeled": $-base-labeled-input-styles,
     ".label": $-base-label-styles,
     ".outline": tokens.$outlined-outline-styles,
+    ".resize": $-base-textarea-resize-styles,
     "[class^=notch]": tokens.$outlined-notch-styles,
     "[class^=notch], .no-notches": tokens.$outlined-notch-pseudo-styles,
     ".notch-1": tokens.$outlined-notch-1-styles,
