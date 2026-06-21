@@ -4,7 +4,7 @@ import {
   type TemplateResult,
   html,
 } from "lit";
-import { property, query, state } from "lit/decorators.js";
+import { customElement, property, query, state } from "lit/decorators.js";
 import { classMap } from "lit/directives/class-map.js";
 import { ifDefined } from "lit/directives/if-defined.js";
 import { live } from "lit/directives/live.js";
@@ -24,6 +24,11 @@ import type {
 
 const BaseTextField = PaletteMixin(MarginMixin(LitElement));
 
+/**
+ * This version of the text field should generally not be used and the
+ * `mwc-filled-text-field` or `mwc-outlined-text-field` should be used instead.
+ */
+@customElement("mwc-text-field")
 export class TextField extends BaseTextField implements TextFieldProperties {
   static override styles = [...BaseTextField.styles, styles];
   static formAssociated = true;
@@ -42,62 +47,164 @@ export class TextField extends BaseTextField implements TextFieldProperties {
   @property()
   shape: TextFieldShape = "square";
 
+  /**
+   * The **`type`** property of the HTMLInputElement interface indicates the kind of data allowed in the input element, for example a number, a date, or an email.
+   *
+   * [MDN Reference](https://developer.mozilla.org/docs/Web/API/HTMLInputElement/type)
+   */
   @property()
   type: SupportedInputType | UnsupportedInputType = "text";
 
+  /**
+   * The **`name`** property of the HTMLInputElement interface indicates the name of the input element.
+   *
+   * [MDN Reference](https://developer.mozilla.org/docs/Web/API/HTMLInputElement/name)
+   */
   @property()
   name = "";
 
+  /**
+   * The **`value`** property of the HTMLInputElement interface represents the current value of the input element as a string.
+   *
+   * [MDN Reference](https://developer.mozilla.org/docs/Web/API/HTMLInputElement/value)
+   */
   @property()
   value = "";
 
+  /**
+   * The **`HTMLInputElement.disabled`** property is a boolean value that reflects the `disabled` HTML attribute, which indicates whether the control is disabled.
+   *
+   * [MDN Reference](https://developer.mozilla.org/docs/Web/API/HTMLInputElement/disabled)
+   */
   @property({ type: Boolean })
   disabled = false;
 
+  /**
+   * Manually set the `error` state for the text field.
+   */
   @property({ type: Boolean })
   error = false;
 
+  /**
+   * The **`autocomplete`** property of the HTMLInputElement interface indicates whether the value of the form's controls can be automatically completed by the browser.
+   *
+   * [MDN Reference](https://developer.mozilla.org/docs/Web/API/HTMLInputElement/autocomplete)
+   */
   @property()
   autocomplete: AutoFill = "";
 
+  /**
+   * The **`autocapitalize`** property of the HTMLElement interface represents the element's capitalization behavior for user input.
+   *
+   * [MDN Reference](https://developer.mozilla.org/docs/Web/API/HTMLElement/autocapitalize)
+   */
   @property()
   override autocapitalize: AutoCapitalize = "";
 
+  /**
+   * The **`min`** property of the HTMLInputElement interface reflects the input element's `min` attribute, which generally defines the minimum valid value for a numeric or date-time input.
+   *
+   * [MDN Reference](https://developer.mozilla.org/docs/Web/API/HTMLInputElement/min)
+   */
   @property()
   min = "";
 
+  /**
+   * The **`max`** property of the HTMLInputElement interface reflects the input element's `max` attribute, which generally defines the maximum valid value for a numeric or date-time input.
+   *
+   * [MDN Reference](https://developer.mozilla.org/docs/Web/API/HTMLInputElement/max)
+   */
   @property()
   max = "";
 
+  /**
+   * The **`step`** property of the HTMLInputElement interface indicates the step by which numeric or date-time input elements can change.
+   *
+   * [MDN Reference](https://developer.mozilla.org/docs/Web/API/HTMLInputElement/step)
+   */
   @property({ type: Number })
   step?: number;
 
+  /**
+   * The **`minLength`** property of the HTMLInputElement interface indicates the minimum number of characters (in UTF-16 code units) required for the value of the input element to be valid.
+   *
+   * [MDN Reference](https://developer.mozilla.org/docs/Web/API/HTMLInputElement/minLength)
+   */
   @property({ type: Number })
   minLength?: number;
 
+  /**
+   * The **`maxLength`** property of the HTMLInputElement interface indicates the maximum number of characters (in UTF-16 code units) allowed to be entered for the value of the input element, and the maximum number of characters allowed for the value to be valid.
+   *
+   * [MDN Reference](https://developer.mozilla.org/docs/Web/API/HTMLInputElement/maxLength)
+   */
   @property({ type: Number })
   maxLength?: number;
 
+  /**
+   * The **`pattern`** property of the HTMLInputElement interface represents a regular expression a non-null input value should match.
+   *
+   * [MDN Reference](https://developer.mozilla.org/docs/Web/API/HTMLInputElement/pattern)
+   */
   @property()
   pattern = "";
 
+  /**
+   * The **`placeholder`** property of the HTMLInputElement interface represents a hint to the user of what can be entered in the control.
+   *
+   * [MDN Reference](https://developer.mozilla.org/docs/Web/API/HTMLInputElement/placeholder)
+   */
   @property()
   placeholder = "";
 
+  /**
+   * The **`HTMLInputElement.multiple`** property indicates if an input can have more than one value.
+   *
+   * [MDN Reference](https://developer.mozilla.org/docs/Web/API/HTMLInputElement/multiple)
+   */
   @property({ type: Boolean })
   multiple = false;
 
+  /**
+   * The **`readOnly`** property of the HTMLInputElement interface indicates that the user cannot modify the value of the input.
+   *
+   * [MDN Reference](https://developer.mozilla.org/docs/Web/API/HTMLInputElement/readOnly)
+   */
   @property({ type: Boolean, attribute: "readonly" })
   readOnly = false;
 
+  /**
+   * The **`required`** property of the HTMLInputElement interface specifies that the user must fill in a value before submitting a form.
+   *
+   * [MDN Reference](https://developer.mozilla.org/docs/Web/API/HTMLInputElement/required)
+   */
   @property({ type: Boolean })
   required = false;
 
+  /**
+   * The **`rows`** property of the HTMLTextAreaElement interface is a positive integer representing the visible text lines of the text control.
+   *
+   * [MDN Reference](https://developer.mozilla.org/docs/Web/API/HTMLTextAreaElement/rows)
+   */
   @property({ type: Number })
   rows?: number;
 
+  /**
+   * The **`cols`** property of the HTMLTextAreaElement interface is a positive integer representing the visible width of the multi-line text control, in average character widths.
+   *
+   * [MDN Reference](https://developer.mozilla.org/docs/Web/API/HTMLTextAreaElement/cols)
+   */
   @property({ type: Number })
   cols?: number;
+
+  @state()
+  _hasLabel = false;
+
+  @property({ type: Boolean, reflect: true, attribute: "focus-visible" })
+  focusVisible = false;
+
+  @property({ type: Boolean, reflect: true, attribute: "floating" })
+  floating = !!this.value;
 
   #fieldId = "field";
   #resizeObserver?: ResizeObserver;
@@ -112,37 +219,27 @@ export class TextField extends BaseTextField implements TextFieldProperties {
   @query(".resize")
   _resize?: HTMLDivElement;
 
-  #resizeObserver?: ResizeObserver;
-
-  @property({ type: Boolean, reflect: true, attribute: "focus-visible" })
-  focusVisible = false;
-
-  @property({ type: Boolean, reflect: true, attribute: "floating" })
-  floating = !!this.value;
-
-  @state()
-  _hasLabel = false;
-
-  protected override willUpdate(changed: PropertyValues): void {
-    super.willUpdate(changed);
-
-    if (changed.has("value") || changed.has("focusVisible")) {
-      this.floating = !!this.value || this.focusVisible;
-    }
-
-    if (changed.has("_hasLabel")) {
-      this.toggleAttribute("has-label", this._hasLabel);
-    }
-  }
-
+  /**
+   * [MDN Reference](https://developer.mozilla.org/docs/Web/API/HTMLElement/focus)
+   */
   override focus(options?: FocusOptions): void {
     this._field?.focus(options);
   }
 
+  /**
+   * The **`HTMLInputElement.select()`** method selects all the text in a textarea element or in an input element that includes a text field.
+   *
+   * [MDN Reference](https://developer.mozilla.org/docs/Web/API/HTMLInputElement/select)
+   */
   select(): void {
     this._field?.select();
   }
 
+  /**
+   * The **`selectionDirection`** property of the HTMLInputElement interface is a string that indicates the direction in which the user is selecting the text.
+   *
+   * [MDN Reference](https://developer.mozilla.org/docs/Web/API/HTMLInputElement/selectionDirection)
+   */
   get selectionDirection(): "none" | "forward" | "backward" | null {
     return this._field?.selectionDirection ?? null;
   }
@@ -152,6 +249,9 @@ export class TextField extends BaseTextField implements TextFieldProperties {
     }
   }
 
+  /**
+   * @inheritdoc HTMLInputElement.selectionStart
+   */
   get selectionStart(): number | null {
     return this._field?.selectionStart ?? null;
   }
@@ -161,6 +261,11 @@ export class TextField extends BaseTextField implements TextFieldProperties {
     }
   }
 
+  /**
+   * The **`selectionEnd`** property of the HTMLInputElement interface is a number that represents the end index of the selected text.
+   *
+   * [MDN Reference](https://developer.mozilla.org/docs/Web/API/HTMLInputElement/selectionEnd)
+   */
   get selectionEnd(): number | null {
     return this._field?.selectionEnd ?? null;
   }
@@ -170,6 +275,11 @@ export class TextField extends BaseTextField implements TextFieldProperties {
     }
   }
 
+  /**
+   * The **`valueAsNumber`** property of the HTMLInputElement interface represents the current value of the input element as a number or `NaN` if converting to a numeric value is not possible.
+   *
+   * [MDN Reference](https://developer.mozilla.org/docs/Web/API/HTMLInputElement/valueAsNumber)
+   */
   get valueAsNumber(): number {
     const input = this._field;
     if (!(input instanceof HTMLInputElement)) {
@@ -188,6 +298,11 @@ export class TextField extends BaseTextField implements TextFieldProperties {
     this.value = input.value;
   }
 
+  /**
+   * The **`valueAsDate`** property of the HTMLInputElement interface represents the current value of the input element as a Date, or `null` if conversion is not possible.
+   *
+   * [MDN Reference](https://developer.mozilla.org/docs/Web/API/HTMLInputElement/valueAsDate)
+   */
   get valueAsDate(): Date | null {
     const input = this._field;
     if (!(input instanceof HTMLInputElement)) {
@@ -206,6 +321,11 @@ export class TextField extends BaseTextField implements TextFieldProperties {
     this.value = input.value;
   }
 
+  /**
+   * The **`HTMLInputElement.showPicker()`** method displays the browser picker for an `input` element.
+   *
+   * [MDN Reference](https://developer.mozilla.org/docs/Web/API/HTMLInputElement/showPicker)
+   */
   showPicker(): void {
     const input = this._field;
     if (!(input instanceof HTMLInputElement)) {
@@ -215,6 +335,11 @@ export class TextField extends BaseTextField implements TextFieldProperties {
     input.showPicker();
   }
 
+  /**
+   * The **`HTMLInputElement.stepUp()`** method increments the value of a numeric type of input element by the value of the `step` attribute, or the default `step` value if the step attribute is not explicitly set.
+   *
+   * [MDN Reference](https://developer.mozilla.org/docs/Web/API/HTMLInputElement/stepUp)
+   */
   stepUp(amount?: number): void {
     const input = this._field;
     if (!(input instanceof HTMLInputElement)) {
@@ -224,6 +349,11 @@ export class TextField extends BaseTextField implements TextFieldProperties {
     input.stepUp(amount);
   }
 
+  /**
+   * The **`HTMLInputElement.stepDown()`** method decrements the value of a numeric type of input element by the value of the `step` attribute or up to `n` multiples of the step attribute if a number is passed as the parameter.
+   *
+   * [MDN Reference](https://developer.mozilla.org/docs/Web/API/HTMLInputElement/stepDown)
+   */
   stepDown(amount?: number): void {
     const input = this._field;
     if (!(input instanceof HTMLInputElement)) {
@@ -233,6 +363,11 @@ export class TextField extends BaseTextField implements TextFieldProperties {
     input.stepDown(amount);
   }
 
+  /**
+   * The **`HTMLInputElement.setSelectionRange()`** method sets the start and end positions of the current text selection in an input or textarea element.
+   *
+   * [MDN Reference](https://developer.mozilla.org/docs/Web/API/HTMLInputElement/setSelectionRange)
+   */
   setSelectionRange(
     start: number | null,
     end: number | null,
@@ -491,5 +626,11 @@ export class TextField extends BaseTextField implements TextFieldProperties {
 
       resize.style.height = `${nextHeight}px`;
     }
+  }
+}
+
+declare global {
+  interface HTMLElementTagNameMap {
+    "mwc-text-field": TextField;
   }
 }
