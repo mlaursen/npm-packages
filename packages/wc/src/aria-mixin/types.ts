@@ -91,6 +91,8 @@ export interface AriaMixinProperties {
   role: AriaRole;
   internals: ElementInternals;
 
+  readonly form: HTMLFormElement | null;
+
   isDisabled(): boolean;
   handleClick(event: MouseEvent): void;
   handleKeyDown(event: KeyboardEvent): void;

@@ -233,10 +233,6 @@ export class Checkbox extends BaseCheckbox implements CheckboxProperties {
 
   #updateInternals(): void {
     this[CHECKED] = this.checked;
-    if (!this.internals) {
-      return;
-    }
-
     this.internals.ariaChecked = this.indeterminate
       ? "mixed"
       : `${this.checked}`;

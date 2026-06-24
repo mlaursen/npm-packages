@@ -56,6 +56,10 @@ export function AriaMixin<
       this.removeEventListener("keydown", this.handleKeyDown);
     }
 
+    get form(): HTMLFormElement | null {
+      return this.internals.form;
+    }
+
     isDisabled(): boolean {
       return this.disabled || this.ariaDisabled === "true";
     }

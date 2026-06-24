@@ -195,10 +195,6 @@ export class Radio extends BaseRadio implements RadioProperties {
   }
 
   #updateInternals(): void {
-    if (!this.internals) {
-      return;
-    }
-
     this.internals.ariaChecked = `${this.checked}`;
     this.internals.ariaRequired = this.required ? "true" : null;
     this.internals.ariaInvalid = this.error ? "true" : null;
