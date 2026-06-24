@@ -19,7 +19,7 @@ $selection-variants: (
 );
 $-color-variants: utils.list-concat(
   (
-    color,
+    "color",
     "icon.color",
     "disabled.background",
     "disabled.background-opacity",
@@ -77,6 +77,7 @@ $text-styles: utils.deep-merge(
   utils.remap-variants(
     button,
     text,
+    color,
     utils.list-filter($-color-variants, $selection-variants...)
   )
 );
