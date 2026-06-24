@@ -8,6 +8,8 @@ import {
 import { customElement, property, query } from "lit/decorators.js";
 
 import { AriaMixin } from "../aria-mixin/aria-mixin.js";
+import { FormControlMixin } from "../form-control/form-control-mixin.js";
+import { requiredValidator } from "../form-control/required-validator.js";
 import { InteractionMixin } from "../interaction/interaction-mixin.js";
 import { MarginMixin } from "../margin/margin-mixin.js";
 import { PaletteMixin } from "../palette/palette-mixin.js";
@@ -32,7 +34,17 @@ import {
 const BaseStyledCheckbox = BaseAnimateMixin(
   InteractionMixin(PaletteMixin(MarginMixin(LitElement))),
 );
-const BaseCheckbox = AriaMixin(BaseStyledCheckbox, "checkbox");
+const BaseCheckbox = FormControlMixin(
+  AriaMixin(BaseStyledCheckbox, "checkbox"),
+  {
+    updateInternalsAttributes: [
+      "error",
+      "checked",
+      "required",
+      "indeterminate",
+    ],
+  },
+);
 
 const CHECKED = Symbol("checked");
 const INDETERMINATE = Symbol("indeterminate");
@@ -40,12 +52,10 @@ const INDETERMINATE = Symbol("indeterminate");
 @customElement("mwc-checkbox")
 export class Checkbox extends BaseCheckbox implements CheckboxProperties {
   static override styles = [...BaseCheckbox.styles, styles];
+  static override formControlValidators = [requiredValidator];
 
   @property()
   size: CheckboxSize = "medium";
-
-  @property({ type: Boolean })
-  error = false;
 
   @property({ type: Boolean })
   get checked(): boolean {
@@ -79,11 +89,8 @@ export class Checkbox extends BaseCheckbox implements CheckboxProperties {
 
   [INDETERMINATE] = false;
 
-  @property({ type: Boolean })
-  required = false;
-
   @property()
-  value = "on";
+  override value = "on";
 
   @query(".icon")
   _icon?: HTMLElement;
@@ -109,19 +116,6 @@ export class Checkbox extends BaseCheckbox implements CheckboxProperties {
   getIndeterminateAnimation: GetAnimationMap<AnimateCheckboxElementMap> = () =>
     DEFAULT_CHECKBOX_INDETERMINATE_ANIMATION;
 
-  override connectedCallback(): void {
-    super.connectedCallback();
-
-    this.#updateInternals();
-    this.internals.form?.addEventListener("reset", this.#handleReset);
-  }
-
-  override disconnectedCallback(): void {
-    super.disconnectedCallback();
-
-    this.internals.form?.removeEventListener("reset", this.#handleReset);
-  }
-
   protected override willUpdate(changed: PropertyValues): void {
     super.willUpdate(changed);
 
@@ -135,13 +129,13 @@ export class Checkbox extends BaseCheckbox implements CheckboxProperties {
       this._animate({ animate: this._initialized && !this.#reset });
       this.#reset = false;
     }
-    if (
-      changed.has("error") ||
-      changed.has("checked") ||
-      changed.has("required") ||
-      changed.has("indeterminate")
-    ) {
-      this.#updateInternals();
+  }
+
+  protected override updated(changed: PropertyValues): void {
+    super.updated(changed);
+
+    if (changed.has("checked")) {
+      this.setValue(this.checked ? this.value : null);
     }
   }
 
@@ -231,27 +225,16 @@ export class Checkbox extends BaseCheckbox implements CheckboxProperties {
     super.handleKeyDown(event);
   }
 
-  #updateInternals(): void {
+  override updateInternals(): void {
     this[CHECKED] = this.checked;
+
     this.internals.ariaChecked = this.indeterminate
       ? "mixed"
       : `${this.checked}`;
     this.internals.ariaRequired = this.required ? "true" : null;
-    this.internals.ariaInvalid = this.error ? "true" : null;
-    this.internals.setFormValue(this.checked ? this.value : null);
-
-    if (!this.checked && this.required) {
-      this.internals.setValidity(
-        { valueMissing: true },
-        "Please select an option.",
-        this,
-      );
-    } else {
-      this.internals.setValidity();
-    }
   }
 
-  #handleReset = (): void => {
+  override resetFormControl = (): void => {
     const defaultChecked = this.hasAttribute("checked");
     const defaultIndeterminate = this.hasAttribute("indeterminate");
 

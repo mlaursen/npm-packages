@@ -220,7 +220,7 @@ $-error-styles: utils.remap-variants(checkbox, error, map.get($-tokens, error));
     ":host([size=small])": $-small-styles,
     ":host([size=large])": $-large-styles,
     ":host([disabled])": $-disabled-styles,
-    ":host([error])": $-error-styles,
+    ":host(:is([error], [aria-invalid=true]))": $-error-styles,
     "host-hover": $-hovered-styles,
     ".icon": $-icon-styles,
     ".background": $-background-styles,

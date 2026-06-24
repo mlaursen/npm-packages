@@ -8,6 +8,8 @@ import {
 import { customElement, property, query } from "lit/decorators.js";
 
 import { AriaMixin } from "../aria-mixin/aria-mixin.js";
+import { FormControlMixin } from "../form-control/form-control-mixin.js";
+import { requiredValidator } from "../form-control/required-validator.js";
 import { InteractionMixin } from "../interaction/interaction-mixin.js";
 import { MarginMixin } from "../margin/margin-mixin.js";
 import { PaletteMixin } from "../palette/palette-mixin.js";
@@ -31,7 +33,9 @@ import type {
 const BaseStyledRadio = BaseAnimateMixin(
   InteractionMixin(PaletteMixin(MarginMixin(LitElement))),
 );
-const BaseRadio = AriaMixin(BaseStyledRadio, "radio");
+const BaseRadio = FormControlMixin(AriaMixin(BaseStyledRadio, "radio"), {
+  updateInternalsAttributes: ["error", "checked", "required"],
+});
 
 const CHECKED = Symbol("checked");
 
@@ -54,12 +58,10 @@ const CHECKED = Symbol("checked");
 @customElement("mwc-radio")
 export class Radio extends BaseRadio implements RadioProperties {
   static override styles = [...BaseRadio.styles, styles];
+  static override formControlValidators = [requiredValidator];
 
   @property()
   size: RadioSize = "medium";
-
-  @property({ type: Boolean })
-  error = false;
 
   @property({ type: Boolean })
   get checked(): boolean {
@@ -77,11 +79,8 @@ export class Radio extends BaseRadio implements RadioProperties {
 
   [CHECKED] = false;
 
-  @property({ type: Boolean })
-  required = false;
-
   @property()
-  value = "on";
+  override value = "on";
 
   @query(".icon")
   _icon?: HTMLElement;
@@ -99,13 +98,6 @@ export class Radio extends BaseRadio implements RadioProperties {
 
   #reset = false;
 
-  override connectedCallback(): void {
-    super.connectedCallback();
-
-    this.#updateInternals();
-    this.internals.form?.addEventListener("reset", this.#handleReset);
-  }
-
   protected override willUpdate(changed: PropertyValues): void {
     super.willUpdate(changed);
 
@@ -118,20 +110,14 @@ export class Radio extends BaseRadio implements RadioProperties {
       this._animate({ animate: this._initialized && !this.#reset });
       this.#reset = false;
     }
-
-    if (
-      changed.has("error") ||
-      changed.has("checked") ||
-      changed.has("required")
-    ) {
-      this.#updateInternals();
-    }
   }
 
-  override disconnectedCallback(): void {
-    super.disconnectedCallback();
+  override updated(changed: PropertyValues): void {
+    super.updated(changed);
 
-    this.internals.form?.removeEventListener("reset", this.#handleReset);
+    if (changed.has("checked")) {
+      this.setValue(this.checked ? this.value : null);
+    }
   }
 
   override render(): TemplateResult {
@@ -194,23 +180,12 @@ export class Radio extends BaseRadio implements RadioProperties {
     super.handleKeyDown(event);
   }
 
-  #updateInternals(): void {
+  override updateInternals(): void {
     this.internals.ariaChecked = `${this.checked}`;
     this.internals.ariaRequired = this.required ? "true" : null;
-    this.internals.ariaInvalid = this.error ? "true" : null;
-    this.internals.setFormValue(this.checked ? this.value : null);
-    if (!this.checked && this.required) {
-      this.internals.setValidity(
-        { valueMissing: true },
-        "Please select an option.",
-        this,
-      );
-    } else {
-      this.internals.setValidity();
-    }
   }
 
-  #handleReset = (): void => {
+  override resetFormControl = (): void => {
     const defaultChecked = this.hasAttribute("checked");
     this.#reset = this.checked !== defaultChecked;
     this.checked = defaultChecked;

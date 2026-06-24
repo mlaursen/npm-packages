@@ -140,7 +140,7 @@ $-error-styles: utils.deep-merge(
     ":host([size=small])": $-small-styles,
     ":host([size=large])": $-large-styles,
     ":host([disabled])": $-disabled-styles,
-    ":host([error])": $-error-styles,
+    ":host(:is([error], [aria-invalid=true]))": $-error-styles,
     ".icon": $-icon-styles,
     ".outline": $-outline-styles,
     ".mark": $-mark-styles,
