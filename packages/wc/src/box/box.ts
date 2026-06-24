@@ -31,6 +31,9 @@ export class Box extends BaseBox implements BoxProperties {
   @property()
   justify?: BoxJustifyContent;
 
+  @property({ type: Boolean })
+  inline = false;
+
   @property({ reflect: false })
   grid: BoxGrid = false;
 

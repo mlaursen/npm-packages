@@ -36,26 +36,26 @@ export interface BoxProperties {
 
   justify?: BoxJustifyContent;
 
-  /**
-   * @defaultValue `false`
-   */
+  /** @defaultValue `false` */
+  inline?: boolean;
+
+  /** @defaultValue `false` */
   grid: BoxGrid;
 
+  /** @defaultValue `false` */
   fullWidth?: boolean;
 
+  /** @defaultValue `false` */
   stacked?: boolean;
 
+  /** @defaultValue `false` */
   reversed?: boolean;
 
-  /**
-   * @defaultValue `"all"`
-   */
+  /** @defaultValue `"all"` */
   gap: BoxGap;
 
   nowrap?: boolean;
 
-  /**
-   * @defaultValue `"all"`
-   */
+  /** @defaultValue `"all"` */
   padding: BoxPadding;
 }
