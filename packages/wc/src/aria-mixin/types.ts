@@ -1,5 +1,6 @@
 import { type LitElement } from "lit";
 
+import type { ElementWithInternalsProperties } from "../internals-mixin/types.js";
 import { type LitConstructor } from "../types.js";
 
 export type AriaRole =
@@ -87,11 +88,8 @@ export type AriaRole =
   | "treegrid"
   | "treeitem";
 
-export interface AriaMixinProperties {
+export interface AriaMixinProperties extends ElementWithInternalsProperties {
   role: AriaRole;
-  internals: ElementInternals;
-
-  readonly form: HTMLFormElement | null;
 
   isDisabled(): boolean;
   handleClick(event: MouseEvent): void;

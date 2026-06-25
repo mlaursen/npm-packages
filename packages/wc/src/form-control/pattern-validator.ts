@@ -6,7 +6,7 @@ export type PatternElement =
   | HTMLInputElement
   | (LitElement & { pattern: string });
 
-export const requiredValidator = {
+export const patternValidator = {
   key: "patternMismatch",
   attribute: "pattern",
   message: "Please match the requested format",

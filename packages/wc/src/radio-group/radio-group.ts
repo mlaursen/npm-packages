@@ -1,13 +1,17 @@
-import { type TemplateResult, html, isServer } from "lit";
+import { LitElement, type TemplateResult, html } from "lit";
 import { customElement } from "lit/decorators.js";
 
-import { Box } from "../box/box.js";
 import { NOT_DISABLED_OR_HIDDEN } from "../focus/constants.js";
+import { requiredValidator } from "../form-control/required-validator.js";
+import { InternalsMixin } from "../internals-mixin/internals-mixin.js";
 import { loop } from "../utils/loop.js";
 import { traverse } from "../utils/traverse.js";
 
+const BaseRadioGroup = InternalsMixin(LitElement);
+
 interface CheckableElement extends HTMLElement {
   checked: boolean;
+  required: boolean;
 }
 
 /**
@@ -28,41 +32,50 @@ interface CheckableElement extends HTMLElement {
  * ```
  */
 @customElement("mwc-radio-group")
-export class RadioGroup extends Box {
+export class RadioGroup extends BaseRadioGroup {
   static formAssociated = true;
-
-  #internals = this.attachInternals();
+  #syncFrame = 0;
 
   constructor() {
     super();
 
-    this.#internals.role = "radiogroup";
+    this.internals.role = "radiogroup";
   }
 
   override connectedCallback(): void {
     super.connectedCallback();
 
     this.setAttribute("role", "radiogroup");
+    if (!this.hasAttribute("tabindex")) {
+      this.tabIndex = -1;
+    }
+
     this.addEventListener("change", this.#handleChange);
     this.addEventListener("keydown", this.#handleKeyDown);
     this.addEventListener("focusin", this.#handleFocusIn);
     this.addEventListener("focusout", this.#handleFocusOut);
+    this.addEventListener("invalid", this.#handleInvalid);
 
-    this.#internals.form?.addEventListener("reset", this.#handleReset);
-    queueMicrotask(() => {
+    this.internals.form?.addEventListener("reset", this.#handleReset);
+
+    // `queueMicrotask` did not work here so had to go for a full animation
+    // frame
+    this.#syncFrame = globalThis.requestAnimationFrame(() => {
       this.#syncTabIndices();
+      this.#validate();
     });
   }
 
   override disconnectedCallback(): void {
     super.disconnectedCallback();
 
+    globalThis.cancelAnimationFrame(this.#syncFrame);
     this.removeEventListener("change", this.#handleChange);
     this.removeEventListener("keydown", this.#handleKeyDown);
     this.removeEventListener("focusin", this.#handleFocusIn);
     this.removeEventListener("focusout", this.#handleFocusOut);
 
-    this.#internals.form?.removeEventListener("reset", this.#handleReset);
+    this.internals.form?.removeEventListener("reset", this.#handleReset);
   }
 
   override render(): TemplateResult {
@@ -84,8 +97,10 @@ export class RadioGroup extends Box {
       return;
     }
 
+    this.#validate();
     const radios = this.#getRadios();
     for (const radio of radios) {
+      radio.removeAttribute("aria-invalid");
       if (radio === checkedRadio) {
         radio.tabIndex = 0;
       } else {
@@ -110,7 +125,7 @@ export class RadioGroup extends Box {
       return;
     }
 
-    const radios = this.#getRadios(true);
+    const radios = this.#getRadios("focusable");
     const isRTL = getComputedStyle(this).direction === "rtl";
     const increment = isDown || (isRTL ? isLeft : isRight);
 
@@ -174,13 +189,56 @@ export class RadioGroup extends Box {
     // tab indexes
     queueMicrotask(() => {
       this.#syncTabIndices();
+      this.#validate();
+      this.#updateValidity();
     });
   };
 
-  #getRadios(focusable = false): readonly CheckableElement[] {
+  #handleInvalid = (): void => {
+    this.#updateValidity();
+  };
+
+  #validate(): void {
+    const radios = this.#getRadios("required");
+    if (radios.length === 0) {
+      return;
+    }
+
+    for (const radio of radios) {
+      if (radio.checked || radio.ariaChecked === "true") {
+        this.internals.setValidity();
+        this.#updateValidity();
+        return;
+      }
+    }
+
+    this.internals.setValidity(
+      { valueMissing: true },
+      requiredValidator.message,
+      radios[0],
+    );
+  }
+
+  #updateValidity = (): void => {
+    const radios = this.#getRadios("required");
+    const valid = this.internals.validity.valid;
+    for (const radio of radios) {
+      if (valid) {
+        radio.removeAttribute("aria-invalid");
+      } else {
+        radio.setAttribute("aria-invalid", "true");
+      }
+    }
+  };
+
+  #getRadios(
+    state: "any" | "focusable" | "required" = "any",
+  ): readonly CheckableElement[] {
     let query = '[role="radio"]';
-    if (focusable) {
+    if (state === "focusable") {
       query += NOT_DISABLED_OR_HIDDEN;
+    } else if (state === "required") {
+      query += ":is([required], [aria-required=true])";
     }
 
     return traverse({

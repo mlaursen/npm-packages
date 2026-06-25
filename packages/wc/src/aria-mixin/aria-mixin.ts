@@ -1,6 +1,7 @@
 import { type LitElement } from "lit";
 import { property } from "lit/decorators.js";
 
+import { InternalsMixin } from "../internals-mixin/internals-mixin.js";
 import { type LitConstructor } from "../types.js";
 import {
   type AriaMixinProperties,
@@ -24,13 +25,12 @@ export function AriaMixin<
   role: AriaRole,
   formAssociated = true,
 ): LitElementWithAriaProperties<T> {
-  class AriaElement extends Base implements AriaMixinProperties {
+  const BaseWithInternals = InternalsMixin(Base);
+  class AriaElement extends BaseWithInternals implements AriaMixinProperties {
     @property({ reflect: true })
     override role: AriaRole = role;
 
     static formAssociated = formAssociated;
-
-    internals = this.attachInternals();
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     constructor(...args: any[]) {
@@ -54,10 +54,6 @@ export function AriaMixin<
       // `@click` or `addEventListener("click")` handler
       this.removeEventListener("click", this.handleClick, true);
       this.removeEventListener("keydown", this.handleKeyDown);
-    }
-
-    get form(): HTMLFormElement | null {
-      return this.internals.form;
     }
 
     isDisabled(): boolean {

@@ -22,6 +22,7 @@ export type AnimateRadioElementMap = AnimateElementMap<
 export type AnimateRadioOptions = BaseAnimateOptions<AnimateRadioElementMap>;
 
 export interface RadioProperties extends InteractionProperties {
+  name: string;
   checked: boolean;
 
   getCheckedAnimation: GetAnimationMap<AnimateRadioElementMap>;

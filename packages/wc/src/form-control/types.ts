@@ -1,6 +1,6 @@
 import type { LitElement } from "lit";
 
-import type { AriaMixinProperties } from "../aria-mixin/types.js";
+import type { ElementWithInternalsProperties } from "../internals-mixin/types.js";
 import type { LitConstructor } from "../types.js";
 
 export type FormValue = Parameters<ElementInternals["setFormValue"]>[0];
@@ -53,7 +53,7 @@ export interface FormControlProperties extends FormControlStates {
 }
 
 export type LitConstructorWithElementInternals = LitConstructor<
-  LitElement & AriaMixinProperties
+  LitElement & ElementWithInternalsProperties
 >;
 export type LitElementWithFormControlProperties<
   T extends LitConstructorWithElementInternals,

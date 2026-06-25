@@ -9,7 +9,6 @@ import { customElement, property, query } from "lit/decorators.js";
 
 import { AriaMixin } from "../aria-mixin/aria-mixin.js";
 import { FormControlMixin } from "../form-control/form-control-mixin.js";
-import { requiredValidator } from "../form-control/required-validator.js";
 import { InteractionMixin } from "../interaction/interaction-mixin.js";
 import { MarginMixin } from "../margin/margin-mixin.js";
 import { PaletteMixin } from "../palette/palette-mixin.js";
@@ -58,7 +57,9 @@ const CHECKED = Symbol("checked");
 @customElement("mwc-radio")
 export class Radio extends BaseRadio implements RadioProperties {
   static override styles = [...BaseRadio.styles, styles];
-  static override formControlValidators = [requiredValidator];
+
+  @property()
+  name = "";
 
   @property()
   size: RadioSize = "medium";
