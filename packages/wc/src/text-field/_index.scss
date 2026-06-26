@@ -533,7 +533,7 @@ $-base-error-styles: utils.deep-merge(
     ":host([variant=filled][size=small])": tokens.$filled-small-styles,
     ":host([variant=filled][size=small][has-label])":
       tokens.$filled-small-label-styles,
-    ":host([error])": $-base-error-styles,
+    ":host(:is([error], [aria-invalid=true]))": $-base-error-styles,
     "host-hover": $-base-hovered-styles,
     ":host([disabled])": $-base-disabled-styles,
     ":host([focus-visible])": $-base-focused-styles,

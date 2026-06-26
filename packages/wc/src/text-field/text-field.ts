@@ -9,6 +9,12 @@ import { classMap } from "lit/directives/class-map.js";
 import { ifDefined } from "lit/directives/if-defined.js";
 import { live } from "lit/directives/live.js";
 
+import { FormControlMixin } from "../form-control/form-control-mixin.js";
+import { maxLengthValidator } from "../form-control/max-length-validator.js";
+import { minLengthValidator } from "../form-control/min-length-validator.js";
+import { patternValidator } from "../form-control/pattern-validator.js";
+import { requiredValidator } from "../form-control/required-validator.js";
+import { InternalsMixin } from "../internals-mixin/internals-mixin.js";
 import { MarginMixin } from "../margin/margin-mixin.js";
 import { PaletteMixin } from "../palette/palette-mixin.js";
 import styles from "./text-field-styles.js";
@@ -22,7 +28,8 @@ import type {
   UnsupportedInputType,
 } from "./types.js";
 
-const BaseTextField = PaletteMixin(MarginMixin(LitElement));
+const BaseStyledTextField = PaletteMixin(MarginMixin(LitElement));
+const BaseTextField = FormControlMixin(InternalsMixin(BaseStyledTextField));
 
 /**
  * This version of the text field should generally not be used and the
@@ -31,12 +38,19 @@ const BaseTextField = PaletteMixin(MarginMixin(LitElement));
 @customElement("mwc-text-field")
 export class TextField extends BaseTextField implements TextFieldProperties {
   static override styles = [...BaseTextField.styles, styles];
-  static formAssociated = true;
+  static override formControlValidators = [
+    requiredValidator,
+    minLengthValidator,
+    maxLengthValidator,
+    patternValidator,
+  ];
 
   static override shadowRootOptions: ShadowRootInit = {
     ...BaseTextField.shadowRootOptions,
     delegatesFocus: true,
   };
+
+  static formAssociated = true;
 
   @property({ reflect: true })
   variant: TextFieldVariant = "outlined";
@@ -69,21 +83,7 @@ export class TextField extends BaseTextField implements TextFieldProperties {
    * [MDN Reference](https://developer.mozilla.org/docs/Web/API/HTMLInputElement/value)
    */
   @property()
-  value = "";
-
-  /**
-   * The **`HTMLInputElement.disabled`** property is a boolean value that reflects the `disabled` HTML attribute, which indicates whether the control is disabled.
-   *
-   * [MDN Reference](https://developer.mozilla.org/docs/Web/API/HTMLInputElement/disabled)
-   */
-  @property({ type: Boolean })
-  disabled = false;
-
-  /**
-   * Manually set the `error` state for the text field.
-   */
-  @property({ type: Boolean })
-  error = false;
+  override value = "";
 
   /**
    * The **`autocomplete`** property of the HTMLInputElement interface indicates whether the value of the form's controls can be automatically completed by the browser.
@@ -131,7 +131,7 @@ export class TextField extends BaseTextField implements TextFieldProperties {
    * [MDN Reference](https://developer.mozilla.org/docs/Web/API/HTMLInputElement/minLength)
    */
   @property({ type: Number })
-  minLength?: number;
+  minLength = -1;
 
   /**
    * The **`maxLength`** property of the HTMLInputElement interface indicates the maximum number of characters (in UTF-16 code units) allowed to be entered for the value of the input element, and the maximum number of characters allowed for the value to be valid.
@@ -139,7 +139,7 @@ export class TextField extends BaseTextField implements TextFieldProperties {
    * [MDN Reference](https://developer.mozilla.org/docs/Web/API/HTMLInputElement/maxLength)
    */
   @property({ type: Number })
-  maxLength?: number;
+  maxLength = -1;
 
   /**
    * The **`pattern`** property of the HTMLInputElement interface represents a regular expression a non-null input value should match.
@@ -164,22 +164,6 @@ export class TextField extends BaseTextField implements TextFieldProperties {
    */
   @property({ type: Boolean })
   multiple = false;
-
-  /**
-   * The **`readOnly`** property of the HTMLInputElement interface indicates that the user cannot modify the value of the input.
-   *
-   * [MDN Reference](https://developer.mozilla.org/docs/Web/API/HTMLInputElement/readOnly)
-   */
-  @property({ type: Boolean, attribute: "readonly" })
-  readOnly = false;
-
-  /**
-   * The **`required`** property of the HTMLInputElement interface specifies that the user must fill in a value before submitting a form.
-   *
-   * [MDN Reference](https://developer.mozilla.org/docs/Web/API/HTMLInputElement/required)
-   */
-  @property({ type: Boolean })
-  required = false;
 
   /**
    * The **`rows`** property of the HTMLTextAreaElement interface is a positive integer representing the visible text lines of the text control.
@@ -406,6 +390,14 @@ export class TextField extends BaseTextField implements TextFieldProperties {
     }
   }
 
+  protected override updated(changed: PropertyValues): void {
+    super.updated(changed);
+
+    if (changed.has("value")) {
+      this.setValue(this.value);
+    }
+  }
+
   override disconnectedCallback(): void {
     super.disconnectedCallback();
 
@@ -415,6 +407,10 @@ export class TextField extends BaseTextField implements TextFieldProperties {
   override render(): TemplateResult {
     return html`${this.#renderLabel()}${this.#renderInput()}${this.#renderTextArea()}${this.#renderOutline()}`;
   }
+
+  override resetFormControl = (): void => {
+    this.value = this.getAttribute("value") || "";
+  };
 
   #renderLabel(): TemplateResult {
     return html`
@@ -428,6 +424,9 @@ export class TextField extends BaseTextField implements TextFieldProperties {
     if (this.type === "textarea") {
       return null;
     }
+
+    const maxLength = this.maxLength > -1 ? this.maxLength : undefined;
+    const minLength = this.minLength > -1 ? this.minLength : undefined;
 
     // NOTE: remove the `as "on"` typecast for autocomplete once `ts-plugin-lit` is updated
     return html`
@@ -448,8 +447,8 @@ export class TextField extends BaseTextField implements TextFieldProperties {
         min=${ifDefined(this.min || undefined)}
         max=${ifDefined(this.max || undefined)}
         step=${ifDefined(this.step)}
-        maxlength=${ifDefined(this.maxLength)}
-        minlength=${ifDefined(this.minLength)}
+        maxlength=${ifDefined(maxLength)}
+        minlength=${ifDefined(minLength)}
         .value=${live(this.value)}
         @focus=${this.#handleFocusChange}
         @blur=${this.#handleFocusChange}
@@ -462,6 +461,9 @@ export class TextField extends BaseTextField implements TextFieldProperties {
     if (this.type !== "textarea") {
       return null;
     }
+
+    const maxLength = this.maxLength > -1 ? this.maxLength : undefined;
+    const minLength = this.minLength > -1 ? this.minLength : undefined;
 
     // NOTE: remove the `as "on"` typecast for autocomplete once `ts-plugin-lit` is updated
     return html`
@@ -478,8 +480,8 @@ export class TextField extends BaseTextField implements TextFieldProperties {
         ?multiple=${this.multiple}
         rows=${ifDefined(this.rows)}
         cols=${ifDefined(this.cols)}
-        maxlength=${ifDefined(this.maxLength)}
-        minlength=${ifDefined(this.minLength)}
+        maxlength=${ifDefined(maxLength)}
+        minlength=${ifDefined(minLength)}
         .value=${live(this.value)}
         @focus=${this.#handleFocusChange}
         @blur=${this.#handleFocusChange}
