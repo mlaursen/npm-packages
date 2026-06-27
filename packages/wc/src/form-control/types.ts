@@ -50,6 +50,10 @@ export interface FormControlProperties extends FormControlStates {
   validationTarget: HTMLElement | null;
 
   isErrored(): boolean;
+
+  checkValidity(): boolean;
+  validity: ValidityState;
+  validationMessage: string;
 }
 
 export type LitConstructorWithElementInternals = LitConstructor<
