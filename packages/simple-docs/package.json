@@ -48,7 +48,7 @@
   "dependencies": {
     "commander": "^15.0.0",
     "prettier": "^3.9.6",
-    "typedoc": "^0.28.19"
+    "typedoc": "^0.28.20"
   },
   "devDependencies": {
     "@mlaursen/eslint-config": "workspace:*",

@@ -55,7 +55,7 @@
   "dependencies": {
     "postcss": "^8.5.14",
     "postcss-selector-parser": "^7.1.4",
-    "sass": "^1.101.0"
+    "sass": "^1.102.0"
   },
   "devDependencies": {
     "@mlaursen/eslint-config": "workspace:*",

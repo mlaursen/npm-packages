@@ -53,7 +53,7 @@
   "dependencies": {
     "chokidar": "^5.0.0",
     "prettier": "^3.9.6",
-    "pretty-bytes": "^7.1.0",
+    "pretty-bytes": "^7.1.1",
     "pretty-ms": "^9.3.0"
   },
   "devDependencies": {
