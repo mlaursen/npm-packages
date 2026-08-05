@@ -1,7 +1,7 @@
 {
   "name": "@mlaursen/cli",
   "type": "module",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "A small util to copy SCSS files for publishing.",
   "bin": {
     "mlaursen-cli": "./cli.js"

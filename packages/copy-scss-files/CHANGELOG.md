@@ -1,5 +1,20 @@
 # @mlaursen/copy-scss-files
 
+## 0.2.0
+
+### Minor Changes
+
+- 354aadf: Added a quiet option to hide additional logs
+
+### Patch Changes
+
+- Updated dependencies [f19a99d]
+- Updated dependencies [354aadf]
+- Updated dependencies [73dbbc5]
+- Updated dependencies [929fdc5]
+- Updated dependencies [ece0d3f]
+  - @mlaursen/node-utils@0.3.0
+
 ## 0.1.4
 
 ### Patch Changes

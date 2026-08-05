@@ -1,5 +1,11 @@
 # @mlaursen/release-script
 
+## 0.4.4
+
+### Patch Changes
+
+- 73dbbc5: Bumped dependencies to latest
+
 ## 0.4.3
 
 ### Patch Changes

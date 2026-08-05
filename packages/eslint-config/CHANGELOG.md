@@ -1,5 +1,11 @@
 # @mlaursen/eslint-config
 
+## 12.0.12
+
+### Patch Changes
+
+- 77a00d1: Updated non-breaking eslint rules to latest
+
 ## 12.0.11
 
 ### Patch Changes

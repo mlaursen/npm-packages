@@ -1,6 +1,6 @@
 {
   "name": "@mlaursen/simple-docs",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "A simple package for adding @example typedoc to a README",
   "type": "module",
   "private": true,

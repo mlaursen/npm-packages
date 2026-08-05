@@ -1,5 +1,18 @@
 # @mlaursen/node-utils
 
+## 0.3.0
+
+### Minor Changes
+
+- 354aadf: Added a quiet option to hide additional logs
+- 929fdc5: Added a getGitRoot util
+- ece0d3f: Added a touch file utility
+
+### Patch Changes
+
+- f19a99d: generateFile now ensures the file's parent directories
+- 73dbbc5: Bumped dependencies to latest
+
 ## 0.2.1
 
 ### Patch Changes

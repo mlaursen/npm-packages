@@ -1,5 +1,15 @@
 # @mlaursen/simple-docs
 
+## 1.1.0
+
+### Minor Changes
+
+- bb1655d: Added support for loading entryPoints from local typedoc.json and typedoc.jsonc files
+
+### Patch Changes
+
+- 73dbbc5: Bumped dependencies to latest
+
 ## 1.0.0
 
 ### Major Changes
