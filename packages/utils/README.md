@@ -10,6 +10,32 @@ npm install @mlaursen/utils
 
 <!-- examples-start -->
 
+## alphaNumericSort
+
+### Simple Example
+
+```ts
+const items = ["World", "Hello"];
+
+const sorted = alphaNumericSort(items);
+// sorted == ["Hello", "World"]
+```
+
+### Simple Example
+
+```ts
+interface Item {
+  nameField: string;
+}
+
+const items: Item[] = [{ nameField: "World" }, { nameField: "Hello" }];
+
+const sorted = alphaNumericSort(items, {
+  extractor: (item) => item.nameField,
+});
+// sorted == [{ nameField: "Hello" }, { nameField: "World" }]
+```
+
 ## camelCase
 
 ### Simple Example

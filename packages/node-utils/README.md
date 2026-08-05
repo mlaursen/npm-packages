@@ -25,6 +25,19 @@ console.log(
 );
 ```
 
+## generateFile
+
+### Simple Example
+
+```tsx
+await generateFile({
+  contents: `export const x = 3;
+
+export const y = "hello, world!"`,
+  filePath: "./src/generated/example.ts",
+});
+```
+
 ## log
 
 ### Simple Example
