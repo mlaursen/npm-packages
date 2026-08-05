@@ -1,4 +1,7 @@
+import { existsSync } from "node:fs";
 import { Application, ReflectionKind, type TypeDocOptions } from "typedoc";
+
+const TYPEDOC_CONFIG_FILES = ["typedoc.json", "typedoc.jsonc"];
 
 export interface Example {
   name: string;
@@ -14,13 +17,13 @@ export interface GetDocsOptions {
   entryPoints?: readonly string[];
 }
 
-export async function getDocs(
-  options: TypeDocOptions = {},
-): Promise<readonly SimpleDoc[]> {
-  const app = await Application.bootstrapWithPlugins({
-    ...options,
-    entryPoints: options.entryPoints ?? ["src/index.ts"],
-  });
+export async function getDocs(): Promise<readonly SimpleDoc[]> {
+  let options: TypeDocOptions | undefined;
+  if (!TYPEDOC_CONFIG_FILES.some((file) => existsSync(file))) {
+    options = { entryPoints: ["src/index.ts"] };
+  }
+
+  const app = await Application.bootstrapWithPlugins(options);
 
   const project = await app.convert();
   if (!project) {
