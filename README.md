@@ -38,16 +38,30 @@ This project uses [turborepo](https://turborepo.dev/) to handle the monorepo beh
   - `test-run` - runs all tests and exits
   - `test-run-snapshot` - updates snapshots
   - `test-run-coverage` - runs all tests with coverage and exits
+  - `website-test` - only runs the website test suite
 - `generate-simple-docs` - regenerates the `README.md` for each package using
   the `simple-docs` script
 - `build` - build all packages
   - `build-dist` - builds all packages
+  - `website-build` - only builds the website
 - `clean-dist` - removes the `dist` files for all packages only
 - `clean` - runs `clean-other` and `clean-root`
   - `clean-other` - runs the `clean` command in each package removing all
     temporary files like `node_modules`, `.turbo`, and `dist/**`
   - `clean-root` - removes the root `node_modules` and `.turbo` folders
+  - `website-clean` - only cleans the website
+  - `wc-clean` - only cleans the `@mlaursen/wc` package including the generated
+    files
+  - `wc-clean-generated` - cleans all the generated files only
 - `release` - runs the release script. Check out the release flow below
+- `create-favicons` - recreate the website favicons
+- `update-material-symbols` - regenerates the `src/_data/materialSymbols.js` file
+- `dev` - runs the dev mode for all packages
+  - `website-dev` - runs dev mode for the website package only
+  - `wc-dev` - runs dev mode for the `@mlaursen/wc` package only
+- `website-start` - starts the website
+- `wc-test-scss` - tests the generated css output to ensure the non-host mode
+  is still valid
 
 ## Release Flow
 

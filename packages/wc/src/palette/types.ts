@@ -42,11 +42,7 @@ export type LightPaletteBackgroundColor = `light-${PaletteBackgroundColor}`;
 export type DarkPaletteBackgroundColor = `dark-${PaletteBackgroundColor}`;
 
 export type RemainingPalette =
-  | "outline"
-  | "outline-variant"
-  | "shadow"
-  | "surface-tint"
-  | "scrim";
+  "outline" | "outline-variant" | "shadow" | "surface-tint" | "scrim";
 export type LightRemainingPalette = `light-${RemainingPalette}`;
 export type DarkRemainingPalette = `dark-${RemainingPalette}`;
 
@@ -58,23 +54,17 @@ export type PaletteTokenName =
 export type LightPaletteTokenName = `light-${PaletteTokenName}`;
 export type DarkPaletteTokenName = `dark-${PaletteTokenName}`;
 export type AllPaletteTokenName =
-  | PaletteTokenName
-  | LightPaletteTokenName
-  | DarkPaletteTokenName;
+  PaletteTokenName | LightPaletteTokenName | DarkPaletteTokenName;
 
 export type PaletteTokenProperties = CamelCaseKeys<{
   [K in AllPaletteTokenName]?: string;
 }>;
 
 export type PaletteTextColor =
-  | BasePaletteTheme
-  | OnBasePaletteContainer
-  | "currentcolor";
+  BasePaletteTheme | OnBasePaletteContainer | "currentcolor";
 
 export type ContainerColor =
-  | BasePaletteContainer
-  | LightBasePaletteContainer
-  | DarkBasePaletteContainer;
+  BasePaletteContainer | LightBasePaletteContainer | DarkBasePaletteContainer;
 export type OnContainerColor =
   | OnBasePaletteContainer
   | LightOnBasePaletteContainer

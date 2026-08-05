@@ -6,9 +6,7 @@ import type { LitConstructor } from "../types.js";
 export type FormValue = Parameters<ElementInternals["setFormValue"]>[0];
 
 export type InputOrLitInstance<P extends object = object> =
-  | HTMLInputElement
-  | HTMLTextAreaElement
-  | (LitElement & P);
+  HTMLInputElement | HTMLTextAreaElement | (LitElement & P);
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type ValidatorInstance = any;

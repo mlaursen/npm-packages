@@ -5,22 +5,14 @@ export interface BoxJustifyContentOverrides {}
 export interface BoxGridNameOverrides {}
 
 export type DefaultBoxAlignItems =
-  | "start"
-  | "flex-start"
-  | "center"
-  | "end"
-  | "flex-end"
-  | "stretch";
+  "start" | "flex-start" | "center" | "end" | "flex-end" | "stretch";
 export type BoxAlignItems = OverridableStringUnion<
   DefaultBoxAlignItems,
   BoxAlignItemsOverrides
 >;
 
 export type DefaultBoxJustifyContent =
-  | BoxAlignItems
-  | "space-around"
-  | "space-between"
-  | "space-evenly";
+  BoxAlignItems | "space-around" | "space-between" | "space-evenly";
 export type BoxJustifyContent = OverridableStringUnion<
   DefaultBoxJustifyContent,
   BoxJustifyContentOverrides

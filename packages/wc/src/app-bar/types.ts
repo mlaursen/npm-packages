@@ -4,9 +4,7 @@ import { type DefaultComponentSize } from "../types.js";
 
 export interface AppBarSizeOverrides {}
 export type DefaultAppBarSize =
-  | DefaultComponentSize
-  | "medium-subtitle"
-  | "large-subtitle";
+  DefaultComponentSize | "medium-subtitle" | "large-subtitle";
 export type AppBarSize = OverridableStringUnion<
   DefaultAppBarSize,
   AppBarSizeOverrides
@@ -29,11 +27,7 @@ export type AppBarPosition = OverridableStringUnion<
 
 export interface AppBarScrollOverrides {}
 export type DefaultAppBarScroll =
-  | "static"
-  | "sticky"
-  | "sticky-upwards"
-  | "fixed"
-  | "fixed-upwards";
+  "static" | "sticky" | "sticky-upwards" | "fixed" | "fixed-upwards";
 
 export interface AppBarTitlePositionOverrides {}
 export type DefaultAppBarTitlePosition = "start" | "center";

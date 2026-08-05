@@ -3,8 +3,7 @@ import type { LitElement } from "lit";
 import type { Validator } from "./types.js";
 
 export type PatternElement =
-  | HTMLInputElement
-  | (LitElement & { pattern: string });
+  HTMLInputElement | (LitElement & { pattern: string });
 
 export const patternValidator = {
   key: "patternMismatch",

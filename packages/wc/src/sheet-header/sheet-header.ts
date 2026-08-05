@@ -32,8 +32,10 @@ export class SheetHeader extends LitElement implements SheetHeaderProperties {
         aria-label=${this.backLabel}
         @click=${this.#close}
         ?hidden=${!this.backButton}
-        ?autofocus=${this.autoFocus === "back" ||
-        (this.backButton && this.autoFocus === "auto")}
+        ?autofocus=${
+          this.autoFocus === "back" ||
+          (this.backButton && this.autoFocus === "auto")
+        }
       >
         <slot name="back-icon">
           <mwc-material-symbol>arrow_back</mwc-material-symbol>
@@ -46,8 +48,10 @@ export class SheetHeader extends LitElement implements SheetHeaderProperties {
         aria-label=${this.closeLabel}
         @click=${this.#close}
         ?hidden=${!this.closeButton}
-        ?autofocus=${this.autoFocus === "close" ||
-        (this.closeButton && this.autoFocus === "auto")}
+        ?autofocus=${
+          this.autoFocus === "close" ||
+          (this.closeButton && this.autoFocus === "auto")
+        }
       >
         <slot name="close-icon">
           <mwc-material-symbol>close</mwc-material-symbol>

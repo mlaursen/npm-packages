@@ -192,20 +192,22 @@ export class ConfigurePalette extends LitElement {
       <mwc-link href=${materialThemeBuilderUrl} target="_blank"
         >Material Theme Builder</mwc-link
       >
-      ${(this.theme !== defaultTheme &&
-        html`
-          <mwc-typography><h3>Seed: ${this.theme.seed}</h3></mwc-typography>
-          <mwc-button
-            @click=${() => {
-              this.theme = defaultTheme;
-              this.contrast = "normal";
-              this.materialTheme = false;
-            }}
-          >
-            Remove Custom Theme
-          </mwc-button>
-        `) ||
-      nothing}
+      ${
+        (this.theme !== defaultTheme &&
+          html`
+            <mwc-typography><h3>Seed: ${this.theme.seed}</h3></mwc-typography>
+            <mwc-button
+              @click=${() => {
+                this.theme = defaultTheme;
+                this.contrast = "normal";
+                this.materialTheme = false;
+              }}
+            >
+              Remove Custom Theme
+            </mwc-button>
+          `) ||
+        nothing
+      }
       <mwc-button aria-label="Upload Material Theme">
         <mwc-material-symbol>upload</mwc-material-symbol>
         <input type="file" @change=${this.#handleFileUpload} accept=".json" />
