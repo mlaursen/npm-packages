@@ -5,7 +5,7 @@
       "dependsOn": ["^build"],
       "outputs": ["dist/**", "types/**"]
     },
-    "build-docs": {},
+    "generate-simple-docs": {},
     "typecheck": {
       "dependsOn": ["^typecheck"]
     },

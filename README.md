@@ -37,9 +37,10 @@ This project uses [turborepo](https://turborepo.dev/) to handle the monorepo beh
   - `test-run` - runs all tests and exits
   - `test-run-snapshot` - updates snapshots
   - `test-run-coverage` - runs all tests with coverage and exits
+- `generate-simple-docs` - regenerates the `README.md` for each package using
+  the `simple-docs` script
 - `build` - build all packages
   - `build-dist` - builds all packages
-  - `build-simple-docs` - builds the [@mlaursen/simple-docs] package only
 - `clean-dist` - removes the `dist` files for all packages only
 - `clean` - runs `clean-other` and `clean-root`
   - `clean-other` - runs the `clean` command in each package removing all

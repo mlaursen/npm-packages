@@ -21,7 +21,7 @@ The docs can be created by calling `simple-docs`. Here is an example setup:
      "build-esm-watch": "pnpm build-esm --watch",
      "build-types": "tsc -P tsconfig.types.json",
      "build-types-watch": "pnpm build-types --watch",
-+    "build-docs": "simple-docs",
++    "generate-docs": "simple-docs",
      "build": "concurrently 'pnpm build-esm' 'pnpm build-types'"
    },
 ```

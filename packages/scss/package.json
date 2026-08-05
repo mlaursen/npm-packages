@@ -28,7 +28,7 @@
     "build-dist-watch": "pnpm build-dist --watch",
     "build-types": "tsc -p tsconfig.types.json",
     "build-types-watch": "pnpm build-types --watch",
-    "build-docs": "simple-docs",
+    "generate-simple-docs": "simple-docs",
     "build": "pnpm build-types && pnpm build-dist",
     "test": "vitest",
     "test-coverage": "vitest --coverage",
