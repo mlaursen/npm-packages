@@ -55,9 +55,7 @@ export type TextExtractor<T> = (item: T) => string;
  * - `{ name: "Hello, world", value: 300 }` -&gt; `"Hello, world!"`
  */
 export type AutomaticTextExtraction =
-  | string
-  | { label: string }
-  | { name: string };
+  string | { label: string } | { name: string };
 
 export interface AlphaNumericSortOptions<T> {
   /**
