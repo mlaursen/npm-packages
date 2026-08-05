@@ -1,5 +1,6 @@
 import { enableLogger, log, logComplete } from "@mlaursen/node-utils";
 import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
+import type { ExtendOptions } from "sharp";
 import sharp from "sharp";
 import { sharpsToIco } from "sharp-ico";
 
@@ -15,7 +16,7 @@ await mkdir(outDir, { recursive: true });
 interface ResizeOptions {
   size: number;
   name?: string;
-  extend?: sharp.ExtendOptions;
+  extend?: ExtendOptions;
 }
 
 const resizes = [
