@@ -1,20 +1,24 @@
 // @ts-check
+import "./src/_config/env.js";
+
 import { defineConfig } from "11ty.ts";
 import { EleventyRenderPlugin } from "@11ty/eleventy";
 import { eleventyImageTransformPlugin } from "@11ty/eleventy-img";
 import eleventyNavigationPlugin from "@11ty/eleventy-navigation";
 import litPlugin from "@lit-labs/eleventy-plugin-lit";
 import { enableLogger, log } from "@mlaursen/node-utils";
-import dotenv from "dotenv";
 
-import { ENABLE_SSR, ROOT_DIR, WC_ROOT } from "./src/_config/constants.js";
+import {
+  ASSETS_DIR,
+  ENABLE_SSR,
+  ROOT_DIR,
+  WC_ROOT,
+} from "./src/_config/constants.js";
 import { buildJs } from "./src/_config/events/build-js.js";
 import { buildScss } from "./src/_config/events/build-scss.js";
 import { slugify } from "./src/_config/filters/slugify.js";
 import { draftsPlugin } from "./src/_config/plugins/drafts.js";
 import { htmlPlugin } from "./src/_config/plugins/html.js";
-
-dotenv.config({ quiet: true, override: true });
 
 export default defineConfig((eleventyConfig) => {
   enableLogger();
@@ -24,7 +28,7 @@ export default defineConfig((eleventyConfig) => {
   });
 
   eleventyConfig.addWatchTarget(
-    `./${ROOT_DIR}/assets/**/*.{scss,js,ts,svg,png,jpeg}`,
+    `./${ASSETS_DIR}/**/*.{scss,js,ts,svg,png,jpeg}`,
   );
 
   eleventyConfig.addLayoutAlias("base", "base.njk");
@@ -61,9 +65,9 @@ export default defineConfig((eleventyConfig) => {
 
   eleventyConfig.addFilter("slugify", slugify);
 
-  eleventyConfig.addPassthroughCopy(`${ROOT_DIR}/assets/fonts`);
+  eleventyConfig.addPassthroughCopy(`${ASSETS_DIR}/fonts`);
   eleventyConfig.addPassthroughCopy({
-    [`${ROOT_DIR}/assets/favicon/*`]: "/",
+    [`${ASSETS_DIR}/favicon/*`]: "/",
   });
 
   // force reload instead of hot reload since lit shadow dom styles are lost
