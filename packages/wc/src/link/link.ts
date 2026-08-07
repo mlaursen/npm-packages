@@ -46,9 +46,6 @@ export class Link extends BaseLink implements LinkProperties {
   @property({ type: Boolean })
   override disableRipple = true;
 
-  @property({ type: Boolean })
-  inline?: boolean;
-
   protected override render(): TemplateResult {
     const props: Partial<HTMLAnchorElement> = {};
     for (const name of PASS_THROUGH_LINK_PROPS) {

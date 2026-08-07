@@ -43,9 +43,6 @@ $-base-link-styles: (
   gap: "link.gap",
   transition: 'color "transition.duration.short-3" "transition.easing.linear"',
 );
-$-inline-styles: (
-  display: inline,
-);
 
 $-focused-styles: ();
 $-visited-styles: (
@@ -72,11 +69,11 @@ $-hovered-styles: (
   $styles: (
     "&link": utils.deep-merge(
         $-base-styles,
+        $-base-link-styles,
         (
           "mouse-hover": $-hovered-styles,
         )
       ),
-    "&link--inline": $-inline-styles,
   );
 
   @include utils.css-styles(
@@ -96,9 +93,9 @@ $-hovered-styles: (
         color: "link.hovered.color",
       ),
     ),
+    "a": $-base-link-styles,
     "a:visited": $-visited-styles,
     "a:focus-visible": $-focused-styles,
-    ":host([inline]) a": $-inline-styles,
   );
 
   @include utils.host-styles(
