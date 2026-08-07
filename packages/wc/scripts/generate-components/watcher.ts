@@ -31,7 +31,7 @@ async function createStylesWhileWatching(
   try {
     await createStyles(options);
     // touch this file so that eleventy will rebuild
-    touch(`${gitRoot}/apps/website/src/pages/index.njk`);
+    touch(`${gitRoot}/apps/website/src/index.njk`);
   } catch (error) {
     if (error instanceof Error) {
       enableLogger();
