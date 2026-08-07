@@ -26,7 +26,7 @@ const touchWebsitePlugin = (): Plugin => {
   return {
     name: "touch-website-plugin",
     writeBundle() {
-      touch(`${gitRoot}/apps/website/src/pages/index.njk`);
+      touch(`${gitRoot}/apps/website/src/index.njk`);
     },
   };
 };
