@@ -26,6 +26,7 @@
     "typecheck": "tsc --noEmit",
     "typecheck-watch": "tsc --noEmit --watch",
     "test-scss": "pnpm node-run scripts/test-scss.ts",
+    "build-default-css": "pnpm node-run scripts/build-default-css.ts",
     "build-scss": "mlaursen-cli copy-scss-files \"src/**/_*.scss\"",
     "build-scss-watch": "pnpm build-scss -w",
     "build-esm": "swc -d ./dist --strip-leading-paths src",

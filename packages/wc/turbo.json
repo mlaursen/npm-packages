@@ -21,6 +21,11 @@
       "dependsOn": ["build-esm", "build-types"],
       "outputs": ["dist/index.js"]
     },
+    "build-default-css": {
+      "dependsOn": ["^build"],
+      "inputs": ["src/**/*.scss"],
+      "outputs": ["dist/*.css", "src/*.min.css"]
+    },
     "build-scss": {
       "dependsOn": ["^build"],
       "inputs": ["src/**/*.scss"],
@@ -33,12 +38,15 @@
         "build-types",
         "build-esm",
         "build-rollup",
+        "build-default-css",
         "build-scss"
       ],
       "outputs": [
         "dist/**/*.js",
         "dist/**/*.d.ts",
         "dist/**/*.scss",
+        "dist/*.css",
+        "dist/*.min.css",
         "src/**/*-styles.ts"
       ]
     },
