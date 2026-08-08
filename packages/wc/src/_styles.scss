@@ -12,6 +12,7 @@
 @use "box";
 @use "button";
 @use "icon-button";
+@use "card";
 @use "checkbox";
 @use "radio";
 @use "dialog";
@@ -38,6 +39,7 @@
   @include box.styles;
   @include text-container.styles;
   @include divider.styles;
+  @include card.styles;
   @include button.styles;
   @include icon-button.styles;
   @include link.styles;

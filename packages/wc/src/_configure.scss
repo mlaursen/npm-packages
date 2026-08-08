@@ -22,6 +22,7 @@
 @use "icon";
 @use "material-symbol";
 @use "box";
+@use "card";
 @use "checkbox";
 @use "radio";
 @use "link";
@@ -62,6 +63,7 @@
   $box: null,
   $button: null,
   $icon-button: null,
+  $card: null,
   $checkbox: null,
   $radio: null,
   $dialog: null,
@@ -99,6 +101,7 @@
   @include icon.configure-global($icon);
   @include material-symbol.configure-global($material-symbol);
   @include box.configure-global($box);
+  @include card.configure-global($card);
   @include button.configure-global($button);
   @include icon-button.configure-global($icon-button);
   @include checkbox.configure-global($checkbox);
