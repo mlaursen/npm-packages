@@ -1,6 +1,10 @@
+import {
+  DEFAULT_DIALOG_CLOSE_ANIMATION,
+  DEFAULT_DIALOG_OPEN_ANIMATION,
+} from "../dialog/constants.js";
+import type { AnimateDialogElementMap } from "../dialog/types.js";
 import { Duration, Easing } from "../transition/constants.js";
 import { getVar } from "../utils/tokens.js";
-import { type AnimateSheetElementMap } from "./types.js";
 
 const openFromX = getVar("sheet.open.from.x", 0);
 const openFromY = getVar("sheet.open.from.y", 0);
@@ -12,7 +16,7 @@ const closeToX = getVar("sheet.close.to.x", openFromX);
 const closeToY = getVar("sheet.close.to.y", openFromY);
 
 export const DEFAULT_SHEET_OPEN_ANIMATION = {
-  sheet: [
+  dialog: [
     [
       [
         {
@@ -27,11 +31,13 @@ export const DEFAULT_SHEET_OPEN_ANIMATION = {
         easing: Easing.Emphasized,
       },
     ],
+
+    ...DEFAULT_DIALOG_OPEN_ANIMATION.dialog.slice(2),
   ],
-} as const satisfies AnimateSheetElementMap;
+} as const satisfies AnimateDialogElementMap;
 
 export const DEFAULT_SHEET_CLOSE_ANIMATION = {
-  sheet: [
+  dialog: [
     [
       [
         {
@@ -46,5 +52,7 @@ export const DEFAULT_SHEET_CLOSE_ANIMATION = {
         easing: Easing.EmphasizedAccelerate,
       },
     ],
+
+    ...DEFAULT_DIALOG_CLOSE_ANIMATION.dialog.slice(2),
   ],
-} as const satisfies AnimateSheetElementMap;
+} as const satisfies AnimateDialogElementMap;

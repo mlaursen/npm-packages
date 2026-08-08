@@ -1,6 +1,24 @@
 import { Duration, Easing } from "../transition/constants.js";
+import type { AnimateElementArgs } from "../transition/types.js";
 import { getVar } from "../utils/tokens.js";
 import { type AnimateDialogElementMap } from "./types.js";
+
+export const DEFAULT_DIALOG_BACKDROP_OPEN_ANIMATION = [
+  [{ opacity: 0 }, { opacity: getVar("dialog.scrim.opacity", 0.32) }],
+  {
+    duration: Duration.Long2,
+    easing: Easing.Linear,
+    pseudoElement: "::backdrop",
+  },
+] as const satisfies AnimateElementArgs;
+export const DEFAULT_DIALOG_BACKDROP_CLOSE_ANIMATION = [
+  [{ opacity: getVar("dialog.scrim.opacity", 0.32) }, { opacity: 0 }],
+  {
+    duration: Duration.Short3,
+    easing: Easing.Linear,
+    pseudoElement: "::backdrop",
+  },
+] as const satisfies AnimateElementArgs;
 
 export const DEFAULT_DIALOG_OPEN_ANIMATION = {
   dialog: [
@@ -28,15 +46,7 @@ export const DEFAULT_DIALOG_OPEN_ANIMATION = {
       },
     ],
 
-    // scrim opacity animation
-    [
-      [{ opacity: 0 }, { opacity: getVar("dialog.scrim.opacity", 0.32) }],
-      {
-        duration: Duration.Long2,
-        easing: Easing.Linear,
-        pseudoElement: "::backdrop",
-      },
-    ],
+    DEFAULT_DIALOG_BACKDROP_OPEN_ANIMATION,
   ],
   header: [
     [
@@ -84,15 +94,7 @@ export const DEFAULT_DIALOG_CLOSE_ANIMATION = {
       },
     ],
 
-    // scrim opacity animation
-    [
-      [{ opacity: getVar("dialog.scrim.opacity", 0.32) }, { opacity: 0 }],
-      {
-        duration: Duration.Short3,
-        easing: Easing.Linear,
-        pseudoElement: "::backdrop",
-      },
-    ],
+    DEFAULT_DIALOG_BACKDROP_CLOSE_ANIMATION,
   ],
 
   header: [

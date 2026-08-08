@@ -3,13 +3,12 @@ import { customElement, property } from "lit/decorators.js";
 import { ifDefined } from "lit/directives/if-defined.js";
 
 import { Dialog } from "../dialog/dialog.js";
-import { type DialogWidth } from "../dialog/types.js";
-import { type SheetHeaderAutoFocus } from "../sheet-header/types.js";
 import {
-  type AnimateOptions,
-  type AnimationList,
-  type GetAnimationMap,
-} from "../transition/types.js";
+  type AnimateDialogElementMap,
+  type DialogWidth,
+} from "../dialog/types.js";
+import { type SheetHeaderAutoFocus } from "../sheet-header/types.js";
+import { type GetAnimationMap } from "../transition/types.js";
 import { isSlotted } from "../utils/slots.js";
 import {
   DEFAULT_SHEET_CLOSE_ANIMATION,
@@ -17,7 +16,6 @@ import {
 } from "./constants.js";
 import styles from "./sheet-styles.js";
 import {
-  type AnimateSheetElementMap,
   type SheetPosition,
   type SheetProperties,
   type SheetShape,
@@ -57,23 +55,10 @@ export class Sheet extends BaseSheet implements SheetProperties {
   @property({ attribute: "header-focus" })
   headerFocus?: SheetHeaderAutoFocus;
 
-  override getOpenAnimation: GetAnimationMap<AnimateSheetElementMap> = () =>
+  override getOpenAnimation: GetAnimationMap<AnimateDialogElementMap> = () =>
     DEFAULT_SHEET_OPEN_ANIMATION;
-  override getCloseAnimation: GetAnimationMap<AnimateSheetElementMap> = () =>
+  override getCloseAnimation: GetAnimationMap<AnimateDialogElementMap> = () =>
     DEFAULT_SHEET_CLOSE_ANIMATION;
-
-  override _getAnimations(options: AnimateOptions): AnimationList {
-    const { animate = true, opening } = options;
-    if (!animate) {
-      return [];
-    }
-
-    const getDefault = opening ? this.getOpenAnimation : this.getCloseAnimation;
-
-    const { sheet } = animate === true ? getDefault() : animate();
-
-    return [[this._dialog, sheet]];
-  }
 
   override renderDefaultHeader(): TemplateResult {
     return html`

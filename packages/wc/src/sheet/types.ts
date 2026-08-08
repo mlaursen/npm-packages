@@ -10,16 +10,12 @@ import type {
   SheetHeaderProperties,
 } from "../sheet-header/types.js";
 import {
-  type AnimateElementMap,
   type BaseAnimateOptions,
   type GetAnimationMap,
 } from "../transition/types.js";
 import { type DefaultComponentShape } from "../types.js";
 
-export type AnimateSheetElementMap = AnimateElementMap<
-  "sheet" | keyof AnimateDialogElementMap
->;
-export type ShowSheetOptions = BaseAnimateOptions<AnimateSheetElementMap>;
+export type ShowSheetOptions = BaseAnimateOptions<AnimateDialogElementMap>;
 
 export interface SheetShapeOverrides {}
 export type DefaultSheetShape = DefaultComponentShape;
@@ -68,10 +64,10 @@ export interface SheetProperties
   close: (options?: ShowSheetOptions) => Promise<void>;
 
   /** @defaultValue `() => DEFAULT_SHEET_OPEN_ANIMATION` */
-  getOpenAnimation: GetAnimationMap<AnimateSheetElementMap>;
+  getOpenAnimation: GetAnimationMap<AnimateDialogElementMap>;
 
   /** @defaultValue `() => DEFAULT_SHEET_CLOSE_ANIMATION` */
-  getCloseAnimation: GetAnimationMap<AnimateSheetElementMap>;
+  getCloseAnimation: GetAnimationMap<AnimateDialogElementMap>;
 
   /**
    * @defaultValue `"auto"`
