@@ -22,7 +22,7 @@ page:
                       gap="none"
                       {{ "clickable" if clickable }}
                       {{ "disabled" if clickable and disabled}}>
-              <img slot="header" src="{{ card.image.src }}" alt="{{ card.image.alt }}" />
+              <img src="{{ card.image.src }}" alt="{{ card.image.alt }}" />
               <mwc-box stacked align="start">
                 <mwc-typography variant="display" size="medium" margin="none">
                   <h3>{% if disabled %}Disabled{% elseif clickable %}Clickable{% else %}Headline {% endif %}</h3>

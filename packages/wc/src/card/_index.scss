@@ -107,9 +107,14 @@ $-tokens: (
   elevation: 0,
   shadow: "palette.shadow",
   shape: (
-    current: null,
+    all: null,
     round: "shape.corner.medium",
     square: "shape.corner.none",
+
+    start-start: "card.shape.all",
+    start-end: "card.shape.all",
+    end-start: "card.shape.all",
+    end-end: "card.shape.all",
   ),
 
   hovered: (
@@ -142,7 +147,10 @@ $-base-styles: (
   // "interaction.pressed.container.color": "card.pressed.interaction.color",
   // "interaction.pressed.container.opacity": "card.pressed.interaction.opacity",
   background: utils.get-rgb-var("card.background", "card.background-opacity"),
-  border-radius: "card.shape.current",
+  border-start-start-radius: "card.shape.start-start",
+  border-start-end-radius: "card.shape.start-end",
+  border-end-start-radius: "card.shape.end-start",
+  border-end-end-radius: "card.shape.end-end",
   box-sizing: border-box,
   display: flex,
   flex-direction: column,
@@ -198,18 +206,14 @@ $-outlined-styles: utils.remap-variants(
   "focused.elevation"
 );
 $-round-styles: (
-  "card.shape.current": "card.shape.round",
+  "card.shape.all": "card.shape.round",
 );
 $-square-styles: (
-  "card.shape.current": "card.shape.square",
+  "card.shape.all": "card.shape.square",
 );
-$-base-header-styles: (
-  border-start-start-radius: "card.shape.current",
-  border-start-end-radius: "card.shape.current",
-);
-$-base-footer-styles: (
-  border-end-start-radius: "card.shape.current",
-  border-end-end-radius: "card.shape.current",
+$-border-radius-styles: (
+  border-radius: inherit,
+  overflow: hidden,
 );
 
 @mixin configure() {
@@ -244,8 +248,9 @@ $-base-footer-styles: (
     ),
     // "host-hover": $-base-hovered-styles,
     ":host(#{interaction.$is-disabled})": $-base-disabled-styles,
-    "::slotted([slot=header])": $-base-header-styles,
-    "::slotted([slot=footer])": $-base-footer-styles,
+    ".container": $-border-radius-styles,
+    // "::slotted(:is([slot=clip-top], [slot=clip-all]))": $-clip-top-styles,
+     // "::slotted(:is([slot=clip-bottom], [slot=clip-all]))": $-clip-bottom-styles,
   );
   @include utils.host-styles($styles);
 }
