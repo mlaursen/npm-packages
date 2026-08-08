@@ -127,6 +127,7 @@ export function InteractionMixin<T extends StylableLitElement>(
     #bindRippleHandlers(add: boolean): void {
       const name = add ? "addEventListener" : "removeEventListener";
 
+      this[name]("dragstart", this.#cancelPressAnimation, true);
       this[name]("pointerleave", this.#handlePointerLeave);
       this[name]("pointerup", this.#handlePointerUp);
       this[name]("pointerdown", this.#handlePointerDown);
@@ -155,6 +156,12 @@ export function InteractionMixin<T extends StylableLitElement>(
         animation.cancel();
       });
       this.#animation = animation;
+    }
+
+    #cancelPressAnimation(): void {
+      this.#animationController?.abort();
+      this.#state = RippleState.Inactive;
+      this._pressed = false;
     }
 
     async #stopPressAnimation(): Promise<void> {
