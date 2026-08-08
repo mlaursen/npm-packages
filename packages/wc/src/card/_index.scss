@@ -10,11 +10,6 @@ $-elevated-tokens: (
   elevation: 1,
   shape: "shape.corner.medium",
 
-  icon: (
-    color: "palette.primary",
-    size: 1.5rem,
-  ),
-
   disabled: (
     elevation: 1,
     background: "palette.surface",
@@ -34,12 +29,11 @@ $-elevated-tokens: (
   ),
 );
 $-filled-tokens: (
-  // still has shadow?
-  // same icon stuff
   background: "palette.surface-container-highest",
   background-opacity: 1,
   elevation: 0,
   shape: "shape.corner.medium",
+
   disabled: (
     elevation: 0,
     background: "palette.on-surface",
@@ -48,17 +42,13 @@ $-filled-tokens: (
 
   hovered: (
     elevation: 1,
-    // normal state layer
   ),
   focused: (
-    // same focus indicator
-    elevation: 0
+    elevation: 0,
   ),
   dragged: (
     elevation: 6,
-
-    // "interaction.dragged.container.opacity"
-  )
+  ),
 );
 $-outlined-tokens: (
   background: "palette.surface",
@@ -66,35 +56,11 @@ $-outlined-tokens: (
   elevation: 0,
   shape: "shape.corner.medium",
 
-  outline: (
-    color: "palette.outline-variant",
-    opacity: 1,
-    width: 1px,
-  ),
-
-  disabled: (
-    outline: (
-      color: "palette.outline",
-      opacity: 0.12,
-    ),
-  ),
-
   hovered: (
     elevation: 1,
-    outline: (
-      color: "palette.outline-variant",
-    ),
-  ),
-
-  focused: (
-    outline: (
-      color: "palette.on-surface",
-    ),
   ),
   dragged: (
     elevation: 6,
-
-    // "interaction.dragged.container.opacity"
   ),
 );
 $-tokens: (
@@ -117,16 +83,35 @@ $-tokens: (
     end-end: "card.shape.all",
   ),
 
-  hovered: (
-    elevation: 0,
-  ),
-
-  focused: (
-    elevation: 0,
+  outline: (
+    color: "palette.outline-variant",
+    opacity: 1,
+    width: 1px,
   ),
 
   disabled: (
     elevation: 0,
+
+    outline: (
+      color: "palette.outline",
+      opacity: 0.12,
+    ),
+  ),
+
+  hovered: (
+    elevation: 0,
+
+    outline: (
+      color: "palette.outline-variant",
+    ),
+  ),
+
+  focused: (
+    elevation: 0,
+
+    outline: (
+      color: "palette.on-surface",
+    ),
   ),
 
   dragged: (
@@ -139,13 +124,6 @@ $-configure-tokens: map.keys($-tokens);
 $-base-styles: (
   "elevation.level": "card.elevation",
   "elevation.shadow-color": "card.shadow",
-  // "interaction.hovered.container.color": "card.hovered.interaction.color",
-  // "interaction.hovered.container.opacity": "card.hovered.interaction.opacity",
-  // "interaction.focused.container.color": "card.focused.interaction.color",
-  // "interaction.focused.container.opacity": "card.focused.interaction.opacity",
-  // "interaction.focused.container.elevation": "card.focused.elevation",
-  // "interaction.pressed.container.color": "card.pressed.interaction.color",
-  // "interaction.pressed.container.opacity": "card.pressed.interaction.opacity",
   background: utils.get-rgb-var("card.background", "card.background-opacity"),
   border-start-start-radius: "card.shape.start-start",
   border-start-end-radius: "card.shape.start-end",
@@ -153,19 +131,48 @@ $-base-styles: (
   border-end-end-radius: "card.shape.end-end",
   box-sizing: border-box,
   display: flex,
-  flex-direction: column,
+  justify-content: stretch,
+  position: relative,
 );
-$-base-hovered-styles: utils.remap-variants(card, hovered, elevation);
+$-container-styles: (
+  border-radius: inherit,
+  overflow: hidden,
+);
 $-base-disabled-styles: utils.deep-merge(
   utils.remap-variants(
     card,
     disabled,
     elevation,
     background,
-    background-opacity
+    background-opacity,
+    "outline.color",
+    "outline.opacity"
   ),
   (
     "card.hovered.elevation": "card.disabled.elevation",
+    "card.hovered.outline.color": "card.disabled.outline.color",
+    "card.hovered.outline.opacity": "card.disabled.outline.opacity",
+  )
+);
+$-base-hovered-styles: utils.remap-variants(
+  card,
+  hovered,
+  elevation,
+  "outline.color",
+  "outline.opacity"
+);
+$-base-focused-styles: utils.remap-variants(
+  card,
+  focused,
+  elevation,
+  "outline.color",
+  "outline.opacity"
+);
+$-base-dragged-styles: utils.deep-merge(
+  utils.remap-variants(card, dragged, "elevation"),
+  (
+    "card.hovered.elevation": "card.dragged.elevation",
+    "interaction.container.opacity": 0,
   )
 );
 $-clickable-styles: (
@@ -185,7 +192,8 @@ $-elevated-styles: utils.remap-variants(
   "focused.elevation",
   "disabled.elevation",
   "disabled.background",
-  "disabled.background-opacity"
+  "disabled.background-opacity",
+  "dragged.elevation"
 );
 $-filled-styles: utils.remap-variants(
   card,
@@ -194,26 +202,37 @@ $-filled-styles: utils.remap-variants(
   background,
   background-opacity,
   "hovered.elevation",
-  "focused.elevation"
+  "focused.elevation",
+  "disabled.elevation",
+  "disabled.background",
+  "disabled.background-opacity",
+  "dragged.elevation"
 );
-$-outlined-styles: utils.remap-variants(
-  card,
-  outlined,
-  elevation,
-  background,
-  background-opacity,
-  "hovered.elevation",
-  "focused.elevation"
+$-outlined-styles: utils.deep-merge(
+  utils.remap-variants(
+    card,
+    outlined,
+    elevation,
+    background,
+    background-opacity,
+    "hovered.elevation",
+    "dragged.elevation"
+  ),
+  (
+    "&::before": utils.deep-merge(
+        utils.pseudo-element(),
+        (
+          border: '"card.outline.width" solid "card.outline.color"',
+          opacity: "card.outline.opacity",
+        )
+      ),
+  )
 );
 $-round-styles: (
   "card.shape.all": "card.shape.round",
 );
 $-square-styles: (
   "card.shape.all": "card.shape.square",
-);
-$-border-radius-styles: (
-  border-radius: inherit,
-  overflow: hidden,
 );
 
 @mixin configure() {
@@ -236,6 +255,7 @@ $-border-radius-styles: (
 @mixin host-styles {
   $styles: (
     ":host": $-base-styles,
+    ".container": $-container-styles,
     ":host([clickable])": $-clickable-styles,
     ":host(:not([clickable]))": $-not-clickable-styles,
     ":host([variant=elevated])": $-elevated-styles,
@@ -243,14 +263,13 @@ $-border-radius-styles: (
     ":host([variant=outlined])": $-outlined-styles,
     ":host([shape=round])": $-round-styles,
     ":host([shape=square])": $-square-styles,
-    "@media (hover: hover) and (pointer: fine)": (
-      ":host([clickable]:hover)": $-base-hovered-styles,
-    ),
     // "host-hover": $-base-hovered-styles,
+    "@media (hover: hover) and (pointer: fine)": (
+        ":host([clickable]:hover)": $-base-hovered-styles,
+      ),
     ":host(#{interaction.$is-disabled})": $-base-disabled-styles,
-    ".container": $-border-radius-styles,
-    // "::slotted(:is([slot=clip-top], [slot=clip-all]))": $-clip-top-styles,
-     // "::slotted(:is([slot=clip-bottom], [slot=clip-all]))": $-clip-bottom-styles,
+    ":host(#{interaction.$is-focus-visible})": $-base-focused-styles,
+    ":host([dragging])": $-base-dragged-styles,
   );
   @include utils.host-styles($styles);
 }

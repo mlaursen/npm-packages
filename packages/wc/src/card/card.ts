@@ -46,10 +46,6 @@ export class Card extends BaseCard {
   grid: BoxGrid = false;
 
   /** Pass-through box property */
-  @property({ type: Boolean, attribute: "full-width" })
-  fullWidth?: boolean;
-
-  /** Pass-through box property */
   @property({ type: Boolean })
   stacked = true;
 
@@ -78,7 +74,7 @@ export class Card extends BaseCard {
   @property({ type: Boolean })
   clickable = false;
 
-  @property({ type: Boolean, reflect: true })
+  @property({ type: Boolean })
   dragging = false;
 
   override willUpdate(changed: PropertyValues): void {
@@ -109,6 +105,7 @@ export class Card extends BaseCard {
   override render(): TemplateResult {
     return html`
       <mwc-box
+        class="container"
         align=${this.align}
         justify=${this.justify}
         gap=${this.gap}
@@ -118,8 +115,7 @@ export class Card extends BaseCard {
         .nowrap=${this.nowrap}
         .stacked=${this.stacked}
         .reversed=${this.reversed}
-        .fullWidth=${this.fullWidth}
-        class="container"
+        full-width
       >
         <slot></slot>
       </mwc-box>
