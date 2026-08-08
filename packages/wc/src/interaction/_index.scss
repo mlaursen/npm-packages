@@ -190,6 +190,9 @@ $-keyframes: (
   ),
 );
 
+$is-disabled: ":is([disabled], [aria-disabled=true])";
+$is-focus-visible: ":is(:focus-visible, [focus-visible])";
+
 @mixin configure(
   $focused-animation: null,
   $focused-width: null,
@@ -247,15 +250,14 @@ $-keyframes: (
       "&::before": $-base-focusable-animation-styles,
     )
   );
-  $focus-visible: ":is(:focus-visible, [focus-visible])";
 
   $styles: (
     ":host, .state-layer-target": $host-styles,
     "host-hover": $-hovered-styles,
-    ":host(#{$focus-visible})": $-focused-styles,
-    ":host([interaction=inward]#{$focus-visible})": $-focused-inward-styles,
-    ":host([interaction=outward]#{$focus-visible})": $-focused-outward-styles,
-    ":host(:is([disabled], [aria-disabled=true]))": $-base-disabled-styles,
+    ":host(#{$is-focus-visible})": $-focused-styles,
+    ":host([interaction=inward]#{$is-focus-visible})": $-focused-inward-styles,
+    ":host([interaction=outward]#{$is-focus-visible})": $-focused-outward-styles,
+    ":host(#{$is-disabled})": $-base-disabled-styles,
     ".state-layer, .ripple": $-base-interaction-layer-styles,
     ".state-layer": $state-layer-styles,
     ".ripple": $-base-ripple-styles,

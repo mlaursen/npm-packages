@@ -144,8 +144,6 @@ $-remove-background-styles: (
   background: transparent,
 );
 
-$-is-disabled: ":is([disabled], [aria-disabled=true])";
-
 @mixin configure() {
   @if not $-tokens-registered {
     $-tokens-registered: true !global;
@@ -170,11 +168,12 @@ $-is-disabled: ":is([disabled], [aria-disabled=true])";
     "&button--square": $-round-styles,
     "&button--text": tokens.$text-styles,
     "&button--outlined": tokens.$outlined-styles,
-    "&button--outlined#{$-is-disabled}": tokens.$outlined-disabled-styles,
+    "&button--outlined#{interaction.$is-disabled}":
+      tokens.$outlined-disabled-styles,
     "&button--tonal": tokens.$tonal-styles,
     "&button--filled": tokens.$filled-styles,
     "&button--elevated": tokens.$elevated-styles,
-    "&button#{$-is-disabled}": $-base-disabled-styles,
+    "&button#{interaction.$is-disabled}": $-base-disabled-styles,
     "&button:disabled": $-disabled-styles,
   );
   @include utils.css-styles($styles, $-short-names);
@@ -192,7 +191,7 @@ $-is-disabled: ":is([disabled], [aria-disabled=true])";
     ":host([shape=square])": $-square-styles,
     ":host([variant=text])": tokens.$text-styles,
     ":host([variant=outlined])": tokens.$outlined-styles,
-    ":host([variant=outlined]#{$-is-disabled})":
+    ":host([variant=outlined]#{interaction.$is-disabled})":
       tokens.$outlined-disabled-styles,
     ":host([variant=tonal])": tokens.$tonal-styles,
     ":host([variant=filled])": tokens.$filled-styles,
@@ -201,7 +200,7 @@ $-is-disabled: ":is([disabled], [aria-disabled=true])";
       $-remove-background-styles,
     ":host([aria-pressed=true])": $-selected-styles,
     ":host([aria-pressed=false])": $-unselected-styles,
-    ":host(#{$-is-disabled})": $-base-disabled-styles,
+    ":host(#{interaction.$is-disabled})": $-base-disabled-styles,
     ":host([disabled])": $-disabled-styles,
   );
 
