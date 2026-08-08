@@ -46,6 +46,7 @@ export default defineConfig((eleventyConfig) => {
     widths: ["auto"],
     htmlOptions: {
       imgAttributes: {
+        alt: "",
         loading: "lazy",
         decoding: "async",
       },

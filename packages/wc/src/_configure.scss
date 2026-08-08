@@ -15,6 +15,7 @@
 
 @use "popover";
 @use "text-container";
+@use "object-fit";
 
 @use "app-bar";
 @use "app-bar-title";
@@ -53,6 +54,7 @@
   $transition: null,
   $typography: null,
   $text-container: null,
+  $object-fit: null,
   $app-bar: null,
   $app-bar-title: null,
   $divider: null,
@@ -92,6 +94,7 @@
   @include interaction.configure-global($interaction);
   @include popover.configure-global($popover);
   @include divider.configure-global($divider);
+  @include object-fit.configure-global($object-fit);
 
   @include typography.configure-global($typography);
   @include app-bar.configure-global($app-bar);

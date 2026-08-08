@@ -1,0 +1,80 @@
+@use "sass:map";
+
+@use "../utils";
+
+$-tokens-registered: false;
+$-tokens: (
+  aspect-ratio: null,
+  display: "object-fit.display-inline",
+  display-inline: inline-block,
+  display-full-width: block,
+  height: auto,
+  object-fit: contain,
+  max-height: null,
+  max-width: null,
+  width: auto,
+);
+$-variants: (contain, cover, fill, scale-down, none);
+
+$-configure-tokens: map.keys($-tokens);
+
+$-base-styles: utils.remap-tokens(object-fit, $-tokens);
+$-base-styles: (
+  aspect-ratio: "object-fit.aspect-ratio",
+  display: "object-fit.display",
+  height: "object-fit.height",
+  max-height: 'min(100%, "object-fit.max-height")',
+  max-width: 'min(100%, "object-fit.max-width")',
+  object-fit: "object.fit",
+  width: "object-fit.width",
+);
+$-object-fit-styles: (
+  "object-fit.display": "object-fit.display-full-width",
+  "object-fit.height": 100%,
+  "object-fit.width": 100%,
+);
+
+@mixin configure() {
+  @if not $-tokens-registered {
+    $-tokens-registered: true !global;
+    @include utils.register-tokens($tokens: $-tokens, $prefix: "object-fit");
+  }
+}
+
+@mixin configure-global($overrides: null) {
+  $overrides: utils.get-config-map(object-fit, $overrides, $-configure-tokens);
+  @include configure();
+}
+
+@mixin css-styles {
+  $styles: (
+    "&object-fit": $-base-styles,
+  );
+
+  @each $variant in $-variants {
+    $styles: map.set(
+      $styles,
+      "&object-fit--#{$variant}",
+      (
+        "object-fit": $variant,
+      )
+    );
+  }
+
+  @include utils.css-styles($styles);
+}
+
+@mixin host-styles {
+  // do not set variants here. these are set using custom properties instead
+  $styles: (
+    "::slotted(*)": $-base-styles,
+    "::slotted(img)": $-base-styles,
+    ":host(:not([inline]))": $-object-fit-styles,
+  );
+  @include utils.host-styles($styles);
+}
+
+@mixin styles {
+  @include css-styles;
+  @include host-styles;
+}

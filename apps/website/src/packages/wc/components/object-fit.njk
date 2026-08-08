@@ -1,0 +1,31 @@
+---
+layout: docs
+
+eleventyNavigation:
+  key: Object Fit
+  parent: Home
+
+page:
+  title: Object Fit
+
+images:
+  - https://picsum.photos/200/300?image=30
+  - https://picsum.photos/300/200?image=3
+  - https://picsum.photos/300?image=1008
+  - https://picsum.photos/100/110?image=233
+---
+
+<mwc-box grid align="stretch" full-width>
+  {% for src in images %}
+    <mwc-card align="center" justify="center">
+      <mwc-object-fit>
+        <!--
+            the style="all: inherit" is required since I use the eleventy image
+            plugin which wraps the <img> in a <picture>. Need to see if there
+            is another way to handle that case
+        -->
+        <img src="{{ src }}" style="all: inherit" />
+      </mwc-object-fit>
+    </mwc-card>
+  {% endfor %}
+</mwc-box>
