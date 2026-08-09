@@ -36,7 +36,10 @@ $-filled-tokens: (
 
   disabled: (
     elevation: 0,
-    background: "palette.on-surface",
+    // material design website shows this var at the time of writing this, but
+    // the screenshot is closer to the uncommented color
+    // background: "palette.on-surface",
+    background: "palette.surface-container-highest",
     background-opacity: 0.38,
   ),
 
@@ -70,6 +73,8 @@ $-tokens: (
 
   background: "palette.surface",
   background-opacity: 1,
+  color: "palette.on-surface",
+  color-opacity: 1,
   elevation: 0,
   shadow: "palette.shadow",
   shape: (
@@ -90,6 +95,8 @@ $-tokens: (
   ),
 
   disabled: (
+    color: "palette.on-surface",
+    color-opacity: 0.38,
     elevation: 0,
 
     outline: (
@@ -130,6 +137,7 @@ $-base-styles: (
   border-end-start-radius: "card.shape.end-start",
   border-end-end-radius: "card.shape.end-end",
   box-sizing: border-box,
+  color: utils.get-rgb-var("card.color", "card.color-opacity"),
   display: flex,
   justify-content: stretch,
   position: relative,
@@ -145,6 +153,8 @@ $-base-disabled-styles: utils.deep-merge(
     elevation,
     background,
     background-opacity,
+    color,
+    color-opacity,
     "outline.color",
     "outline.opacity"
   ),
