@@ -4,6 +4,7 @@
   "description": "",
   "type": "module",
   "exports": {
+    "./index": null,
     "./*": "./dist/*.js",
     ".": {
       "sass": "./dist/_index.scss",
