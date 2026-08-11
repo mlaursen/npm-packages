@@ -206,7 +206,7 @@ export class RadioGroup extends BaseRadioGroup {
 
     for (const radio of radios) {
       if (radio.checked || radio.ariaChecked === "true") {
-        this.internals.setValidity();
+        this.internals.setValidity({});
         this.#updateValidity();
         return;
       }
