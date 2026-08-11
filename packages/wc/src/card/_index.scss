@@ -138,13 +138,16 @@ $-base-styles: (
   border-end-end-radius: "card.shape.end-end",
   box-sizing: border-box,
   color: utils.get-rgb-var("card.color", "card.color-opacity"),
-  display: flex,
-  justify-content: stretch,
+  display: block,
   position: relative,
 );
 $-container-styles: (
   border-radius: inherit,
+  height: 100%,
   overflow: hidden,
+);
+$-inline-styles: (
+  display: inline-block,
 );
 $-base-disabled-styles: utils.deep-merge(
   utils.remap-variants(
@@ -266,6 +269,7 @@ $-square-styles: (
   $styles: (
     ":host": $-base-styles,
     ".container": $-container-styles,
+    ":host([inline])": $-inline-styles,
     ":host([clickable])": $-clickable-styles,
     ":host(:not([clickable]))": $-not-clickable-styles,
     ":host([variant=elevated])": $-elevated-styles,
