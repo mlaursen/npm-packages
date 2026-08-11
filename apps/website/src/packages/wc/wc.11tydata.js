@@ -151,6 +151,11 @@ export const textField = {
   states: ["normal", "disabled", "readOnly", "error"],
 };
 
+export const objectFit = {
+  /** @type {import("@mlaursen/wc").ObjectFitVariant[]} */
+  variants: ["contain", "cover", "fill", "none", "scale-down"],
+};
+
 export const typography = {
   /** @type {import("@mlaursen/wc").TypographySize[]} */
   sizes: defaultSizes.toReversed(),

@@ -5,33 +5,48 @@
 $-tokens-registered: false;
 $-tokens: (
   aspect-ratio: null,
-  display: "object-fit.display-inline",
-  display-inline: inline-block,
-  display-full-width: block,
   height: auto,
   object-fit: contain,
   max-height: null,
   max-width: null,
   width: auto,
 );
-$-variants: (contain, cover, fill, scale-down, none);
 
 $-configure-tokens: map.keys($-tokens);
 
 $-base-styles: utils.remap-tokens(object-fit, $-tokens);
 $-base-styles: (
-  aspect-ratio: "object-fit.aspect-ratio",
-  display: "object-fit.display",
+  display: inline-grid,
   height: "object-fit.height",
   max-height: 'min(100%, "object-fit.max-height")',
   max-width: 'min(100%, "object-fit.max-width")',
-  object-fit: "object.fit",
+  overflow: hidden,
   width: "object-fit.width",
 );
 $-object-fit-styles: (
-  "object-fit.display": "object-fit.display-full-width",
+  object-fit: "object.fit",
+  height: 100%,
+  width: 100%,
+);
+$-full-width-styles: (
   "object-fit.height": 100%,
   "object-fit.width": 100%,
+  display: grid,
+);
+$-contain-styles: (
+  "object.fit": contain,
+);
+$-cover-styles: (
+  "object.fit": cover,
+);
+$-fill-styles: (
+  "object.fit": fill,
+);
+$-scale-down-styles: (
+  "object.fit": scale-down,
+);
+$-none-styles: (
+  "object.fit": none,
 );
 
 @mixin configure() {
@@ -49,27 +64,27 @@ $-object-fit-styles: (
 @mixin css-styles {
   $styles: (
     "&object-fit": $-base-styles,
+    "&object-fit--full-width": $-full-width-styles,
+    "&object-fit--contain": $-contain-styles,
+    "&object-fit--cover": $-cover-styles,
+    "&object-fit--fill": $-fill-styles,
+    "&object-fit--scale-down": $-scale-down-styles,
+    "&object-fit--none": $-none-styles,
   );
-
-  @each $variant in $-variants {
-    $styles: map.set(
-      $styles,
-      "&object-fit--#{$variant}",
-      (
-        "object-fit": $variant,
-      )
-    );
-  }
 
   @include utils.css-styles($styles);
 }
 
 @mixin host-styles {
-  // do not set variants here. these are set using custom properties instead
   $styles: (
-    "::slotted(*)": $-base-styles,
-    "::slotted(img)": $-base-styles,
-    ":host(:not([inline]))": $-object-fit-styles,
+    ":host": $-base-styles,
+    ":host(:not([inline]))": $-full-width-styles,
+    ":host([variant=contain])": $-contain-styles,
+    ":host([variant=cover])": $-cover-styles,
+    ":host([variant=fill])": $-fill-styles,
+    ":host([variant=scale-down])": $-scale-down-styles,
+    ":host([variant=none])": $-none-styles,
+    "::slotted(:is(img, video, picture, canvas))": $-object-fit-styles,
   );
   @include utils.host-styles($styles);
 }

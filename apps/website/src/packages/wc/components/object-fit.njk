@@ -15,6 +15,39 @@ images:
   - https://picsum.photos/100/110?image=233
 ---
 
+<mwc-card style="position: sticky;
+                 top: 4rem;
+                 z-index: 8;
+                 --mwc-box-item-min-size: 10rem">
+  <form style="width: 100%">
+    <mwc-dialog-header>
+      <mwc-dialog-title>
+        Variant
+      </mwc-dialog-title>
+    </mwc-dialog-header>
+    <mwc-radio-group aria-label="Object Fit">
+      <mwc-box grid>
+        {% for variant in objectFit.variants %}
+          <mwc-typography variant="label" text-transform="capitalize">
+            <label>
+              <mwc-box padding="none" inline>
+                <mwc-radio name="object-fit"
+                           value="{{ variant }}"
+                           required
+                           {{ "checked" if variant === "contain" }}>
+                </mwc-radio>
+                {{ variant }}
+              </mwc-box>
+            </label>
+          </mwc-typography>
+        {% endfor %}
+      </mwc-box>
+    </mwc-radio-group>
+  </form>
+</mwc-card>
+<mwc-typography variant="title" margin="top">
+  <h3>With Picture</h3>
+</mwc-typography>
 <mwc-box grid align="stretch" full-width>
   {% for src in images %}
     <mwc-card align="center" justify="center">
@@ -24,8 +57,60 @@ images:
             plugin which wraps the <img> in a <picture>. Need to see if there
             is another way to handle that case
         -->
-        <img src="{{ src }}" style="all: inherit" />
+        <img src="{{ src }}" alt="" style="all: inherit" />
       </mwc-object-fit>
     </mwc-card>
   {% endfor %}
 </mwc-box>
+<mwc-divider>
+</mwc-divider>
+<mwc-typography variant="title" margin="top">
+  <h3>Without Picture</h3>
+</mwc-typography>
+<mwc-box grid align="stretch" full-width>
+  {% for src in images %}
+    <mwc-card align="center" justify="center">
+      <mwc-object-fit>
+        <img src="{{ src }}" alt="" eleventy:ignore />
+      </mwc-object-fit>
+    </mwc-card>
+  {% endfor %}
+</mwc-box>
+<mwc-divider>
+</mwc-divider>
+<mwc-typography variant="title">
+  <h3>Inline</h3>
+</mwc-typography>
+<mwc-card align="center" justify="center" style="width: 960px; height: 540px;">
+  <mwc-object-fit inline>
+    <img src="https://picsum.photos/480/270?image=101" alt="" eleventy:ignore />
+  </mwc-object-fit>
+</mwc-card>
+<mwc-card align="center"
+          justify="center"
+          style="width: 360px;
+                 height: 800px;
+                 margin-top: var(--mwc-spacing-extra-large)">
+  <mwc-object-fit inline>
+    <img src="https://picsum.photos/480/270?image=101" alt="" eleventy:ignore />
+  </mwc-object-fit>
+</mwc-card>
+<mwc-divider style="margin-block: var(--mwc-spacing-extra-large)">
+</mwc-divider>
+<mwc-card align="center" justify="center"style="width: 960px; height: 540px;">
+  <mwc-object-fit>
+    <img src="https://picsum.photos/480/270?image=101" alt="" eleventy:ignore />
+  </mwc-object-fit>
+</mwc-card>
+<mwc-card align="center"
+          justify="center"
+          style="width: 360px;
+                 height: 800px;
+                 margin-top: var(--mwc-spacing-extra-large)">
+  <mwc-object-fit>
+    <img src="https://picsum.photos/480/270?image=101" alt="" eleventy:ignore />
+  </mwc-object-fit>
+</mwc-card>
+{% js "defer" %}
+{% include "scripts/wc/object-fit.js" %}
+{% endjs %}
