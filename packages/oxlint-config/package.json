@@ -1,0 +1,63 @@
+{
+  "name": "@mlaursen/oxlint-config",
+  "version": "0.0.0",
+  "description": "An oxlint config used by mlaursen for most projects.",
+  "keywords": [
+    "oxlint",
+    "typescript"
+  ],
+  "bugs": {
+    "url": "https://github.com/mlaursen/npm-packages/issues"
+  },
+  "license": "MIT",
+  "author": "Mikkel Laursen <mlaursen03@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mlaursen/npm-packages.git",
+    "directory": "packages/oxlint-config"
+  },
+  "type": "module",
+  "exports": {
+    ".": "./dist/index.js",
+    "./package.json": "./package.json"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "clean-dist": "rm -rf dist types",
+    "clean-cache": "rm -rf .turbo node_modules",
+    "clean": "concurrently 'pnpm clean-dist' 'pnpm clean-cache'",
+    "check-format": "pnpm format --check",
+    "format": "oxfmt",
+    "lint": "oxlint",
+    "lint-fix": "pnpm lint --fix",
+    "typecheck": "tsc --noEmit",
+    "typecheck-watch": "pnpm typecheck --watch",
+    "build-dist": "rollup -c rollup.config.ts",
+    "build-dist-watch": "pnpm build-dist --watch",
+    "build-types": "tsc -p tsconfig.types.json",
+    "build-types-watch": "pnpm build-types --watch",
+    "build": "pnpm build-types && pnpm build-dist",
+    "dev": "concurrently 'pnpm build-types-watch' 'pnpm build-dist-watch'"
+  },
+  "devDependencies": {
+    "@rollup/plugin-node-resolve": "^16.0.3",
+    "@types/node": "^24.13.2",
+    "concurrently": "^10.0.4",
+    "oxfmt": "^0.63.0",
+    "oxlint": "^1.78.0",
+    "rollup": "^4.62.4",
+    "rollup-plugin-dts": "^6.5.1",
+    "rollup-plugin-swc3": "^0.12.1",
+    "typescript": "^6.0.3"
+  },
+  "peerDependencies": {
+    "oxlint": ">= 1 <= 2"
+  },
+  "peerDependenciesMeta": {
+    "oxlint": {
+      "optional": false
+    }
+  }
+}

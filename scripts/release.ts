@@ -9,6 +9,7 @@ await release({
     "@mlaursen/copy-scss-files": "./packages/copy-scss-files",
     "@mlaursen/eslint-config": "./packages/eslint-config",
     "@mlaursen/node-utils": "./packages/node-utils",
+    "@mlaursen/oxlint-config": "./packages/oxlint-config",
     "@mlaursen/release-script": "./packages/release-script",
     "@mlaursen/scss": "./packages/scss",
     "@mlaursen/simple-docs": "./packages/simple-docs",
