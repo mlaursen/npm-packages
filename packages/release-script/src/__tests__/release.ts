@@ -1,4 +1,5 @@
 import { spawnSync } from "node:child_process";
+
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { continueRelease } from "../continueRelease.js";

@@ -1,10 +1,11 @@
+import { basename, join } from "node:path";
+
 import {
   type CopyScssFilesOptions,
   copyScssFiles,
 } from "@mlaursen/copy-scss-files";
 import { enableLogger } from "@mlaursen/node-utils";
 import { Command } from "commander";
-import { basename, join } from "node:path";
 
 interface ProgramCopyScssFilesOptions extends Required<
   Omit<CopyScssFilesOptions, "getDistPaths" | "pattern">

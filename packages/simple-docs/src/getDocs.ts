@@ -1,4 +1,5 @@
 import { existsSync } from "node:fs";
+
 import { Application, ReflectionKind, type TypeDocOptions } from "typedoc";
 
 const TYPEDOC_CONFIG_FILES = ["typedoc.json", "typedoc.jsonc"];

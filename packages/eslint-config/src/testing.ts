@@ -2,6 +2,7 @@ import vitestPlugin from "@vitest/eslint-plugin";
 import { type Linter } from "eslint";
 import jestPlugin from "eslint-plugin-jest";
 import jestDomPlugin from "eslint-plugin-jest-dom";
+
 import { BASE_NAME, DEV_OFF_PROD_ERROR, TEST_FILES } from "./constants.js";
 
 export type TestFramework = "jest" | "vitest";

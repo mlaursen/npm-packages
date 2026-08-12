@@ -1,9 +1,10 @@
+import { readFileSync } from "node:fs";
+import { readFile } from "node:fs/promises";
+
 import { generateFile } from "@mlaursen/node-utils";
 import { compileScss } from "@mlaursen/scss";
 import { glob } from "glob";
 import { transform } from "lightningcss";
-import { readFileSync } from "node:fs";
-import { readFile } from "node:fs/promises";
 
 import { colorScheme, fonts } from "../../_data/meta.js";
 import {

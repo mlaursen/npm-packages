@@ -225,7 +225,8 @@ $outlined-tokens: (
 $outlined-styles: utils.deep-merge(
   utils.remap-variants(button, outlined, $-color-variants-without-backgrounds),
   (
-    "&::after": map.merge(
+    "&::after":
+      map.merge(
         utils.pseudo-element(),
         (
           border-color: "button.outlined.outline.color",

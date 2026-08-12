@@ -1,5 +1,4 @@
 import { base } from "./base.js";
-
 import { jsxA11y } from "./jsxA11y.js";
 import { react } from "./react.js";
 import { recommended } from "./recommended.js";

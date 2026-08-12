@@ -1,6 +1,7 @@
+import { readFile } from "node:fs/promises";
+
 import confirm from "@inquirer/confirm";
 import input from "@inquirer/input";
-import { readFile } from "node:fs/promises";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import {

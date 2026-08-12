@@ -1,4 +1,5 @@
 import { type Linter } from "eslint";
+
 import { BASE_NAME } from "./constants.js";
 
 /**

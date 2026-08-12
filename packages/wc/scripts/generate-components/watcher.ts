@@ -1,3 +1,6 @@
+import { existsSync } from "node:fs";
+import { rm } from "node:fs/promises";
+
 import {
   type CreateWatcherOptions,
   createWatcher,
@@ -9,8 +12,6 @@ import {
   logPending,
   touch,
 } from "@mlaursen/node-utils";
-import { existsSync } from "node:fs";
-import { rm } from "node:fs/promises";
 
 import { DEFAULT_CSS_BROWSERSLIST_TARGETS } from "./constants.js";
 import { createStyles } from "./createStyles.js";

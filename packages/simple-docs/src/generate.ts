@@ -1,10 +1,7 @@
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
-import {
-  type Options as PrettierOptions,
-  format,
-  resolveConfig,
-} from "prettier";
+
+import { format } from "oxfmt";
 
 import { getDocs } from "./getDocs.js";
 
@@ -45,19 +42,10 @@ ${example.content}
   }
 
   const filePath = join(process.cwd(), "README.md");
-  const config: PrettierOptions = { filepath: filePath };
-  try {
-    const resolvedConfig = await resolveConfig(filePath);
-    Object.assign(config, resolvedConfig);
-  } catch {
-    // do nothing
-  }
-
-  writeFileSync(
-    "README.md",
-    await format(
-      readme.slice(0, startIndex) + content + readme.slice(endIndex),
-      config,
-    ),
+  const formatted = await format(
+    filePath,
+    readme.slice(0, startIndex) + content + readme.slice(endIndex),
   );
+
+  writeFileSync("README.md", formatted.code, "utf8");
 }

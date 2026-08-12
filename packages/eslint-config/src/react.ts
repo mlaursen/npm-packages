@@ -2,6 +2,7 @@ import { type Linter } from "eslint";
 import reactPlugin from "eslint-plugin-react";
 import reactHooksPlugin from "eslint-plugin-react-hooks";
 import reactRefreshPlugin from "eslint-plugin-react-refresh";
+
 import { BASE_NAME, JSX_FILES } from "./constants.js";
 
 export type ReactRefreshConfig = keyof typeof reactRefreshPlugin.configs;

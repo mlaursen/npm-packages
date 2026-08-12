@@ -354,7 +354,8 @@ $-base-input-styles: (
   z-index: 0,
 
   "&::placeholder": (
-    color: utils.get-rgb-var(
+    color:
+      utils.get-rgb-var(
         "text-field.placeholder.color",
         "text-field.placeholder.opacity"
       ),
@@ -369,9 +370,8 @@ $-base-input-styles: (
 
     overflow: hidden,
     text-overflow: ellipsis,
-
     // unable to animate placeholder text at this time so ignoring for now.
-     // transition: 'color "transition.duration.short-3" "transition.easing.linear"',
+    // transition: 'color "transition.duration.short-3" "transition.easing.linear"',
   ),
 );
 $-base-labeled-input-styles: (
@@ -387,13 +387,11 @@ $-base-label-styles: utils.deep-merge(
     $font-size: "text-field.label.size",
     $line-height: "text-field.label.line-height",
     $font-family: "font.plain",
-    $letter-spacing: "body-large.tracking",
+    $letter-spacing: "body-large.tracking"
   ),
   (
-    color: utils.get-rgb-var(
-        "text-field.label.color",
-        "text-field.label.opacity"
-      ),
+    color:
+      utils.get-rgb-var("text-field.label.color", "text-field.label.opacity"),
     left: "text-field.label.x",
     max-width:
       'calc(100% - "text-field.padding.inline-start" - "text-field.padding.inline-end" - "text-field.floating.label.padding-inline")',
@@ -419,7 +417,8 @@ $-base-textarea-resize-styles: (
 
 $-base-supporting-text-styles: utils.deep-merge(
   (
-    color: utils.get-rgb-var(
+    color:
+      utils.get-rgb-var(
         "text-field.supporting-text.color",
         "text-field.supporting-text.opacity"
       ),

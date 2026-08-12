@@ -1,6 +1,7 @@
+import { join } from "node:path";
+
 import { enableLogger, generateFile, log, logTask } from "@mlaursen/node-utils";
 import { alphaNumericSort } from "@mlaursen/utils";
-import { join } from "node:path";
 import { z } from "zod";
 
 enableLogger();

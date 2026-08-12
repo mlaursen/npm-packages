@@ -68,35 +68,35 @@ $filled-tokens: (
 $filled-styles: utils.deep-merge(
   utils.remap-variants(text-field, filled, $filled-tokens),
   (
-    "&::before, &::after": utils.pseudo-element(
-        $inset: null,
-      ),
-    // the background color and underline
+    "&::before, &::after": utils.pseudo-element($inset: null),
     "&::before": (
-        background: utils.get-rgb-var(
-            "text-field.background",
-            "text-field.background-opacity"
-          ),
-        border-bottom:
-          '"text-field.outline.width" solid #{utils.get-rgb-var("text-field.outline.color", "text-field.outline.opacity")}',
-        inset: 0,
-        transition:
-          'background "transition.duration.short-3" "transition.easing.linear"',
-      ),
+      // the background color and underline
+      background:
+        utils.get-rgb-var(
+          "text-field.background",
+          "text-field.background-opacity"
+        ),
+      border-bottom:
+        '"text-field.outline.width" solid #{utils.get-rgb-var("text-field.outline.color", "text-field.outline.opacity")}',
+      inset: 0,
+      transition:
+        'background "transition.duration.short-3" "transition.easing.linear"'
+    ),
 
-    // the active-indicator border
     "&::after": (
-        background: utils.get-rgb-var(
-            "text-field.focused.outline.color",
-            "text-field.focused.outline.opacity"
-          ),
-        border-radius: 0,
-        height: "text-field.focused.outline.width",
-        inset: auto 0 0,
-        opacity: "text-field.focused.outline.opacity",
-        transition:
-          'opacity "transition.duration.short-3" "transition.easing.linear"',
-      ),
+      // the active-indicator border
+      background:
+        utils.get-rgb-var(
+          "text-field.focused.outline.color",
+          "text-field.focused.outline.opacity"
+        ),
+      border-radius: 0,
+      height: "text-field.focused.outline.width",
+      inset: auto 0 0,
+      opacity: "text-field.focused.outline.opacity",
+      transition:
+        'opacity "transition.duration.short-3" "transition.easing.linear"'
+    ),
   )
 );
 $filled-small-label-styles: (

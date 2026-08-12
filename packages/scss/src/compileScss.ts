@@ -77,7 +77,7 @@ export interface CompileScssOptions {
  * @example Generating SCSS Lookup
  * ```ts
  * import { readFileSync, writeFileSync } from "node:fs";
- * import { format } from "prettier";
+ * import { format } from "oxfmt";
  * import { assertScssResolvePackageJson, compileScss } from "@mlaursen/scss";
  *
  * const basePath = process.cwd();
@@ -111,13 +111,13 @@ export interface CompileScssOptions {
  * });
  *
  * const lookupString = JSON.stringify(lookup);
+ * const formatted = await format(
+ *   browserOutFilePath,
+ *   `export const SCSS_LOOKUP: Record<string, string> = ${lookupString};`,
+ * );
  * writeFileSync(
  *   browserOutFilePath,
- *   await format(`
- * export const SCSS_LOOKUP: Record<string, string> = ${lookupString}
- * `,
- *     { parser: "typescript" }
- *   ),
+ *   formatted.code,
  *   'utf8'
  * );
  * ```

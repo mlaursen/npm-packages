@@ -19,13 +19,17 @@
 
       text: (
         fill: currentcolor,
-        font: typescale(
+        font:
+          typescale(
             display-large,
             $prominent: false,
-            $overrides: typescale(
+            $overrides:
+              typescale(
                 display-large,
                 $prominent: true,
-                $overrides: (font-size: 525px)
+                $overrides: (
+                  font-size: 525px,
+                )
               )
           ),
       ),

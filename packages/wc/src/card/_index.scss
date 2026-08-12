@@ -232,7 +232,8 @@ $-outlined-styles: utils.deep-merge(
     "dragged.elevation"
   ),
   (
-    "&::before": utils.deep-merge(
+    "&::before":
+      utils.deep-merge(
         utils.pseudo-element(),
         (
           border: '"card.outline.width" solid "card.outline.color"',

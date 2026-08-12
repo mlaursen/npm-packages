@@ -218,11 +218,7 @@ $-configure-tokens: list.append(
 @function -get-font-styles($is-css) {
   $styles: ();
   @each $value in $-font-styles {
-    $selector: -selector(
-      $name: $value,
-      $attr: "font-style",
-      $is-css: $is-css,
-    );
+    $selector: -selector($name: $value, $attr: "font-style", $is-css: $is-css);
     $inner-styles: (
       font-style: $value,
     );
@@ -235,11 +231,7 @@ $-configure-tokens: list.append(
 @function -get-font-weights($is-css) {
   $styles: ();
   @each $value in $-font-weights {
-    $selector: -selector(
-      $name: $value,
-      $attr: "font-weight",
-      $is-css: $is-css,
-    );
+    $selector: -selector($name: $value, $attr: "font-weight", $is-css: $is-css);
     $inner-styles: (
       font-weight: $value,
     );
@@ -252,11 +244,7 @@ $-configure-tokens: list.append(
 @function -get-text-alignments($is-css) {
   $styles: ();
   @each $value in $-text-alignments {
-    $selector: -selector(
-      $name: $value,
-      $attr: "text-align",
-      $is-css: $is-css,
-    );
+    $selector: -selector($name: $value, $attr: "text-align", $is-css: $is-css);
     $inner-styles: (
       text-align: $value,
     );
@@ -272,7 +260,7 @@ $-configure-tokens: list.append(
     $selector: -selector(
       $name: $value,
       $attr: "text-decoration",
-      $is-css: $is-css,
+      $is-css: $is-css
     );
     $inner-styles: (
       text-decoration: $value,
@@ -289,7 +277,7 @@ $-configure-tokens: list.append(
     $selector: -selector(
       $name: $value,
       $attr: "text-transform",
-      $is-css: $is-css,
+      $is-css: $is-css
     );
     $inner-styles: (
       text-transform: $value,
@@ -306,7 +294,7 @@ $-configure-tokens: list.append(
     $selector: -selector(
       $name: $value,
       $attr: "text-overflow",
-      $is-css: $is-css,
+      $is-css: $is-css
     );
     // prettier-ignore
     $inner-styles: if(

@@ -1,4 +1,5 @@
 import { constants, gzipSync } from "node:zlib";
+
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { filesize } from "../filesize.js";

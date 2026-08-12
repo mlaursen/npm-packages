@@ -124,7 +124,12 @@ $-token-names: map.keys($-light-theme-tokens);
       utils.get-var("light.#{$token}"),
       utils.get-var("dark.#{$token}")
     );
-    $tokens: map.merge($tokens, (#{$token}: $value));
+    $tokens: map.merge(
+      $tokens,
+      (
+        #{$token}: $value,
+      )
+    );
   }
 
   @return $tokens;
@@ -370,8 +375,8 @@ $-token-names: map.keys($-light-theme-tokens);
         );
         $inner-styles: (
           $selector: (
-              color: "palette.#{$name}",
-            ),
+            color: "palette.#{$name}",
+          ),
         );
         $styles: map.deep-merge($styles, $inner-styles);
       }

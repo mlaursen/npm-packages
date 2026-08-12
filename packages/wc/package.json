@@ -2,6 +2,21 @@
   "name": "@mlaursen/wc",
   "version": "0.0.0",
   "description": "",
+  "keywords": [
+    "lit",
+    "ui",
+    "web components"
+  ],
+  "bugs": {
+    "url": "https://github.com/mlaursen/npm-packages/issues"
+  },
+  "license": "MIT",
+  "author": "Mikkel Laursen <mlaursen03@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mlaursen/npm-packages.git",
+    "directory": "packages/wc"
+  },
   "type": "module",
   "exports": {
     "./index": null,
@@ -12,6 +27,9 @@
     },
     "./package.json": "./package.json"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "node-run": "node --experimental-strip-types",
     "convert-material-theme": "pnpm node-run scripts/convert-material-theme.ts",
@@ -20,8 +38,8 @@
     "clean-dist": "rm -rf dist",
     "clean-cache": "rm -rf .turbo node_modules",
     "clean": "concurrently 'pnpm clean-dist' 'pnpm clean-cache' 'pnpm clean-generated'",
-    "format": "prettier --write .",
-    "check-format": "prettier --check .",
+    "format": "oxfmt",
+    "check-format": "pnpm format --check",
     "lint": "eslint .",
     "lint-fix": "pnpm lint --fix",
     "typecheck": "tsc --noEmit",
@@ -42,21 +60,6 @@
     "build-components-watch": "pnpm build-components --watch",
     "dev": "concurrently 'pnpm build-rollup-watch --silent' 'pnpm build-types-watch' 'pnpm build-scss-watch' 'pnpm build-esm-watch -q' 'pnpm build-components-watch -q'"
   },
-  "author": "Mikkel Laursen <mlaursen03@gmail.com>",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/mlaursen/npm-packages.git",
-    "directory": "packages/wc"
-  },
-  "bugs": {
-    "url": "https://github.com/mlaursen/npm-packages/issues"
-  },
-  "keywords": [
-    "ui",
-    "web components",
-    "lit"
-  ],
-  "license": "MIT",
   "dependencies": {
     "@mlaursen/utils": "workspace:*",
     "@open-wc/lit-helpers": "^0.7.0",
@@ -71,7 +74,6 @@
     "@rollup/plugin-node-resolve": "^16.0.3",
     "@swc/cli": "^0.8.1",
     "@swc/core": "^1.15.47",
-    "@trivago/prettier-plugin-sort-imports": "^6.0.2",
     "@types/node": "^24.12.2",
     "browserslist": "^4.28.7",
     "chokidar": "^5.0.0",
@@ -79,7 +81,8 @@
     "eslint": "^9.39.4",
     "glob": "^13.0.6",
     "lightningcss": "^1.32.0",
-    "prettier": "^3.8.4",
+    "oxfmt": "^0.63.0",
+    "prettier": "^3.9.6",
     "prettier-plugin-css-order": "^2.2.0",
     "rollup": "^4.61.1",
     "rollup-plugin-dts": "^6.4.1",
@@ -88,8 +91,5 @@
     "ts-lit-plugin": "^2.0.2",
     "tsx": "^4.22.4",
     "typescript": "^6.0.3"
-  },
-  "publishConfig": {
-    "access": "public"
   }
 }

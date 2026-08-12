@@ -22,6 +22,7 @@ $-tokens: (
     container: (
       color: "palette.on-surface",
       opacity: 0.1,
+      // I don't think this is used?
       elevation: null,
     ),
     animation-name: null,
@@ -105,7 +106,8 @@ $-base-focusable-animation-styles: (
 
 $-base-interaction-layer-styles: utils.deep-merge(
   (
-    "&, &::before": utils.deep-merge(
+    "&, &::before":
+      utils.deep-merge(
         utils.pseudo-element(),
         (
           box-sizing: border-box,
@@ -120,7 +122,8 @@ $-base-interaction-layer-styles: utils.deep-merge(
 // NOTE: I need to update this to support splitting hover and focus states
 $-base-state-layer-styles: (
   "&::before": (
-    background: utils.get-rgb-var(
+    background:
+      utils.get-rgb-var(
         "interaction.container.color",
         "interaction.container.opacity"
       ),

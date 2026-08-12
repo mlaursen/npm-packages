@@ -1,5 +1,6 @@
-import { glob } from "glob";
 import { resolve } from "node:path";
+
+import { glob } from "glob";
 
 import { DEFAULT_CSS_BROWSERSLIST_TARGETS } from "./constants.js";
 import { createStyles } from "./createStyles.js";

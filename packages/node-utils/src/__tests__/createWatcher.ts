@@ -1,5 +1,6 @@
-import chokidar, { type FSWatcher } from "chokidar";
 import { EventEmitter } from "node:events";
+
+import chokidar, { type FSWatcher } from "chokidar";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { createWatcher } from "../createWatcher.js";

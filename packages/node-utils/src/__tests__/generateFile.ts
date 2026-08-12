@@ -1,4 +1,5 @@
 import { writeFile } from "node:fs/promises";
+
 import prettier from "prettier";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 

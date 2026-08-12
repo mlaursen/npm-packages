@@ -1,7 +1,8 @@
-/* eslint-disable unicorn/no-process-exit */
-import { enableLogger, generateFile, logFailure } from "@mlaursen/node-utils";
 import { existsSync } from "node:fs";
 import { readFile } from "node:fs/promises";
+
+/* eslint-disable unicorn/no-process-exit */
+import { enableLogger, generateFile, logFailure } from "@mlaursen/node-utils";
 
 import type { MaterialContrast } from "../src/palette/schemas.js";
 import {

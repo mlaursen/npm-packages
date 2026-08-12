@@ -1,4 +1,5 @@
 import { type Linter } from "eslint";
+
 import { BASE_NAME, JSX_FILES } from "./constants.js";
 
 export const mui: Linter.Config[] = [

@@ -46,7 +46,8 @@ $-slotted-styles: (
   border: 0,
   display: flex,
 
-  "&::before, &::after": utils.deep-merge(
+  "&::before, &::after":
+    utils.deep-merge(
       $-base-styles,
       $-horizontal-styles,
       (

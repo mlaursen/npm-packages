@@ -2,6 +2,23 @@
   "name": "@mlaursen/node-utils",
   "version": "0.3.0",
   "description": "A package of utils I generally find myself using in projects with node",
+  "keywords": [
+    "filesize",
+    "gzip",
+    "logging",
+    "node",
+    "watcher"
+  ],
+  "bugs": {
+    "url": "https://github.com/mlaursen/npm-packages/issues"
+  },
+  "license": "MIT",
+  "author": "Mikkel Laursen <mlaursen03@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mlaursen/npm-packages.git",
+    "directory": "packages/node-utils"
+  },
   "type": "module",
   "exports": {
     ".": {
@@ -10,12 +27,15 @@
     },
     "./package.json": "./package.json"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "clean-dist": "rm -rf dist",
     "clean-cache": "rm -rf .turbo  node_modules",
     "clean": "concurrently 'pnpm clean-dist' 'pnpm clean-cache'",
-    "format": "prettier --write .",
-    "check-format": "prettier --check .",
+    "format": "oxfmt",
+    "check-format": "pnpm format --check",
     "lint": "eslint .",
     "lint-fix": "pnpm lint --fix",
     "typecheck": "tsc --noEmit",
@@ -33,23 +53,6 @@
     "test-run-coverage": "vitest run --coverage",
     "dev": "concurrently 'pnpm build-types-watch' 'pnpm build-dist-watch'"
   },
-  "author": "Mikkel Laursen <mlaursen03@gmail.com>",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/mlaursen/npm-packages.git",
-    "directory": "packages/node-utils"
-  },
-  "bugs": {
-    "url": "https://github.com/mlaursen/npm-packages/issues"
-  },
-  "keywords": [
-    "node",
-    "logging",
-    "gzip",
-    "filesize",
-    "watcher"
-  ],
-  "license": "MIT",
   "dependencies": {
     "chokidar": "^5.0.0",
     "prettier": "^3.9.6",
@@ -60,7 +63,6 @@
     "@mlaursen/eslint-config": "workspace:*",
     "@mlaursen/simple-docs": "workspace:*",
     "@rollup/plugin-node-resolve": "^16.0.3",
-    "@trivago/prettier-plugin-sort-imports": "^6.0.2",
     "@types/node": "^24.13.2",
     "@vitest/coverage-v8": "^4.1.10",
     "concurrently": "^10.0.4",
@@ -70,8 +72,5 @@
     "rollup-plugin-swc3": "^0.12.1",
     "typescript": "^6.0.3",
     "vitest": "^4.1.10"
-  },
-  "publishConfig": {
-    "access": "public"
   }
 }

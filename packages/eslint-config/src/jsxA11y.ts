@@ -1,5 +1,6 @@
 import { type Linter } from "eslint";
 import jsxA11yPlugin from "eslint-plugin-jsx-a11y";
+
 import { BASE_NAME, JSX_FILES, TEST_FILES } from "./constants.js";
 
 /**

@@ -1,4 +1,5 @@
 import { writeFile } from "node:fs/promises";
+
 import prettier from "prettier";
 
 import { ensureParentDir } from "./ensureParentDir.js";

@@ -13,7 +13,11 @@ export type TypographySize = OverridableStringUnion<
 export interface TypographyVariantOverrides {}
 
 export type DefaultTypographyVariant =
-  "body" | "label" | "title" | "headline" | "display";
+  | "body"
+  | "label"
+  | "title"
+  | "headline"
+  | "display";
 
 export type TypographyVariant = OverridableStringUnion<
   DefaultTypographyVariant,

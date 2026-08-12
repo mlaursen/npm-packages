@@ -1,8 +1,9 @@
-import confirm from "@inquirer/confirm";
-import rawlist from "@inquirer/rawlist";
 import { execSync } from "node:child_process";
 import { readFile, readdir } from "node:fs/promises";
 import { join } from "node:path";
+
+import confirm from "@inquirer/confirm";
+import rawlist from "@inquirer/rawlist";
 
 export async function getCurrentChangeset(): Promise<string> {
   let changesetName = execSync(

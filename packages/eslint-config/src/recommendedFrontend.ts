@@ -1,4 +1,5 @@
 import { type Linter } from "eslint";
+
 import { jsxA11y } from "./jsxA11y.js";
 import { mui } from "./mui.js";
 import { react, type ReactOptions } from "./react.js";

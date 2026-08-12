@@ -1,6 +1,7 @@
 import { type Linter } from "eslint";
-import { BASE_NAME, TEST_FILES, VITE_MAIN_FILES } from "./constants.js";
 import eslintPluiginUnicorn from "eslint-plugin-unicorn";
+
+import { BASE_NAME, TEST_FILES, VITE_MAIN_FILES } from "./constants.js";
 
 export const unicorn: Linter.Config[] = [
   {

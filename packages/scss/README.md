@@ -79,7 +79,7 @@ const { css } = compileScss({
 ```ts
 import { assertScssResolvePackageJson, compileScss } from "@mlaursen/scss";
 import { readFileSync, writeFileSync } from "node:fs";
-import { format } from "prettier";
+import { format } from "oxfmt";
 
 const basePath = process.cwd();
 const browserBasePath = "/__home__";

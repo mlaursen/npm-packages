@@ -67,7 +67,8 @@ $-hovered-styles: (
 @mixin css-styles {
   $keyframes: null;
   $styles: (
-    "&link": utils.deep-merge(
+    "&link":
+      utils.deep-merge(
         $-base-styles,
         $-base-link-styles,
         (

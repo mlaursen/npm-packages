@@ -2,17 +2,34 @@
   "name": "@mlaursen/eslint-config",
   "version": "12.0.12",
   "description": "An eslint config used by mlaursen for most projects.",
+  "keywords": [
+    "eslint",
+    "typescript"
+  ],
+  "bugs": {
+    "url": "https://github.com/mlaursen/npm-packages/issues"
+  },
+  "license": "MIT",
+  "author": "Mikkel Laursen <mlaursen03@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mlaursen/npm-packages.git",
+    "directory": "packages/eslint-config"
+  },
   "type": "module",
   "exports": {
     ".": "./dist/index.js",
     "./package.json": "./package.json"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "clean-dist": "rm -rf dist types",
     "clean-cache": "rm -rf .turbo node_modules",
     "clean": "concurrently 'pnpm clean-dist' 'pnpm clean-cache'",
-    "check-format": "prettier --check .",
-    "format": "prettier --write .",
+    "check-format": "pnpm format --check",
+    "format": "oxfmt",
     "lint": "eslint .",
     "lint-fix": "pnpm lint --fix",
     "typecheck": "tsc --noEmit",
@@ -24,20 +41,6 @@
     "build": "pnpm build-types && pnpm build-dist",
     "dev": "concurrently 'pnpm build-types-watch' 'pnpm build-dist-watch'"
   },
-  "author": "Mikkel Laursen <mlaursen03@gmail.com>",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/mlaursen/npm-packages.git",
-    "directory": "packages/eslint-config"
-  },
-  "bugs": {
-    "url": "https://github.com/mlaursen/npm-packages/issues"
-  },
-  "keywords": [
-    "eslint",
-    "typescript"
-  ],
-  "license": "MIT",
   "dependencies": {
     "@eslint/config-helpers": "^0.6.0",
     "@eslint/core": "^1.2.1",
@@ -60,7 +63,7 @@
     "@rollup/plugin-node-resolve": "^16.0.3",
     "@types/node": "^24.13.2",
     "concurrently": "^10.0.4",
-    "prettier": "^3.9.6",
+    "oxfmt": "^0.63.0",
     "rollup": "^4.62.4",
     "rollup-plugin-dts": "^6.5.1",
     "rollup-plugin-swc3": "^0.12.1",
@@ -77,8 +80,5 @@
     "typescript": {
       "optional": true
     }
-  },
-  "publishConfig": {
-    "access": "public"
   }
 }

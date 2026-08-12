@@ -3,7 +3,9 @@ import { type CSSResultArray, type CSSResultGroup, type LitElement } from "lit";
 export type DefaultComponentSize = "small" | "medium" | "large";
 
 export type DefaultComponentExtraSize =
-  DefaultComponentSize | "extra-small" | "extra-large";
+  | DefaultComponentSize
+  | "extra-small"
+  | "extra-large";
 
 export type DefaultComponentShape = "square" | "round";
 

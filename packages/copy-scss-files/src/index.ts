@@ -1,3 +1,6 @@
+import { existsSync } from "node:fs";
+import { rm } from "node:fs/promises";
+
 import {
   copyToDist,
   createWatcher,
@@ -6,8 +9,6 @@ import {
   log,
 } from "@mlaursen/node-utils";
 import { glob } from "glob";
-import { existsSync } from "node:fs";
-import { rm } from "node:fs/promises";
 
 export interface CopyScssFilesOptions {
   /** @defaultValue `"src"` */

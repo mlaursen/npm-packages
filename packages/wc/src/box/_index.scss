@@ -213,7 +213,13 @@ $-inline-grid-styles: (
       sass($host-mode): ":host([#{$shorthand}=#{$item}])";
       else: "&box--#{$shorthand}-#{$item}"
     );
-    $styles: map.set($styles, $selector, (#{$property}: $item));
+    $styles: map.set(
+      $styles,
+      $selector,
+      (
+        #{$property}: $item,
+      )
+    );
   }
   @return $styles;
 }

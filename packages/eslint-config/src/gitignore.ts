@@ -1,6 +1,7 @@
+import { fileURLToPath } from "node:url";
+
 import { includeIgnoreFile } from "@eslint/config-helpers";
 import { type Linter } from "eslint";
-import { fileURLToPath } from "node:url";
 
 /**
  * @example

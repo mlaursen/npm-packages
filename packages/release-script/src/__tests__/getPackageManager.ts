@@ -1,4 +1,5 @@
 import { readFile } from "node:fs/promises";
+
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { getPackageManager } from "../getPackageManager.js";

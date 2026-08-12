@@ -1,5 +1,6 @@
 import { type Linter } from "eslint";
 import tseslint from "typescript-eslint";
+
 import { base } from "./base.js";
 import {
   BASE_NAME,

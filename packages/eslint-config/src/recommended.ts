@@ -1,4 +1,5 @@
 import { type Linter } from "eslint";
+
 import { scripts } from "./scripts.js";
 import { testing, type TestOptions } from "./testing.js";
 import { typescript, type TypescriptOptions } from "./typescript.js";

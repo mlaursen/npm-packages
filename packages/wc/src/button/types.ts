@@ -15,7 +15,11 @@ export type ButtonSize = OverridableStringUnion<
 
 export interface ButtonVariantOverrides {}
 export type DefaultButtonVariant =
-  "text" | "outlined" | "tonal" | "filled" | "elevated";
+  | "text"
+  | "outlined"
+  | "tonal"
+  | "filled"
+  | "elevated";
 export type ButtonVariant = OverridableStringUnion<
   DefaultButtonVariant,
   ButtonVariantOverrides

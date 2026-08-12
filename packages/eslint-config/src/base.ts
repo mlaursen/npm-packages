@@ -1,5 +1,6 @@
 import eslint from "@eslint/js";
 import { type Linter } from "eslint";
+
 import { BASE_NAME, DEV_WARNING_PROD_ERROR } from "./constants.js";
 
 /**

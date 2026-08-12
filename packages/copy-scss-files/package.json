@@ -1,8 +1,8 @@
 {
   "name": "@mlaursen/copy-scss-files",
-  "type": "module",
   "version": "0.2.0",
   "description": "A small util to copy SCSS files for publishing.",
+  "type": "module",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -10,12 +10,15 @@
     },
     "./package.json": "./package.json"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "clean-dist": "rm -rf dist types",
     "clean-cache": "rm -rf .turbo node_modules",
     "clean": "concurrently 'pnpm clean-dist' 'pnpm clean-cache'",
-    "check-format": "prettier --check .",
-    "format": "prettier --write .",
+    "check-format": "pnpm format --check",
+    "format": "oxfmt",
     "lint": "eslint .",
     "lint-fix": "pnpm lint --fix",
     "typecheck": "tsc --noEmit",
@@ -35,17 +38,13 @@
   "devDependencies": {
     "@mlaursen/eslint-config": "workspace:*",
     "@rollup/plugin-node-resolve": "^16.0.3",
-    "@trivago/prettier-plugin-sort-imports": "^6.0.2",
     "@types/node": "^24.13.2",
     "concurrently": "^10.0.4",
     "eslint": "^9.39.4",
-    "prettier": "^3.9.6",
+    "oxfmt": "^0.63.0",
     "rollup": "^4.62.4",
     "rollup-plugin-dts": "^6.5.1",
     "rollup-plugin-swc3": "^0.12.1",
     "typescript": "^6.0.3"
-  },
-  "publishConfig": {
-    "access": "public"
   }
 }

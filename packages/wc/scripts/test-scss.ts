@@ -1,3 +1,6 @@
+import { existsSync, readFileSync } from "node:fs";
+import { writeFile } from "node:fs/promises";
+
 import {
   enableLogger,
   ensureParentDir,
@@ -7,8 +10,6 @@ import {
 import { compileScss } from "@mlaursen/scss";
 import browserslist from "browserslist";
 import { browserslistToTargets, transform } from "lightningcss";
-import { existsSync, readFileSync } from "node:fs";
-import { writeFile } from "node:fs/promises";
 
 enableLogger();
 

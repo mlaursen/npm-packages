@@ -67,10 +67,22 @@ export type SupportedInputType =
   | "url";
 
 export type UnsupportedInputType =
-  "color" | "date" | "datetime-local" | "month" | "file" | "time" | "week";
+  | "color"
+  | "date"
+  | "datetime-local"
+  | "month"
+  | "file"
+  | "time"
+  | "week";
 
 export type AutoCapitalize =
-  "" | "on" | "off" | "words" | "sentences" | "characters" | "none";
+  | ""
+  | "on"
+  | "off"
+  | "words"
+  | "sentences"
+  | "characters"
+  | "none";
 
 export interface TextFieldProperties
   extends ForwardedInputProperties, OverriddenInputMethods {

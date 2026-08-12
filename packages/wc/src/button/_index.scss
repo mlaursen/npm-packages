@@ -91,10 +91,8 @@ $-base-styles: map.deep-merge(
       "button.pressed.interaction.opacity",
     "icon.color": utils.get-rgb-var("button.icon.color", "button.icon.opacity"),
     "icon.size": "button.icon.size",
-    background: utils.get-rgb-var(
-        "button.background",
-        "button.background-opacity"
-      ),
+    background:
+      utils.get-rgb-var("button.background", "button.background-opacity"),
     border-width: 0,
     box-sizing: border-box,
     color: utils.get-rgb-var("button.color", "button.color-opacity"),

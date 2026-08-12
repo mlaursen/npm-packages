@@ -1,3 +1,5 @@
+import { writeFile } from "node:fs/promises";
+
 import {
   enableLogger,
   logComplete,
@@ -7,7 +9,6 @@ import { compileScss } from "@mlaursen/scss";
 import { alphaNumericSort } from "@mlaursen/utils";
 import browserslist from "browserslist";
 import { browserslistToTargets, transform } from "lightningcss";
-import { writeFile } from "node:fs/promises";
 
 import type { ColorScheme } from "../src/index.js";
 

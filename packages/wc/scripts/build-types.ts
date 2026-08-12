@@ -1,3 +1,6 @@
+import { execSync, spawn } from "node:child_process";
+import { rm } from "node:fs/promises";
+
 /* eslint-disable unicorn/no-process-exit */
 import {
   copyToDist,
@@ -8,8 +11,6 @@ import {
   logFailure,
   logPending,
 } from "@mlaursen/node-utils";
-import { execSync, spawn } from "node:child_process";
-import { rm } from "node:fs/promises";
 
 const args = ["-p", "tsconfig.types.json"];
 const watching = process.argv.includes("--watch");

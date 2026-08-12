@@ -1,7 +1,8 @@
-import confirm from "@inquirer/confirm";
-import rawlist from "@inquirer/rawlist";
 import { execSync } from "node:child_process";
 import { readFile, readdir } from "node:fs/promises";
+
+import confirm from "@inquirer/confirm";
+import rawlist from "@inquirer/rawlist";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { getCurrentChangeset } from "../getCurrentChangeset.js";

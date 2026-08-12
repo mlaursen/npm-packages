@@ -1,5 +1,6 @@
 import { type Linter } from "eslint";
 import testingLibraryPlugin from "eslint-plugin-testing-library";
+
 import { BASE_NAME, TEST_FILES } from "./constants.js";
 
 /**

@@ -22,14 +22,15 @@ $-styles: (
     margin: 0,
     padding: 0,
   ),
-  "body": utils.deep-merge(
+  "body":
+    utils.deep-merge(
       $-colors,
       $-typescale,
       // do not set height: 100% on the html so that sticky elements in the
       // body work correctly
       (
-          height: 100%,
-        )
+        height: 100%,
+      )
     ),
 );
 

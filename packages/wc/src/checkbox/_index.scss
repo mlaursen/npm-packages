@@ -101,14 +101,14 @@ $-base-styles: (
   justify-content: center,
   width: 1em,
 
-  "&::after": utils.deep-merge(
-      utils.pseudo-element(
-        $inset: "interaction.container.inset",
-      ),
+  "&::after":
+    utils.deep-merge(
+      utils.pseudo-element($inset: "interaction.container.inset"),
       (
         "interaction.focused.container.opacity": 0.08,
         box-sizing: border-box,
-        background: utils.get-rgb-var(
+        background:
+          utils.get-rgb-var(
             "interaction.focused.container.color",
             "interaction.focused.container.opacity"
           ),

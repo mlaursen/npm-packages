@@ -28,7 +28,7 @@ $-tokens: (
     // the "real" padding is 1.5rem, but from icon edge instead of button edge.
     // so this is really 'calc("spacing.extra-large" - "icon-button.width" / 2)'
     // but that's just too much
-    close-padding: "spacing.large",
+    close-padding: "spacing.large"
   ),
 );
 

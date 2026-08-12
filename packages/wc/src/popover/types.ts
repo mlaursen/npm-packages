@@ -61,11 +61,21 @@ export type VerticalAnchor = "above" | "below" | "center" | "top" | "bottom";
  * - the container's right is in-line with the right of the element
  */
 export type HorizontalAnchor =
-  "left" | "right" | "center" | "inner-left" | "inner-right";
+  | "left"
+  | "right"
+  | "center"
+  | "inner-left"
+  | "inner-right";
 
 export type PopoverType = "auto" | "hint" | "manual" | (string & {});
 export type PopoverInitiator =
-  "all" | "focus" | "hover" | "click" | "no-click" | "no-focus" | "no-hover";
+  | "all"
+  | "focus"
+  | "hover"
+  | "click"
+  | "no-click"
+  | "no-focus"
+  | "no-hover";
 export type PopoverInitiatorAction = "focus" | "hover" | "click" | "force";
 
 export interface RenderPopoverTargetOptions {

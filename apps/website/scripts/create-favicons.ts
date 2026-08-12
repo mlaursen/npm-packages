@@ -1,5 +1,6 @@
-import { enableLogger, log, logComplete } from "@mlaursen/node-utils";
 import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
+
+import { enableLogger, log, logComplete } from "@mlaursen/node-utils";
 import type { ExtendOptions } from "sharp";
 import sharp from "sharp";
 import { sharpsToIco } from "sharp-ico";
