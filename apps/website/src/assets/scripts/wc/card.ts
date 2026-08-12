@@ -46,5 +46,8 @@ dndArea.addEventListener("dragover", (event) => {
   const offsetY = event.clientY - rect.top;
   const isAfter = offsetX > rect.width / 2 || offsetY > rect.height / 2;
 
-  dndArea.insertBefore(draggedCard, isAfter ? target.nextSibling : target);
+  dndArea.before(
+    draggedCard,
+    isAfter ? (target.nextSibling as ChildNode) : target,
+  );
 });

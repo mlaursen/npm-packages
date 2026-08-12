@@ -22,7 +22,7 @@ import type {
 
 const isPartial = (filePath: string): boolean => filePath.includes("_");
 const isIgnored: Required<CreateWatcherOptions>["ignored"] = (path, stats) =>
-  !!stats?.isFile() && !/\.scss$/.test(path);
+  !!stats?.isFile() && !path.endsWith(".scss");
 
 const gitRoot = getGitRoot();
 

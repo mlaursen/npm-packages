@@ -47,12 +47,12 @@ importers:
       '@lit-labs/eleventy-plugin-lit':
         specifier: ^1.0.6
         version: 1.0.6(@types/node@24.13.2)
-      '@mlaursen/eslint-config':
-        specifier: workspace:*
-        version: link:../../packages/eslint-config
       '@mlaursen/node-utils':
         specifier: workspace:*
         version: link:../../packages/node-utils
+      '@mlaursen/oxlint-config':
+        specifier: workspace:*
+        version: link:../../packages/oxlint-config
       '@mlaursen/scss':
         specifier: workspace:*
         version: link:../../packages/scss
@@ -86,9 +86,6 @@ importers:
       esbuild:
         specifier: ^0.28.1
         version: 0.28.1
-      eslint:
-        specifier: ^9.21.0
-        version: 9.39.4
       glob:
         specifier: ^13.0.6
         version: 13.0.6
@@ -104,6 +101,9 @@ importers:
       oxfmt:
         specifier: ^0.63.0
         version: 0.63.0
+      oxlint:
+        specifier: ^1.78.0
+        version: 1.78.0
       sharp:
         specifier: ^0.35.3
         version: 0.35.3(@types/node@24.13.2)
@@ -135,9 +135,9 @@ importers:
         specifier: ^15.0.0
         version: 15.0.0
     devDependencies:
-      '@mlaursen/eslint-config':
+      '@mlaursen/oxlint-config':
         specifier: workspace:*
-        version: link:../eslint-config
+        version: link:../oxlint-config
       '@rollup/plugin-node-resolve':
         specifier: ^16.0.3
         version: 16.0.3(rollup@4.62.4)
@@ -147,12 +147,12 @@ importers:
       concurrently:
         specifier: ^10.0.4
         version: 10.0.4
-      eslint:
-        specifier: ^9.39.4
-        version: 9.39.4
       oxfmt:
         specifier: ^0.63.0
         version: 0.63.0
+      oxlint:
+        specifier: ^1.78.0
+        version: 1.78.0
       rollup:
         specifier: ^4.62.4
         version: 4.62.4
@@ -175,9 +175,9 @@ importers:
         specifier: ^13.0.6
         version: 13.0.6
     devDependencies:
-      '@mlaursen/eslint-config':
+      '@mlaursen/oxlint-config':
         specifier: workspace:*
-        version: link:../eslint-config
+        version: link:../oxlint-config
       '@rollup/plugin-node-resolve':
         specifier: ^16.0.3
         version: 16.0.3(rollup@4.62.4)
@@ -187,12 +187,12 @@ importers:
       concurrently:
         specifier: ^10.0.4
         version: 10.0.4
-      eslint:
-        specifier: ^9.39.4
-        version: 9.39.4
       oxfmt:
         specifier: ^0.63.0
         version: 0.63.0
+      oxlint:
+        specifier: ^1.78.0
+        version: 1.78.0
       rollup:
         specifier: ^4.62.4
         version: 4.62.4
@@ -297,9 +297,9 @@ importers:
         specifier: ^9.3.0
         version: 9.3.0
     devDependencies:
-      '@mlaursen/eslint-config':
+      '@mlaursen/oxlint-config':
         specifier: workspace:*
-        version: link:../eslint-config
+        version: link:../oxlint-config
       '@mlaursen/simple-docs':
         specifier: workspace:*
         version: link:../simple-docs
@@ -315,9 +315,9 @@ importers:
       concurrently:
         specifier: ^10.0.4
         version: 10.0.4
-      eslint:
-        specifier: ^9.39.4
-        version: 9.39.4
+      oxlint:
+        specifier: ^1.78.0
+        version: 1.78.0
       rollup:
         specifier: ^4.62.4
         version: 4.62.4
@@ -385,9 +385,9 @@ importers:
         specifier: ^17.4.2
         version: 17.4.2
     devDependencies:
-      '@mlaursen/eslint-config':
+      '@mlaursen/oxlint-config':
         specifier: workspace:*
-        version: link:../eslint-config
+        version: link:../oxlint-config
       '@rollup/plugin-node-resolve':
         specifier: ^16.0.3
         version: 16.0.3(rollup@4.62.4)
@@ -400,12 +400,12 @@ importers:
       concurrently:
         specifier: ^10.0.4
         version: 10.0.4
-      eslint:
-        specifier: ^9.39.4
-        version: 9.39.4
       oxfmt:
         specifier: ^0.63.0
         version: 0.63.0
+      oxlint:
+        specifier: ^1.78.0
+        version: 1.78.0
       rollup:
         specifier: ^4.62.4
         version: 4.62.4
@@ -434,9 +434,9 @@ importers:
         specifier: ^1.102.0
         version: 1.102.0
     devDependencies:
-      '@mlaursen/eslint-config':
+      '@mlaursen/oxlint-config':
         specifier: workspace:*
-        version: link:../eslint-config
+        version: link:../oxlint-config
       '@mlaursen/simple-docs':
         specifier: workspace:*
         version: link:../simple-docs
@@ -452,12 +452,12 @@ importers:
       concurrently:
         specifier: ^10.0.4
         version: 10.0.4
-      eslint:
-        specifier: ^9.39.4
-        version: 9.39.4
       oxfmt:
         specifier: ^0.63.0
         version: 0.63.0
+      oxlint:
+        specifier: ^1.78.0
+        version: 1.78.0
       rollup:
         specifier: ^4.62.4
         version: 4.62.4
@@ -486,9 +486,9 @@ importers:
         specifier: ^0.28.20
         version: 0.28.20(typescript@6.0.3)
     devDependencies:
-      '@mlaursen/eslint-config':
+      '@mlaursen/oxlint-config':
         specifier: workspace:*
-        version: link:../eslint-config
+        version: link:../oxlint-config
       '@rollup/plugin-node-resolve':
         specifier: ^16.0.3
         version: 16.0.3(rollup@4.62.4)
@@ -501,9 +501,9 @@ importers:
       concurrently:
         specifier: ^10.0.4
         version: 10.0.4
-      eslint:
-        specifier: ^9.39.4
-        version: 9.39.4
+      oxlint:
+        specifier: ^1.78.0
+        version: 1.78.0
       rollup:
         specifier: ^4.62.4
         version: 4.62.4
@@ -522,9 +522,9 @@ importers:
 
   packages/utils:
     devDependencies:
-      '@mlaursen/eslint-config':
+      '@mlaursen/oxlint-config':
         specifier: workspace:*
-        version: link:../eslint-config
+        version: link:../oxlint-config
       '@mlaursen/simple-docs':
         specifier: workspace:*
         version: link:../simple-docs
@@ -540,12 +540,12 @@ importers:
       concurrently:
         specifier: ^10.0.4
         version: 10.0.4
-      eslint:
-        specifier: ^9.39.4
-        version: 9.39.4
       oxfmt:
         specifier: ^0.63.0
         version: 0.63.0
+      oxlint:
+        specifier: ^1.78.0
+        version: 1.78.0
       rollup:
         specifier: ^4.62.4
         version: 4.62.4
@@ -580,12 +580,12 @@ importers:
       '@mlaursen/cli':
         specifier: workspace:*
         version: link:../cli
-      '@mlaursen/eslint-config':
-        specifier: workspace:*
-        version: link:../eslint-config
       '@mlaursen/node-utils':
         specifier: workspace:*
         version: link:../node-utils
+      '@mlaursen/oxlint-config':
+        specifier: workspace:*
+        version: link:../oxlint-config
       '@mlaursen/scss':
         specifier: workspace:*
         version: link:../scss
@@ -610,9 +610,6 @@ importers:
       concurrently:
         specifier: ^10.0.3
         version: 10.0.4
-      eslint:
-        specifier: ^9.39.4
-        version: 9.39.4
       glob:
         specifier: ^13.0.6
         version: 13.0.6
@@ -622,6 +619,9 @@ importers:
       oxfmt:
         specifier: ^0.63.0
         version: 0.63.0
+      oxlint:
+        specifier: ^1.78.0
+        version: 1.78.0
       prettier:
         specifier: ^3.9.6
         version: 3.9.6
