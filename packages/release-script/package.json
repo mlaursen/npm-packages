@@ -51,7 +51,7 @@
     "dev": "concurrently 'pnpm build-types-watch' 'pnpm build-dist-watch'"
   },
   "dependencies": {
-    "@changesets/cli": "^2.31.1",
+    "@changesets/cli": "^3.0.0",
     "@inquirer/confirm": "^6.1.1",
     "@inquirer/input": "^5.1.2",
     "@inquirer/rawlist": "^5.3.1",
