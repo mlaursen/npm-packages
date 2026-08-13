@@ -9,5 +9,6 @@ export default defineConfig({
     "**/cli.js",
     "packages/wc/src/**/*-styles.ts",
     "apps/docs/public",
+    "pnpm-*.yaml",
   ],
 });
