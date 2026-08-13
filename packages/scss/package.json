@@ -57,7 +57,7 @@
   },
   "dependencies": {
     "postcss": "^8.5.14",
-    "postcss-selector-parser": "^7.1.4",
+    "postcss-selector-parser": "^7.1.5",
     "sass": "^1.102.0"
   },
   "devDependencies": {
