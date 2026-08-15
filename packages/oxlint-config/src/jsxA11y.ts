@@ -28,7 +28,6 @@ export const jsxA11y: OxlintConfig = {
         "jsx-a11y/media-has-caption": "error",
         "jsx-a11y/mouse-events-have-key-events": "error",
         "jsx-a11y/no-access-key": "error",
-        "jsx-a11y/no-autofocus": "off",
         "jsx-a11y/no-distracting-elements": "error",
         "jsx-a11y/no-interactive-element-to-noninteractive-role": "error",
         "jsx-a11y/no-noninteractive-element-interactions": "error",
@@ -36,10 +35,17 @@ export const jsxA11y: OxlintConfig = {
         "jsx-a11y/no-noninteractive-tabindex": "error",
         "jsx-a11y/no-redundant-roles": "error",
         "jsx-a11y/no-static-element-interactions": "error",
-        "jsx-a11y/role-has-required-aria-props": "error",
         "jsx-a11y/role-supports-aria-props": "error",
         "jsx-a11y/scope": "error",
         "jsx-a11y/tabindex-no-positive": "error",
+
+        // I **only** use autoFocus within dialogs which provide the correct
+        // context for screen readers.
+        "jsx-a11y/no-autofocus": "off",
+
+        // too many false positives when using component libraries
+        "jsx-a11y/prefer-tag-over-role": "off",
+        "jsx-a11y/role-has-required-aria-props": "off",
       },
     },
     {

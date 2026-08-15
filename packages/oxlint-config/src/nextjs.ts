@@ -24,5 +24,8 @@ export const nextjs: OxlintConfig = {
     "nextjs/no-duplicate-head": "error",
     "nextjs/no-head-import-in-document": "error",
     "nextjs/no-script-component-in-head": "error",
+
+    // this causes things like `export const metadata: metadata` to no longer error
+    "react/only-export-components": "off",
   },
 };

@@ -1,6 +1,6 @@
 import type { OxlintConfig } from "oxlint";
 
-import { JSX_FILES } from "./constants.js";
+import { JSX_FILES, TEST_FILES } from "./constants.js";
 
 export const react: OxlintConfig = {
   overrides: [
@@ -34,6 +34,12 @@ export const react: OxlintConfig = {
           },
         ],
         "react/only-export-components": "error",
+      },
+    },
+    {
+      files: TEST_FILES,
+      rules: {
+        "react/only-export-components": "off",
       },
     },
   ],

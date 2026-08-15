@@ -29,6 +29,10 @@ export const vitest: OxlintConfig = {
         "vitest/no-duplicate-hooks": "error",
         "vitest/prefer-expect-resolves": "error",
         "vitest/prefer-spy-on": "error",
+
+        "vitest/require-to-throw-message": "off",
+        "vitest/require-mock-type-parameters": "off",
+        "vitest/prefer-snapshot-hint": "off",
       },
     },
   ],
