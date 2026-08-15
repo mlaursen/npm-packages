@@ -363,6 +363,13 @@ importers:
       typescript:
         specifier: ^6.0.3
         version: 6.0.3
+    optionalDependencies:
+      eslint-plugin-jest-dom:
+        specifier: '>= 5'
+        version: 5.10.1(eslint@9.39.5)
+      eslint-plugin-testing-library:
+        specifier: '>= 7'
+        version: 7.16.2(eslint@9.39.5)(typescript@6.0.3)
 
   packages/release-script:
     dependencies:

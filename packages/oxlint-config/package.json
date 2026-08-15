@@ -59,5 +59,9 @@
     "oxlint": {
       "optional": false
     }
+  },
+  "optionalDependencies": {
+    "eslint-plugin-jest-dom": ">= 5",
+    "eslint-plugin-testing-library": ">= 7"
   }
 }
