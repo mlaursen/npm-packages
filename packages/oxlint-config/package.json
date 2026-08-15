@@ -41,9 +41,6 @@
     "build": "pnpm build-types && pnpm build-dist",
     "dev": "concurrently 'pnpm build-types-watch' 'pnpm build-dist-watch'"
   },
-  "dependencies": {
-    "deepmerge": "^4.3.1"
-  },
   "devDependencies": {
     "@rollup/plugin-node-resolve": "^16.0.3",
     "@types/node": "^24.13.2",

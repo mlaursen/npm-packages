@@ -3,7 +3,6 @@ import { frontend } from "./frontend.js";
 import { jest } from "./jest.js";
 import { jestDom } from "./jestDom.js";
 import { jsxA11y } from "./jsxA11y.js";
-import { merge } from "./merge.js";
 import { mui } from "./mui.js";
 import { nextjs } from "./nextjs.js";
 import { react } from "./react.js";
@@ -28,8 +27,6 @@ export const configs = {
   unicorn,
   vitest,
   frontend,
-
-  merge,
 
   recommended,
 } as const;

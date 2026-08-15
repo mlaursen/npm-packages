@@ -14,11 +14,11 @@ Then create an `oxlint.config.ts`:
 import { configs } from "@mlaursen/eslint-config";
 import { defineConfig } from "oxlint";
 
-export default defineConfig(
-  configs.merge(
+export default defineConfig({
+  extends: [
     configs.recommended,
 
-    // if using react
+    // if developing a react app
     configs.frontend,
 
     // choose either
@@ -27,6 +27,6 @@ export default defineConfig(
 
     // if using nextjs
     configs.nextjs,
-  ),
-);
+  ],
+});
 ```
