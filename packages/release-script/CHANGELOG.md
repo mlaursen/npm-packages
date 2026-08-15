@@ -1,5 +1,11 @@
 # @mlaursen/release-script
 
+## 1.0.0-next.0
+
+### Major Changes
+
+- 54bfc3e: Upgraded @changeset/cli to v3
+
 ## 0.4.4
 
 ### Patch Changes

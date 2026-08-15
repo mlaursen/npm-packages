@@ -1,6 +1,6 @@
 {
   "name": "@mlaursen/release-script",
-  "version": "0.4.4",
+  "version": "1.0.0-next.0",
   "description": "The release script I normally use for packages I publish to npm",
   "keywords": [
     "npm",
