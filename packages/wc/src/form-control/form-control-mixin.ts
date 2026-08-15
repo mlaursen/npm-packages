@@ -182,6 +182,7 @@ export function FormControlMixin<T extends LitConstructorWithElementInternals>(
       if (isAsync) {
         await Promise.allSettled(promises);
         if (!controller.signal.aborted) {
+          // oxlint-disable-next-line no-console
           console.log("done validating");
         }
       }
