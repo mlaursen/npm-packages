@@ -33,6 +33,8 @@ export const vitest: OxlintConfig = {
         "vitest/require-to-throw-message": "off",
         "vitest/require-mock-type-parameters": "off",
         "vitest/prefer-snapshot-hint": "off",
+
+        "vitest/warn-todo": "warn",
       },
     },
   ],

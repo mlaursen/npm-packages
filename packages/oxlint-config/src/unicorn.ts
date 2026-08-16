@@ -62,7 +62,6 @@ export const unicorn: OxlintConfig = {
     "unicorn/no-useless-promise-resolve-reject": "error",
     "unicorn/no-useless-spread": "error",
     "unicorn/no-useless-switch-case": "error",
-    "unicorn/no-useless-undefined": "error",
     "unicorn/no-zero-fractions": "error",
     "unicorn/number-literal-case": "error",
     "unicorn/numeric-separators-style": [
@@ -134,6 +133,9 @@ export const unicorn: OxlintConfig = {
     "unicorn/switch-case-break-position": "error",
     "unicorn/text-encoding-identifier-case": "error",
     "unicorn/throw-new-error": "error",
+
+    // too many false positives with react
+    "unicorn/no-useless-undefined": "off",
   },
 
   overrides: [

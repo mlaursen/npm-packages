@@ -11,22 +11,36 @@ npm install -D oxlint @mlaursen/oxlint-config
 Then create an `oxlint.config.ts`:
 
 ```ts
-import { configs } from "@mlaursen/eslint-config";
+import { createConfig } from "@mlaursen/eslint-config";
 import { defineConfig } from "oxlint";
 
-export default defineConfig({
-  extends: [
-    configs.recommended,
+export default defineConfig(
+  // oxlint does not do merging multiple configs together well at the moment,
+  // so this helper merges them instead
+  createConfig({
+    // choose an optional jsx value which defaults to `false`
+    jsx: true,
+    jsx: "react",
+    jsx: "next",
 
-    // if developing a react app
-    configs.frontend,
+    // choose an optional test framework
+    testFramework: "jest",
+    testFramework: "vitest",
 
-    // choose either
-    configs.vitest,
-    configs.jest,
+    // any overrides to merge with the default config
+    overrides: {
+      rules: {
+        // custom global rule overrides
+      },
 
-    // if using nextjs
-    configs.nextjs,
-  ],
-});
+      // custom file level rule overrides
+      overrides: [
+        {
+          files: TEST_FILES,
+          rules: {},
+        },
+      ],
+    },
+  }),
+);
 ```
