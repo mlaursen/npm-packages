@@ -1,6 +1,6 @@
 {
   "name": "@mlaursen/oxlint-config",
-  "version": "1.0.1-next.0",
+  "version": "1.0.1",
   "description": "An oxlint config used by mlaursen for most projects.",
   "keywords": [
     "oxlint",
