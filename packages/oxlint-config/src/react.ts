@@ -1,6 +1,6 @@
 import type { OxlintConfig } from "oxlint";
 
-import { JSX_FILES, TEST_FILES } from "./constants.js";
+import { TEST_FILES } from "./constants.js";
 
 export const react: OxlintConfig = {
   plugins: ["react"],

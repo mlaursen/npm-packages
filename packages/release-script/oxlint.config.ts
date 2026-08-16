@@ -1,9 +1,12 @@
-import { configs } from "@mlaursen/oxlint-config";
+import { createConfig } from "@mlaursen/oxlint-config";
 import { defineConfig } from "oxlint";
 
-export default defineConfig({
-  extends: [configs.recommended],
-  rules: {
-    "no-console": "off",
-  },
-});
+export default defineConfig(
+  createConfig({
+    overrides: {
+      rules: {
+        "no-console": "off",
+      },
+    },
+  }),
+);

@@ -1,6 +1,4 @@
-import { configs } from "@mlaursen/oxlint-config";
+import { createConfig } from "@mlaursen/oxlint-config";
 import { defineConfig } from "oxlint";
 
-export default defineConfig({
-  extends: [configs.recommended],
-});
+export default defineConfig(createConfig());
