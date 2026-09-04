@@ -1,4 +1,5 @@
-import { type TemplateResult, html } from "lit";
+import type { TemplateResult } from "lit";
+import { html } from "lit";
 import { customElement, property } from "lit/decorators.js";
 
 import { AriaMixin } from "../aria-mixin/aria-mixin.js";

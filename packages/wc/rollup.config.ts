@@ -1,6 +1,7 @@
 import { getGitRoot, touch } from "@mlaursen/node-utils";
 import { nodeResolve } from "@rollup/plugin-node-resolve";
-import { type Plugin, defineConfig } from "rollup";
+import type { Plugin } from "rollup";
+import { defineConfig } from "rollup";
 import { dts } from "rollup-plugin-dts";
 import summary from "rollup-plugin-summary";
 import { swc } from "rollup-plugin-swc3";

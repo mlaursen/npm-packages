@@ -1,13 +1,9 @@
-import {
-  LitElement,
-  type PropertyValues,
-  type TemplateResult,
-  html,
-} from "lit";
+import type { PropertyValues, TemplateResult } from "lit";
+import { LitElement, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
 
 import styles from "./divider-styles.js";
-import { type DividerProperties, type DividerVariant } from "./types.js";
+import type { DividerProperties, DividerVariant } from "./types.js";
 
 @customElement("mwc-divider")
 export class Divider extends LitElement implements DividerProperties {

@@ -4,7 +4,7 @@ import { glob } from "glob";
 
 import { DEFAULT_CSS_BROWSERSLIST_TARGETS } from "./constants.js";
 import { createStyles } from "./createStyles.js";
-import { type GenerateComponentsOptions } from "./types.js";
+import type { GenerateComponentsOptions } from "./types.js";
 
 export async function generateComponents(
   options: GenerateComponentsOptions = {},

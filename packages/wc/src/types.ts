@@ -1,4 +1,4 @@
-import { type CSSResultArray, type CSSResultGroup, type LitElement } from "lit";
+import type { CSSResultArray, CSSResultGroup, LitElement } from "lit";
 
 export type DefaultComponentSize = "small" | "medium" | "large";
 

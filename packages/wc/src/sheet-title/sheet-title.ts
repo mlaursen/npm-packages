@@ -1,10 +1,7 @@
 import { customElement, property } from "lit/decorators.js";
 
 import { DialogTitle } from "../dialog-title/dialog-title.js";
-import {
-  type TypographySize,
-  type TypographyVariant,
-} from "../typography/types.js";
+import type { TypographySize, TypographyVariant } from "../typography/types.js";
 
 @customElement("mwc-sheet-title")
 export class SheetTitle extends DialogTitle {

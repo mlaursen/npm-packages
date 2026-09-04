@@ -1,5 +1,6 @@
 import { spread } from "@open-wc/lit-helpers";
-import { type TemplateResult, html } from "lit";
+import type { TemplateResult } from "lit";
+import { html } from "lit";
 import { customElement, property } from "lit/decorators.js";
 
 import { Card } from "../card/card.js";

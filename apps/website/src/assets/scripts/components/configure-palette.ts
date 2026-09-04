@@ -4,13 +4,8 @@ import {
   parseMaterialTheme,
 } from "@mlaursen/wc/palette/utils";
 import { spread } from "@open-wc/lit-helpers";
-import {
-  LitElement,
-  type PropertyValues,
-  type TemplateResult,
-  html,
-  nothing,
-} from "lit";
+import type { PropertyValues, TemplateResult } from "lit";
+import { LitElement, html, nothing } from "lit";
 import { customElement, state } from "lit/decorators.js";
 import { map } from "lit/directives/map.js";
 

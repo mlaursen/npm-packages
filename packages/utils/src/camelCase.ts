@@ -1,4 +1,4 @@
-import { type CamelCase } from "./types.js";
+import type { CamelCase } from "./types.js";
 import { upperFirst } from "./upperFirst.js";
 import { words } from "./words.js";
 

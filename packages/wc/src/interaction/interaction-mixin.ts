@@ -1,20 +1,16 @@
 import { wait } from "@mlaursen/utils";
-import {
-  type CSSResultArray,
-  type PropertyValues,
-  type TemplateResult,
-  html,
-} from "lit";
+import type { CSSResultArray, PropertyValues, TemplateResult } from "lit";
+import { html } from "lit";
 import { property, query, state } from "lit/decorators.js";
 import { classMap } from "lit/directives/class-map.js";
 
-import {
-  type StylableLitElement,
-  type StyledLitElementWithProperties,
+import type {
+  StylableLitElement,
+  StyledLitElementWithProperties,
 } from "../types.js";
 import { MINIMUM_PRESS_MS, TOUCH_DELAY_MS } from "./constants.js";
 import interactionStyles from "./interaction-styles.js";
-import { type Interactable, type InteractionDirection } from "./types.js";
+import type { Interactable, InteractionDirection } from "./types.js";
 import {
   getRippleAnimationArgs,
   isActionableEvent,

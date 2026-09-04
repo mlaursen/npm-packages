@@ -1,9 +1,7 @@
 import { basename, join } from "node:path";
 
-import {
-  type CopyScssFilesOptions,
-  copyScssFiles,
-} from "@mlaursen/copy-scss-files";
+import type { CopyScssFilesOptions } from "@mlaursen/copy-scss-files";
+import { copyScssFiles } from "@mlaursen/copy-scss-files";
 import { enableLogger } from "@mlaursen/node-utils";
 import { Command } from "commander";
 

@@ -1,4 +1,4 @@
-import { type IconProperties } from "../icon/types.js";
+import type { IconProperties } from "../icon/types.js";
 
 /**
  * Fill gives you the ability to modify the default icon style. A single icon

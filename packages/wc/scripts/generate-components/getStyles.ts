@@ -1,4 +1,4 @@
-import { type CreateStylesOutput } from "./types.js";
+import type { CreateStylesOutput } from "./types.js";
 
 export interface GetStylesOptions {
   output: CreateStylesOutput;

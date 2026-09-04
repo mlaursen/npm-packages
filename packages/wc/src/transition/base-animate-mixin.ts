@@ -1,10 +1,10 @@
-import { type PropertyValues } from "lit";
+import type { PropertyValues } from "lit";
 
-import { type LitConstructor } from "../types.js";
-import {
-  type AnimationList,
-  type BaseAnimateOptions,
-  type BaseAnimatedElementProperties,
+import type { LitConstructor } from "../types.js";
+import type {
+  AnimationList,
+  BaseAnimateOptions,
+  BaseAnimatedElementProperties,
 } from "./types.js";
 
 export function BaseAnimateMixin<T extends LitConstructor>(

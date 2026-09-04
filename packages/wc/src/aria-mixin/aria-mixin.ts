@@ -1,12 +1,12 @@
-import { type LitElement } from "lit";
+import type { LitElement } from "lit";
 import { property } from "lit/decorators.js";
 
 import { InternalsMixin } from "../internals-mixin/internals-mixin.js";
-import { type LitConstructor } from "../types.js";
-import {
-  type AriaMixinProperties,
-  type AriaRole,
-  type LitElementWithAriaProperties,
+import type { LitConstructor } from "../types.js";
+import type {
+  AriaMixinProperties,
+  AriaRole,
+  LitElementWithAriaProperties,
 } from "./types.js";
 
 /**

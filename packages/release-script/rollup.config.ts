@@ -1,5 +1,5 @@
 import { nodeResolve } from "@rollup/plugin-node-resolve";
-import { type RollupOptions } from "rollup";
+import type { RollupOptions } from "rollup";
 import { dts } from "rollup-plugin-dts";
 import { defineRollupSwcOption, swc } from "rollup-plugin-swc3";
 

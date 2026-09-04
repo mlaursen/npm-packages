@@ -1,6 +1,8 @@
-import prettyBytes, { type Options as PrettyBytesOptions } from "pretty-bytes";
+import type { Options as PrettyBytesOptions } from "pretty-bytes";
+import prettyBytes from "pretty-bytes";
 
-import { type FilesizeOptions, filesize } from "./filesize.js";
+import type { FilesizeOptions } from "./filesize.js";
+import { filesize } from "./filesize.js";
 
 export interface PrettyFilesizeOptions
   extends FilesizeOptions, PrettyBytesOptions {}

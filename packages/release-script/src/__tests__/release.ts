@@ -5,10 +5,8 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { continueRelease } from "../continueRelease.js";
 import { createRelease } from "../createRelease.js";
 import { getPackageManager } from "../getPackageManager.js";
-import {
-  type PendingRelease,
-  getPendingReleases,
-} from "../getPendingReleases.js";
+import type { PendingRelease } from "../getPendingReleases.js";
+import { getPendingReleases } from "../getPendingReleases.js";
 import { release } from "../release.js";
 
 vi.mock("node:child_process");

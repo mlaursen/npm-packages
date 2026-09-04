@@ -1,13 +1,14 @@
-import { LitElement, type TemplateResult } from "lit";
+import type { TemplateResult } from "lit";
+import { LitElement } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { html } from "lit/static-html.js";
 
 import { MarginMixin } from "../margin/margin-mixin.js";
 import { PaletteMixin } from "../palette/palette-mixin.js";
-import {
-  type TypographyProperties,
-  type TypographySize,
-  type TypographyVariant,
+import type {
+  TypographyProperties,
+  TypographySize,
+  TypographyVariant,
 } from "./types.js";
 import styles from "./typography-styles.js";
 

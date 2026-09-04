@@ -1,15 +1,16 @@
-import { type PropertyValues, html } from "lit";
+import type { PropertyValues } from "lit";
+import { html } from "lit";
 import { customElement, property } from "lit/decorators.js";
 
 import { Icon } from "../icon/icon.js";
 import styles from "./material-symbol-styles.js";
-import {
-  type MaterialSymbolFamily,
-  type MaterialSymbolFill,
-  type MaterialSymbolGrade,
-  type MaterialSymbolOpticalSize,
-  type MaterialSymbolProperties,
-  type MaterialSymbolWeight,
+import type {
+  MaterialSymbolFamily,
+  MaterialSymbolFill,
+  MaterialSymbolGrade,
+  MaterialSymbolOpticalSize,
+  MaterialSymbolProperties,
+  MaterialSymbolWeight,
 } from "./types.js";
 
 const LIVE_STYLE_PROPERTIES = [

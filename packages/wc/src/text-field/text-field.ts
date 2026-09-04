@@ -1,9 +1,5 @@
-import {
-  LitElement,
-  type PropertyValues,
-  type TemplateResult,
-  html,
-} from "lit";
+import type { PropertyValues, TemplateResult } from "lit";
+import { LitElement, html } from "lit";
 import { customElement, property, query, state } from "lit/decorators.js";
 import { classMap } from "lit/directives/class-map.js";
 import { ifDefined } from "lit/directives/if-defined.js";

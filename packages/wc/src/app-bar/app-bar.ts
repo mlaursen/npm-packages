@@ -1,22 +1,18 @@
-import {
-  LitElement,
-  type PropertyValues,
-  type TemplateResult,
-  html,
-} from "lit";
+import type { PropertyValues, TemplateResult } from "lit";
+import { LitElement, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { ifDefined } from "lit/directives/if-defined.js";
 
 import "../app-bar-title/app-bar-title.js";
 import { PaletteMixin } from "../palette/palette-mixin.js";
 import styles from "./app-bar-styles.js";
-import {
-  type AppBarPosition,
-  type AppBarProperties,
-  type AppBarScrollBehavior,
-  type AppBarSize,
-  type AppBarTitlePosition,
-  type AppBarVariant,
+import type {
+  AppBarPosition,
+  AppBarProperties,
+  AppBarScrollBehavior,
+  AppBarSize,
+  AppBarTitlePosition,
+  AppBarVariant,
 } from "./types.js";
 
 const BaseAppBar = PaletteMixin(LitElement);

@@ -1,5 +1,5 @@
-import { type CompileScssOptions } from "@mlaursen/scss";
-import { type Targets } from "lightningcss";
+import type { CompileScssOptions } from "@mlaursen/scss";
+import type { Targets } from "lightningcss";
 
 import type { ColorScheme } from "../../src/palette/types.js";
 

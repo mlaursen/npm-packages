@@ -1,7 +1,7 @@
 import { customElement, property } from "lit/decorators.js";
 
 import { Button } from "./button.js";
-import { type ButtonVariant } from "./types.js";
+import type { ButtonVariant } from "./types.js";
 
 @customElement("mwc-tonal-button")
 export class TonalButton extends Button {

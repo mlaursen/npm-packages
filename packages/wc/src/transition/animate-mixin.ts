@@ -1,10 +1,10 @@
-import { type LitConstructor } from "../types.js";
+import type { LitConstructor } from "../types.js";
 import { BaseAnimateMixin } from "./base-animate-mixin.js";
-import {
-  type AnimateOptions,
-  type AnimatedElementProperties,
-  type AnimationList,
-  type BaseAnimateOptions,
+import type {
+  AnimateOptions,
+  AnimatedElementProperties,
+  AnimationList,
+  BaseAnimateOptions,
 } from "./types.js";
 
 export function AnimateMixin<T extends LitConstructor>(

@@ -1,6 +1,6 @@
 import { Duration, Easing } from "../transition/constants.js";
 import { getVar } from "../utils/tokens.js";
-import { type AnimatePopoverElementMap } from "./types.js";
+import type { AnimatePopoverElementMap } from "./types.js";
 
 export const DEFAULT_SHOW_POPOVER_ANIMATION = {
   popover: [

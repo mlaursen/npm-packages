@@ -1,15 +1,13 @@
-import { LitElement, type TemplateResult, html } from "lit";
+import type { TemplateResult } from "lit";
+import { LitElement, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
 
-import {
-  type AppBarSize,
-  type AppBarTitlePosition,
-  type AppBarTitleProperties,
+import type {
+  AppBarSize,
+  AppBarTitlePosition,
+  AppBarTitleProperties,
 } from "../app-bar/types.js";
-import {
-  type TypographySize,
-  type TypographyVariant,
-} from "../typography/types.js";
+import type { TypographySize, TypographyVariant } from "../typography/types.js";
 import "../typography/typography.js";
 import styles from "./app-bar-title-styles.js";
 

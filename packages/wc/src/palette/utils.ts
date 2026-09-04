@@ -1,12 +1,12 @@
-import { type CamelCase, kebabCase, upperFirst } from "@mlaursen/utils";
+import type { CamelCase } from "@mlaursen/utils";
+import { kebabCase, upperFirst } from "@mlaursen/utils";
 
-import {
-  type MaterialContrast,
-  MaterialContrastSchema,
-  type MaterialSchemeTokens,
-  type MaterialTheme,
-  MaterialThemeSchema,
+import type {
+  MaterialContrast,
+  MaterialSchemeTokens,
+  MaterialTheme,
 } from "./schemas.js";
+import { MaterialContrastSchema, MaterialThemeSchema } from "./schemas.js";
 import type {
   AllPaletteTokenName,
   ColorScheme,

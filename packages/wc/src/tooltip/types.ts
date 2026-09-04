@@ -1,7 +1,7 @@
-import {
-  type PopoverInitiator,
-  type PopoverProperties,
-  type PopoverType,
+import type {
+  PopoverInitiator,
+  PopoverProperties,
+  PopoverType,
 } from "../popover/types.js";
 
 export interface TooltipProperties extends PopoverProperties {

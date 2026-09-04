@@ -1,14 +1,14 @@
-import { type OverridableStringUnion } from "@mlaursen/utils";
-import { type TemplateResult } from "lit";
+import type { OverridableStringUnion } from "@mlaursen/utils";
+import type { TemplateResult } from "lit";
 
-import {
-  type AnimateElementMap,
-  type BaseAnimateOptions,
-  type GetAnimationMap,
+import type {
+  AnimateElementMap,
+  BaseAnimateOptions,
+  GetAnimationMap,
 } from "../transition/types.js";
-import {
-  type DefaultComponentExtraSize,
-  type DefaultComponentShape,
+import type {
+  DefaultComponentExtraSize,
+  DefaultComponentShape,
 } from "../types.js";
 
 export interface DialogWidthOverrides {}

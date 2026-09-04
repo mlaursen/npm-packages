@@ -1,9 +1,7 @@
-import { type Result } from "postcss";
+import type { Result } from "postcss";
 
-import {
-  type CompileScssModuleOptions as CompileScssModuleOptionsRaw,
-  compileScssModule as compileScssModuleRaw,
-} from "./compileScssModule.js";
+import type { CompileScssModuleOptions as CompileScssModuleOptionsRaw } from "./compileScssModule.js";
+import { compileScssModule as compileScssModuleRaw } from "./compileScssModule.js";
 import { defaultNodeLoad } from "./defaultNodeLoad.js";
 
 export interface CompileScssModuleOptions extends Omit<

@@ -1,11 +1,9 @@
-import { LitElement, type TemplateResult, html } from "lit";
+import type { TemplateResult } from "lit";
+import { LitElement, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
 
 import styles from "./sheet-header-styles.js";
-import {
-  type SheetHeaderAutoFocus,
-  type SheetHeaderProperties,
-} from "./types.js";
+import type { SheetHeaderAutoFocus, SheetHeaderProperties } from "./types.js";
 
 @customElement("mwc-sheet-header")
 export class SheetHeader extends LitElement implements SheetHeaderProperties {

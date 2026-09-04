@@ -1,7 +1,7 @@
 import { Duration, Easing } from "../transition/constants.js";
-import { type AnimateElementArgs } from "../transition/types.js";
+import type { AnimateElementArgs } from "../transition/types.js";
 import { getVar } from "../utils/tokens.js";
-import { type AnimateCheckboxElementMap } from "./types.js";
+import type { AnimateCheckboxElementMap } from "./types.js";
 
 const translate = `translate(${getVar("checkbox.mark.translate")})`;
 const rotate = `rotate(${getVar("checkbox.mark.rotate")})`;

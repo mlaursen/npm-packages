@@ -1,7 +1,7 @@
-import { type TemplateResult } from "lit";
+import type { TemplateResult } from "lit";
 
-import { type BaseAnimateOptions } from "../transition/types.js";
-import { type Point } from "../types.js";
+import type { BaseAnimateOptions } from "../transition/types.js";
+import type { Point } from "../types.js";
 
 export type InteractionDirection = "inward" | "outward";
 

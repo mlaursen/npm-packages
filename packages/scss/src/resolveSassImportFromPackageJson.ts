@@ -1,7 +1,5 @@
-import {
-  type SassResolvePackageJson,
-  assertSassResolvePackageJson,
-} from "./assertSassResolvePackageJson.js";
+import type { SassResolvePackageJson } from "./assertSassResolvePackageJson.js";
+import { assertSassResolvePackageJson } from "./assertSassResolvePackageJson.js";
 import { getPossiblePaths } from "./getPossiblePaths.js";
 
 const SCOPED_MODULE_REGEX = /^(@[^/]+\/[^/]+)(?:\/(.*))?$/;

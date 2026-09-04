@@ -1,4 +1,4 @@
-import { type CamelCase, type CamelCaseKeys } from "@mlaursen/utils";
+import type { CamelCase, CamelCaseKeys } from "@mlaursen/utils";
 
 export type ColorScheme = "light" | "dark" | "system" | "light-dark";
 

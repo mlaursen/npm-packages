@@ -1,15 +1,16 @@
-import { type CamelCase, camelCase } from "@mlaursen/utils";
+import type { CamelCase } from "@mlaursen/utils";
+import { camelCase } from "@mlaursen/utils";
 
-import {
-  type AllPaletteTokenName,
-  type BasePaletteContainer,
-  type CamelCaseContainerColor,
-  type CamelCaseOnContainerColor,
-  type ContainerColor,
-  type DarkBasePaletteContainer,
-  type LightBasePaletteContainer,
-  type OnContainerColor,
-  type PaletteTokenName,
+import type {
+  AllPaletteTokenName,
+  BasePaletteContainer,
+  CamelCaseContainerColor,
+  CamelCaseOnContainerColor,
+  ContainerColor,
+  DarkBasePaletteContainer,
+  LightBasePaletteContainer,
+  OnContainerColor,
+  PaletteTokenName,
 } from "./types.js";
 
 const BASE_CONTAINER_COLOR: readonly BasePaletteContainer[] = [

@@ -1,9 +1,5 @@
-import {
-  LitElement,
-  type PropertyValues,
-  type TemplateResult,
-  html,
-} from "lit";
+import type { PropertyValues, TemplateResult } from "lit";
+import { LitElement, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
 
 import { AriaMixin } from "../aria-mixin/aria-mixin.js";
@@ -13,13 +9,13 @@ import { PASS_THROUGH_LINK_PROPS } from "../link/constants.js";
 import { MarginMixin } from "../margin/margin-mixin.js";
 import { PaletteMixin } from "../palette/palette-mixin.js";
 import styles from "./button-styles.js";
-import {
-  type ButtonProperties,
-  type ButtonShape,
-  type ButtonSize,
-  type ButtonVariant,
-  type CommandAttribute,
-  type PopoverTargetAction,
+import type {
+  ButtonProperties,
+  ButtonShape,
+  ButtonSize,
+  ButtonVariant,
+  CommandAttribute,
+  PopoverTargetAction,
 } from "./types.js";
 
 const BaseStyledButton = InteractionMixin(

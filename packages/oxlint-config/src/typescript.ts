@@ -27,6 +27,15 @@ export const typescript: OxlintConfig = {
     "typescript/prefer-literal-enum-member": "error",
     "typescript/unified-signatures": "error",
 
+    // With grug-far:
+    // Search:
+    // (?<!export)\stype\s
+    // Replace:
+    //
+    // Flags:
+    // -P
+    //
+    // Then run lint-fix and format
     "typescript/consistent-type-imports": [
       "error",
       {

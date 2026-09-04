@@ -1,10 +1,5 @@
-import {
-  LitElement,
-  type PropertyValues,
-  type TemplateResult,
-  html,
-  isServer,
-} from "lit";
+import type { PropertyValues, TemplateResult } from "lit";
+import { LitElement, html, isServer } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
 
 import { AriaMixin } from "../aria-mixin/aria-mixin.js";
@@ -14,10 +9,10 @@ import { InteractionMixin } from "../interaction/interaction-mixin.js";
 import { MarginMixin } from "../margin/margin-mixin.js";
 import { PaletteMixin } from "../palette/palette-mixin.js";
 import { BaseAnimateMixin } from "../transition/base-animate-mixin.js";
-import {
-  type AnimationList,
-  type BaseAnimateOptions,
-  type GetAnimationMap,
+import type {
+  AnimationList,
+  BaseAnimateOptions,
+  GetAnimationMap,
 } from "../transition/types.js";
 import styles from "./checkbox-styles.js";
 import {
@@ -25,10 +20,10 @@ import {
   DEFAULT_CHECKBOX_INDETERMINATE_ANIMATION,
   DEFAULT_CHECKBOX_UNCHECKED_ANIMATION,
 } from "./constants.js";
-import {
-  type AnimateCheckboxElementMap,
-  type CheckboxProperties,
-  type CheckboxSize,
+import type {
+  AnimateCheckboxElementMap,
+  CheckboxProperties,
+  CheckboxSize,
 } from "./types.js";
 
 const BaseStyledCheckbox = BaseAnimateMixin(

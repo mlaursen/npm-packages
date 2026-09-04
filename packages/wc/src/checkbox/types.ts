@@ -1,12 +1,12 @@
-import { type OverridableStringUnion } from "@mlaursen/utils";
+import type { OverridableStringUnion } from "@mlaursen/utils";
 
 import type { FormControlStates } from "../form-control/types.js";
-import {
-  type AnimateElementMap,
-  type BaseAnimateOptions,
-  type GetAnimationMap,
+import type {
+  AnimateElementMap,
+  BaseAnimateOptions,
+  GetAnimationMap,
 } from "../transition/types.js";
-import { type DefaultComponentSize } from "../types.js";
+import type { DefaultComponentSize } from "../types.js";
 
 export interface CheckboxSizeOverrides {}
 export type DefaultCheckboxSize = DefaultComponentSize;

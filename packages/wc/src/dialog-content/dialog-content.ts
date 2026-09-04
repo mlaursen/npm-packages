@@ -1,8 +1,8 @@
 import { customElement, property } from "lit/decorators.js";
 
-import { type Margin } from "../margin/types.js";
-import { type PaletteTextColor } from "../palette/types.js";
-import { type TypographySize } from "../typography/types.js";
+import type { Margin } from "../margin/types.js";
+import type { PaletteTextColor } from "../palette/types.js";
+import type { TypographySize } from "../typography/types.js";
 import { Typography } from "../typography/typography.js";
 import styles from "./dialog-content-styles.js";
 

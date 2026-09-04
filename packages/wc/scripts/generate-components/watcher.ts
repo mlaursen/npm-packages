@@ -1,8 +1,8 @@
 import { existsSync } from "node:fs";
 import { rm } from "node:fs/promises";
 
+import type { CreateWatcherOptions } from "@mlaursen/node-utils";
 import {
-  type CreateWatcherOptions,
   createWatcher,
   disableLogger,
   enableLogger,

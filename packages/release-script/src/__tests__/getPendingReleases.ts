@@ -4,10 +4,8 @@ import confirm from "@inquirer/confirm";
 import input from "@inquirer/input";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import {
-  type PendingRelease,
-  getPendingReleases,
-} from "../getPendingReleases.js";
+import type { PendingRelease } from "../getPendingReleases.js";
+import { getPendingReleases } from "../getPendingReleases.js";
 import { getUnpushedTags } from "../getUnpushedTags.js";
 
 vi.mock("../getUnpushedTags");

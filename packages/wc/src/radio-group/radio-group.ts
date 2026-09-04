@@ -1,4 +1,5 @@
-import { LitElement, type TemplateResult, html } from "lit";
+import type { TemplateResult } from "lit";
+import { LitElement, html } from "lit";
 import { customElement } from "lit/decorators.js";
 
 import { NOT_DISABLED_OR_HIDDEN } from "../focus/constants.js";

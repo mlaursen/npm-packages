@@ -3,7 +3,7 @@ import { writeFile } from "node:fs/promises";
 import prettier from "prettier";
 
 import { ensureParentDir } from "./ensureParentDir.js";
-import { type FilesizeOptions } from "./filesize.js";
+import type { FilesizeOptions } from "./filesize.js";
 import { logComplete } from "./logger.js";
 import { prettyFilesize } from "./prettyFilesize.js";
 

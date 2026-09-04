@@ -1,10 +1,5 @@
-import {
-  LitElement,
-  type PropertyValues,
-  type TemplateResult,
-  html,
-  isServer,
-} from "lit";
+import type { PropertyValues, TemplateResult } from "lit";
+import { LitElement, html, isServer } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
 
 import { AriaMixin } from "../aria-mixin/aria-mixin.js";

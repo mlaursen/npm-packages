@@ -1,6 +1,7 @@
 import confirm from "@inquirer/confirm";
 
-import { type GetChangelogOptions, getChangelog } from "./getChangelog.js";
+import type { GetChangelogOptions } from "./getChangelog.js";
+import { getChangelog } from "./getChangelog.js";
 import { getUnpushedTags } from "./getUnpushedTags.js";
 
 export interface GetPendingReleasesOptions extends Pick<

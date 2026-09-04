@@ -1,4 +1,4 @@
-import { type KebabCase } from "./types.js";
+import type { KebabCase } from "./types.js";
 
 /**
  * @example Simple Example

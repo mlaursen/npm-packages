@@ -1,11 +1,12 @@
-import { LitElement, type TemplateResult, html } from "lit";
+import type { TemplateResult } from "lit";
+import { LitElement, html } from "lit";
 import { customElement } from "lit/decorators.js";
 
 import { MarginMixin } from "../margin/margin-mixin.js";
 import { PopoverMixin } from "../popover/popover-mixin.js";
-import { type PopoverInitiator, type PopoverType } from "../popover/types.js";
+import type { PopoverInitiator, PopoverType } from "../popover/types.js";
 import styles from "./tooltip-styles.js";
-import { type TooltipProperties } from "./types.js";
+import type { TooltipProperties } from "./types.js";
 
 const BaseTooltip = MarginMixin(PopoverMixin(LitElement));
 

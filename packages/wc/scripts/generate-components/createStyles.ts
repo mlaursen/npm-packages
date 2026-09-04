@@ -11,7 +11,7 @@ import { format } from "prettier";
 import { TOKENS_MESSAGE, VALID_TOKENS_MESSAGE } from "./constants.js";
 import { createLoadScssFile } from "./createLoadScssFile.js";
 import { getStyles } from "./getStyles.js";
-import { type CreateStylesOptions } from "./types.js";
+import type { CreateStylesOptions } from "./types.js";
 
 export async function createStyles(
   options: CreateStylesOptions,

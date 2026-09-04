@@ -1,9 +1,7 @@
-import { type CompileResult } from "sass";
+import type { CompileResult } from "sass";
 
-import {
-  type CompileScssOptions as CompileScssOptionsRaw,
-  compileScss as compileScssRaw,
-} from "./compileScss.js";
+import type { CompileScssOptions as CompileScssOptionsRaw } from "./compileScss.js";
+import { compileScss as compileScssRaw } from "./compileScss.js";
 import { defaultNodeLoad } from "./defaultNodeLoad.js";
 
 export interface CompileScssOptions extends Omit<

@@ -4,7 +4,7 @@ import { property } from "lit/decorators.js";
 import { MarginMixin } from "../margin/margin-mixin.js";
 import { PaletteMixin } from "../palette/palette-mixin.js";
 import styles from "./icon-styles.js";
-import { type IconProperties, type IconSize } from "./types.js";
+import type { IconProperties, IconSize } from "./types.js";
 
 const BaseIcon = PaletteMixin(MarginMixin(LitElement));
 

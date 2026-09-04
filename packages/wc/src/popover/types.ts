@@ -1,9 +1,9 @@
-import { type TemplateResult } from "lit";
+import type { TemplateResult } from "lit";
 
-import {
-  type AnimateElementMap,
-  type AnimatedElementProperties,
-  type GetAnimationMap,
+import type {
+  AnimateElementMap,
+  AnimatedElementProperties,
+  GetAnimationMap,
 } from "../transition/types.js";
 
 /**

@@ -1,4 +1,5 @@
-import chokidar, { type ChokidarOptions, type FSWatcher } from "chokidar";
+import type { ChokidarOptions, FSWatcher } from "chokidar";
+import chokidar from "chokidar";
 
 import { disableLogger, enableLogger, log } from "./logger.js";
 

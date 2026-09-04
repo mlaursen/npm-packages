@@ -1,9 +1,5 @@
-import {
-  type CSSResultArray,
-  type PropertyValues,
-  type TemplateResult,
-  html,
-} from "lit";
+import type { CSSResultArray, PropertyValues, TemplateResult } from "lit";
+import { html } from "lit";
 import { property, query, state } from "lit/decorators.js";
 import { ifDefined } from "lit/directives/if-defined.js";
 
@@ -13,9 +9,9 @@ import type {
   AnimationList,
   GetAnimationMap,
 } from "../transition/types.js";
-import {
-  type StylableLitElement,
-  type StyledLitElementWithProperties,
+import type {
+  StylableLitElement,
+  StyledLitElementWithProperties,
 } from "../types.js";
 import { isSlotted } from "../utils/slots.js";
 import {
@@ -23,15 +19,15 @@ import {
   DEFAULT_SHOW_POPOVER_ANIMATION,
 } from "./constants.js";
 import popoverStyles from "./popover-styles.js";
-import {
-  type AnimatePopoverElementMap,
-  type HorizontalAnchor,
-  type PopoverInitiator,
-  type PopoverInitiatorAction,
-  type PopoverProperties,
-  type PopoverType,
-  type RenderPopoverTargetOptions,
-  type VerticalAnchor,
+import type {
+  AnimatePopoverElementMap,
+  HorizontalAnchor,
+  PopoverInitiator,
+  PopoverInitiatorAction,
+  PopoverProperties,
+  PopoverType,
+  RenderPopoverTargetOptions,
+  VerticalAnchor,
 } from "./types.js";
 
 /**

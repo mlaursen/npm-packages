@@ -1,15 +1,12 @@
-import { type SpawnSyncOptions, spawnSync } from "node:child_process";
+import type { SpawnSyncOptions } from "node:child_process";
+import { spawnSync } from "node:child_process";
 
 import { continueRelease } from "./continueRelease.js";
-import {
-  type ConfigurableCreateReleaseOptions,
-  createRelease,
-} from "./createRelease.js";
+import type { ConfigurableCreateReleaseOptions } from "./createRelease.js";
+import { createRelease } from "./createRelease.js";
 import { getPackageManager } from "./getPackageManager.js";
-import {
-  type GetPendingReleasesOptions,
-  getPendingReleases,
-} from "./getPendingReleases.js";
+import type { GetPendingReleasesOptions } from "./getPendingReleases.js";
+import { getPendingReleases } from "./getPendingReleases.js";
 
 const exec = (
   command: string,

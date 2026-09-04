@@ -1,5 +1,6 @@
 import { spread } from "@open-wc/lit-helpers";
-import { LitElement, type TemplateResult, html } from "lit";
+import type { TemplateResult } from "lit";
+import { LitElement, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
 
 import { InteractionMixin } from "../interaction/interaction-mixin.js";
@@ -7,7 +8,7 @@ import { MarginMixin } from "../margin/margin-mixin.js";
 import { PaletteMixin } from "../palette/palette-mixin.js";
 import { PASS_THROUGH_LINK_PROPS } from "./constants.js";
 import styles from "./link-styles.js";
-import { type LinkProperties } from "./types.js";
+import type { LinkProperties } from "./types.js";
 
 const BaseLink = InteractionMixin(PaletteMixin(MarginMixin(LitElement)), true);
 

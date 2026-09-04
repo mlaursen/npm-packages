@@ -1,19 +1,19 @@
-import { type OverridableStringUnion } from "@mlaursen/utils";
+import type { OverridableStringUnion } from "@mlaursen/utils";
 
-import {
-  type AnimateDialogElementMap,
-  type DialogProperties,
-  type DialogWidth,
+import type {
+  AnimateDialogElementMap,
+  DialogProperties,
+  DialogWidth,
 } from "../dialog/types.js";
 import type {
   SheetHeaderAutoFocus,
   SheetHeaderProperties,
 } from "../sheet-header/types.js";
-import {
-  type BaseAnimateOptions,
-  type GetAnimationMap,
+import type {
+  BaseAnimateOptions,
+  GetAnimationMap,
 } from "../transition/types.js";
-import { type DefaultComponentShape } from "../types.js";
+import type { DefaultComponentShape } from "../types.js";
 
 export type ShowSheetOptions = BaseAnimateOptions<AnimateDialogElementMap>;
 

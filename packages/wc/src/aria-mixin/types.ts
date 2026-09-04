@@ -1,7 +1,7 @@
-import { type LitElement } from "lit";
+import type { LitElement } from "lit";
 
 import type { ElementWithInternalsProperties } from "../internals-mixin/types.js";
-import { type LitConstructor } from "../types.js";
+import type { LitConstructor } from "../types.js";
 
 export type AriaRole =
   | "alert"

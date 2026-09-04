@@ -1,22 +1,17 @@
-import {
-  LitElement,
-  type PropertyValues,
-  type TemplateResult,
-  html,
-  isServer,
-} from "lit";
+import type { PropertyValues, TemplateResult } from "lit";
+import { LitElement, html, isServer } from "lit";
 import { customElement, property } from "lit/decorators.js";
 
 import { MarginMixin } from "../margin/margin-mixin.js";
 import { PaletteMixin } from "../palette/palette-mixin.js";
 import boxStyles from "./box-styles.js";
-import {
-  type BoxAlignItems,
-  type BoxGap,
-  type BoxGrid,
-  type BoxJustifyContent,
-  type BoxPadding,
-  type BoxProperties,
+import type {
+  BoxAlignItems,
+  BoxGap,
+  BoxGrid,
+  BoxJustifyContent,
+  BoxPadding,
+  BoxProperties,
 } from "./types.js";
 
 const BaseBox = PaletteMixin(MarginMixin(LitElement));

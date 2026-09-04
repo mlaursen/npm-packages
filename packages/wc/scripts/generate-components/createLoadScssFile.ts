@@ -1,6 +1,6 @@
 import { readFileSync } from "node:fs";
 
-import { type ConfigureScssOptions } from "./types.js";
+import type { ConfigureScssOptions } from "./types.js";
 
 function loadConfigureFile(options: Required<ConfigureScssOptions>): string {
   const { colorScheme, shortVarNames } = options;

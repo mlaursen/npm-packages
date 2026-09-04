@@ -1,5 +1,5 @@
 import { nodeResolve } from "@rollup/plugin-node-resolve";
-import { type RollupOptions } from "rollup";
+import type { RollupOptions } from "rollup";
 import { swc } from "rollup-plugin-swc3";
 
 const external = (id: string): boolean => !/^[./]/.test(id);

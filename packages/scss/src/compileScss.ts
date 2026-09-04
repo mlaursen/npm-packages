@@ -1,4 +1,5 @@
-import { type CompileResult, type Options, compileString } from "sass";
+import type { CompileResult, Options } from "sass";
+import { compileString } from "sass";
 
 import { FILE_URL } from "./constants.js";
 import { getPossiblePaths } from "./getPossiblePaths.js";

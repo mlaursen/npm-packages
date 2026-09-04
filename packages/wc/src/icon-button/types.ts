@@ -1,4 +1,4 @@
-import { type OverridableStringUnion } from "@mlaursen/utils";
+import type { OverridableStringUnion } from "@mlaursen/utils";
 
 export interface IconButtonWidthOverrides {}
 export type DefaultIconButtonWidth = "narrow" | "wide";

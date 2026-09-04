@@ -1,12 +1,12 @@
-import { type CSSResultArray } from "lit";
+import type { CSSResultArray } from "lit";
 import { property } from "lit/decorators.js";
 
-import {
-  type StylableLitElement,
-  type StyledLitElementWithProperties,
+import type {
+  StylableLitElement,
+  StyledLitElementWithProperties,
 } from "../types.js";
 import marginStyles from "./margin-styles.js";
-import { type Margin, type MarginProperties } from "./types.js";
+import type { Margin, MarginProperties } from "./types.js";
 
 export function MarginMixin<T extends StylableLitElement>(
   Base: T,

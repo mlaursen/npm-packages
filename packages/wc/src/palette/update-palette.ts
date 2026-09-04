@@ -1,18 +1,14 @@
 import { camelCase } from "@mlaursen/utils";
-import {
-  LitElement,
-  type PropertyValues,
-  type TemplateResult,
-  html,
-} from "lit";
+import type { PropertyValues, TemplateResult } from "lit";
+import { LitElement, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
 
 import { contrastColor } from "../utils/luminance.js";
-import {
-  type AllPaletteTokenName,
-  type CamelCaseContainerColor,
-  type ColorScheme,
-  type PaletteTokenProperties,
+import type {
+  AllPaletteTokenName,
+  CamelCaseContainerColor,
+  ColorScheme,
+  PaletteTokenProperties,
 } from "./types.js";
 import styles from "./update-palette-styles.js";
 import {

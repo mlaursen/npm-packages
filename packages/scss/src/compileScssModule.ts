@@ -1,7 +1,9 @@
-import postcss, { type Result } from "postcss";
+import type { Result } from "postcss";
+import postcss from "postcss";
 import selectorParser from "postcss-selector-parser";
 
-import { type CompileScssOptions, compileScss } from "./compileScss.js";
+import type { CompileScssOptions } from "./compileScss.js";
+import { compileScss } from "./compileScss.js";
 import { GLOBAL_SCOPE, LOCAL_SCOPE } from "./constants.js";
 import { getFakeCssModuleClassName } from "./utils.js";
 

@@ -1,6 +1,6 @@
-import { type OverridableStringUnion } from "@mlaursen/utils";
+import type { OverridableStringUnion } from "@mlaursen/utils";
 
-import { type DefaultComponentSize } from "../types.js";
+import type { DefaultComponentSize } from "../types.js";
 
 export interface AppBarSizeOverrides {}
 export type DefaultAppBarSize =

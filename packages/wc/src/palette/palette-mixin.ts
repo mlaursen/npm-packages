@@ -1,15 +1,15 @@
-import { type CSSResultArray } from "lit";
+import type { CSSResultArray } from "lit";
 import { property } from "lit/decorators.js";
 
-import {
-  type StylableLitElement,
-  type StyledLitElementWithProperties,
+import type {
+  StylableLitElement,
+  StyledLitElementWithProperties,
 } from "../types.js";
 import paletteStyles from "./palette-styles.js";
-import {
-  type PaletteBackgroundColor,
-  type PaletteProperties,
-  type PaletteTextColor,
+import type {
+  PaletteBackgroundColor,
+  PaletteProperties,
+  PaletteTextColor,
 } from "./types.js";
 
 export function PaletteMixin<T extends StylableLitElement>(

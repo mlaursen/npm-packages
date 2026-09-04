@@ -1,10 +1,5 @@
-import {
-  LitElement,
-  type PropertyValues,
-  type TemplateResult,
-  html,
-  nothing,
-} from "lit";
+import type { PropertyValues, TemplateResult } from "lit";
+import { LitElement, html, nothing } from "lit";
 import { customElement, property, query, state } from "lit/decorators.js";
 import { classMap } from "lit/directives/class-map.js";
 import { ifDefined } from "lit/directives/if-defined.js";
@@ -15,10 +10,10 @@ import "../dialog-header/dialog-header.js";
 import "../dialog-title/dialog-title.js";
 import { FocusTrapMixin } from "../focus/focus-trap-mixin.js";
 import { AnimateMixin } from "../transition/animate-mixin.js";
-import {
-  type AnimateOptions,
-  type AnimationList,
-  type GetAnimationMap,
+import type {
+  AnimateOptions,
+  AnimationList,
+  GetAnimationMap,
 } from "../transition/types.js";
 import { isSlotted } from "../utils/slots.js";
 import {
@@ -26,14 +21,14 @@ import {
   DEFAULT_DIALOG_OPEN_ANIMATION,
 } from "./constants.js";
 import styles from "./dialog-styles.js";
-import {
-  type AnimateDialogElementMap,
-  type CloseDialogOptions,
-  type DialogProperties,
-  type DialogShape,
-  type DialogType,
-  type DialogWidth,
-  type RenderDialogOptions,
+import type {
+  AnimateDialogElementMap,
+  CloseDialogOptions,
+  DialogProperties,
+  DialogShape,
+  DialogType,
+  DialogWidth,
+  RenderDialogOptions,
 } from "./types.js";
 
 const BaseDialog = AnimateMixin(FocusTrapMixin(LitElement));
@@ -283,7 +278,7 @@ export class Dialog extends BaseDialog implements DialogProperties {
     `;
   }
 
-  // this is just added to provide the correct type definitions
+  // this is just added to provide the correct definitions
   override close(options?: CloseDialogOptions): Promise<void> {
     return super.close(options);
   }

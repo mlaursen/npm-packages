@@ -1,5 +1,5 @@
 import { camelCase } from "./camelCase.js";
-import { type PascalCase } from "./types.js";
+import type { PascalCase } from "./types.js";
 import { upperFirst } from "./upperFirst.js";
 
 /**

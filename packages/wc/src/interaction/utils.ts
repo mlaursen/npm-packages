@@ -1,13 +1,13 @@
 import { Duration, Easing } from "../transition/constants.js";
-import { type AnimateElementArgs } from "../transition/types.js";
-import { type Point } from "../types.js";
+import type { AnimateElementArgs } from "../transition/types.js";
+import type { Point } from "../types.js";
 import {
   RIPPLE_INITIAL_SCALE,
   RIPPLE_PADDING,
   RIPPLE_SOFT_EDGE_MIN_SIZE,
   RIPPLE_SOFT_EDGE_RATIO,
 } from "./constants.js";
-import { type RippleAnimateOptions } from "./types.js";
+import type { RippleAnimateOptions } from "./types.js";
 
 export function isTouchEvent(event: PointerEvent): boolean {
   return event.pointerType === "touch";
