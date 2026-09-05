@@ -34,21 +34,6 @@ import type {
 const BaseDialog = AnimateMixin(FocusTrapMixin(LitElement));
 
 /**
- * Dialogs are built with the following slots:
- * - rendered in `mwc-dialog-header`:
- *   - `title` - the main title for the dialog
- *   - `icon` - an icon rendered in the header above the title
- *   - `header` - any custom content that is rendered after the optional `title` and `icon`
- *   - the `mwc-dialog-header` will be hidden if none of the slots were provided
- * - rendered in `mwc-dialog-content`:
- *   - `content` - any content to display in the dialog within a scrollable area
- *   - the `mwc-dialog-content` will be hidden if none of the slots were provided
- * - rendered in `mwc-dialog-actions`:
- *   - `actions` - generally buttons used to confirm or cancel
- *   - the `mwc-dialog-actions` will be hidden if none of the slots were provided
- * - rendered in the `dialog` element:
- *   - default slot
- *
  * The dialog's open state can be controlled any of the following:
  * - toggling the `open` attribute
  * - using a `mwc-button` with `command`/`commandfor`
@@ -90,6 +75,41 @@ const BaseDialog = AnimateMixin(FocusTrapMixin(LitElement));
  *   </mwc-text-button>
  * </mwc-dialog>
  * ```
+ *
+ * NOTE: The `<mwc-dialog-header>` will be hidden if the `title`, `icon`, and
+ * `header` slots are not provided.
+ * NOTE: The `<mwc-dialog-content>` will be hidden if the `content` slot was not
+ * provided.
+ * NOTE: The `<mwc-dialog-actions>` will be hidden if the `actions` slot was not
+ * provided.
+ *
+ * @slot - The default slot that should only be used if none of the default
+ * styling should be used. This is placed after all the other slots but before
+ * the last focus trap
+ * @slot title - An optional slot that will be rendered in
+ * the`<mwc-dialog-header>` in the `title` slot
+ * @slot icon - An optional slot that will be rendered in
+ * the`<mwc-dialog-header>` above the `title`
+ * @slot header - An optional slot for rendering any custom content in the
+ * `<mwc-dialog-header>` after the `title` and `icon`
+ * @slot content - An optional slot where the main content of the dialog should
+ * be placed. It will be rendered within the `<mwc-dialog-content>` so that
+ * scrolling and default padding is provided.
+ * @slot dialog-header - An optional slot that can be used if the
+ * `<mwc-dialog-header>` slots do not work for your use case.
+ * @slot dialog-content - An optional slot that can be used if the default
+ * `<mwc-dialog-content>` slot does not work for your use case.
+ * @slot dialog-actions - An optional slot that can be used if the default
+ * `<mwc-dialog-actions>` slot does not work for your use case
+ *
+ * @fires {Event} open - Fired before the show animation occurs and can be used
+ * to cancel opening the element by calling `event.preventDefault()`.
+ * @fires {Event} opened - Fired once the element has opened and the animations
+ * have completed.
+ * @fires {Event} close - Fired before the hide animation occurs and can be
+ * used to cancel closing the element by calling `event.preventDefault()`.
+ * @fires {Event} closed - Fired once the element has closed and the animations
+ * have completed.
  */
 @customElement("mwc-dialog")
 export class Dialog extends BaseDialog implements DialogProperties {

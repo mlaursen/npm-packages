@@ -83,6 +83,20 @@ export type CamelCaseContainerColor = CamelCase<ContainerColor>;
 export type CamelCaseOnContainerColor = CamelCase<OnContainerColor>;
 
 export interface PaletteProperties {
+  /**
+   * Set an optional background from one of the palette colors. If the
+   * background has a `on-S{background}` variant, it is also applied as the
+   * `color`.
+   *
+   * For example:
+   *
+   * `background="primary"` -> `background: var(--mwc-primary); color: var(--mwc-on-primary`
+   * `background="surface-bright"` -> `background: var(--mwc-surface-bright)`
+   */
   background?: PaletteBackgroundColor;
+
+  /**
+   * Set an optional text color from one of the palette colors.
+   */
   color?: PaletteTextColor;
 }

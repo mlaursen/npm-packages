@@ -14,8 +14,7 @@ export function AnimateMixin<T extends LitConstructor>(
     extends BaseAnimateMixin(Base)
     implements AnimatedElementProperties
   {
-    _opening = false;
-
+    #opening = false;
     #connectedResolvers = Promise.withResolvers<undefined>();
 
     override connectedCallback(): void {
@@ -56,12 +55,12 @@ export function AnimateMixin<T extends LitConstructor>(
 
     async show(options: BaseAnimateOptions = {}): Promise<void> {
       const { animate } = options;
-      this._opening = true;
+      this.#opening = true;
 
       await this.#connectedResolvers.promise;
       await this.updateComplete;
-      if (!this._opening || !this._isOpenable()) {
-        this._opening = false;
+      if (!this.#opening || !this._isOpenable()) {
+        this.#opening = false;
         return;
       }
 
@@ -71,27 +70,27 @@ export function AnimateMixin<T extends LitConstructor>(
       );
       if (canceled) {
         this._onOpenCanceled();
-        this._opening = false;
+        this.#opening = false;
         return;
       }
 
       this._showElement();
       await this._animate({ animate, opening: true });
       this.dispatchEvent(new Event("opened"));
-      this._opening = false;
+      this.#opening = false;
     }
 
     async close(options: BaseAnimateOptions = {}): Promise<void> {
       const { animate } = options;
 
-      this._opening = false;
+      this.#opening = false;
       if (!this.isConnected) {
         this._onNotConnectedClose();
         return;
       }
 
       await this.updateComplete;
-      if (this._opening || !this._isClosable()) {
+      if (this.#opening || !this._isClosable()) {
         this._onNotClosable();
         return;
       }

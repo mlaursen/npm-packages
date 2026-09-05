@@ -144,24 +144,32 @@ export interface PopoverProperties extends AnimatedElementProperties {
   /**
    * Convenience query element for the popover itself. Used for the
    * {@link showPopover} and {@link hidePopover}.
+   *
+   * @sealed
    */
   _popover?: HTMLSpanElement;
 
   /**
    * Convenience query for the `<div id="popover-content">`. Used for
    * animations.
+   *
+   * @sealed
    */
   _popoverContent?: HTMLDivElement;
 
   /**
    * This is mostly used internally to handle click events on the popover
    * target.
+   *
+   * @sealed
    */
   _popoverTarget?: HTMLSlotElement;
 
   /**
    * This will be `true` when the `<slot name="popover-target">` has at least
    * one element.
+   *
+   * @sealed
    */
   _hasPopoverTarget: boolean;
 
@@ -170,23 +178,59 @@ export interface PopoverProperties extends AnimatedElementProperties {
    * element.
    *
    * @example Main Usage
-   * ```ts
-   * override render(): TemplateResult {
-   *   return this.renderPopoverTarget({
-   *     target: html`This is an optional default slot value for the <slot name="target">`,
-   *     content: html`<slot name="content"></slot>`,
-   *   });
-   * }
-   * ```
+```ts
+protected override render(): TemplateResult {
+  return this.renderPopover({
+    content: html`<slot name="tooltip"></slot>`,
+  });
+}
+```
+   *
+   * @sealed
    */
   renderPopover(options?: RenderPopoverTargetOptions): TemplateResult;
 
   /**
    * This should be used when the popover element needs to be customized (like
    * dialogs) and the only part that is required is the popover-target slot.
+   *
+   * @example Main Usage
+```ts
+override render(): TemplateResult {
+  return this.renderPopoverTarget({
+    target: html`This is an optional default slot value for the <slot name="target">`,
+    content: html`<slot name="content"></slot>`,
+  });
+}
+```
+   *
+   * @sealed
    */
   renderPopoverTarget(target?: TemplateResult): TemplateResult;
 
+  /**
+   * This can be used to override the animation used when showing the popover.
+   * The default animation is a simple opacity transition that can be
+   * customized using the following custom properties:
+   * - `--mwc-popover-closed-opacity` - defaults to `0`
+   * - `--mwc-popover-closed-transform` - defaults to `scale(1)`
+   * - `--mwc-popover-open-opacity` - defaults to `1`
+   * - `--mwc-popover-open-transform` - defaults to `scale(1)`
+   *
+   * @virtual
+   */
   getShowPopoverAnimation: GetAnimationMap<AnimatePopoverElementMap>;
+
+  /**
+   * This can be used to override the animation used when hiding the popover.
+   * The default animation is a simple opacity transition that can be
+   * customized using the following custom properties:
+   * - `--mwc-popover-closed-opacity` - defaults to `0`
+   * - `--mwc-popover-closed-transform` - defaults to `scale(1)`
+   * - `--mwc-popover-open-opacity` - defaults to `1`
+   * - `--mwc-popover-open-transform` - defaults to `scale(1)`
+   *
+   * @virtual
+   */
   getHidePopoverAnimation: GetAnimationMap<AnimatePopoverElementMap>;
 }

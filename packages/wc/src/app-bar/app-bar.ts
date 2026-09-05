@@ -20,38 +20,61 @@ const BaseAppBar = PaletteMixin(LitElement);
 /**
  * This example will use an app bar stuck to the top of the page with
  * `position: sticky` and show box-shadow once the user has scrolled the page:
+ *
  * @example Full Example
- * ```ts
- * <mwc-app-bar>
- *   <mwc-icon-button slot="nav">
- *     <mwc-material-symbol>menu</mwc-material-symbol>
- *   </mwc-icon-button>
- *
- *   <!-- any element can be used with `slot="title"` -->
- *   <div slot="title">Main Title</div>
- *
- *   <!-- 0 to many actions that will be pushed to the end using `slot="actions"` -->
- *   <mwc-icon-button slot="actions">
- *     <mwc-material-symbol>
- *       search
- *     </mwc-material-symbol>
- *   </mwc-icon-button>
- *   <mwc-icon-button slot="actions">
- *     <mwc-material-symbol>
- *       calendar_month
- *     </mwc-material-symbol>
- *   </mwc-icon-button>
- * </mwc-app-bar>
- * ```
+```html
+<mwc-app-bar>
+  <mwc-icon-button slot="nav">
+    <mwc-material-symbol>menu</mwc-material-symbol>
+  </mwc-icon-button>
+
+  <!-- any element can be used with `slot="title"` -->
+  <div slot="title">Main Title</div>
+
+  <!-- 0 to many actions that will be pushed to the end using `slot="actions"` -->
+  <mwc-icon-button slot="actions">
+    <mwc-material-symbol>
+      search
+    </mwc-material-symbol>
+  </mwc-icon-button>
+  <mwc-icon-button slot="actions">
+    <mwc-material-symbol>
+      calendar_month
+    </mwc-material-symbol>
+  </mwc-icon-button>
+</mwc-app-bar>
+```
  *
  * This example shows how you can just render a static toolbar without any positioning
  * within the viewport and disabling the default layout behavior:
+ *
  * @example Static Example
- * ```ts
- * <mwc-app-bar scroll-behavior="static" variant="custom">
- *   <mwc-app-bar-title>App Bar Title</mwc-app-bar-title>
- * </mwc-app-bar>
- * ```
+```html
+<mwc-app-bar scroll-behavior="static" variant="custom">
+  <mwc-app-bar-title>App Bar Title</mwc-app-bar-title>
+</mwc-app-bar>
+```
+ *
+ * @slot - The default slot for the app bar content body. This should only be
+ * used if the content does not satisfy the other slots and is placed after all
+ * the other slots.
+ * @slot nav - An optional navigation button which should generally be an icon
+ * button. This is placed at the start of the app bar.
+ * @slot search - An optional slot for rendering a search input. Currently not
+ * implemented.
+ * @slot title - An optional slot for rendering a title within the app bar.
+ * This is automatically wrapped in the `<mwc-app-bar-title>`. Use the
+ * `title-container` slot if more customization is required.
+ * @slot subtitle - An optional slot for rendering the subtitle in the
+ * `<mwc-app-bar-title>`
+ * @slot actions - An slot optional slot that can be repeated to place multiple
+ * actions at the end of the app bar. The actions should normally be buttons or
+ * links.
+ * @slot title-container - An optional slot to override the default
+ * `<mwc-app-bar-title>` behavior within the app bar. If this is provided the
+ * `title` and `subtitle` slots will no longer be applicable.
+ * @slot actions-container - An optional slot to override the default `actions`
+ * grid placement. You probably don't want to use this.
  */
 @customElement("mwc-app-bar")
 export class AppBar extends BaseAppBar implements AppBarProperties {

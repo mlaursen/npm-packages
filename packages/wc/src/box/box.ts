@@ -16,6 +16,48 @@ import type {
 
 const BaseBox = PaletteMixin(MarginMixin(LitElement));
 
+/**
+ * This example uses the box to add default padding and spacing around the four
+ * items in a flex layout with `align-items: center`:
+ *
+ * @example Simple Flex Layout
+```html
+<mwc-box>
+  <div>Item 1</div>
+  <div>Item 2</div>
+  <div>Item 3</div>
+  <div>Item 4</div>
+</mwc-box>
+```
+ *
+ * This example just shows some of the flex layout configuration available by
+ * removing the padding and gap, stacking items, and stretching content.
+ *
+ * @example Simple Flex Layout
+```html
+<mwc-box align="stretch" justify="stretch" stacked padding="none" gap="none">
+  <div>Item 1</div>
+  <div>Item 2</div>
+  <div>Item 3</div>
+  <div>Item 4</div>
+</mwc-box>
+```
+ *
+ * This example uses the box to add default padding and spacing around the four items
+ * in a grid layout that uses `auto-fit` behavior by default:
+ *
+ * @example Simple Grid Layout
+```html
+<mwc-box grid>
+  <div>Item 1</div>
+  <div>Item 2</div>
+  <div>Item 3</div>
+  <div>Item 4</div>
+</mwc-box>
+```
+ *
+ * @slot - The default slot for the content body.
+ */
 @customElement("mwc-box")
 export class Box extends BaseBox implements BoxProperties {
   static override styles = [...BaseBox.styles, boxStyles];

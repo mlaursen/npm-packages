@@ -3,60 +3,35 @@ import { LitElement, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
 
 import styles from "./object-fit-styles.js";
-import type { ObjectFitVariant } from "./types.js";
+import type { ObjectFitProperties, ObjectFitVariant } from "./types.js";
 
+/**
+ * @example Simple Image Card Grid
+```html
+<mwc-box grid align="stretch" full-width>
+  <mwc-card align="center" justify="center">
+    <mwc-object-fit>
+      <img src="https://picsum.photos/200/300?image=30" alt="" />
+    </mwc-object-fit>
+  </mwc-card>
+  <mwc-card align="center" justify="center">
+    <mwc-object-fit>
+      <img src="https://picsum.photos/300/200?image=3" alt="" />
+    </mwc-object-fit>
+  </mwc-card>
+</mwc-box>
+```
+ *
+ * @slot - The default slot for the content body. This should generally be an
+ * `<img>`, `<video>`, `<media>`, `<object>`, `<embed>`, etc.
+ */
 @customElement("mwc-object-fit")
-export class ObjectFit extends LitElement {
+export class ObjectFit extends LitElement implements ObjectFitProperties {
   static override styles = styles;
 
-  /**
-   * Setting this to `true` will ignore the `variant` attribute and behave as
-   * `"scale-down"`. This really just allows for the scaled down version to be
-   * placed at different edges of a flex/grid container instead of being forced
-   * within the center.
-   *
-   * ```
-   * scale down
-   * -----------
-   * |         |
-   * |   xxx   |
-   * |         |
-   * -----------
-   *
-   * inline
-   * -----------
-   * |   xxx   |
-   * |         |
-   * |         |
-   * -----------
-   *
-   * scale down (inside display: flex; align-items: flex-start; justify-content: flex-end)
-   * -----------
-   * |         |
-   * |   xxx   |
-   * |         |
-   * -----------
-   *
-   * inline (inside display: flex; align-items: flex-start; justify-content: flex-end)
-   * -----------
-   * |         |
-   * |         |
-   * |xxx      |
-   * -----------
-   * ```
-   *
-   * @defaultValue `false`
-   */
   @property({ type: Boolean })
   inline = false;
 
-  /**
-   * This sets the `object-fit` property allowing the content to be resized to
-   * fit its container.
-   *
-   * @see {@link https://developer.mozilla.org/en-US/docs/Web/CSS/object-fit}
-   * @defaultValue `"contain"`
-   */
   @property()
   variant: ObjectFitVariant = "contain";
 

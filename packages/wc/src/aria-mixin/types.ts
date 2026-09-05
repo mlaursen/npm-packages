@@ -89,10 +89,32 @@ export type AriaRole =
   | "treeitem";
 
 export interface AriaMixinProperties extends ElementWithInternalsProperties {
+  /**
+   * The current aria role set to the element.
+   */
   role: AriaRole;
 
+  /**
+   * Public helper to determine if an element is considered disabled via aria
+   * role behavior.
+   *
+   * Override this function if the click and keyboard events should be
+   * prevented due to disabled states that are not one of these two.
+   *
+   * @return `true` if `disabled` or `aria-disabled === "true"`
+   */
   isDisabled(): boolean;
+
+  /**
+   * Public helper that prevents default behavior and stops propagation if
+   * {@link isDisabled}.
+   */
   handleClick(event: MouseEvent): void;
+
+  /**
+   * Public helper that triggers click events for elements when not
+   * {@link isDisabled} and the `Enter` or `Space` key has been pressed
+   */
   handleKeyDown(event: KeyboardEvent): void;
 }
 

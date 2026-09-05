@@ -57,43 +57,37 @@ export type AppBarScrollBehavior = OverridableStringUnion<
 
 export interface AppBarProperties {
   /**
+   * @see AppBarSize
+   * @inheritdoc AppBarSize
    * @defaultValue `"small"`
    */
-  size: AppBarSize;
+  size?: AppBarSize;
 
   /**
+   * @see AppBarVariant
+   * @inheritdoc AppBarVariant
    * @defaultValue `"flexible"`
    */
-  variant: AppBarVariant;
+  variant?: AppBarVariant;
 
   /**
+   * @see AppBarPosition
+   * @inheritdoc AppBarPosition
    * @defaultValue `"top"`
    */
-  position: AppBarPosition;
+  position?: AppBarPosition;
 
   /**
    * @defaultValue `"sticky"`
    */
-  scrollBehavior: AppBarScrollBehavior;
+  scrollBehavior?: AppBarScrollBehavior;
 
   /**
-   * @defaultValue `false`
+   * This property should normally not be set manually as it is automatically
+   * set using an Intersection Observer. It is used to add additional box
+   * shadow when scrolled and elevated
    */
-  disableActions?: boolean;
-
-  /**
-   * @defaultValue `false`
-   */
-  disableElevation?: boolean;
-
-  /**
-   * Set this to `true` if you do not want to render the default
-   * `mwc-app-bar-title` and related slots. This should really only be required
-   * if styling is messed up for some reason.
-   *
-   * @defaultValue `false`
-   */
-  disableTitle?: boolean;
+  scrolled?: boolean;
 
   /**
    * Set this to `true` to enable the subtitle slot in the default
@@ -105,27 +99,32 @@ export interface AppBarProperties {
   subtitle?: boolean;
 
   /**
-   * @defaultValue `"start"`
-   */
-  titlePosition?: AppBarTitlePosition;
-}
-
-export interface AppBarTitleProperties {
-  /**
-   * @defaultValue `"small"`
-   */
-  size: AppBarSize;
-
-  /**
-   * Set this to `true` when providing a
-   * `<div slot="subtitle">Subtitle message</div>` to get the correct styling.
+   * Set this to `true` if you do not want to render the default
+   * `mwc-app-bar-title` and related slots. This should really only be required
+   * if styling is messed up for some reason.
    *
    * @defaultValue `false`
    */
-  subtitle?: boolean;
+  disableTitle?: boolean;
 
   /**
    * @defaultValue `"start"`
    */
-  position: AppBarTitlePosition;
+  titlePosition?: AppBarTitlePosition;
+
+  /**
+   * Set this to `true` to prevent rendering everything related to the
+   * `actions` slot.
+   *
+   * @defaultValue `false`
+   */
+  disableActions?: boolean;
+
+  /**
+   * Set this to `true` remove the elevation from the app bar and just render
+   * with borders.
+   *
+   * @defaultValue `false`
+   */
+  disableElevation?: boolean;
 }

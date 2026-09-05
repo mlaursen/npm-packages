@@ -29,7 +29,10 @@ export function BaseAnimateMixin<T extends LitConstructor>(
       this.#animationController?.abort();
     }
 
-    _animations: Animation[] = [];
+    /**
+     * This is the current list of running animations.
+     */
+    #animations: Animation[] = [];
 
     _getAnimations(_options: BaseAnimateOptions): AnimationList {
       return [];
@@ -39,7 +42,7 @@ export function BaseAnimateMixin<T extends LitConstructor>(
       this.#animationController?.abort();
       this.#animationController = new AbortController();
 
-      this._animations = [];
+      this.#animations = [];
       const animations = this._getAnimations(options);
       if (animations.length === 0) {
         return;
@@ -61,7 +64,7 @@ export function BaseAnimateMixin<T extends LitConstructor>(
 
           for (const args of animationArgs) {
             const animation = element.animate(...args);
-            this._animations.push(animation);
+            this.#animations.push(animation);
             this.#animationController.signal.addEventListener("abort", () => {
               animation.cancel();
             });

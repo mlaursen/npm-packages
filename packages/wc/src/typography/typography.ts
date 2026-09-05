@@ -24,6 +24,11 @@ const BaseTypography = PaletteMixin(MarginMixin(LitElement));
  *   <p>This is a large body typography variant</p>
  * </mwc-typography>
  * ```
+ *
+ * @slot - The default content slot. This should always be an element instead
+ * of raw text to gain the correct styling. This should generally be one of:
+ * `<h1>`, `<h2>`, `<h3>`, `<h4>`, `<h5>`, `<h6>`, `<p>`, `<label>`, `<li>`,
+ * `<span>`, or `<div>` but any non-custom element is supported.
  */
 @customElement("mwc-typography")
 export class Typography extends BaseTypography implements TypographyProperties {

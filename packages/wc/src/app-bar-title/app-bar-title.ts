@@ -2,15 +2,31 @@ import type { TemplateResult } from "lit";
 import { LitElement, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
 
-import type {
-  AppBarSize,
-  AppBarTitlePosition,
-  AppBarTitleProperties,
-} from "../app-bar/types.js";
+import type { AppBarSize, AppBarTitlePosition } from "../app-bar/types.js";
 import type { TypographySize, TypographyVariant } from "../typography/types.js";
 import "../typography/typography.js";
 import styles from "./app-bar-title-styles.js";
+import type { AppBarTitleProperties } from "./types.js";
 
+/**
+ * This component should generally be used with the `mwc-app-bar` as it is just
+ * a single wrapper around the typography styles for alignment within the app
+ * bar.
+ *
+ * @example Simple Example
+```html
+<mwc-app-bar>
+  <mwc-app-bar-title>App Bar Title</mwc-app-bar-title>
+</mwc-app-bar>
+```
+ *
+ * @slot - The default slot for the app bar title content body. This is
+ * rendered within the `<mwc-typography>` element with `size` and `variant`
+ * applied.
+ * @slot subtitle - An optional slot used to render a subtitle below the main
+ * slot content. This is rendered within the `<mwc-typography>` element with
+ * the `size`, `variant`, and `color="on-surface-variant"` applied.
+ */
 @customElement("mwc-app-bar-title")
 export class AppBarTitle extends LitElement implements AppBarTitleProperties {
   static override styles = styles;

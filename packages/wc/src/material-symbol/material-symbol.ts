@@ -22,6 +22,10 @@ const LIVE_STYLE_PROPERTIES = [
 ] as const;
 type LiveStyleProperty = (typeof LIVE_STYLE_PROPERTIES)[number];
 
+/**
+ * @slot - The default content slot that should just be the name of one of the
+ * valid material symbols.
+ */
 @customElement("mwc-material-symbol")
 export class MaterialSymbol extends Icon implements MaterialSymbolProperties {
   static override styles = [...Icon.styles, styles];
