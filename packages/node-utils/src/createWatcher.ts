@@ -37,7 +37,7 @@ export function createWatcher({
   watcher.on("ready", () => {
     ready = true;
     enableLogger();
-    log("Watching changes...");
+    log("Watching for file changes.");
     if (quiet) {
       disableLogger();
     }

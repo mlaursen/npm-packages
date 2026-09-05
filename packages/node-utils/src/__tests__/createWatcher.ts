@@ -51,7 +51,9 @@ describe("createWatcher", () => {
     );
 
     watcher.emit("ready");
-    expect(logMock).toHaveBeenCalledExactlyOnceWith("Watching changes...");
+    expect(logMock).toHaveBeenCalledExactlyOnceWith(
+      "Watching for file changes.",
+    );
     expect(enableLoggerMock).toHaveBeenCalledTimes(1);
     expect(onRemove).not.toHaveBeenCalled();
     expect(onAddOrChange).toHaveBeenCalledExactlyOnceWith(
