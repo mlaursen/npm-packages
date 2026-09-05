@@ -1,6 +1,6 @@
 import type { TemplateResult } from "lit";
 import { html } from "lit";
-import { customElement, property } from "lit/decorators.js";
+import { property } from "lit/decorators.js";
 
 import { Icon } from "../icon/icon.js";
 import styles from "./svg-icon-styles.js";
@@ -25,7 +25,6 @@ import type { SvgIconProperties } from "./types.js";
  * </mwc-svg-icon>
  * ```
  */
-@customElement("mwc-svg-icon")
 export class SvgIcon extends Icon implements SvgIconProperties {
   static override styles = [...Icon.styles, styles];
 
@@ -43,11 +42,5 @@ export class SvgIcon extends Icon implements SvgIconProperties {
 
   override render(): TemplateResult {
     return html`<slot @slotchange=${this.#handleSlotChange}></slot>`;
-  }
-}
-
-declare global {
-  interface HTMLElementTagNameMap {
-    "mwc-svg-icon": SvgIcon;
   }
 }

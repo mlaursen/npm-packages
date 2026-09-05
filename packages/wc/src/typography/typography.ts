@@ -1,6 +1,6 @@
 import type { TemplateResult } from "lit";
 import { LitElement } from "lit";
-import { customElement, property } from "lit/decorators.js";
+import { property } from "lit/decorators.js";
 import { html } from "lit/static-html.js";
 
 import { MarginMixin } from "../margin/margin-mixin.js";
@@ -30,7 +30,6 @@ const BaseTypography = PaletteMixin(MarginMixin(LitElement));
  * `<h1>`, `<h2>`, `<h3>`, `<h4>`, `<h5>`, `<h6>`, `<p>`, `<label>`, `<li>`,
  * `<span>`, or `<div>` but any non-custom element is supported.
  */
-@customElement("mwc-typography")
 export class Typography extends BaseTypography implements TypographyProperties {
   static override styles = [...BaseTypography.styles, styles];
 
@@ -45,11 +44,5 @@ export class Typography extends BaseTypography implements TypographyProperties {
 
   protected override render(): TemplateResult {
     return html`<slot></slot>`;
-  }
-}
-
-declare global {
-  interface HTMLElementTagNameMap {
-    "mwc-typography": Typography;
   }
 }

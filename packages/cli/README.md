@@ -20,7 +20,7 @@ My normal setup is:
    "scripts": {
      "clean-dist": "rm -rf dist",
      "clean-cache": "rm -rf .turbo node_modules",
-     "clean": "concurrently 'pnpm clean-dist' 'pnpm clean-cache'",
+     "clean": "pnpm clean-dist; pnpm clean-cache",
      "build-esm": "swc -d ./dist --strip-leading-paths src",
      "build-esm-watch": "pnpm build-esm --watch",
      "build-types": "tsc -P tsconfig.types.json",

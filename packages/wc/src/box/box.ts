@@ -1,6 +1,6 @@
 import type { PropertyValues, TemplateResult } from "lit";
 import { LitElement, html, isServer } from "lit";
-import { customElement, property } from "lit/decorators.js";
+import { property } from "lit/decorators.js";
 
 import { MarginMixin } from "../margin/margin-mixin.js";
 import { PaletteMixin } from "../palette/palette-mixin.js";
@@ -58,7 +58,6 @@ const BaseBox = PaletteMixin(MarginMixin(LitElement));
  *
  * @slot - The default slot for the content body.
  */
-@customElement("mwc-box")
 export class Box extends BaseBox implements BoxProperties {
   static override styles = [...BaseBox.styles, boxStyles];
 
@@ -121,11 +120,5 @@ export class Box extends BaseBox implements BoxProperties {
     } else {
       this.style.removeProperty(property);
     }
-  }
-}
-
-declare global {
-  interface HTMLElementTagNameMap {
-    "mwc-box": Box;
   }
 }

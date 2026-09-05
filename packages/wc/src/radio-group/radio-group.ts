@@ -1,6 +1,5 @@
 import type { TemplateResult } from "lit";
 import { LitElement, html } from "lit";
-import { customElement } from "lit/decorators.js";
 
 import { NOT_DISABLED_OR_HIDDEN } from "../focus/constants.js";
 import { requiredValidator } from "../form-control/required-validator.js";
@@ -32,7 +31,6 @@ interface CheckableElement extends HTMLElement {
  * </mwc-radio-group>
  * ```
  */
-@customElement("mwc-radio-group")
 export class RadioGroup extends BaseRadioGroup {
   static formAssociated = true;
   #syncFrame = 0;
@@ -247,11 +245,5 @@ export class RadioGroup extends BaseRadioGroup {
       check: (node): node is CheckableElement =>
         node instanceof HTMLElement && node.matches(query),
     });
-  }
-}
-
-declare global {
-  interface HTMLElementTagNameMap {
-    "mwc-radio-group": RadioGroup;
   }
 }

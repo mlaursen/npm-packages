@@ -1,6 +1,6 @@
 import type { TemplateResult } from "lit";
 import { html } from "lit";
-import { customElement, property } from "lit/decorators.js";
+import { property } from "lit/decorators.js";
 import { ifDefined } from "lit/directives/if-defined.js";
 
 import { Dialog } from "../dialog/dialog.js";
@@ -22,7 +22,6 @@ import type {
 
 const BaseSheet = Dialog;
 
-@customElement("mwc-sheet")
 export class Sheet extends BaseSheet implements SheetProperties {
   static override styles = [...BaseSheet.styles, styles];
 
@@ -93,11 +92,5 @@ export class Sheet extends BaseSheet implements SheetProperties {
   #handleSlotChange(event: Event): void {
     this._hasTitle = isSlotted(event);
     this._hasHeader = this._hasTitle || this.backButton || this.closeButton;
-  }
-}
-
-declare global {
-  interface HTMLElementTagNameMap {
-    "mwc-sheet": Sheet;
   }
 }

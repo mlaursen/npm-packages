@@ -1,13 +1,9 @@
 import type { PropertyValues, TemplateResult } from "lit";
 import { LitElement, html, nothing } from "lit";
-import { customElement, property, query, state } from "lit/decorators.js";
+import { property, query, state } from "lit/decorators.js";
 import { classMap } from "lit/directives/class-map.js";
 import { ifDefined } from "lit/directives/if-defined.js";
 
-import "../dialog-actions/dialog-actions.js";
-import "../dialog-content/dialog-content.js";
-import "../dialog-header/dialog-header.js";
-import "../dialog-title/dialog-title.js";
 import { FocusTrapMixin } from "../focus/focus-trap-mixin.js";
 import { AnimateMixin } from "../transition/animate-mixin.js";
 import type {
@@ -111,7 +107,6 @@ const BaseDialog = AnimateMixin(FocusTrapMixin(LitElement));
  * @fires {Event} closed - Fired once the element has closed and the animations
  * have completed.
  */
-@customElement("mwc-dialog")
 export class Dialog extends BaseDialog implements DialogProperties {
   static override styles = [styles];
 
@@ -434,11 +429,5 @@ export class Dialog extends BaseDialog implements DialogProperties {
 
   #handleActionsSlotChange(event: Event): void {
     this._hasActions = isSlotted(event);
-  }
-}
-
-declare global {
-  interface HTMLElementTagNameMap {
-    "mwc-dialog": Dialog;
   }
 }

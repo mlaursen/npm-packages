@@ -1,6 +1,6 @@
 import type { PropertyValues } from "lit";
 import { html } from "lit";
-import { customElement, property } from "lit/decorators.js";
+import { property } from "lit/decorators.js";
 
 import { Icon } from "../icon/icon.js";
 import styles from "./material-symbol-styles.js";
@@ -26,7 +26,6 @@ type LiveStyleProperty = (typeof LIVE_STYLE_PROPERTIES)[number];
  * @slot - The default content slot that should just be the name of one of the
  * valid material symbols.
  */
-@customElement("mwc-material-symbol")
 export class MaterialSymbol extends Icon implements MaterialSymbolProperties {
   static override styles = [...Icon.styles, styles];
 
@@ -81,11 +80,5 @@ export class MaterialSymbol extends Icon implements MaterialSymbolProperties {
     if (!init && !value) {
       this.style.removeProperty(varName);
     }
-  }
-}
-
-declare global {
-  interface HTMLElementTagNameMap {
-    "mwc-material-symbol": MaterialSymbol;
   }
 }

@@ -35,24 +35,23 @@ types:
             <mwc-typography margin="top">
               <h3>{{ shape | capitalize }} {{ size | capitalize }}</h3>
             </mwc-typography>
-            {% set tagName = "mwc-" + variant + "-text-field" %}
             {% for state in textField.states %}
-              <{{ tagName }} placeholder="Placeholder" {{ state if state != "normal" }} type="{{ type }}" shape="{{ shape }}" size="{{ size }}">
-              <span slot="label">Label</span>
-              </{{ tagName }}>
-              <{{ tagName }} placeholder="Placeholder only" {{ state if state != "normal" }} type="{{ type }}" shape="{{ shape }}" size="{{ size }}">
-              </{{ tagName }}>
-              <{{ tagName }} {{ state if state != "normal" }} value="{{ "Hello, world!" }}" type="{{ type }}" shape="{{ shape }}" size="{{ size }}">
-              <span slot="label">{{ variant | capitalize }} {{ state | capitalize if state != "normal" }}</span>
-              </{{ tagName }}>
-              <{{ tagName }} placeholder="Placeholder only" {{ state if state != "normal" }} value="{{ "Placeholder only with value" }}" type="{{ type }}" shape="{{ shape }}" size="{{ size }}">
-              </{{ tagName }}>
+              <mwc-text-field variant="{{ variant }}" placeholder="Placeholder" {{ state if state != "normal" }} type="{{ type }}" shape="{{ shape }}" size="{{ size }}">
+                <span slot="label">Label</span>
+              </mwc-text-field>
+              <mwc-text-field variant="{{ variant }}" placeholder="Placeholder only" {{ state if state != "normal" }} type="{{ type }}" shape="{{ shape }}" size="{{ size }}">
+              </mwc-text-field>
+              <mwc-text-field variant="{{ variant }}" {{ state if state != "normal" }} value="{{ "Hello, world!" }}" type="{{ type }}" shape="{{ shape }}" size="{{ size }}">
+                <span slot="label">{{ variant | capitalize }} {{ state | capitalize if state != "normal" }}</span>
+              </mwc-text-field>
+              <mwc-text-field variant="{{ variant }}" placeholder="Placeholder only" {{ state if state != "normal" }} value="{{ "Placeholder only with value" }}" type="{{ type }}" shape="{{ shape }}" size="{{ size }}">
+              </mwc-text-field>
               <mwc-divider>
               </mwc-divider>
             {% endfor %}
-            <{{ tagName }} value="{{ "Hello, world!" }}" type="{{ type }}" shape="{{ shape }}" size="{{ size }}">
-            <span slot="label">This is a really long label that will cause issues!</span>
-            </{{ tagName }}>
+            <mwc-text-field variant="{{ variant }}" value="{{ "Hello, world!" }}" type="{{ type }}" shape="{{ shape }}" size="{{ size }}">
+              <span slot="label">This is a really long label that will cause issues!</span>
+            </mwc-text-field>
             {% if variant != textField.variants.at(-1) %}
               <mwc-divider>
               </mwc-divider>

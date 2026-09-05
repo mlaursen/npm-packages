@@ -1,6 +1,6 @@
 import type { TemplateResult } from "lit";
 import { LitElement, html } from "lit";
-import { customElement, property } from "lit/decorators.js";
+import { property } from "lit/decorators.js";
 
 import styles from "./object-fit-styles.js";
 import type { ObjectFitProperties, ObjectFitVariant } from "./types.js";
@@ -25,7 +25,6 @@ import type { ObjectFitProperties, ObjectFitVariant } from "./types.js";
  * @slot - The default slot for the content body. This should generally be an
  * `<img>`, `<video>`, `<media>`, `<object>`, `<embed>`, etc.
  */
-@customElement("mwc-object-fit")
 export class ObjectFit extends LitElement implements ObjectFitProperties {
   static override styles = styles;
 
@@ -37,11 +36,5 @@ export class ObjectFit extends LitElement implements ObjectFitProperties {
 
   override render(): TemplateResult {
     return html`<slot></slot>`;
-  }
-}
-
-declare global {
-  interface HTMLElementTagNameMap {
-    "mwc-object-fit": ObjectFit;
   }
 }

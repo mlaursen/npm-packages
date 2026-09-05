@@ -1,6 +1,6 @@
 import type { PropertyValues, TemplateResult } from "lit";
 import { LitElement, html, isServer } from "lit";
-import { customElement, property, query } from "lit/decorators.js";
+import { property, query } from "lit/decorators.js";
 
 import { AriaMixin } from "../aria-mixin/aria-mixin.js";
 import { FormControlMixin } from "../form-control/form-control-mixin.js";
@@ -44,7 +44,6 @@ const BaseCheckbox = FormControlMixin(
 const CHECKED = Symbol("checked");
 const INDETERMINATE = Symbol("indeterminate");
 
-@customElement("mwc-checkbox")
 export class Checkbox extends BaseCheckbox implements CheckboxProperties {
   static override styles = [...BaseCheckbox.styles, styles];
   static override formControlValidators = [requiredValidator];
@@ -239,10 +238,4 @@ export class Checkbox extends BaseCheckbox implements CheckboxProperties {
     this.checked = defaultChecked;
     this.indeterminate = defaultIndeterminate;
   };
-}
-
-declare global {
-  interface HTMLElementTagNameMap {
-    "mwc-checkbox": Checkbox;
-  }
 }

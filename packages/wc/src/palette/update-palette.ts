@@ -1,7 +1,7 @@
 import { camelCase } from "@mlaursen/utils";
 import type { PropertyValues, TemplateResult } from "lit";
 import { LitElement, html } from "lit";
-import { customElement, property } from "lit/decorators.js";
+import { property } from "lit/decorators.js";
 
 import { contrastColor } from "../utils/luminance.js";
 import type {
@@ -20,7 +20,6 @@ import {
   isRemainingPaletteProperty,
 } from "./update-palette-utils.js";
 
-@customElement("mwc-update-palette")
 export class UpdatePalette
   extends LitElement
   implements PaletteTokenProperties
@@ -366,11 +365,5 @@ export class UpdatePalette
 
   override render(): TemplateResult {
     return html`<slot></slot>`;
-  }
-}
-
-declare global {
-  interface HTMLElementTagNameMap {
-    "mwc-update-palette": UpdatePalette;
   }
 }

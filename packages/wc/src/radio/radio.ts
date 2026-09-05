@@ -1,6 +1,6 @@
 import type { PropertyValues, TemplateResult } from "lit";
 import { LitElement, html, isServer } from "lit";
-import { customElement, property, query } from "lit/decorators.js";
+import { property, query } from "lit/decorators.js";
 
 import { AriaMixin } from "../aria-mixin/aria-mixin.js";
 import { FormControlMixin } from "../form-control/form-control-mixin.js";
@@ -49,7 +49,6 @@ const CHECKED = Symbol("checked");
  * </mwc-radio-group>
  * ```
  */
-@customElement("mwc-radio")
 export class Radio extends BaseRadio implements RadioProperties {
   static override styles = [...BaseRadio.styles, styles];
 
@@ -186,10 +185,4 @@ export class Radio extends BaseRadio implements RadioProperties {
     this.#reset = this.checked !== defaultChecked;
     this.checked = defaultChecked;
   };
-}
-
-declare global {
-  interface HTMLElementTagNameMap {
-    "mwc-radio": Radio;
-  }
 }

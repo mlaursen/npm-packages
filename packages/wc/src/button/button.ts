@@ -1,9 +1,8 @@
 import type { PropertyValues, TemplateResult } from "lit";
 import { LitElement, html } from "lit";
-import { customElement, property } from "lit/decorators.js";
+import { property } from "lit/decorators.js";
 
 import { AriaMixin } from "../aria-mixin/aria-mixin.js";
-import "../elevation/elevation.js";
 import { InteractionMixin } from "../interaction/interaction-mixin.js";
 import { PASS_THROUGH_LINK_PROPS } from "../link/constants.js";
 import { MarginMixin } from "../margin/margin-mixin.js";
@@ -94,7 +93,6 @@ declare const CommandEvent: {
  * automatically applies gap between items so just place content as desired and
  * there will be spacing between.
  */
-@customElement("mwc-button")
 export class Button extends BaseButton implements ButtonProperties {
   static override styles = [...BaseButton.styles, styles];
 
@@ -328,11 +326,5 @@ export class Button extends BaseButton implements ButtonProperties {
     }
 
     return false;
-  }
-}
-
-declare global {
-  interface HTMLElementTagNameMap {
-    "mwc-button": Button;
   }
 }

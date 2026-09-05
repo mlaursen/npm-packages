@@ -1,6 +1,6 @@
 import type { PropertyValues, TemplateResult } from "lit";
 import { LitElement, html } from "lit";
-import { customElement, property, query, state } from "lit/decorators.js";
+import { property, query, state } from "lit/decorators.js";
 import { classMap } from "lit/directives/class-map.js";
 import { ifDefined } from "lit/directives/if-defined.js";
 import { live } from "lit/directives/live.js";
@@ -27,11 +27,6 @@ import type {
 const BaseStyledTextField = PaletteMixin(MarginMixin(LitElement));
 const BaseTextField = FormControlMixin(InternalsMixin(BaseStyledTextField));
 
-/**
- * This version of the text field should generally not be used and the
- * `mwc-filled-text-field` or `mwc-outlined-text-field` should be used instead.
- */
-@customElement("mwc-text-field")
 export class TextField extends BaseTextField implements TextFieldProperties {
   static override styles = [...BaseTextField.styles, styles];
   static override formControlValidators = [
@@ -449,6 +444,8 @@ export class TextField extends BaseTextField implements TextFieldProperties {
         @focus=${this.#handleFocusChange}
         @blur=${this.#handleFocusChange}
         @input=${this.#handleInput}
+        @change=${this.#redispatch}
+        @invalid=${this.#redispatch}
       />
     `;
   }
@@ -527,9 +524,20 @@ export class TextField extends BaseTextField implements TextFieldProperties {
     }
   }
 
+  #redispatch(event: Event): void {
+    this.dispatchEvent(
+      new Event(event.type, {
+        bubbles: true,
+        composed: true,
+      }),
+    );
+  }
+
   #handleInput(event: InputEvent): void {
     const target = event.currentTarget as HTMLInputElement;
     this.value = target.value;
+
+    this.#redispatch(event);
   }
 
   #handleFocusChange(): void {
@@ -624,11 +632,5 @@ export class TextField extends BaseTextField implements TextFieldProperties {
 
       resize.style.height = `${nextHeight}px`;
     }
-  }
-}
-
-declare global {
-  interface HTMLElementTagNameMap {
-    "mwc-text-field": TextField;
   }
 }

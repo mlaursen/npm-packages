@@ -1,6 +1,5 @@
 import type { TemplateResult } from "lit";
 import { LitElement, html } from "lit";
-import { customElement } from "lit/decorators.js";
 
 import { MarginMixin } from "../margin/margin-mixin.js";
 import { PopoverMixin } from "../popover/popover-mixin.js";
@@ -34,7 +33,6 @@ const BaseTooltip = MarginMixin(PopoverMixin(LitElement));
  * @fires {Event} closed - Fired once the element has closed and the animations
  * have completed.
  */
-@customElement("mwc-tooltip")
 export class Tooltip extends BaseTooltip implements TooltipProperties {
   static override styles = [...BaseTooltip.styles, styles];
 
@@ -45,11 +43,5 @@ export class Tooltip extends BaseTooltip implements TooltipProperties {
     return this.renderPopover({
       content: html`<slot name="tooltip"></slot>`,
     });
-  }
-}
-
-declare global {
-  interface HTMLElementTagNameMap {
-    "mwc-tooltip": Tooltip;
   }
 }

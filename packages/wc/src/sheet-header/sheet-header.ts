@@ -1,11 +1,10 @@
 import type { TemplateResult } from "lit";
 import { LitElement, html } from "lit";
-import { customElement, property } from "lit/decorators.js";
+import { property } from "lit/decorators.js";
 
 import styles from "./sheet-header-styles.js";
 import type { SheetHeaderAutoFocus, SheetHeaderProperties } from "./types.js";
 
-@customElement("mwc-sheet-header")
 export class SheetHeader extends LitElement implements SheetHeaderProperties {
   static override styles = styles;
 
@@ -66,11 +65,5 @@ export class SheetHeader extends LitElement implements SheetHeaderProperties {
         cancelable: true,
       }),
     );
-  }
-}
-
-declare global {
-  interface HTMLElementTagNameMap {
-    "mwc-sheet-header": SheetHeader;
   }
 }

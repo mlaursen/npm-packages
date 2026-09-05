@@ -41,7 +41,7 @@ pnpm add @mlaursen/wc
       }
     </script>
     <script type="module" blocking="render">
-      import "@mlaursen/wc";
+      import "@mlaursen/wc/define";
     </script>
   </head>
   <body>

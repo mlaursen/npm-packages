@@ -1,7 +1,7 @@
 import { spread } from "@open-wc/lit-helpers";
 import type { TemplateResult } from "lit";
 import { html } from "lit";
-import { customElement, property } from "lit/decorators.js";
+import { property } from "lit/decorators.js";
 
 import { Card } from "../card/card.js";
 import { InteractionMixin } from "../interaction/interaction-mixin.js";
@@ -10,7 +10,6 @@ import styles from "./link-card-styles.js";
 
 const BaseLinkCard = InteractionMixin(Card, true);
 
-@customElement("mwc-link-card")
 export class LinkCard extends BaseLinkCard {
   static override styles = [...BaseLinkCard.styles, styles];
   static override shadowRootOptions: ShadowRootInit = {
@@ -64,11 +63,5 @@ export class LinkCard extends BaseLinkCard {
         ${super.render()} ${this._renderStateLayer()} ${this._renderRipple()}
       </a>
     `;
-  }
-}
-
-declare global {
-  interface HTMLElementTagNameMap {
-    "mwc-link-card": LinkCard;
   }
 }

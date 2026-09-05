@@ -19,12 +19,13 @@
   },
   "type": "module",
   "exports": {
-    "./index": null,
-    "./*": "./dist/*.js",
     ".": {
       "sass": "./dist/_index.scss",
       "default": "./dist/index.js"
     },
+    "./define": "./dist/define.js",
+    "./*/define": "./dist/*/define.js",
+    "./standalone": "./dist/standalone.js",
     "./package.json": "./package.json"
   },
   "publishConfig": {
@@ -35,9 +36,9 @@
     "convert-material-theme": "pnpm node-run scripts/convert-material-theme.ts",
     "test-clean-generated": "git clean -ndX src",
     "clean-generated": "git clean -fdXq src",
-    "clean-dist": "rm -rf dist",
+    "clean-dist": "rm -rf dist types",
     "clean-cache": "rm -rf .turbo node_modules",
-    "clean": "concurrently 'pnpm clean-dist' 'pnpm clean-cache' 'pnpm clean-generated'",
+    "clean": "pnpm clean-dist; pnpm clean-cache; pnpm clean-generated",
     "format": "oxfmt",
     "check-format": "pnpm format --check",
     "lint": "oxlint .",
@@ -48,17 +49,15 @@
     "build-default-css": "pnpm node-run scripts/build-default-css.ts",
     "build-scss": "mlaursen-cli copy-scss-files \"src/**/_*.scss\"",
     "build-scss-watch": "pnpm build-scss -w",
-    "build-esm": "swc -d ./dist --strip-leading-paths src",
-    "build-esm-watch": "pnpm build-esm --watch",
     "build-rollup": "rollup -c rollup.config.ts",
-    "build-rollup-watch": "pnpm build-dist --watch",
-    "build-dist": "pnpm build-esm && pnpm build-rollup",
-    "build-dist-watch": "concurrently 'pnpm build-esm-watch' 'pnpm build-rollup-watch'",
-    "build-types": "pnpm node-run scripts/build-types.ts",
+    "build-rollup-watch": "pnpm build-rollup --watch",
+    "build-types": "tsc -P tsconfig.types.json",
     "build-types-watch": "pnpm build-types --watch",
     "build-components": "tsx scripts/generate-components/index.ts",
     "build-components-watch": "pnpm build-components --watch",
-    "dev": "concurrently 'pnpm build-rollup-watch --silent' 'pnpm build-types-watch' 'pnpm build-scss-watch' 'pnpm build-esm-watch -q' 'pnpm build-components-watch -q'"
+    "build-dist": "concurrently 'pnpm build-scss' 'pnpm build-rollup'",
+    "build-dist-watch": "concurrently 'pnpm build-scss-watch' 'pnpm build-rollup-watch'",
+    "dev": "pnpm build-dist-watch"
   },
   "dependencies": {
     "@mlaursen/utils": "workspace:*",

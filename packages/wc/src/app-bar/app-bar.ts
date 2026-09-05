@@ -1,9 +1,8 @@
 import type { PropertyValues, TemplateResult } from "lit";
 import { LitElement, html } from "lit";
-import { customElement, property } from "lit/decorators.js";
+import { property } from "lit/decorators.js";
 import { ifDefined } from "lit/directives/if-defined.js";
 
-import "../app-bar-title/app-bar-title.js";
 import { PaletteMixin } from "../palette/palette-mixin.js";
 import styles from "./app-bar-styles.js";
 import type {
@@ -76,7 +75,6 @@ const BaseAppBar = PaletteMixin(LitElement);
  * @slot actions-container - An optional slot to override the default `actions`
  * grid placement. You probably don't want to use this.
  */
-@customElement("mwc-app-bar")
 export class AppBar extends BaseAppBar implements AppBarProperties {
   static override styles = [...BaseAppBar.styles, styles];
 
@@ -190,11 +188,5 @@ export class AppBar extends BaseAppBar implements AppBarProperties {
         </div>
       </slot>
     `;
-  }
-}
-
-declare global {
-  interface HTMLElementTagNameMap {
-    "mwc-app-bar": AppBar;
   }
 }

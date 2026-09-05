@@ -1,11 +1,10 @@
 import type { PropertyValues, TemplateResult } from "lit";
 import { LitElement, html } from "lit";
-import { customElement, property } from "lit/decorators.js";
+import { property } from "lit/decorators.js";
 
 import styles from "./divider-styles.js";
 import type { DividerProperties, DividerVariant } from "./types.js";
 
-@customElement("mwc-divider")
 export class Divider extends LitElement implements DividerProperties {
   static override styles = styles;
 
@@ -51,11 +50,5 @@ export class Divider extends LitElement implements DividerProperties {
 
   override render(): TemplateResult {
     return html`<slot></slot>`;
-  }
-}
-
-declare global {
-  interface HTMLElementTagNameMap {
-    "mwc-divider": Divider;
   }
 }

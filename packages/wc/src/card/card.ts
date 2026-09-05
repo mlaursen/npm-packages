@@ -1,6 +1,6 @@
 import type { TemplateResult } from "lit";
 import { LitElement, html } from "lit";
-import { customElement, property } from "lit/decorators.js";
+import { property } from "lit/decorators.js";
 
 import type {
   BoxAlignItems,
@@ -50,7 +50,6 @@ const BaseCard = PaletteMixin(MarginMixin(LitElement));
  *
  * @slot - The default slot content that is placed within a `<mwc-box>`.
  */
-@customElement("mwc-card")
 export class Card extends BaseCard implements CardProperties {
   static override styles = [...BaseCard.styles, styles];
 
@@ -106,11 +105,5 @@ export class Card extends BaseCard implements CardProperties {
       </mwc-box>
       <mwc-elevation></mwc-elevation>
     `;
-  }
-}
-
-declare global {
-  interface HTMLElementTagNameMap {
-    "mwc-card": Card;
   }
 }

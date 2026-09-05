@@ -2,7 +2,7 @@ import type { ColorScheme } from "@mlaursen/wc";
 import {
   convertMaterialThemeToProperties,
   parseMaterialTheme,
-} from "@mlaursen/wc/palette/utils";
+} from "@mlaursen/wc";
 import { spread } from "@open-wc/lit-helpers";
 import type { PropertyValues, TemplateResult } from "lit";
 import { LitElement, html, nothing } from "lit";

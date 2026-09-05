@@ -1,7 +1,7 @@
 import { spread } from "@open-wc/lit-helpers";
 import type { TemplateResult } from "lit";
 import { LitElement, html } from "lit";
-import { customElement, property } from "lit/decorators.js";
+import { property } from "lit/decorators.js";
 
 import { InteractionMixin } from "../interaction/interaction-mixin.js";
 import { MarginMixin } from "../margin/margin-mixin.js";
@@ -12,7 +12,6 @@ import type { LinkProperties } from "./types.js";
 
 const BaseLink = InteractionMixin(PaletteMixin(MarginMixin(LitElement)), true);
 
-@customElement("mwc-link")
 export class Link extends BaseLink implements LinkProperties {
   static override styles = [...BaseLink.styles, styles];
   static override shadowRootOptions: ShadowRootInit = {
@@ -64,11 +63,5 @@ export class Link extends BaseLink implements LinkProperties {
         ${this._renderStateLayer()}
       </a>
     `;
-  }
-}
-
-declare global {
-  interface HTMLElementTagNameMap {
-    "mwc-link": Link;
   }
 }

@@ -1,2 +1,2 @@
-import "@mlaursen/wc";
+import "@mlaursen/wc/define";
 import "./components/configure-palette.js";

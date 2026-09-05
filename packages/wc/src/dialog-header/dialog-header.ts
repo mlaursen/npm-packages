@@ -1,12 +1,10 @@
 import type { TemplateResult } from "lit";
 import { html } from "lit";
-import { customElement } from "lit/decorators.js";
 
 import { Box } from "../box/box.js";
 import { isSlotted } from "../utils/slots.js";
 import styles from "./dialog-header-styles.js";
 
-@customElement("mwc-dialog-header")
 export class DialogHeader extends Box {
   static override styles = [...Box.styles, styles];
 
@@ -19,11 +17,5 @@ export class DialogHeader extends Box {
 
   #handleIconSlotChange(event: Event): void {
     this.stacked = isSlotted(event);
-  }
-}
-
-declare global {
-  interface HTMLElementTagNameMap {
-    "mwc-dialog-header": DialogHeader;
   }
 }

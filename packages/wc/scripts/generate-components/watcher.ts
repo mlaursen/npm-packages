@@ -44,7 +44,9 @@ async function createStylesWhileWatching(
   }
 }
 
-export function watcher(options: GenerateComponentsScssOptions = {}): void {
+export function watcher(
+  options: GenerateComponentsScssOptions = {},
+): Promise<void> {
   const {
     quiet = false,
     basePath = process.cwd(),
@@ -59,6 +61,10 @@ export function watcher(options: GenerateComponentsScssOptions = {}): void {
   logPending(`Using ${colorScheme} color scheme for styles`);
   disableLogger();
 
+  let resolved = false;
+  // oxlint-disable-next-line typescript/no-invalid-void-type
+  const { promise, resolve } = Promise.withResolvers<void>();
+
   const rebuild = new Set<string>();
   createWatcher({
     quiet,
@@ -72,6 +78,10 @@ export function watcher(options: GenerateComponentsScssOptions = {}): void {
       }
     },
     onAddOrChange: async (filePath, ready) => {
+      if (ready && !resolved) {
+        resolved = true;
+        resolve();
+      }
       if (isPartial(filePath)) {
         if (ready) {
           const promises: Promise<void>[] = [];
@@ -108,4 +118,6 @@ export function watcher(options: GenerateComponentsScssOptions = {}): void {
       });
     },
   });
+
+  return promise;
 }

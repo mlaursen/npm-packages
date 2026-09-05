@@ -1,10 +1,9 @@
 import type { TemplateResult } from "lit";
 import { LitElement, html } from "lit";
-import { customElement, property } from "lit/decorators.js";
+import { property } from "lit/decorators.js";
 
 import type { AppBarSize, AppBarTitlePosition } from "../app-bar/types.js";
 import type { TypographySize, TypographyVariant } from "../typography/types.js";
-import "../typography/typography.js";
 import styles from "./app-bar-title-styles.js";
 import type { AppBarTitleProperties } from "./types.js";
 
@@ -27,7 +26,6 @@ import type { AppBarTitleProperties } from "./types.js";
  * slot content. This is rendered within the `<mwc-typography>` element with
  * the `size`, `variant`, and `color="on-surface-variant"` applied.
  */
-@customElement("mwc-app-bar-title")
 export class AppBarTitle extends LitElement implements AppBarTitleProperties {
   static override styles = styles;
 
@@ -83,11 +81,5 @@ export class AppBarTitle extends LitElement implements AppBarTitleProperties {
         <slot name="subtitle"></slot>
       </mwc-typography>
     `;
-  }
-}
-
-declare global {
-  interface HTMLElementTagNameMap {
-    "mwc-app-bar-title": AppBarTitle;
   }
 }

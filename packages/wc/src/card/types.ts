@@ -2,9 +2,8 @@ import type { OverridableStringUnion } from "@mlaursen/utils";
 
 import type {
   BoxAlignItems,
-  BoxJustifyContent,
-  BoxGrid,
   BoxGap,
+  BoxJustifyContent,
   BoxPadding,
   BoxProperties,
 } from "../box/types.js";
