@@ -145,12 +145,13 @@ export class ConfigurePalette extends LitElement {
         ${map(colorSchemes, (colorScheme) => {
           const active = this.colorScheme === colorScheme;
           return html`
-            <mwc-outlined-button
+            <mwc-button
               aria-pressed="${active}"
+              variant="outlined"
               @click=${() => this.#changeColorScheme(colorScheme)}
             >
               ${colorScheme}
-            </mwc-outlined-button>
+            </mwc-button>
           `;
         })}
       </mwc-box>
@@ -166,12 +167,13 @@ export class ConfigurePalette extends LitElement {
         ${map(contrasts, (contrast) => {
           const active = this.materialTheme && this.contrast === contrast;
           return html`
-            <mwc-outlined-button
+            <mwc-button
               aria-pressed="${active}"
+              variant="outlined"
               @click=${() => this.#changeMaterialColor(contrast)}
             >
               ${contrast}
-            </mwc-outlined-button>
+            </mwc-button>
           `;
         })}
       </mwc-box>
@@ -217,12 +219,13 @@ export class ConfigurePalette extends LitElement {
         ${map(dirs, (dir) => {
           const active = this.dir === dir;
           return html`
-            <mwc-outlined-button
+            <mwc-button
               aria-pressed="${active}"
+              variant="outlined"
               @click=${() => this.#changeDir(dir)}
             >
               ${dir}
-            </mwc-outlined-button>
+            </mwc-button>
           `;
         })}
       </mwc-box>
