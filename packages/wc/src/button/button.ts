@@ -8,14 +8,13 @@ import { InteractionMixin } from "../interaction/interaction-mixin.js";
 import { PASS_THROUGH_LINK_PROPS } from "../link/constants.js";
 import { MarginMixin } from "../margin/margin-mixin.js";
 import { PaletteMixin } from "../palette/palette-mixin.js";
+import type { CommandAttribute, PopoverTargetAction } from "../types.js";
 import styles from "./button-styles.js";
 import type {
   ButtonProperties,
   ButtonShape,
   ButtonSize,
   ButtonVariant,
-  CommandAttribute,
-  PopoverTargetAction,
 } from "./types.js";
 
 const BaseStyledButton = InteractionMixin(
