@@ -2,8 +2,10 @@ import type { OverridableStringUnion } from "@mlaursen/utils";
 
 import type { PassThroughLinkProperties } from "../link/types.js";
 import type {
+  CommandAttribute,
   DefaultComponentExtraSize,
   DefaultComponentShape,
+  PopoverTargetAction,
 } from "../types.js";
 
 export interface ButtonSizeOverrides {}
@@ -42,25 +44,43 @@ export interface ButtonProperties extends ButtonLinkProperties {
   /**
    * @defaultValue `"submit"`
    */
-  type: HTMLButtonElement["type"];
+  type?: HTMLButtonElement["type"];
 
   /**
+   * @see ButtonSize
    * @defaultValue `"small"`
    */
-  size: ButtonSize;
+  size?: ButtonSize;
 
   /**
+   * @see ButtonShape
    * @defaultValue `"round"`
    */
-  shape: ButtonShape;
+  shape?: ButtonShape;
 
   /**
+   * @see ButtonVariant
    * @defaultValue `"filled"`
    */
-  variant: ButtonVariant;
+  variant?: ButtonVariant;
 
+  /**
+   * @see [Invoker Commands API](https://developer.mozilla.org/en-US/docs/Web/API/Invoker_Commands_API)
+   */
   command?: CommandAttribute;
+
+  /**
+   * @see [Invoker Commands API](https://developer.mozilla.org/en-US/docs/Web/API/Invoker_Commands_API)
+   */
   commandfor?: string;
+
+  /**
+   * @see [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/button#popovertargetaction)
+   */
   popovertarget?: string;
+
+  /**
+   * @see [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/button#popovertargetaction)
+   */
   popovertargetaction?: PopoverTargetAction;
 }

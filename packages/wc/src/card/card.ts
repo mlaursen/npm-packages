@@ -12,47 +12,72 @@ import type {
 import { MarginMixin } from "../margin/margin-mixin.js";
 import { PaletteMixin } from "../palette/palette-mixin.js";
 import styles from "./card-styles.js";
-import type { CardShape, CardVariant } from "./types.js";
+import type { CardProperties, CardShape, CardVariant } from "./types.js";
 
 const BaseCard = PaletteMixin(MarginMixin(LitElement));
 
+/**
+ * The card component is generally used to display lists of data with actions
+ * in flex or grid layout or add elevation and background to display responsive
+ * images. This component is usually used alongside the following components:
+ * - `<mwc-box>`
+ * - `<mwc-typography>`
+ * - `<mwc-object-fit>`
+ * - `<mwc-button>`
+ *
+ * @example Simple Action
+```html
+<mwc-box grid>
+  <mwc-card padding="all" gap="column">
+    <mwc-typography variant="display" size="medium" margin="none">
+      <h3>Title</h3>
+    </mwc-typography>
+    <mwc-typography variant="title" margin="none">
+      <h4>Subtitle</h4>
+    </mwc-typography>
+    <mwc-typography margin="none">
+      <p>
+        Explain more about the topic shown in the medium display and subhead
+        through supporting text here.
+      </p>
+    </mwc-typography>
+    <mwc-box padding="block" justify="end">
+      <mwc-button>Read More</mwc-button>
+    </mwc-box>
+  </mwc-card>
+</mwc-box>
+```
+ *
+ * @slot - The default slot content that is placed within a `<mwc-box>`.
+ */
 @customElement("mwc-card")
-export class Card extends BaseCard {
+export class Card extends BaseCard implements CardProperties {
   static override styles = [...BaseCard.styles, styles];
 
-  /** Pass-through box property */
   @property()
   align: BoxAlignItems = "stretch";
 
-  /** Pass-through box property */
   @property()
   justify: BoxJustifyContent = "stretch";
 
-  /** Pass-through box property */
   @property({ type: Boolean })
   inline = false;
 
-  /** Pass-through box property */
   @property()
   grid: BoxGrid = false;
 
-  /** Pass-through box property */
   @property({ type: Boolean })
   stacked = true;
 
-  /** Pass-through box property */
   @property({ type: Boolean })
   reversed?: boolean;
 
-  /** Pass-through box property */
   @property()
   gap: BoxGap = "none";
 
-  /** Pass-through box property */
   @property({ type: Boolean })
   nowrap = true;
 
-  /** Pass-through box property */
   @property()
   padding: BoxPadding = "none";
 

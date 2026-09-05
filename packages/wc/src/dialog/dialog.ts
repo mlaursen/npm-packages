@@ -42,39 +42,39 @@ const BaseDialog = AnimateMixin(FocusTrapMixin(LitElement));
  * - using `<form method="dialog">` to close the dialog
  *
  * @example Invoker Commands API Example
- * ```html
- * <mwc-button command="show-modal" commandfor="dialog-1">
- *   Show
- * </mwc-button>
- * <mwc-dialog id="dialog-1">
- *   <h2 slot="title">Title</h2>
- *   <p slot="content">Hello, world!</p>
- *   <mwc-text-button slot="actions" command="close" commandfor="dialog-1">
- *     Cancel
- *   </mwc-text-button>
- *   <mwc-text-button slot="actions" command="close" commandfor="dialog-1" autofocus>
- *     Ok
- *   </mwc-text-button>
- * </mwc-dialog>
- * ```
+```html
+<mwc-button command="show-modal" commandfor="dialog-1">
+  Show
+</mwc-button>
+<mwc-dialog id="dialog-1">
+  <h2 slot="title">Title</h2>
+  <p slot="content">Hello, world!</p>
+  <mwc-text-button slot="actions" command="close" commandfor="dialog-1">
+    Cancel
+  </mwc-text-button>
+  <mwc-text-button slot="actions" command="close" commandfor="dialog-1" autofocus>
+    Ok
+  </mwc-text-button>
+</mwc-dialog>
+```
  *
  * @example Form Dialog Example
- * ```html
- * <mwc-button command="show-modal" commandfor="dialog-1">
- *   Show
- * </mwc-button>
- * <mwc-dialog id="dialog-1">
- *   <h2 slot="title">Title</h2>
- *   <form id="form" slot="content" method="dialog">
- *   </form>
- *   <mwc-text-button slot="actions" form="form">
- *     Cancel
- *   </mwc-text-button>
- *   <mwc-text-button slot="actions" form="form" autofocus>
- *     Ok
- *   </mwc-text-button>
- * </mwc-dialog>
- * ```
+```html
+<mwc-button command="show-modal" commandfor="dialog-1">
+  Show
+</mwc-button>
+<mwc-dialog id="dialog-1">
+  <h2 slot="title">Title</h2>
+  <form id="form" slot="content" method="dialog">
+  </form>
+  <mwc-text-button slot="actions" form="form">
+    Cancel
+  </mwc-text-button>
+  <mwc-text-button slot="actions" form="form" autofocus>
+    Ok
+  </mwc-text-button>
+</mwc-dialog>
+```
  *
  * NOTE: The `<mwc-dialog-header>` will be hidden if the `title`, `icon`, and
  * `header` slots are not provided.

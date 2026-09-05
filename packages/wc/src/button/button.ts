@@ -40,6 +40,60 @@ declare const CommandEvent: {
   prototype: CommandEvent;
 };
 
+/**
+ * This example will use the default styling of a small, round, and filled
+ * button:
+ *
+ * @example Default Example
+```html
+<mwc-button>Button</mwc-button>
+```
+ *
+ * This example showcases the default variants allowed for the button. This can
+ * further be customiZed by providing a `size` and `shape`:
+ *
+ * @example Using Variants
+```html
+<mwc-button variant="tonal">Tonal</mwc-button>
+<mwc-button variant="text">Text</mwc-button>
+<mwc-button variant="outlined">Outlined</mwc-button>
+<mwc-button variant="filled">Filled</mwc-button>
+<mwc-button variant="elevated">Elevated</mwc-button>
+```
+ *
+ * If the button should be rendered as a link but maintain the default button
+ * styles, provide an `href`:
+ *
+ * @see ButtonLinkProperties for supported properties
+ * @example Link Button
+```html
+<mwc-button href="https://example.com">I am now a link</mwc-button>
+```
+ *
+ * This example shows how you can have an icon with spacing between the main
+ * content:
+ *
+ * @example Button with icon
+```html
+<mwc-button>
+  <mwc-material-symbol>favorite</mwc-material-symbol>
+  Favorite Button
+</mwc-button>
+<mwc-button>
+  Favorite Button
+  <mwc-material-symbol>favorite</mwc-material-symbol>
+</mwc-button>
+<mwc-button>
+  <mwc-material-symbol>favorite</mwc-material-symbol>
+  Love
+  <mwc-material-symbol>favorite</mwc-material-symbol>
+</mwc-button>
+```
+ *
+ * @slot - The default slot for the content to display. The button
+ * automatically applies gap between items so just place content as desired and
+ * there will be spacing between.
+ */
 @customElement("mwc-button")
 export class Button extends BaseButton implements ButtonProperties {
   static override styles = [...BaseButton.styles, styles];
