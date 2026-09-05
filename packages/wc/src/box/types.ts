@@ -45,6 +45,8 @@ export type BoxGap = "all" | "row" | "column" | "none";
 /**
  * Apply padding to the box:
  * - `"all"` - `padding-block` and `padding-inline` applied
+ * - `"block"` - only `padding-block` applied
+ * - `"inline"` - only `padding-inline` applied
  * - `"none"` - no padding applied
  *
  * The padding values can be configured using the following custom properties:
@@ -54,7 +56,7 @@ export type BoxGap = "all" | "row" | "column" | "none";
  *   `var(--mwc-box-padding)`
  * - `--mwc-box-padding`   - defaults to `var(--mwc-spacing-large, 1rem)`
  */
-export type BoxPadding = "all" | "none";
+export type BoxPadding = "all" | "block" | "inline" | "none";
 
 /**
  * This is used to update the box to render with a grid layout instead of flex

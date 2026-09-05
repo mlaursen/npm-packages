@@ -29,7 +29,7 @@ $-configure-tokens: (
   gap-styles,
   row-gap-styles,
   column-gap-styles,
-  padded-styles,
+  padding-block-styles,
   flex-wrap-styles,
   full-width-styles,
   stacked-styles,
@@ -65,8 +65,10 @@ $-row-gap-styles: (
 $-column-gap-styles: (
   column-gap: "box.gap-h",
 );
-$-padded-styles: (
+$-padding-block-styles: (
   padding-block: "box.padding-v",
+);
+$-padding-inline-styles: (
   padding-inline: "box.padding-h",
 );
 $-flex-wrap-styles: (
@@ -103,10 +105,10 @@ $-inline-grid-styles: (
   $align-items: null,
   $justify-content: null,
   $base-styles: null,
-  $gap-styles: null,
   $row-gap-styles: null,
   $column-gap-styles: null,
-  $padded-styles: null,
+  $padding-block-styles: null,
+  $padding-inline-styles: null,
   $flex-wrap-styles: null,
   $full-width-styles: null,
   $stacked-styles: null,
@@ -129,12 +131,20 @@ $-inline-grid-styles: (
     $-base-styles: $base-styles !global;
   }
 
-  @if $gap-styles != null {
-    $-gap-styles: $gap-styles !global;
-  }
-
   @if $row-gap-styles != null {
     $-row-gap-styles: $row-gap-styles !global;
+  }
+
+  @if $column-gap-styles != null {
+    $-column-gap-styles: $column-gap-styles !global;
+  }
+
+  @if $padding-block-styles != null {
+    $-padding-block-styles: $padding-block-styles !global;
+  }
+
+  @if $padding-inline-styles != null {
+    $-padding-inline-styles: $padding-inline-styles !global;
   }
 
   @if $full-width-styles != null {
@@ -181,10 +191,10 @@ $-inline-grid-styles: (
     $align-items: map.get($overrides, align-items),
     $justify-content: map.get($overrides, justify-content),
     $base-styles: map.get($overrides, base-styles),
-    $gap-styles: map.get($overrides, gap-styles),
     $row-gap-styles: map.get($overrides, row-gap-styles),
     $column-gap-styles: map.get($overrides, column-gap-styles),
-    $padded-styles: map.get($overrides, padded-styles),
+    $padding-block-styles: map.get($overrides, padding-block-styles),
+    $padding-inline-styles: map.get($overrides, padding-inline-styles),
     $flex-wrap-styles: map.get($overrides, flex-wrap-styles),
     $full-width-styles: map.get($overrides, full-width-styles),
     $stacked-styles: map.get($overrides, stacked-styles),
@@ -227,10 +237,10 @@ $-inline-grid-styles: (
 @mixin css-styles {
   $styles: (
     "&box": $-base-styles,
-    "&box--gap": $-gap-styles,
     "&box--row-gap": $-row-gap-styles,
     "&box--column-gap": $-column-gap-styles,
-    "&box--padded": $-padded-styles,
+    "&box--padding-block": $-padding-block-styles,
+    "&box--padding-inline": $-padding-inline-styles,
     "&box--flex-wrap": $-flex-wrap-styles,
     "&box--full-width": $-full-width-styles,
     "&box--stacked": $-stacked-styles,
@@ -248,10 +258,10 @@ $-inline-grid-styles: (
 @mixin host-styles {
   $styles: (
     ":host": $-base-styles,
-    ":host([gap=all])": $-gap-styles,
-    ":host([gap=row])": $-row-gap-styles,
-    ":host([gap=column])": $-column-gap-styles,
-    ":host([padding=all])": $-padded-styles,
+    ":host(:is([gap=row],[gap=all]))": $-row-gap-styles,
+    ":host(:is([gap=column],[gap=all]))": $-column-gap-styles,
+    ":host(:is([padding=block],[padding=all]))": $-padding-block-styles,
+    ":host(:is([padding=inline],[padding=all]))": $-padding-inline-styles,
     ":host(:not([nowrap]))": $-flex-wrap-styles,
     ":host([full-width])": $-full-width-styles,
     ":host([stacked]:not([reversed]))": $-stacked-styles,
