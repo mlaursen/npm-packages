@@ -295,25 +295,25 @@ export function PopoverMixin<T extends StylableLitElement>(
     }
 
     #handlePopoverTargetClick = (event: Event): void => {
+      const eventTarget = event.target;
       if (
         this.#isInitiatorPrevented("click") ||
         !this._popoverTarget ||
         !this._hasPopoverTarget ||
-        !(event.target instanceof Node)
+        !(eventTarget instanceof Node)
       ) {
         return;
       }
 
       const elements = this._popoverTarget.assignedElements();
-      for (const element of elements) {
-        if (element.contains(event.target)) {
-          if (this.#initiator) {
-            this.close();
-          } else {
-            this.show();
-          }
-          return;
-        }
+      if (!elements.some((element) => element.contains(eventTarget))) {
+        return;
+      }
+
+      if (this.#initiator) {
+        this.#hidePopover("click");
+      } else {
+        this.#showPopover("click");
       }
     };
   }
