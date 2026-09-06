@@ -1,0 +1,5 @@
+{
+  "import": ["~/.config/cspell/cspell.json"],
+  "words": ["eleventy"],
+  "ignoreWords": ["elseif", "endcss", "endfor", "endif", "endjs"]
+}
