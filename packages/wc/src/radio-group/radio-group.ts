@@ -33,6 +33,7 @@ interface CheckableElement extends HTMLElement {
  */
 export class RadioGroup extends BaseRadioGroup {
   static formAssociated = true;
+
   #syncFrame = 0;
 
   constructor() {
@@ -45,10 +46,6 @@ export class RadioGroup extends BaseRadioGroup {
     super.connectedCallback();
 
     this.setAttribute("role", "radiogroup");
-    if (!this.hasAttribute("tabindex")) {
-      this.tabIndex = -1;
-    }
-
     this.addEventListener("change", this.#handleChange);
     this.addEventListener("keydown", this.#handleKeyDown);
     this.addEventListener("focusin", this.#handleFocusIn);
