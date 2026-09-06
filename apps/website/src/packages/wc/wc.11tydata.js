@@ -69,6 +69,41 @@ export const appBar = {
   ],
 };
 
+export const box = {
+  /** @type {import("@mlaursen/wc").BoxAlignItems[]} */
+  align: ["start", "center", "end", "stretch"],
+
+  /** @type {import("@mlaursen/wc").BoxJustifyContent[]} */
+  justify: [
+    "start",
+    "center",
+    "end",
+    "stretch",
+    "space-around",
+    "space-between",
+    "space-evenly",
+  ],
+
+  /** @type {import("@mlaursen/wc").BoxGap[]} */
+  gap: ["all", "row", "column", "none"],
+
+  /** @type {import("@mlaursen/wc").BoxPadding[]} */
+  padding: ["all", "block", "inline", "none"],
+
+  /** @type {import("@mlaursen/wc").BoxGrid[]} */
+  grid: [false, true, "fit", "fill"],
+
+  inline: [false, true],
+
+  fullWidth: [false, true],
+
+  stacked: [false, true],
+
+  reversed: [false, true],
+
+  nowrap: [false, true],
+};
+
 export const button = {
   /** @type {import("@mlaursen/wc").ButtonSize[]} */
   sizes: defaultExtraSizes,
@@ -175,6 +210,6 @@ export const eleventyComputed = {
       return `${data.page.title} - ${packageName}`;
     }
 
-    return data.tile || null;
+    return data.title || null;
   },
 };

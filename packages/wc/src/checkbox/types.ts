@@ -23,7 +23,8 @@ export type AnimateCheckboxOptions =
   BaseAnimateOptions<AnimateCheckboxElementMap>;
 
 export interface CheckboxProperties extends FormControlStates {
-  size: CheckboxSize;
+  size?: CheckboxSize;
+  name?: string;
   checked: boolean;
   indeterminate: boolean;
 

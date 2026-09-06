@@ -51,6 +51,9 @@ export class Checkbox extends BaseCheckbox implements CheckboxProperties {
   @property()
   size: CheckboxSize = "medium";
 
+  @property()
+  name = "";
+
   @property({ type: Boolean })
   get checked(): boolean {
     return this[CHECKED];

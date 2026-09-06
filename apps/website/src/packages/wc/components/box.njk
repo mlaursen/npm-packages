@@ -1,0 +1,101 @@
+---
+layout: docs
+
+eleventyNavigation:
+  key: Box
+  parent: Home
+
+page:
+  title: Box
+
+defaults:
+  items: 10
+  align: center
+  justify: start
+  gap: all
+  padding: all
+  grid: false
+---
+
+<form>
+  <mwc-card style="--mwc-box-item-min-size: 12rem;">
+    <mwc-box nowrap
+             stacked
+             align="stretch"
+             style="max-height: 40vh;
+                    overflow: auto">
+      <mwc-text-field name="items" type="number" value="{{ defaults.items }}" min="1" max="40" style="margin-top: var(--mwc-spacing-large)">
+        <span slot="label">Number of grid items</span>
+      </mwc-text-field>
+      {% for property, values in box %}
+        {% if defaults[property] is string or property == "grid" %}
+          <mwc-typography id="{{ property }}-title"
+                          variant="title"
+                          margin="top"
+                          text-transform="capitalize">
+            <h4>{{ property }}</h4>
+          </mwc-typography>
+          <mwc-radio-group aria-labelledby="{{ property }}-title">
+            <mwc-box grid padding="none">
+              {% for value in values %}
+                <mwc-typography>
+                  <label>
+                    <mwc-box padding="none" inline>
+                      <mwc-radio name="{{ property }}"
+                                 value="{{ value }}"
+                                 required
+                                 {{ "checked" if value == defaults[property] }}>
+                      </mwc-radio>
+                      {{ value }}
+                    </mwc-box>
+                  </label>
+                </mwc-typography>
+              {% endfor %}
+            </mwc-box>
+          </mwc-radio-group>
+        {% else %}
+          <mwc-typography margin="none" variant="label">
+            <label>
+              <mwc-box inline>
+                <mwc-checkbox name="{{ property }}" {{ "checked" if defaults[property] }}>
+                </mwc-checkbox>
+                {{ property }}
+              </mwc-box>
+            </label>
+          </mwc-typography>
+        {% endif %}
+        {% if property === "grid" %}
+          <mwc-text-field name="columns" type="number" min="1" max="40">
+            <span slot="label">Custom columns</span>
+          </mwc-text-field>
+          <mwc-divider>
+          </mwc-divider>
+          <mwc-typography variant="title" margin="top">
+            <h4>Other Settings</h4>
+          </mwc-typography>
+          <mwc-box padding="none" grid>
+        {% endif %}
+      {% endfor %}
+    </mwc-box>
+    <mwc-divider>
+    </mwc-divider>
+    <mwc-button variant="tonal" margin="end">
+      Reset
+    </mwc-button>
+  </mwc-box>
+</mwc-card>
+</form>
+<mwc-box id="playground-target"
+         style="border: 2px solid currentcolor;
+                margin-block: var(--mwc-spacing-large)">
+  {% for i in range(0, defaults.items) %}
+    <mwc-card padding="all" {%- if i == 1 %}style="height: 12rem" {% endif %}>
+      <mwc-typography>
+        <p>Item {{ i + 1 }}</p>
+      </mwc-typography>
+    </mwc-card>
+  {% endfor %}
+</mwc-box>
+{% js "defer" %}
+{% include "scripts/wc/box.js" %}
+{% endjs %}
