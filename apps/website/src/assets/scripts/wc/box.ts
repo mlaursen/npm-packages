@@ -133,15 +133,10 @@ form.addEventListener("change", (event) => {
       }
 
       for (const typography of disabledGridTypography) {
-        // TODO: I need to create `text-disabled`, `text-secondary`, `text-hint`, etc color variants
         if (disabled) {
-          const color =
-            "var(--mwc-on-surface, light-dark(var(--mwc-light-on-surface), var(--mwc-dark-on-surface)))";
-          typography.style.color = `rgb(from ${color} r g b / 0.38)`;
-          // typography.setAttribute("color", "surface");
+          typography.setAttribute("color", "disabled");
         } else {
-          typography.removeAttribute("style");
-          // typography.removeAttribute("color");
+          typography.removeAttribute("color");
         }
       }
 

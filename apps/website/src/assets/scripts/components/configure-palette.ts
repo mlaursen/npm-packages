@@ -9,6 +9,7 @@ import { LitElement, html, nothing } from "lit";
 import { customElement, state } from "lit/decorators.js";
 import { map } from "lit/directives/map.js";
 
+import { colorScheme as DEFAULT_COLOR_SCHEME } from "../../../_data/meta.js";
 import { materialThemeBuilderUrl } from "../../../packages/wc/wc.11tydata.js";
 import materialTheme from "../../json/material-theme.json" with { type: "json" };
 
@@ -44,7 +45,7 @@ export class ConfigurePalette extends LitElement {
   contrast: MaterialPaletteContrast = "normal";
 
   @state()
-  colorScheme: ColorScheme = "light-dark";
+  colorScheme: ColorScheme = DEFAULT_COLOR_SCHEME;
 
   @state()
   materialTheme = false;

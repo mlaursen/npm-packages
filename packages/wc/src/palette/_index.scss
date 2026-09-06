@@ -32,6 +32,7 @@ $-default-system-theme: true;
 $-current-tokens-registered: false;
 $-light-tokens-registered: false;
 $-dark-tokens-registered: false;
+
 $-light-theme-tokens: (
   primary: #6750a4,
   primary-container: #eaddff,
@@ -117,9 +118,25 @@ $-tokens: (
 );
 $-token-names: map.keys($-light-theme-tokens);
 
+///
+/// @param {"" | "light." | "dark."} $scope [""] -
+/// @return {Map} -
+@function -get-text-color-tokens($scope: "") {
+  @return (
+    disabled-color: "palette.#{$scope}on-surface",
+    disabled-opacity: 0.38,
+    disabled:
+      utils.get-rgb-var(
+        "palette.#{$scope}disabled-color",
+        "palette.#{$scope}disabled-opacity"
+      )
+  );
+}
+
 @function get-light-dark-tokens() {
   $tokens: ();
-  @each $token in $-token-names {
+  $token-names: list.append($-token-names, disabled);
+  @each $token in $token-names {
     $value: light-dark(
       utils.get-var("light.#{$token}"),
       utils.get-var("dark.#{$token}")
@@ -156,22 +173,39 @@ $-token-names: map.keys($-light-theme-tokens);
   $-light-theme-tokens: map.merge(
     $-light-theme-tokens,
     utils.get-config-map(light-theme, $light-theme, $-token-names)
-  );
+  ) !global;
   $-dark-theme-tokens: map.merge(
     $-dark-theme-tokens,
     utils.get-config-map(dark-theme, $dark-theme, $-token-names)
-  );
+  ) !global;
 
   $is-light-dark: $color-scheme == light-dark;
   @if $-color-scheme == light {
+    $-light-theme-tokens: map.merge(
+      $-light-theme-tokens,
+      -get-text-color-tokens()
+    ) !global;
     $-tokens: (
       current: $-light-theme-tokens,
     ) !global;
   } @else if $-color-scheme == dark {
+    $-dark-theme-tokens: map.merge(
+      $-dark-theme-tokens,
+      -get-text-color-tokens()
+    ) !global;
     $-tokens: (
       current: $-dark-theme-tokens,
     ) !global;
   } @else {
+    $-light-theme-tokens: map.merge(
+      $-light-theme-tokens,
+      -get-text-color-tokens("light.")
+    ) !global;
+    $-dark-theme-tokens: map.merge(
+      $-dark-theme-tokens,
+      -get-text-color-tokens("dark.")
+    ) !global;
+
     @if not $-light-tokens-registered {
       $-light-tokens-registered: true !global;
       @include utils.register-tokens(
@@ -311,7 +345,6 @@ $-token-names: map.keys($-light-theme-tokens);
 }
 
 @function -get-styles($is-css) {
-  $ignored: (outline, outline-variant, shadow, surface-tint, scrim);
   $no-text-color: (
     inverse-primary,
     surface-dim,
@@ -323,65 +356,79 @@ $-token-names: map.keys($-light-theme-tokens);
     surface-container-highest
   );
 
+  $ignored: (
+    outline,
+    outline-variant,
+    shadow,
+    surface-tint,
+    scrim,
+    disabled-color,
+    disabled-opacity
+  );
+  $token-names: utils.list-filter(
+    list.append($-token-names, disabled),
+    $ignored
+  );
+
   $styles: ();
-  @each $name in $-token-names {
-    @if not list.index($ignored, $name) {
-      $is-on-color: string.index($name, "on-") == 1;
-      $is-no-color: list.index($no-text-color, $name);
+  @each $name in $token-names {
+    $is-on-color: string.index($name, "on-") == 1;
+    $is-color: $is-on-color or $name == disabled;
+    $is-no-color: list.index($no-text-color, $name);
 
-      $selector: "&#{$name}";
-      $inner-styles: null;
-      @if not $is-css {
-        $selector: ":host([";
-        @if $is-on-color {
-          $selector: $selector + "color=#{$name}";
-        } @else {
-          $selector: $selector + "background=#{$name}";
-        }
-
-        $selector: $selector + "])";
-      }
-
-      @if $is-on-color {
-        $inner-styles: (
-          color: "palette.#{$name}",
-        );
+    $selector: "&#{$name}";
+    $inner-styles: null;
+    @if not $is-css {
+      $selector: ":host([";
+      @if $is-color {
+        $selector: $selector + "color=#{$name}";
       } @else {
-        $inner-styles: (
-          background: "palette.#{$name}",
-        );
-
-        @if not $is-no-color {
-          $inner-styles: map.set($inner-styles, "color", "palette.on-#{$name}");
-        }
+        $selector: $selector + "background=#{$name}";
       }
 
-      $styles: map.deep-merge(
-        $styles,
-        (
-          $selector: $inner-styles,
-        )
+      $selector: $selector + "])";
+    }
+
+    @if $is-color {
+      $inner-styles: (
+        color: "palette.#{$name}",
+      );
+    } @else {
+      $inner-styles: (
+        background: "palette.#{$name}",
       );
 
-      @if not
-        $is-no-color and not
-        $is-on-color and not
-        string.index($name, "container-")
-      {
-        // prettier-ignore
-        $selector: if(
+      @if not $is-no-color {
+        $inner-styles: map.set($inner-styles, "color", "palette.on-#{$name}");
+      }
+    }
+
+    $styles: map.deep-merge(
+      $styles,
+      (
+        $selector: $inner-styles,
+      )
+    );
+
+    @if not
+      $is-no-color and not
+      $is-color and not
+      string.index($name, "container-")
+    {
+      // prettier-ignore
+      $selector: if(
           sass($is-css): "&text-#{$name}";
           else: ":host([color=#{$name}])"
         );
-        $inner-styles: (
-          $selector: (
-            color: "palette.#{$name}",
-          ),
-        );
-        $styles: map.deep-merge($styles, $inner-styles);
-      }
+      $inner-styles: (
+        $selector: (
+          color: "palette.#{$name}",
+        ),
+      );
+      $styles: map.deep-merge($styles, $inner-styles);
     }
   }
+
   // &current-color {
   //   color: currentcolor;
   // }

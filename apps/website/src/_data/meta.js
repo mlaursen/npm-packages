@@ -7,7 +7,8 @@ export const siteName = "Mikkel Laursen Portfolio";
 export const siteType = "Person"; // schema
 export const description = "A placeholder portfolio website for Mikkel Laursen";
 
-export const colorScheme = "light dark";
+/** @type {import("@mlaursen/wc").ColorScheme} */
+export const colorScheme = "light-dark";
 
 export const locale = "en_EN";
 export const lang = "en";

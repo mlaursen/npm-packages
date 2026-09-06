@@ -2,6 +2,7 @@ import { generateFile } from "@mlaursen/node-utils";
 import esbuild from "esbuild";
 import { glob } from "glob";
 
+import { url } from "../../_data/meta.js";
 import {
   IS_PRODUCTION,
   NODE_ENV,
@@ -23,6 +24,7 @@ async function build(entryPoint) {
     legalComments: "none",
     define: {
       "process.env.NODE_ENV": JSON.stringify(NODE_ENV),
+      "process.env.URL": JSON.stringify(url),
     },
   });
 
