@@ -1,6 +1,6 @@
 import { writeFile } from "node:fs/promises";
 
-import prettier from "prettier";
+import { format as oxfmt } from "oxfmt";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import type { FilesizeOptions } from "../filesize.js";
@@ -9,17 +9,16 @@ import { logComplete } from "../logger.js";
 import { prettyFilesize } from "../prettyFilesize.js";
 
 vi.mock("node:fs/promises");
-vi.mock("prettier", () => ({
-  default: {
-    // show that it formatted it
-    format: vi.fn((code: string) => Promise.resolve(code + ";")),
-  },
+vi.mock("oxfmt", () => ({
+  format: vi.fn((_filePath: string, code: string) =>
+    Promise.resolve({ code: code + ";" }),
+  ),
 }));
 vi.mock("../logger.js");
 vi.mock("../prettyFilesize.js");
 
 const writeFileMock = vi.mocked(writeFile);
-const prettierFormat = vi.mocked(prettier.format);
+const oxfmtMock = vi.mocked(oxfmt);
 const logCompleteMock = vi.mocked(logComplete);
 const prettyFilesizeMock = vi.mocked(prettyFilesize).mockReturnValue("3B");
 
@@ -40,9 +39,10 @@ describe("generateFile", () => {
   it("should default to adding a banner, formatting the file, and logging the result with a pretty filesize", async () => {
     await generateFile({ contents, filePath });
 
-    expect(prettierFormat).toHaveBeenCalledExactlyOnceWith(contentsWithBanner, {
-      filepath: filePath,
-    });
+    expect(oxfmtMock).toHaveBeenCalledExactlyOnceWith(
+      filePath,
+      contentsWithBanner,
+    );
     expect(writeFileMock).toHaveBeenCalledExactlyOnceWith(
       filePath,
       formattedWithBanner,
@@ -55,9 +55,7 @@ describe("generateFile", () => {
   it("should support removing the file banner", async () => {
     await generateFile({ contents, filePath, banner: false });
 
-    expect(prettierFormat).toHaveBeenCalledExactlyOnceWith(contents, {
-      filepath: filePath,
-    });
+    expect(oxfmtMock).toHaveBeenCalledExactlyOnceWith(filePath, contents);
     expect(writeFileMock).toHaveBeenCalledExactlyOnceWith(
       filePath,
       formatted,
@@ -73,9 +71,10 @@ describe("generateFile", () => {
     const formattedWithBanner = `${contentsWithBanner};`;
     await generateFile({ contents, filePath, banner });
 
-    expect(prettierFormat).toHaveBeenCalledExactlyOnceWith(contentsWithBanner, {
-      filepath: filePath,
-    });
+    expect(oxfmtMock).toHaveBeenCalledExactlyOnceWith(
+      filePath,
+      contentsWithBanner,
+    );
     expect(writeFileMock).toHaveBeenCalledExactlyOnceWith(
       filePath,
       formattedWithBanner,

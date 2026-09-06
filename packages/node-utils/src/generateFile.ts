@@ -1,6 +1,6 @@
 import { writeFile } from "node:fs/promises";
 
-import prettier from "prettier";
+import { format as oxfmt } from "oxfmt";
 
 import { ensureParentDir } from "./ensureParentDir.js";
 import type { FilesizeOptions } from "./filesize.js";
@@ -72,7 +72,8 @@ export async function generateFile(
 
   let data = `${fileBanner}${contents}`;
   if (format) {
-    data = await prettier.format(data, { filepath: filePath });
+    const formatted = await oxfmt(filePath, data);
+    data = formatted.code;
   }
 
   await ensureParentDir(filePath);

@@ -1,8 +1,10 @@
 import { readFile } from "node:fs/promises";
 
 import { input } from "@inquirer/prompts";
-import { generateFile } from "@mlaursen/node-utils";
+import { enableLogger, generateFile } from "@mlaursen/node-utils";
 import { alphaNumericSort, pascalCase } from "@mlaursen/utils";
+
+enableLogger();
 
 const ROOT_INDEX_FILE = "src/index.ts";
 const ROOT_DEFINE_FILE = "src/define.ts";
