@@ -39,6 +39,7 @@
     "wc-build": "pnpm turbo-s build --filter @mlaursen/wc",
     "wc-test-scss": "pnpm --filter @mlaursen/wc test-scss",
     "wc-dev": "pnpm --filter @mlaursen/wc dev",
+    "bootstrap-component": "pnpm --filter @mlaursen/wc bootstrap",
     "release": "tsx scripts/release.ts"
   },
   "devDependencies": {
