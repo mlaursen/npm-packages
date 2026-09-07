@@ -1,0 +1,119 @@
+---
+layout: docs
+
+eleventyNavigation:
+  key: List
+  parent: Home
+
+page:
+  title: List
+
+adornments:
+  - none
+  - icon
+  - avatar
+  - image
+  - video
+---
+
+<form style="margin-bottom: var(--mwc-spacing-large);">
+  <mwc-card style="--mwc-box-item-min-size: 12rem;">
+    <mwc-box nowrap
+             stacked
+             align="stretch"
+             style="max-height: 40vh;
+                    overflow: auto">
+      <mwc-typography id="adornments-title"
+                      variant="title"
+                      margin="top"
+                      text-transform="capitalize">
+        <h4>Adornments</h4>
+      </mwc-typography>
+      <mwc-radio-group aria-labelledby="adornments-title">
+        <mwc-box grid padding="none">
+          {% for value in adornments %}
+            <mwc-typography>
+              <label>
+                <mwc-box padding="none" inline>
+                  <mwc-radio name="adornments"
+                             value="{{ value }}"
+                             required
+                             {{ "checked" if value == "none" }}>
+                  </mwc-radio>
+                  {{ value }}
+                </mwc-box>
+              </label>
+            </mwc-typography>
+          {% endfor %}
+        </mwc-box>
+      </mwc-radio-group>
+    </mwc-box>
+  </mwc-card>
+</form>
+<mwc-list id="playground-target">
+  {% for i in range(0, 3) %}
+    <mwc-list-item>
+      Item {{ i + 1 }}
+    </mwc-list-item>
+  {% endfor %}
+</mwc-list>
+<div id="adornments" hidden>
+  <mwc-material-symbol id="start-icon">
+    play_circle
+  </mwc-material-symbol>
+  <span id="start-avatar"
+        style="border-radius: var(--mwc-corner-full);
+               display: inline-flex;
+               place-items: center;
+               place-content: center">A</span>
+  <mwc-object-fit id="start-image">
+    <img alt="" src="https://picsum.photos/200/300?image=30" eleventy:ignore />
+  </mwc-object-fit>
+  <video id="start-video">
+  </video>
+</div>
+<mwc-divider style="margin-block: var(--mwc-spacing-large)">
+</mwc-divider>
+<mwc-list>
+  {% for i in range(0, 3) %}
+    <mwc-list-item>
+      Item {{ i + 1 }}
+    </mwc-list-item>
+  {% endfor %}
+</mwc-list>
+<mwc-box>
+</mwc-box>
+<mwc-list>
+  <mwc-list-item>
+    Item 1
+  </mwc-list-item>
+  <mwc-list-item>
+    Item 2
+  </mwc-list-item>
+  <mwc-list-item>
+    Item 3
+  </mwc-list-item>
+</mwc-list>
+<mwc-list>
+  <mwc-list-item>
+    <mwc-material-symbol slot="start-icon">
+      favorite
+    </mwc-material-symbol>
+    Item 1
+  </mwc-list-item>
+  <mwc-list-item>
+    <mwc-material-symbol slot="start-icon">
+      favorite
+    </mwc-material-symbol>
+    Item 2
+  </mwc-list-item>
+  <mwc-list-item>
+    <mwc-material-symbol slot="start-icon">
+      favorite
+    </mwc-material-symbol>
+    Item 3
+  </mwc-list-item>
+</mwc-list>
+{% js "defer" %}
+{% include "scripts/wc/list.js" %}
+{% endjs %}

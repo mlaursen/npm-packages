@@ -15,6 +15,8 @@ import "./elevation/define.js";
 import "./icon-button/define.js";
 import "./link-card/define.js";
 import "./link/define.js";
+import "./list-item/define.js";
+import "./list/define.js";
 import "./material-symbol/define.js";
 import "./object-fit/define.js";
 import "./palette/define.js";

@@ -1,0 +1,62 @@
+@use "sass:map";
+
+@use "../utils";
+
+$-tokens-registered: false;
+$-tokens: (
+  shape: (
+    square: "shape.corner.none",
+    round: "shape.corner.large",
+    current: "list.shape.round",
+  ),
+  padding: "spacing.large",
+  padding-block: null,
+  padding-inline: null,
+);
+
+$-configure-tokens: map.keys($-tokens);
+
+$-base-styles: (
+  border-radius: "list.shape.current",
+  display: flex,
+  // padding-block: "list.padding-block",
+  // padding-inline: "list.padding-inline",
+);
+$-base-vertical-styles: (
+  // "list.padding-block": "list.padding",
+  flex-direction: column
+);
+$-base-horizontal-styles: (
+  // "list.padding-inline": "list.padding",
+);
+
+@mixin configure() {
+  @if not $-tokens-registered {
+    $-tokens-registered: true !global;
+    @include utils.register-tokens($tokens: $-tokens, $prefix: "list");
+  }
+}
+
+@mixin configure-global($overrides: null) {
+  $overrides: utils.get-config-map(list, $overrides, $-configure-tokens);
+  @include configure();
+}
+
+@mixin css-styles {
+  $styles: ();
+  @include utils.css-styles($styles);
+}
+
+@mixin host-styles {
+  $styles: (
+    ":host": $-base-styles,
+    ":host([horizontal])": $-base-horizontal-styles,
+    ":host(:not([horizontal]))": $-base-vertical-styles,
+  );
+  @include utils.host-styles($styles);
+}
+
+@mixin styles {
+  @include css-styles;
+  @include host-styles;
+}

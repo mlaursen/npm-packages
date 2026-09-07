@@ -1,0 +1,205 @@
+@use "sass:map";
+
+@use "../utils";
+@use "../typography";
+
+$-tokens-registered: false;
+$-tokens: (
+  shape: (
+    all: "shape.corner.large",
+
+    start-start: "list-item.shape.all",
+    start-end: "list-item.shape.all",
+    end-start: "list-item.shape.all",
+    end-end: "list-item.shape.all",
+  ),
+  background: "palette.surface",
+  color: "palette.on-surface",
+  supporting-text: (
+    color: "palette.on-surface-variant",
+  ),
+  gap: "spacing.medium",
+  padding-block: "spacing(0.625)",
+  padding-inline: "spacing.large",
+
+  disabled: (
+    shape: "shape.corner.extra-small",
+  ),
+  hovered: (
+    shape: "shape.corner.medium",
+  ),
+
+  adornment: (
+    icon: (
+      size: "icon.small.size",
+    ),
+    avatar: (
+      // probably avatar.small.size once implemented
+      size: 2.5rem
+    ),
+    image: (
+      size: 3.5rem,
+    ),
+    video: (
+      size: 6.25rem,
+    ),
+  ),
+
+  image: (
+    size: null,
+  ),
+  video: (
+    size: null,
+  ),
+
+  start: (
+    size: auto,
+    icon: (
+      size: "list-item.adornment.icon.size",
+    ),
+    avatar: (
+      size: "list-item.adornment.avatar.size",
+    ),
+    image: (
+      size: "list-item.adornment.image.size",
+    ),
+    video: (
+      size: "list-item.adornment.video.size",
+    ),
+  ),
+  end: (
+    size: auto,
+    icon: (
+      size: "list-item.adornment.icon.size",
+    ),
+    avatar: (
+      size: "list-item.adornment.avatar.size",
+    ),
+    image: (
+      size: "list-item.adornment.image.size",
+    ),
+    video: (
+      size: "list-item.adornment.video.size",
+    ),
+  ),
+);
+
+$-configure-tokens: map.keys($-tokens);
+
+$-base-styles: (
+  background: "list-item.background",
+  color: "list-item.color",
+  display: flex,
+  font: typography.typescale(body-large),
+);
+
+$-base-content-styles: (
+  align-items: center,
+  border-end-end-radius: "list-item.shape.end-end",
+  border-end-start-radius: "list-item.shape.end-start",
+  border-start-end-radius: "list-item.shape.start-end",
+  border-start-start-radius: "list-item.shape.start-start",
+  box-sizing: border-box,
+  display: grid,
+  grid-template-areas: '"start main end"',
+  grid-template-columns: '"list-item.start.size" 1fr "list-item.end.size"',
+  padding-block: "list-item.padding-block",
+  padding-inline: "list-item.padding-inline",
+  user-select: none,
+  width: 100%,
+);
+
+$-base-main-styles: (
+  grid-area: main,
+);
+
+$-base-adornment-styles: (
+  align-items: center,
+  display: flex,
+);
+$-base-start-styles: (
+  "icon.size": "list-item.start.icon.size",
+  "avatar.size": "list-item.start.avatar.size",
+  "list-item.image.size": "list-item.start.image.size",
+  "list-item.video.size": "list-item.start.video.size",
+  grid-area: start,
+  margin-inline-end: "list-item.gap",
+);
+$-base-end-styles: (
+  "icon.size": "list-item.end.icon.size",
+  "avatar.size": "list-item.end.avatar.size",
+  "list-item.image.size": "list-item.end.image.size",
+  "list-item.video.size": "list-item.end.video.size",
+  grid-area: end,
+  margin-inline-start: "list-item.gap",
+);
+
+$-secondary-text-styles: (
+  font: typography.typescale(body-medium),
+);
+$-trailing-text-styles: (
+  font: typography.typescale(label-small),
+);
+$-overline-text-styles: (
+  font: typography.typescale(label-small),
+);
+
+// $-base-avatar-styles: (
+//   font: typography.typescale(title-medium),
+// );
+// $-base-icon-styles: ();
+// $-leading-avatar-styles: $-base-avatar-styles;
+// $-trailing-avatar-styles: $-base-avatar-styles;
+
+$-base-focused-styles: ();
+$-base-hovered-styles: (
+  "list-item.shape.all": "list-item.hovered.shape",
+);
+
+@mixin configure() {
+  @if not $-tokens-registered {
+    $-tokens-registered: true !global;
+    @include utils.register-tokens($tokens: $-tokens, $prefix: "list-item");
+  }
+}
+
+@mixin configure-global($overrides: null) {
+  $overrides: utils.get-config-map(list, $overrides, $-configure-tokens);
+  @include configure();
+}
+
+@mixin css-styles {
+  $styles: ();
+  @include utils.css-styles($styles);
+}
+
+@mixin host-styles {
+  $styles: (
+    ":host": $-base-styles,
+    "host-hover": $-base-hovered-styles,
+    ".state-layer-target": $-base-content-styles,
+    ".state-layer-target:focus-visible": $-base-focused-styles,
+
+    ".start, .end, .image, .video": $-base-adornment-styles,
+    ".start": $-base-start-styles,
+    ".main": $-base-main-styles,
+    ".end": $-base-end-styles,
+
+    // NOTE: Left off thinking I probably just want to build the mwc-object-fit
+    // into this instead. can set the object-fit size vars
+    ".start .image": (
+        height: "list-item.start.image.size",
+        width: "list-item.start.image.size",
+      ),
+    ".start .video": (
+      height: "list-item.start.video.size",
+      width: "list-item.start.video.size",
+    ),
+  );
+  @include utils.host-styles($styles);
+}
+
+@mixin styles {
+  @include css-styles;
+  @include host-styles;
+}

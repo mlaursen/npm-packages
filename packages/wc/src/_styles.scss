@@ -23,6 +23,8 @@
 @use "sheet-header";
 @use "text-field";
 @use "tooltip";
+@use "list";
+@use "list-item";
 
 @mixin styles {
   @include palette.styles;
@@ -53,4 +55,6 @@
   @include sheet-header.styles;
   @include text-field.styles;
   @include tooltip.styles;
+  @include list.styles;
+  @include list-item.styles;
 }
