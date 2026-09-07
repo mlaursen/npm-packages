@@ -81,8 +81,12 @@
   }
 
   $digits: "0123456789";
+  $decimal-found: false;
   @for $i from 1 through string.length($value) {
-    @if not string.index($digits, string.slice($value, $i, $i)) {
+    $char: string.slice($value, $i, $i);
+    @if $char == "." and not $decimal-found {
+      $decimal-found: true;
+    } @else if not string.index($digits, $char) {
       @return false;
     }
   }
