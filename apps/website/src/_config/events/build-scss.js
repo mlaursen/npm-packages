@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import { readFile } from "node:fs/promises";
 
-import { generateFile } from "@mlaursen/node-utils";
+import { generateFile, log } from "@mlaursen/node-utils";
 import { compileScss } from "@mlaursen/scss";
 import { glob } from "glob";
 import { transform } from "lightningcss";
@@ -9,6 +9,7 @@ import { transform } from "lightningcss";
 import { colorScheme, fonts } from "../../_data/meta.js";
 import {
   DEFAULT_CSS_BROWSERSLIST_TARGETS,
+  DISABLE_FOCUS_ANIMATION,
   IS_PRODUCTION,
   SCSS_DIR,
   SCSS_OUT_DIR,
@@ -27,6 +28,14 @@ function getConfigureCode() {
 }
 
 function getGlobalStyles() {
+  if (DISABLE_FOCUS_ANIMATION) {
+    log("[SETTINGS] Disabling the default focus animation");
+  }
+
+  if (!fonts.google) {
+    log("[SETTINGS] Enabling self hosted fonts");
+  }
+
   return `
 @use "@mlaursen/wc" as *;
 @use "configure-website";
@@ -36,6 +45,9 @@ function getGlobalStyles() {
 
   :root {
     @include variables;
+    @if ${DISABLE_FOCUS_ANIMATION} {
+      @include disable-focus-animation;
+    }
   }
 }
 

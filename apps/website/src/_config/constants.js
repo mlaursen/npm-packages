@@ -25,3 +25,6 @@ export const SCSS_OUT_DIR = `${INCLUDES_DIR}/css`;
 
 export const SCRIPTS_DIR = `${ASSETS_DIR}/scripts`;
 export const SCRIPTS_OUT_DIR = `${INCLUDES_DIR}/scripts`;
+
+export const DISABLE_FOCUS_ANIMATION =
+  process.env.DISABLE_FOCUS_ANIMATION === "true";

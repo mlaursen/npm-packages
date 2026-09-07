@@ -33,8 +33,15 @@ $-tokens: (
     duration: "transition.duration.extra-long-1",
     active-width: utils.to-rem(8),
     width: utils.to-rem(2),
-    inward-offset: 0,
-    outward-offset: utils.to-rem(2),
+
+    inward: (
+      animation-name: "inward-grow, inward-shrink",
+      offset: 0,
+    ),
+    outward: (
+      animation-name: "outward-grow, outward-shrink",
+      offset: utils.to-rem(2),
+    ),
   ),
   pressed: (
     container: (
@@ -146,13 +153,15 @@ $-base-ripple-styles: (
 $-hovered-styles: utils.remap-variants(interaction, hovered, $-state-keys...);
 $-focused-styles: utils.remap-variants(interaction, focused, $-state-keys...);
 $-focused-inward-styles: (
-  "interaction.focused.animation-name": "inward-grow, inward-shrink",
+  "interaction.focused.animation-name":
+    "interaction.focused.inward.animation-name",
   "interaction.focused.border":
     '"interaction.focused.width" solid "interaction.focused.color"',
   "interaction.focused.inset": "interaction.focused.inward-offset",
 );
 $-focused-outward-styles: (
-  "interaction.focused.animation-name": "outward-grow, outward-shrink",
+  "interaction.focused.animation-name":
+    "interaction.focused.outward.animation-name",
   "interaction.focused.inset": 'calc(-1 * "interaction.focused.outward-offset")',
   "interaction.focused.outline":
     '"interaction.focused.width" solid "interaction.focused.color"',
@@ -272,4 +281,13 @@ $is-focus-visible: ":is(:focus-visible, [focus-visible])";
 @mixin styles {
   @include css-styles;
   @include host-styles;
+}
+
+@mixin disable-focus-animation {
+  @include utils.map-to-styles(
+    (
+      "interaction.focused.inward.animation-name": " ",
+      "interaction.focused.outward.animation-name": " ",
+    )
+  );
 }
