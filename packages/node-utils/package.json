@@ -64,13 +64,13 @@
     "@mlaursen/simple-docs": "workspace:*",
     "@rollup/plugin-node-resolve": "^16.0.3",
     "@types/node": "^24.13.2",
-    "@vitest/coverage-v8": "^4.1.10",
+    "@vitest/coverage-v8": "^5.0.0",
     "concurrently": "^10.0.5",
     "oxlint": "^1.81.0",
     "rollup": "^4.63.1",
     "rollup-plugin-dts": "^6.5.1",
     "rollup-plugin-swc3": "^0.12.1",
     "typescript": "^6.0.3",
-    "vitest": "^4.1.10"
+    "vitest": "^5.0.0"
   }
 }
