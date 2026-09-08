@@ -56,9 +56,9 @@
     "dev": "concurrently 'pnpm build-types-watch' 'pnpm build-dist-watch'"
   },
   "dependencies": {
-    "postcss": "^8.5.14",
-    "postcss-selector-parser": "^7.1.5",
-    "sass": "^1.102.0"
+    "postcss": "^8.5.28",
+    "postcss-selector-parser": "^7.1.6",
+    "sass": "^1.104.0"
   },
   "devDependencies": {
     "@mlaursen/oxlint-config": "workspace:*",

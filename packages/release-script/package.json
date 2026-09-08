@@ -55,7 +55,7 @@
     "@inquirer/confirm": "^6.1.1",
     "@inquirer/input": "^5.1.2",
     "@inquirer/rawlist": "^5.3.1",
-    "@octokit/core": "^7.0.7",
+    "@octokit/core": "^7.0.8",
     "dotenv": "^17.4.2"
   },
   "devDependencies": {
