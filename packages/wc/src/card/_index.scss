@@ -280,8 +280,8 @@ $-square-styles: (
     ":host([shape=square])": $-square-styles,
     // "host-hover": $-base-hovered-styles,
     "@media (hover: hover) and (pointer: fine)": (
-        ":host([clickable]:hover)": $-base-hovered-styles,
-      ),
+      ":host([clickable]:hover)": $-base-hovered-styles,
+    ),
     ":host(#{interaction.$is-disabled})": $-base-disabled-styles,
     ":host(#{interaction.$is-focus-visible})": $-base-focused-styles,
     ":host([dragging])": $-base-dragged-styles,

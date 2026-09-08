@@ -64,7 +64,7 @@
     "@mlaursen/utils": "workspace:*",
     "@open-wc/lit-helpers": "^0.7.0",
     "lit": "^3.3.2",
-    "zod": "^4.4.3"
+    "zod": "^4.5.4"
   },
   "devDependencies": {
     "@inquirer/prompts": "^8.7.1",
@@ -76,21 +76,21 @@
     "@swc/cli": "^0.8.1",
     "@swc/core": "^1.15.47",
     "@types/node": "^24.12.2",
-    "browserslist": "^4.28.8",
+    "browserslist": "^4.28.9",
     "chokidar": "^5.0.0",
-    "concurrently": "^10.0.3",
+    "concurrently": "^10.0.5",
     "glob": "^13.0.6",
     "lightningcss": "^1.32.0",
-    "oxfmt": "^0.63.0",
-    "oxlint": "^1.78.0",
+    "oxfmt": "^0.66.0",
+    "oxlint": "^1.81.0",
     "prettier": "^3.9.6",
     "prettier-plugin-css-order": "^2.2.0",
-    "rollup": "^4.61.1",
+    "rollup": "^4.63.1",
     "rollup-plugin-dts": "^6.4.1",
     "rollup-plugin-summary": "^3.0.1",
     "rollup-plugin-swc3": "^0.12.1",
     "ts-lit-plugin": "^2.0.2",
-    "tsx": "^4.23.12",
+    "tsx": "^4.23.13",
     "typescript": "^6.0.3"
   }
 }

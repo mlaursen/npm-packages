@@ -29,6 +29,7 @@ interface CommandEventInit extends EventInit {
   source?: Element;
 }
 
+// oxlint-disable-next-line no-redeclare
 interface CommandEvent extends Event {
   readonly command: string;
   readonly source: Element | null;

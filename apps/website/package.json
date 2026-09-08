@@ -44,10 +44,10 @@
     "@mlaursen/utils": "workspace:*",
     "@mlaursen/wc": "workspace:*",
     "@open-wc/lit-helpers": "^0.7.0",
-    "@playwright/test": "^1.62.1",
+    "@playwright/test": "^1.63.0",
     "@types/node": "^24.12.2",
-    "browserslist": "^4.28.8",
-    "concurrently": "^10.0.3",
+    "browserslist": "^4.28.9",
+    "concurrently": "^10.0.5",
     "cross-env": "^10.1.0",
     "dotenv": "^17.4.2",
     "esbuild": "^0.28.2",
@@ -55,13 +55,13 @@
     "html-minifier-terser": "^7.2.0",
     "lightningcss": "^1.32.0",
     "lit": "^3.3.3",
-    "oxfmt": "^0.63.0",
-    "oxlint": "^1.78.0",
-    "sharp": "^0.35.3",
+    "oxfmt": "^0.66.0",
+    "oxlint": "^1.81.0",
+    "sharp": "^0.35.4",
     "sharp-ico": "^0.1.5",
     "slugify": "^1.6.9",
     "ts-lit-plugin": "^2.0.2",
     "typescript": "^6.0.3",
-    "zod": "^4.4.3"
+    "zod": "^4.5.4"
   }
 }

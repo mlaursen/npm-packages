@@ -43,13 +43,13 @@
     "release": "tsx scripts/release.ts"
   },
   "devDependencies": {
-    "@changesets/cli": "^3.0.0",
+    "@changesets/cli": "^3.0.2",
     "cross-env": "^10.1.0",
     "husky": "^9.1.7",
-    "lint-staged": "^17.3.0",
-    "oxfmt": "^0.63.0",
-    "tsx": "^4.23.12",
-    "turbo": "^2.10.9"
+    "lint-staged": "^17.5.0",
+    "oxfmt": "^0.66.0",
+    "tsx": "^4.23.13",
+    "turbo": "^2.10.12"
   },
   "lint-staged": {
     "*": "oxfmt --no-error-on-unmatched-pattern"

@@ -188,9 +188,9 @@ $-base-hovered-styles: (
     // NOTE: Left off thinking I probably just want to build the mwc-object-fit
     // into this instead. can set the object-fit size vars
     ".start .image": (
-        height: "list-item.start.image.size",
-        width: "list-item.start.image.size",
-      ),
+      height: "list-item.start.image.size",
+      width: "list-item.start.image.size",
+    ),
     ".start .video": (
       height: "list-item.start.video.size",
       width: "list-item.start.video.size",
