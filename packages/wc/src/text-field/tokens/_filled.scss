@@ -80,7 +80,7 @@ $filled-styles: utils.deep-merge(
         '"text-field.outline.width" solid #{utils.get-rgb-var("text-field.outline.color", "text-field.outline.opacity")}',
       inset: 0,
       transition:
-        'background "transition.duration.short-3" "transition.easing.linear"'
+        'background "transition.duration.short-3" "transition.easing.linear"',
     ),
 
     "&::after": (
@@ -95,7 +95,7 @@ $filled-styles: utils.deep-merge(
       inset: auto 0 0,
       opacity: "text-field.focused.outline.opacity",
       transition:
-        'opacity "transition.duration.short-3" "transition.easing.linear"'
+        'opacity "transition.duration.short-3" "transition.easing.linear"',
     ),
   )
 );

@@ -65,7 +65,7 @@ $-base-styles: (
   font-size: "radio.size",
   height: 1em,
   justify-content: center,
-  width: 1em
+  width: 1em,
 );
 $-checked-styles: utils.deep-merge(
   utils.remap-variants(radio, checked, "icon.color", "interaction.color"),

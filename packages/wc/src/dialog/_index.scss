@@ -68,7 +68,7 @@ $-host-styles: (
   // need to add this so that the `mwc-dialog` does not render as an empty cell
   // (0 height, 0 width, or both 0) within flex and grid layouts. without this,
   // it is considered an "empty cell" and gap is still applied
-  display: contents
+  display: contents,
 );
 $-base-dialog-styles: (
   "elevation.level": "dialog.elevation",

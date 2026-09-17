@@ -51,7 +51,7 @@
     "dev": "concurrently 'pnpm build-types-watch' 'pnpm build-dist-watch'"
   },
   "dependencies": {
-    "@changesets/cli": "^3.0.2",
+    "@changesets/cli": "^3.0.3",
     "@inquirer/confirm": "^6.1.1",
     "@inquirer/input": "^5.1.2",
     "@inquirer/rawlist": "^5.3.1",
@@ -62,14 +62,14 @@
     "@mlaursen/oxlint-config": "workspace:*",
     "@rollup/plugin-node-resolve": "^16.0.3",
     "@types/node": "^24.13.2",
-    "@vitest/coverage-v8": "^5.0.0",
+    "@vitest/coverage-v8": "^5.0.1",
     "concurrently": "^10.0.5",
-    "oxfmt": "^0.66.0",
-    "oxlint": "^1.81.0",
-    "rollup": "^4.63.1",
+    "oxfmt": "^0.68.0",
+    "oxlint": "^1.83.0",
+    "rollup": "^4.63.3",
     "rollup-plugin-dts": "^6.5.1",
     "rollup-plugin-swc3": "^0.12.1",
     "typescript": "^6.0.3",
-    "vitest": "^5.0.0"
+    "vitest": "^5.0.1"
   }
 }

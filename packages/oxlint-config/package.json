@@ -45,9 +45,9 @@
     "@rollup/plugin-node-resolve": "^16.0.3",
     "@types/node": "^24.13.2",
     "concurrently": "^10.0.5",
-    "oxfmt": "^0.66.0",
-    "oxlint": "^1.81.0",
-    "rollup": "^4.63.1",
+    "oxfmt": "^0.68.0",
+    "oxlint": "^1.83.0",
+    "rollup": "^4.63.3",
     "rollup-plugin-dts": "^6.5.1",
     "rollup-plugin-swc3": "^0.12.1",
     "typescript": "^6.0.3"

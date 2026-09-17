@@ -332,7 +332,7 @@ $-base-textarea-container-styles: (
   // allow the entire container to be resized instead of the textarea since
   // margin is applied to the textarea which would cause the drag handle to be
   // positioned incorrectly
-  resize: both
+  resize: both,
 );
 $-base-input-styles: (
   background: transparent,
