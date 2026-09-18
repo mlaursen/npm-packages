@@ -48,6 +48,9 @@ export default defineConfig((eleventyConfig) => {
         alt: "",
         loading: "lazy",
         decoding: "async",
+        // the style="all: inherit" is required so that `mwc-object-fit` and
+        // other styles are applied correctly
+        style: "all: inherit",
       },
       pictureAttributes: {},
     },

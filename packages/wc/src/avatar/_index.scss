@@ -1,0 +1,139 @@
+@use "sass:map";
+
+@use "../utils";
+@use "../typography";
+
+$-tokens-registered: false;
+$-tokens: (
+  shape: (
+    square: "shape.corner.medium",
+    round: "shape.corner.full",
+    all: "avatar.shape.round",
+
+    start-start: "avatar.shape.all",
+    start-end: "avatar.shape.all",
+    end-start: "avatar.shape.all",
+    end-end: "avatar.shape.all",
+  ),
+  object-fit: "fill",
+
+  size: "avatar.medium.size",
+  icon: (
+    size: "avatar.medium.icon.size",
+  ),
+  small: (
+    size: 2rem,
+    icon: (
+      size: "icon.small.size",
+    ),
+  ),
+  medium: (
+    size: 2.5rem,
+    icon: (
+      size: "icon.medium.size",
+    ),
+  ),
+);
+
+$-configure-tokens: map.keys($-tokens);
+
+$-base-styles: (
+  "icon.color": currentcolor,
+  "icon.size": "avatar.icon.size",
+  align-items: center,
+  border-end-end-radius: "avatar.shape.end-end",
+  border-end-start-radius: "avatar.shape.end-start",
+  border-start-end-radius: "avatar.shape.start-end",
+  border-start-start-radius: "avatar.shape.start-start",
+  display: inline-flex,
+  flex-shrink: 0,
+  font: typography.typescale(title-large),
+  height: "avatar.size",
+  justify-content: center,
+  overflow: hidden,
+  width: "avatar.size",
+);
+$-small-styles: utils.deep-merge(
+  utils.remap-variants(avatar, small, size, "icon.size"),
+  (
+    font: typography.typescale(title-medium),
+  )
+);
+$-medium-styles: utils.remap-variants(avatar, medium, size, "icon.size");
+$-square-styles: (
+  "avatar.shape.all": "avatar.shape.square",
+);
+$-round-styles: (
+  "avatar.shape.all": "avatar.shape.round",
+);
+$-contain-styles: (
+  "object.fit": contain,
+);
+$-cover-styles: (
+  "object.fit": cover,
+);
+$-fill-styles: (
+  "object.fit": fill,
+);
+$-scale-down-styles: (
+  "object.fit": scale-down,
+);
+$-none-styles: (
+  "object.fit": none,
+);
+$-image-styles: (
+  height: 100%,
+  object-fit: "avatar.object-fit",
+  width: 100%,
+);
+
+@mixin configure() {
+  @if not $-tokens-registered {
+    $-tokens-registered: true !global;
+    @include utils.register-tokens($tokens: $-tokens, $prefix: "avatar");
+  }
+}
+
+@mixin configure-global($overrides: null) {
+  $overrides: utils.get-config-map(list, $overrides, $-configure-tokens);
+  @include configure();
+}
+
+@mixin css-styles {
+  $styles: (
+    "&avatar": $-base-styles,
+    "&avatar--small": $-small-styles,
+    "&avatar--medium": $-medium-styles,
+    "&avatar--round": $-round-styles,
+    "&avatar--square": $-square-styles,
+    "&avatar--contain": $-contain-styles,
+    "&avatar--cover": $-cover-styles,
+    "&avatar--fill": $-fill-styles,
+    "&avatar--scale-down": $-scale-down-styles,
+    "&avatar--none": $-none-styles,
+    "&avatar :is(img, picture)": $-image-styles,
+  );
+  @include utils.css-styles($styles);
+}
+
+@mixin host-styles {
+  $styles: (
+    ":host": $-base-styles,
+    ":host([size=small])": $-small-styles,
+    ":host([size=medium])": $-medium-styles,
+    ":host([shape=round])": $-round-styles,
+    ":host([shape=square])": $-square-styles,
+    ":host([variant=contain])": $-contain-styles,
+    ":host([variant=cover])": $-cover-styles,
+    ":host([variant=fill])": $-fill-styles,
+    ":host([variant=scale-down])": $-scale-down-styles,
+    ":host([variant=none])": $-none-styles,
+    "::slotted(:is(img, picture))": $-image-styles,
+  );
+  @include utils.host-styles($styles);
+}
+
+@mixin styles {
+  @include css-styles;
+  @include host-styles;
+}

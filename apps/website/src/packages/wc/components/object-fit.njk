@@ -52,12 +52,7 @@ images:
   {% for src in images %}
     <mwc-card align="center" justify="center">
       <mwc-object-fit>
-        <!--
-            the style="all: inherit" is required since I use the eleventy image
-            plugin which wraps the <img> in a <picture>. Need to see if there
-            is another way to handle that case
-        -->
-        <img src="{{ src }}" alt="" style="all: inherit" />
+        <img src="{{ src }}" alt="" />
       </mwc-object-fit>
     </mwc-card>
   {% endfor %}

@@ -69,6 +69,14 @@ export const appBar = {
   ],
 };
 
+export const avatar = {
+  /** @type {import("@mlaursen.wc").AvatarSize[]} */
+  sizes: ["small", "medium"],
+
+  /** @type {import("@mlaursen.wc").AvatarShape[]} */
+  shapes: defaultShapes,
+};
+
 export const box = {
   /** @type {import("@mlaursen/wc").BoxAlignItems[]} */
   align: ["start", "center", "end", "stretch"],

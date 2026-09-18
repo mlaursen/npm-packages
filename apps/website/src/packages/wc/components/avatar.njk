@@ -1,0 +1,44 @@
+---
+layout: docs
+
+eleventyNavigation:
+  key: Avatar
+  parent: Home
+
+page:
+  title: Avatar
+  description: "Avatars are a great way to represent people or specific objects within your app. They can render as: an image, text content, icon, etc."
+---
+
+{% for background in theme.backgrounds %}
+  <mwc-box>
+    {% for size in avatar.sizes %}
+      {% for shape in avatar.shapes %}
+        <mwc-avatar size="{{ size }}"
+                    shape="{{ shape }}"
+                    background="{{ background }}">
+          A
+        </mwc-avatar>
+        <mwc-avatar size="{{ size }}"
+                    shape="{{ shape }}"
+                    background="{{ background }}">
+          <mwc-material-symbol>
+            favorite
+          </mwc-material-symbol>
+        </mwc-avatar>
+        <mwc-avatar size="{{ size }}"
+                    shape="{{ shape }}"
+                    background="{{ background }}">
+          <img alt=""
+               src="https://picsum.photos/200/300?image=30"
+               eleventy:ignore />
+        </mwc-avatar>
+        <mwc-avatar size="{{ size }}"
+                    shape="{{ shape }}"
+                    background="{{ background }}">
+          <img alt="" src="https://picsum.photos/200/300?image=30" />
+        </mwc-avatar>
+      {% endfor %}
+    {% endfor %}
+  </mwc-box>
+{% endfor %}

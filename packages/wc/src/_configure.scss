@@ -40,6 +40,7 @@
 @use "tooltip";
 @use "list";
 @use "list-item";
+@use "avatar";
 
 @mixin configure(
   $output: null,
@@ -81,7 +82,8 @@
   $text-field: null,
   $tooltip: null,
   $list: null,
-  $list-item: null
+  $list-item: null,
+  $avatar: null
 ) {
   @include utils.configure-setup(
     $output: $output,
@@ -126,4 +128,5 @@
   @include tooltip.configure-global($tooltip);
   @include list.configure-global($list);
   @include list-item.configure-global($list-item);
+  @include avatar.configure-global($avatar);
 }

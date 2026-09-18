@@ -25,6 +25,7 @@
 @use "tooltip";
 @use "list";
 @use "list-item";
+@use "avatar";
 
 @mixin styles {
   @include palette.styles;
@@ -57,4 +58,5 @@
   @include tooltip.styles;
   @include list.styles;
   @include list-item.styles;
+  @include avatar.styles;
 }

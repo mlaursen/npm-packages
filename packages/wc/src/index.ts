@@ -2,6 +2,8 @@ export * from "./app-bar/app-bar.js";
 export * from "./app-bar/types.js";
 export * from "./aria-mixin/aria-mixin.js";
 export * from "./aria-mixin/types.js";
+export * from "./avatar/avatar.js";
+export * from "./avatar/types.js";
 export * from "./box/box.js";
 export * from "./box/types.js";
 export * from "./button/button.js";
