@@ -31,3 +31,18 @@ export type KebabCaseKeys<T extends Record<string, unknown>> = {
 };
 
 export type PascalCase<S extends string> = Capitalize<CamelCase<S>>;
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type AnyFunction = (...args: any[]) => any;
+
+export type CancelableFunction<F extends AnyFunction> = F & {
+  cancel: () => void;
+};
+
+export type DebouncedFunction<F extends AnyFunction> = CancelableFunction<
+  (...args: Parameters<F>) => void
+>;
+
+export type ThrottledFunction<F extends AnyFunction> = CancelableFunction<
+  (...args: Parameters<F>) => ReturnType<F>
+>;

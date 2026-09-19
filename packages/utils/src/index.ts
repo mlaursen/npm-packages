@@ -1,4 +1,6 @@
 export * from "./alphaNumericSort.js";
+export * from "./debounce.js";
+export * from "./throttle.js";
 export * from "./camelCase.js";
 export * from "./kebabCase.js";
 export * from "./pascalCase.js";
