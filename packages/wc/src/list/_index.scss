@@ -43,7 +43,11 @@ $-base-horizontal-styles: (
 }
 
 @mixin css-styles {
-  $styles: ();
+  $styles: (
+    "&list": $-base-styles,
+    "&list--horizontal": $-base-horizontal-styles,
+    "&list--vertical": $-base-vertical-styles,
+  );
   @include utils.css-styles($styles);
 }
 

@@ -15,6 +15,9 @@ $-tokens: (
   mark: (
     opacity: 0,
   ),
+  outline: (
+    color: null,
+  ),
 
   interaction: (
     color: "palette.on-surface",
@@ -59,7 +62,7 @@ $-base-styles: (
   "interaction.focused.container.color": "radio.interaction.color",
   "interaction.pressed.container.color": "radio.interaction.color",
   align-items: center,
-  border-radius: "shape.full",
+  border-radius: "shape.corner.full",
   display: inline-flex,
   flex-shrink: 0,
   font-size: "radio.size",
@@ -129,7 +132,18 @@ $-error-styles: utils.deep-merge(
 }
 
 @mixin css-styles {
-  $styles: ();
+  // NOTE: Probably incorrect
+  $styles: (
+    "&radio": $-base-styles,
+    "&radio:has(:checked)": $-checked-styles,
+    "&radio--small": $-small-styles,
+    "&radio--large": $-large-styles,
+    "&radio--disabled": $-disabled-styles,
+    "&radio--error": $-error-styles,
+    "&radio__icon": $-icon-styles,
+    "&radio__outline": $-outline-styles,
+    "&radio__mark": $-mark-styles,
+  );
   @include utils.css-styles($styles);
 }
 

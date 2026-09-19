@@ -12,10 +12,6 @@ const colorScheme = ((): ColorScheme => {
     return "dark";
   }
 
-  if (process.argv.includes("--system")) {
-    return "system";
-  }
-
   return "light-dark";
 })();
 

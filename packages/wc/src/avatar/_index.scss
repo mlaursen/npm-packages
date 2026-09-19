@@ -67,19 +67,19 @@ $-round-styles: (
   "avatar.shape.all": "avatar.shape.round",
 );
 $-contain-styles: (
-  "object.fit": contain,
+  "object-fit.object-fit": contain,
 );
 $-cover-styles: (
-  "object.fit": cover,
+  "object-fit.object-fit": cover,
 );
 $-fill-styles: (
-  "object.fit": fill,
+  "object-fit.object-fit": fill,
 );
 $-scale-down-styles: (
-  "object.fit": scale-down,
+  "object-fit.object-fit": scale-down,
 );
 $-none-styles: (
-  "object.fit": none,
+  "object-fit.object-fit": none,
 );
 $-image-styles: (
   height: 100%,

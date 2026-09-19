@@ -15,12 +15,7 @@ import type { ColorScheme } from "../src/index.js";
 enableLogger();
 const start = Date.now();
 
-const COLOR_SCHEMES: readonly ColorScheme[] = [
-  "light",
-  "dark",
-  "system",
-  "light-dark",
-];
+const COLOR_SCHEMES: readonly ColorScheme[] = ["light", "dark", "light-dark"];
 
 function getColorSchemeCode(colorScheme: ColorScheme): string {
   return `

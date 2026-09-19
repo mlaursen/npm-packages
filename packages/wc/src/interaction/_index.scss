@@ -26,6 +26,7 @@ $-tokens: (
       elevation: null,
     ),
     animation-name: null,
+    border: null,
     outline: null,
     inset: 0,
 
@@ -157,12 +158,12 @@ $-focused-inward-styles: (
     "interaction.focused.inward.animation-name",
   "interaction.focused.border":
     '"interaction.focused.width" solid "interaction.focused.color"',
-  "interaction.focused.inset": "interaction.focused.inward-offset",
+  "interaction.focused.inset": "interaction.focused.inward.offset",
 );
 $-focused-outward-styles: (
   "interaction.focused.animation-name":
     "interaction.focused.outward.animation-name",
-  "interaction.focused.inset": 'calc(-1 * "interaction.focused.outward-offset")',
+  "interaction.focused.inset": 'calc(-1 * "interaction.focused.outward.offset")',
   "interaction.focused.outline":
     '"interaction.focused.width" solid "interaction.focused.color"',
 );
@@ -246,7 +247,24 @@ $is-focus-visible: ":is(:focus-visible, [focus-visible])";
 }
 
 @mixin css-styles {
-  $styles: ();
+  // NOTE: Probably incorrect
+  $root-styles: utils.deep-merge(
+    $-base-styles,
+    $-base-clickable-styles,
+    $-base-focusable-styles
+  );
+  $state-layer-styles: utils.deep-merge(
+    $-base-state-layer-styles,
+    (
+      "&::before": $-base-focusable-animation-styles,
+    )
+  );
+  $styles: (
+    "&interaction": $root-styles,
+    "mouse-hover": (
+      "&interaction": $-hovered-styles,
+    ),
+  );
   @include utils.css-styles($styles, $keyframes: $-keyframes);
 }
 

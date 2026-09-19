@@ -36,37 +36,6 @@ $-short-var-names: true;
   @return $-output == host;
 }
 
-/// Used to get the current CSS variable name from react-md tokens.
-///
-/// @param {String} $name - token name. i.e `"font.brand"`
-/// @param {String...} $short-names -
-/// @returns {String} the var name. i.e. `"--mwc-font-brand"`
-@function get-var-name($name, $short-names: null) {
-  @if not list.index($-tokens, $name) {
-    $-tokens: list.append($-tokens, $name) !global;
-    $-force-added: list.append($-force-added, $name) !global;
-  }
-
-  $hyphenated-name: str-replace($name, ".", "-");
-
-  // I do not want to display the palette or transition prefix
-  @if string.index($hyphenated-name, "palette-") == 1 {
-    $hyphenated-name: string.slice($hyphenated-name, 9);
-  } @else if string.index($hyphenated-name, "transition-") == 1 {
-    $hyphenated-name: string.slice($hyphenated-name, 12);
-  }
-
-  @if $-short-var-names and $short-names {
-    $parts: string.split($hyphenated-name, "-");
-    @if list.index($short-names, $name) {
-      $result: "--_";
-      @each $part in $parts {
-        $result: $result + string.slice($part, 1, 1);
-      }
-
-      @return $result;
-    }
-  }
-
-  @return #{"--mwc-" + $hyphenated-name};
+@function is-short-var-names() {
+  @return $-short-var-names;
 }

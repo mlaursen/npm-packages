@@ -76,7 +76,7 @@ $-configure-tokens: map.keys($-tokens);
 
   @include utils.set-default-tokens(
     $tokens: $-tokens,
-    $prefix: "shape",
+    $prefix: "shape.corner",
     $register-tokens: $register-tokens
   );
 }

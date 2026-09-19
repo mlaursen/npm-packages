@@ -40,6 +40,8 @@ const code = `
 
   @include styles;
 }
+
+@include verify-tokens;
 `;
 
 const start = Date.now();
@@ -60,9 +62,10 @@ const minified = transform({
     browserslist("last 2 versions and not dead and > 0.5%"),
   ),
   inputSourceMap: (result.sourceMap && JSON.stringify(result.sourceMap)) ?? "",
+  sourceMap: true,
 });
 
-let materialThemeCss: string | undefined;
+let materialThemeCss = "";
 if (existsSync("material-theme.scss")) {
   const result = compileScss({
     code: `@use "./src" as *;

@@ -6,7 +6,7 @@ $-tokens-registered: false;
 $-tokens: (
   title: (
     grid-area: title,
-    spacing: null,
+    margin: null,
     justify: start,
   ),
 );
@@ -40,7 +40,10 @@ $-centered-styles: (
 }
 
 @mixin css-styles {
-  $styles: ();
+  $styles: (
+    "&app-bar-title": $-base-styles,
+    "&app-bar-title--centered": $-centered-styles,
+  );
   @include utils.css-styles($styles);
 }
 

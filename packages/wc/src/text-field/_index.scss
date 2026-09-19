@@ -105,6 +105,10 @@ $-tokens: (
   ),
 
   small: (
+    label: (
+      x: null,
+      y: null,
+    ),
     padding: (
       block-start: "spacing.small",
       block-end: "spacing.small",
@@ -126,12 +130,15 @@ $-tokens: (
 
     outline: (
       opacity: 0,
+      width: "text-field.outline.width",
     ),
   ),
 
   disabled: (
     color: "palette.on-surface",
     color-opacity: "interaction.disabled.container.opacity",
+    background: null,
+    background-opacity: null,
 
     outline: (
       color: null,
@@ -221,6 +228,10 @@ $-tokens: (
   ),
   focused: (
     color: "palette.on-surface",
+
+    label: (
+      color: "text-field.label.color",
+    ),
 
     outline: (
       color: null,
@@ -319,8 +330,8 @@ $-base-textarea-container-styles: (
   // shift the horizontal padding down to the textarea itself and shift the
   // vertical padding down as margin. the vertical padding has to be margin
   // so the text content isn't clipped
-  "text-field.input.margin-block-start": "text-field.padding.block-start",
-  "text-field.input.margin-block-end": "text-field.padding.block-end",
+  "text-field.input.margin.block-start": "text-field.padding.block-start",
+  "text-field.input.margin.block-end": "text-field.padding.block-end",
   "text-field.input.padding.inline-end": "text-field.padding.inline-end",
   "text-field.input.padding.inline-start": "text-field.padding.inline-start",
   "text-field.label.x": "text-field.padding.inline-start",
@@ -518,7 +529,35 @@ $-base-error-styles: utils.deep-merge(
 }
 
 @mixin css-styles {
-  $styles: ();
+  // NOTE: probably incorrect
+  $styles: (
+    "&text-field": $-base-styles,
+    "&text-field--area": $-base-textarea-container-styles,
+    "&text-field--outlined": tokens.$outlined-styles,
+    "&text-field--filled": tokens.$filled-styles,
+    "&text-field--small": $-small-styles,
+    "&text-field--filled-small": tokens.$filled-small-styles,
+    "&text-field--filled-small-label": tokens.$filled-small-label-styles,
+    "&text-field--error": $-base-error-styles,
+    "mouse-hover": (
+      "&text-field": $-base-hovered-styles,
+    ),
+    "&text-field--disabled": $-base-disabled-styles,
+    "&text-field:has(:focus-visible)": $-base-focused-styles,
+    "&text-field:has(:focus-visible, :not(:placeholder-shown))":
+      $-base-floating-styles,
+    "&text-field__input": $-base-input-styles,
+    "&text-field__input--labeled": $-base-labeled-input-styles,
+    "&text-field__label": $-base-label-styles,
+    "&text-field__outline": tokens.$outlined-outline-styles,
+    "&text-field__resize": $-base-textarea-resize-styles,
+    "&text-field__notch": tokens.$outlined-notch-styles,
+    "&text-field__notch, &text-field__outline--no-notches":
+      tokens.$outlined-notch-pseudo-styles,
+    "&text-field__notch-1": tokens.$outlined-notch-1-styles,
+    "&text-field__notch-2": tokens.$outlined-notch-2-styles,
+    "&text-field__notch-3": tokens.$outlined-notch-3-styles,
+  );
   @include utils.css-styles($styles);
 }
 

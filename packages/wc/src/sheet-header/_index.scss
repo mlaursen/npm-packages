@@ -73,7 +73,13 @@ $-action-button-styles: (
 }
 
 @mixin css-styles {
-  $styles: ();
+  $styles: (
+    "&sheet-header": $-base-styles,
+    "&sheet-header__title": $-title-styles,
+    "&sheet-header--back-button": $-back-button-styles,
+    "&sheet-header--close-button": $-close-button-styles,
+    "&sheet-header--actions": $-action-button-styles,
+  );
   @include utils.css-styles($styles);
 }
 

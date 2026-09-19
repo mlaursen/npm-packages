@@ -137,6 +137,7 @@ $-configure-tokens: utils.list-concat(
 
   @include utils.set-default-tokens(
     $tokens: $-tokens,
+    $prefix: "transition",
     $register-tokens: $register-tokens
   );
 }

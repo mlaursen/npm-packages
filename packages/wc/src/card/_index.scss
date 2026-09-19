@@ -97,6 +97,8 @@ $-tokens: (
   disabled: (
     color: "palette.on-surface",
     color-opacity: 0.38,
+    background: "card.background",
+    background-opacity: "card.background-opacity",
     elevation: 0,
 
     outline: (
@@ -110,6 +112,7 @@ $-tokens: (
 
     outline: (
       color: "palette.outline-variant",
+      opacity: 1,
     ),
   ),
 
@@ -118,6 +121,7 @@ $-tokens: (
 
     outline: (
       color: "palette.on-surface",
+      opacity: 1,
     ),
   ),
 
@@ -262,7 +266,25 @@ $-square-styles: (
 }
 
 @mixin css-styles {
-  $styles: ();
+  // NOTE: Probably incorrect
+  $styles: (
+    "&card": $-base-styles,
+    "&card__container": $-container-styles,
+    "&card--inline": $-inline-styles,
+    "&card--clickable": $-clickable-styles,
+    "&card--noninteractive": $-not-clickable-styles,
+    "&card--elevated": $-elevated-styles,
+    "&card--filled": $-filled-styles,
+    "&card--outlined": $-outlined-styles,
+    "&card--round": $-round-styles,
+    "&card--square": $-square-styles,
+    "@media (hover: hover) and (pointer: fine)": (
+      "&card--clickable:hover": $-base-hovered-styles,
+    ),
+    "&card--disabled": $-base-disabled-styles,
+    "&card:is(:focus-visible)": $-base-focused-styles,
+    "&card--dragging": $-base-dragged-styles,
+  );
   @include utils.css-styles($styles);
 }
 

@@ -24,7 +24,7 @@ $-base-styles: (
   width: "object-fit.width",
 );
 $-object-fit-styles: (
-  object-fit: "object.fit",
+  object-fit: "object-fit.object-fit",
   height: 100%,
   width: 100%,
 );
@@ -34,19 +34,19 @@ $-full-width-styles: (
   display: grid,
 );
 $-contain-styles: (
-  "object.fit": contain,
+  "object-fit.object-fit": contain,
 );
 $-cover-styles: (
-  "object.fit": cover,
+  "object-fit.object-fit": cover,
 );
 $-fill-styles: (
-  "object.fit": fill,
+  "object-fit.object-fit": fill,
 );
 $-scale-down-styles: (
-  "object.fit": scale-down,
+  "object-fit.object-fit": scale-down,
 );
 $-none-styles: (
-  "object.fit": none,
+  "object-fit.object-fit": none,
 );
 
 @mixin configure() {

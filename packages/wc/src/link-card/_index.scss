@@ -27,7 +27,9 @@ $-base-link-styles: (
 }
 
 @mixin css-styles {
-  $styles: ();
+  $styles: (
+    "&link-card__a": $-base-link-styles,
+  );
   @include utils.css-styles($styles);
 }
 

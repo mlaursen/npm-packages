@@ -31,8 +31,8 @@ $-base-styles: utils.deep-merge(
   $-remapped-styles,
   (
     "interaction.focused.container.opacity": 0,
-    "interaction.focused.outward-offset": "link.focused.offset",
-    "interaction.focused.inward-offset": 'calc("link.focused.offset" * -1)',
+    "interaction.focused.outward.offset": "link.focused.offset",
+    "interaction.focused.inward.offset": 'calc("link.focused.offset" * -1)',
     "interaction.hovered.container.opacity": 0,
   )
 );

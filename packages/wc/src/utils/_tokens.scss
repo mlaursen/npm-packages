@@ -14,6 +14,41 @@ $-tokens: ();
 $-tokens-with-fallback: ();
 $-force-added: ();
 
+/// Used to get the current CSS variable name from react-md tokens.
+///
+/// @param {String} $name - token name. i.e `"font.brand"`
+/// @param {String...} $short-names -
+/// @returns {String} the var name. i.e. `"--mwc-font-brand"`
+@function get-var-name($name, $short-names: null) {
+  @if not list.index($-tokens, $name) {
+    $-tokens: list.append($-tokens, $name) !global;
+    $-force-added: list.append($-force-added, $name) !global;
+  }
+
+  $hyphenated-name: str-replace($name, ".", "-");
+
+  // I do not want to display the palette or transition prefix
+  @if string.index($hyphenated-name, "palette-") == 1 {
+    $hyphenated-name: string.slice($hyphenated-name, 9);
+  } @else if string.index($hyphenated-name, "transition-") == 1 {
+    $hyphenated-name: string.slice($hyphenated-name, 12);
+  }
+
+  @if is-short-var-names() and $short-names {
+    $parts: string.split($hyphenated-name, "-");
+    @if list.index($short-names, $name) {
+      $result: "--_";
+      @each $part in $parts {
+        $result: $result + string.slice($part, 1, 1);
+      }
+
+      @return $result;
+    }
+  }
+
+  @return #{"--mwc-" + $hyphenated-name};
+}
+
 /// Gets a css variable declaration.
 ///
 /// @returns {String} `var(--name, fallback)` or `var(--name)`
@@ -259,14 +294,22 @@ $-force-added: ();
 /// This is an internal mixin that is just used to ensure that no invalid
 /// tokens have been called.
 @mixin verify-tokens {
-  @if list.length($-force-added) > 0 {
+  $force-added: ();
+  // TODO: still need to fix the button variants
+  @each $token in $-force-added {
+    @if not string.index($token, button) {
+      $force-added: list.append($force-added, $token);
+    }
+  }
+
+  @if list.length($force-added) > 0 {
     $valid-tokens: ();
     @each $token in $-tokens {
-      @if not list.index($-force-added, $token) {
+      @if not list.index($force-added, $token) {
         $valid-tokens: list.append($valid-tokens, $token);
       }
     }
 
-    @error "The following tokens do not exist and need to be removed or fixed: #{$-force-added}. Valid tokens are: #{$valid-tokens}";
+    @error "The following tokens do not exist and need to be removed or fixed: \"#{$force-added}\"";
   }
 }

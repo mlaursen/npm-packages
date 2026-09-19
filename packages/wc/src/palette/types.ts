@@ -1,6 +1,6 @@
 import type { CamelCase, CamelCaseKeys } from "@mlaursen/utils";
 
-export type ColorScheme = "light" | "dark" | "system" | "light-dark";
+export type ColorScheme = "light" | "dark" | "light-dark";
 
 export type PaletteBackground = "background";
 

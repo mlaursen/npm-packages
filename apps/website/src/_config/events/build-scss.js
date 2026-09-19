@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import { readFile } from "node:fs/promises";
 
-import { generateFile, log } from "@mlaursen/node-utils";
+import { generateFile, log, logFailure } from "@mlaursen/node-utils";
 import { compileScss } from "@mlaursen/scss";
 import { glob } from "glob";
 import { transform } from "lightningcss";
@@ -78,11 +78,26 @@ async function compile({ cwd, code, filePath, outFileName }) {
     code,
     basePath: cwd,
     load: (filePath) => {
+      let code;
       if (filePath.endsWith("/configure-website.scss")) {
-        return getConfigureCode();
+        code = getConfigureCode();
+      } else {
+        code = readFileSync(filePath, "utf8");
       }
 
-      return readFileSync(filePath, "utf8");
+      if (code.includes('@use "@mlaursen/wc"')) {
+        if (!code.includes('@use "@mlaursen/wc" as *;')) {
+          logFailure(
+            `${filePath} must be updated to include @mlaursen/wc as *;`,
+          );
+        }
+
+        if (!code.includes("@include verify-tokens;")) {
+          code += "\n@include verify-tokens;\n";
+        }
+      }
+
+      return code;
     },
   });
 

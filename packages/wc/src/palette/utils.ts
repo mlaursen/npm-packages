@@ -59,7 +59,7 @@ export function convertMaterialThemeToProperties(
 
   const isDark = colorScheme === "dark";
   const isLight = colorScheme === "light";
-  const isLightDark = colorScheme === "light-dark" || colorScheme === "system";
+  const isLightDark = colorScheme === "light-dark";
 
   const properties: Partial<Record<AllPaletteTokenName, string | undefined>> =
     {};
