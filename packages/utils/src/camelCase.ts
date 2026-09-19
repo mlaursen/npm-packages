@@ -14,6 +14,7 @@ import { words } from "./words.js";
  *
  * @param s - The string to convert to camel case
  * @param separator - An optional separator for each "word" in the string
+ * @returns the camelCasedString
  */
 export const camelCase = <S extends string>(
   s: S,

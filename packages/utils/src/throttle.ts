@@ -1,5 +1,20 @@
 import { type AnyFunction, type ThrottledFunction } from "./types.js";
 
+/**
+ * Throttles a function so that it is only called once every x milliseconds.
+ *
+ * @example Simple Example
+ * ```ts
+ * const throttled = throttle((search: string): void => {
+ *   setSearch(search);
+ * }, 150);
+ * ```
+ *
+ * @param fn - The function to throttle
+ * @param wait - The number of milliseconds to wait before the function can be
+ * called again.
+ * @returns the throttled function that can also be canceled.
+ */
 export function throttle<F extends AnyFunction>(
   fn: F,
   wait: number,

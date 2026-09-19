@@ -16,8 +16,8 @@ npm install @mlaursen/scss
 ### Node Example
 
 ```ts
-import { compileScss } from "@mlaursen/scss";
 import { readFileSync } from "node:fs";
+import { compileScss } from "@mlaursen/scss";
 
 // start by setting a base path for everything. using process.cwd() is
 // usually the easiest
@@ -77,9 +77,9 @@ const { css } = compileScss({
 ### Generating SCSS Lookup
 
 ```ts
-import { assertScssResolvePackageJson, compileScss } from "@mlaursen/scss";
 import { readFileSync, writeFileSync } from "node:fs";
 import { format } from "oxfmt";
+import { assertScssResolvePackageJson, compileScss } from "@mlaursen/scss";
 
 const basePath = process.cwd();
 const browserBasePath = "/__home__";
@@ -112,16 +112,11 @@ compileScss({
 });
 
 const lookupString = JSON.stringify(lookup);
-writeFileSync(
+const formatted = await format(
   browserOutFilePath,
-  await format(
-    `
-export const SCSS_LOOKUP: Record<string, string> = ${lookupString}
-`,
-    { parser: "typescript" },
-  ),
-  "utf8",
+  `export const SCSS_LOOKUP: Record<string, string> = ${lookupString};`,
 );
+writeFileSync(browserOutFilePath, formatted.code, "utf8");
 ```
 
 ## compileScssModule
@@ -129,9 +124,9 @@ export const SCSS_LOOKUP: Record<string, string> = ${lookupString}
 ### Simple Example
 
 ```ts
-import { compileScssModule } from "@mlaursen/scss";
 import { readFileSync } from "node:fs";
 import { basename } from "node:path";
+import { compileScssModule } from "@mlaursen/scss";
 
 const filePath = "./src/Example.scss";
 const code = readFileSync(filePath, "utf8");

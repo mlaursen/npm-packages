@@ -9,6 +9,7 @@ import type { KebabCase } from "./types.js";
  * ```
  *
  * @param s - The string to convert
+ * @returns the kebab-cased-string
  */
 export const kebabCase = <S extends string>(s: S): KebabCase<S> =>
   s.split(/(?=[A-Z])/).reduce((result, part, i) => {

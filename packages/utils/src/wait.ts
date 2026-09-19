@@ -12,6 +12,7 @@
  * ```
  *
  * @param ms time to wait in milliseconds
+ * @returns a promise that resolves after the duration and no value
  */
 export function wait(ms: number): Promise<void> {
   return new Promise((resolve) =>

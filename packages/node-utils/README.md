@@ -15,8 +15,8 @@ npm install @mlaursen/node-utils
 ### Simple Example
 
 ```ts
-import { filesize } from "@mlaursen/node-utils";
 import { readFile } from "node:fs/promises";
+import { filesize } from "@mlaursen/node-utils";
 
 const contents = await readFile("README.md", "utf8");
 console.log(`README.md is ${filesize(contents)} bytes`);
@@ -43,7 +43,7 @@ export const y = "hello, world!"`,
 ### Simple Example
 
 ```ts
-import { disableLogger, enableLogger, log } from "@mlaursen/node-utils";
+import { enableLogger, disableLogger, log } from "@mlaursen/node-utils";
 
 log("This won't be printed");
 
@@ -59,7 +59,7 @@ log("This won't be printed");
 ### Simple Example
 
 ```ts
-import { enableLogger, logTask } from "@mlaursen/node-utils";
+import { logTask, enableLogger } from "@mlaursen/node-utils";
 
 enableLogger();
 
@@ -75,8 +75,8 @@ await logTask(someTask(), "Starting some task", "Some task complete!");
 ### Simple Example
 
 ```ts
-import { prettyFilesize } from "@mlaursen/node-utils";
 import { readFile } from "node:fs/promises";
+import { prettyFilesize } from "@mlaursen/node-utils";
 
 const contents = await readFile("README.md", "utf8");
 console.log(`README.md is ${prettyFilesize(contents)}`);

@@ -10,7 +10,7 @@ import { upperFirst } from "./upperFirst.js";
  *
  * @param s - The string to convert
  * @param splitter - An optional string or regex to use for splitting
- * @returns the title case string
+ * @returns the Title Case String
  */
 export const titleCase = (
   s: string,

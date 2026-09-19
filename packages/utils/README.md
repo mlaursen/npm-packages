@@ -46,6 +46,25 @@ import { camelCase } from "@mlaursen/utils";
 camelCase("hello-world"); // "helloWorld"
 ```
 
+## chunk
+
+### Simple Example
+
+```ts
+const chunked = chunk([1, 2, 3, 4], 2);
+// [[1, 2], [3, 4]]
+```
+
+## debounce
+
+### Simple Example
+
+```ts
+const debounced = debounce((search: string): void => {
+  setSearch(search);
+}, 150);
+```
+
 ## kebabCase
 
 ### Simple Example
@@ -64,6 +83,16 @@ kebabCase("HelloWorld"); // "hello-world"
 import { pascalCase } from "@mlaursen/utils";
 
 pascalCase("hello-world"); // "HelloWorld"
+```
+
+## throttle
+
+### Simple Example
+
+```ts
+const throttled = throttle((search: string): void => {
+  setSearch(search);
+}, 150);
 ```
 
 ## titleCase

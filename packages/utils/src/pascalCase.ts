@@ -12,6 +12,7 @@ import { upperFirst } from "./upperFirst.js";
  *
  * @param s - The string to convert
  * @param separator - an optional separator for each "word" in the string
+ * @returns the PascalCasedString
  */
 export const pascalCase = <S extends string>(
   s: S,
