@@ -8,6 +8,8 @@ _site
 src/_includes/css
 src/_includes/scripts
 
+**/.conform.*
+
 # cache
 .cache
 
