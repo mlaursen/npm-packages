@@ -23,7 +23,10 @@ page:
   <mwc-dialog id="dialog-1">
     <h2 slot="title">Title</h2>
     <p slot="content">Hello, world!</p>
-    <mwc-button slot="actions" variant="text" command="close" commandfor="dialog-1">
+    <mwc-button slot="actions"
+                variant="text"
+                command="close"
+                commandfor="dialog-1">
       Cancel
     </mwc-button>
     <mwc-button slot="actions"
@@ -39,7 +42,10 @@ page:
     <p slot="content">
       This is a description of the alert. The alertdialog role is used to notify users of urgent information that demands the user's immediate attention.
     </p>
-    <mwc-button slot="actions" variant="text" command="close" commandfor="dialog-2">
+    <mwc-button slot="actions"
+                variant="text"
+                command="close"
+                commandfor="dialog-2">
       Ok
     </mwc-button>
   </mwc-dialog>
@@ -51,7 +57,10 @@ page:
     <p slot="content">
       Deleting the selected photos will also remove them from all synced devices.
     </p>
-    <mwc-button slot="actions" variant="text" command="close" commandfor="dialog-3">
+    <mwc-button slot="actions"
+                variant="text"
+                command="close"
+                commandfor="dialog-3">
       Delete
     </mwc-button>
     <mwc-button slot="actions"
@@ -62,7 +71,7 @@ page:
       Cancel
     </mwc-button>
   </mwc-dialog>
-  <mwc-dialog popover-initiator="no-click">
+  <mwc-dialog popover-initiator="click" popover-type="hint" type="popover">
     <mwc-button slot="popover-target">
       Show Popover
     </mwc-button>

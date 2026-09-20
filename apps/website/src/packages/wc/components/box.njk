@@ -57,7 +57,8 @@ defaults:
           <mwc-typography margin="none" variant="label">
             <label>
               <mwc-box inline>
-                <mwc-checkbox name="{{ property }}" {{ "checked" if defaults[property] }}>
+                <mwc-checkbox name="{{ property }}"
+                              {{ "checked" if defaults[property] }}>
                 </mwc-checkbox>
                 {{ property }}
               </mwc-box>

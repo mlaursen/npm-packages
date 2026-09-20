@@ -1,3 +1,5 @@
+import { dirname } from "node:path";
+
 import { generateFile } from "@mlaursen/node-utils";
 import esbuild from "esbuild";
 import { glob } from "glob";
@@ -49,16 +51,18 @@ export async function buildJs() {
       filePath: `${SCRIPTS_DIR}/main.ts`,
       outFileName: "main",
     }),
+    compile({
+      filePath: `${SCRIPTS_DIR}/404.ts`,
+      outFileName: "404",
+    }),
   ];
-  const globals = await glob("**/*.ts", {
-    cwd: SCRIPTS_DIR,
-    ignore: "**/main.ts",
-  });
-  for (const filePath of globals) {
+
+  const pages = await glob("**/index.ts", { cwd: SCRIPTS_DIR });
+  for (const filePath of pages) {
     tasks.push(
       compile({
         filePath: `${SCRIPTS_DIR}/${filePath}`,
-        outFileName: filePath.replace(".ts", ""),
+        outFileName: dirname(filePath),
       }),
     );
   }

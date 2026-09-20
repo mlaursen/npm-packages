@@ -28,17 +28,17 @@ components:
     <mwc-box grid align="stretch" style="--mwc-box-item-min-size: 16rem">
       {% for component in components %}
         <{{ component.name }} variant="{{ variant }}" {{ "disabled" if component.disabled }}>
-        <mwc-box stacked align="start">
-          <mwc-typography variant="display" size="medium" margin="none">
-            <h3>{{ component.title }}</h3>
-          </mwc-typography>
-          <mwc-typography variant="title" margin="none">
-            <h4>Subhead</h4>
-          </mwc-typography>
-          <mwc-typography margin="none">
-            <p>Explain more about the topic shown in the medium display and subhead through supporting text here.</p>
-          </mwc-typography>
-        </mwc-box>
+          <mwc-box stacked align="start">
+            <mwc-typography variant="display" size="medium" margin="none">
+              <h3>{{ component.title }}</h3>
+            </mwc-typography>
+            <mwc-typography variant="title" margin="none">
+              <h4>Subhead</h4>
+            </mwc-typography>
+            <mwc-typography margin="none">
+              <p>Explain more about the topic shown in the medium display and subhead through supporting text here.</p>
+            </mwc-typography>
+          </mwc-box>
         </{{ component.name }}>
       {% endfor %}
     </mwc-box>
