@@ -134,7 +134,7 @@ export class Dialog extends BaseDialog implements DialogProperties {
   open: boolean = false;
 
   @property()
-  type?: DialogType;
+  type: DialogType = "modal";
 
   @property({ reflect: true })
   shape: DialogShape = "round";
@@ -209,10 +209,10 @@ export class Dialog extends BaseDialog implements DialogProperties {
       return;
     }
 
-    if (this.open) {
+    if (this.open && (this.type === "alert" || this.type === "modal")) {
       document.documentElement.style.overflow = "hidden";
     } else {
-      document.documentElement.style.overflow = "";
+      document.documentElement.style.removeProperty("overflow");
     }
   }
 
@@ -307,7 +307,13 @@ export class Dialog extends BaseDialog implements DialogProperties {
   }
 
   override _showElement(): void {
-    this._dialog?.showModal();
+    if (this.type === "popover") {
+      this._dialog?.showPopover();
+    } else if (this.type === "fixed") {
+      this._dialog?.show();
+    } else {
+      this._dialog?.showModal();
+    }
 
     this.open = true;
     this._content?.scrollTo({ top: 0 });

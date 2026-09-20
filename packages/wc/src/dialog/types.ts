@@ -18,7 +18,20 @@ export type DialogWidth = OverridableStringUnion<
   DialogWidthOverrides
 >;
 
-export type DialogType = "alert";
+/**
+ * The default dialog type is `"modal"`.
+ *
+ * - `"modal"` - displays a clickable backdrop with the dialog when it is
+ *   visible.
+ * - `"alert"` - displays a non-interactive backdrop with the dialog when it is
+ *   visible. The user must click on one of the actions within the dialog to
+ *   close it and updates the role to `"alertdialog"`.
+ * - `"popover"` - does not display a backdrop when the dialog is visible and should
+ *   be used with the popover API.
+ * - `"fixed"` - does not display any backdrop and sets `position: fixed` on
+ *   the `dialog`.
+ */
+export type DialogType = "alert" | "modal" | "fixed" | "popover";
 
 export interface DialogShapeOverrides {}
 export type DefaultDialogShape = DefaultComponentShape;
@@ -66,8 +79,8 @@ export interface DialogProperties {
   describedBy?: string;
 
   /**
-   * Set this to `"alert"` to update the `dialog` to have the `"alertdialog"`
-   * role.
+   * @see {@link DialogType}
+   * @defaultValue `"modal"`
    */
   type?: DialogType;
 
