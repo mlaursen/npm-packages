@@ -10,7 +10,7 @@ export const minLengthValidator = {
     return `Please use at least ${instance.minLength} characters (you are currently using ${value.length} characters).`;
   },
   isValid(instance: MinLengthElement, value) {
-    if (!value) {
+    if (!value || instance.minLength < 1) {
       return true;
     }
 

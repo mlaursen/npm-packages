@@ -10,7 +10,7 @@ export const maxLengthValidator = {
     return `Please use no more than ${instance.maxLength} characters (you are currently using ${value.length} characters).`;
   },
   isValid(instance: MaxLengthElement, value) {
-    if (!instance.maxLength) {
+    if (instance.maxLength < 1) {
       return true;
     }
 
