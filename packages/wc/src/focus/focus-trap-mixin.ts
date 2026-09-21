@@ -1,4 +1,4 @@
-import type { TemplateResult } from "lit";
+import type { PropertyValues, TemplateResult } from "lit";
 import { html } from "lit";
 import { property, query } from "lit/decorators.js";
 
@@ -22,17 +22,25 @@ export function FocusTrapMixin<T extends LitConstructor>(
 
     #reversed = false;
 
-    override connectedCallback(): void {
-      super.connectedCallback();
+    override updated(changed: PropertyValues): void {
+      super.updated(changed);
 
-      this.addEventListener("keydown", this.#handleKeyDown);
+      this.#bind(true);
     }
 
     override disconnectedCallback(): void {
       super.disconnectedCallback();
 
-      this.removeEventListener("keydown", this.#handleKeyDown);
+      this.#bind(false);
     }
+
+    #bind = (add: boolean): void => {
+      if (add && !this.disableFocusTrap) {
+        this.addEventListener("keydown", this.#handleKeyDown);
+      } else {
+        this.removeEventListener("keydown", this.#handleKeyDown);
+      }
+    };
 
     getFallbackFocus(): HTMLElement | null | undefined {
       return null;
@@ -54,6 +62,10 @@ export function FocusTrapMixin<T extends LitConstructor>(
     }
 
     focusFirstAutoFocus(): void {
+      if (this.disableFocusTrap) {
+        return;
+      }
+
       const element = getAutoFocusElement(this);
       element?.focus();
     }
