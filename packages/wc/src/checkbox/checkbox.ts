@@ -105,6 +105,7 @@ export class Checkbox extends BaseCheckbox implements CheckboxProperties {
   _longMark?: HTMLElement;
 
   #reset = false;
+  #isSpaceClick = false;
 
   getCheckedAnimation: GetAnimationMap<AnimateCheckboxElementMap> = () =>
     DEFAULT_CHECKBOX_CHECKED_ANIMATION;
@@ -192,6 +193,13 @@ export class Checkbox extends BaseCheckbox implements CheckboxProperties {
       return;
     }
 
+    // need to prevent `<label>` elements re-dispatching the click event if
+    // wrapped in a `<label>`
+    if (event.isTrusted || this.#isSpaceClick) {
+      this.#isSpaceClick = false;
+      event.preventDefault();
+    }
+
     if (this.indeterminate) {
       this.checked = true;
       this.indeterminate = false;
@@ -219,6 +227,7 @@ export class Checkbox extends BaseCheckbox implements CheckboxProperties {
       return;
     }
 
+    this.#isSpaceClick = event.key === " ";
     super.handleKeyDown(event);
   }
 

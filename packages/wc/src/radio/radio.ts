@@ -92,6 +92,7 @@ export class Radio extends BaseRadio implements RadioProperties {
     DEFAULT_RADIO_UNCHECKED_ANIMATION;
 
   #reset = false;
+  #isSpaceClick = false;
 
   protected override willUpdate(changed: PropertyValues): void {
     super.willUpdate(changed);
@@ -156,8 +157,20 @@ export class Radio extends BaseRadio implements RadioProperties {
       return;
     }
 
+    // need to prevent `<label>` elements re-dispatching the click event if
+    // wrapped in a `<label>`
+    if (event.isTrusted || this.#isSpaceClick) {
+      this.#isSpaceClick = false;
+      event.preventDefault();
+    }
+
     this.checked = true;
-    this.dispatchEvent(new Event("change", { bubbles: true, composed: true }));
+    this.dispatchEvent(
+      new Event("change", {
+        bubbles: true,
+        composed: true,
+      }),
+    );
     this.dispatchEvent(
       new Event("input", {
         bubbles: true,
@@ -172,6 +185,7 @@ export class Radio extends BaseRadio implements RadioProperties {
       return;
     }
 
+    this.#isSpaceClick = event.key === " ";
     super.handleKeyDown(event);
   }
 
