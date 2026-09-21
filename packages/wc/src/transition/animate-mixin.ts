@@ -1,3 +1,5 @@
+import { property } from "lit/decorators.js";
+
 import type { LitConstructor } from "../types.js";
 import { BaseAnimateMixin } from "./base-animate-mixin.js";
 import type {
@@ -10,11 +12,15 @@ import type {
 export function AnimateMixin<T extends LitConstructor>(
   Base: T,
 ): T & LitConstructor<AnimatedElementProperties> {
-  return class AnimatedLitElement
+  class AnimatedLitElement
     extends BaseAnimateMixin(Base)
     implements AnimatedElementProperties
   {
-    #opening = false;
+    @property({ type: Boolean, reflect: true })
+    opening = false;
+
+    @property({ type: Boolean, reflect: true })
+    closing = false;
     #connectedResolvers = Promise.withResolvers<undefined>();
 
     override connectedCallback(): void {
@@ -55,12 +61,13 @@ export function AnimateMixin<T extends LitConstructor>(
 
     async show(options: BaseAnimateOptions = {}): Promise<void> {
       const { animate } = options;
-      this.#opening = true;
+      this.closing = false;
+      this.opening = true;
 
       await this.#connectedResolvers.promise;
       await this.updateComplete;
-      if (!this.#opening || !this._isOpenable()) {
-        this.#opening = false;
+      if (!this.opening || !this._isOpenable()) {
+        this.opening = false;
         return;
       }
 
@@ -69,28 +76,30 @@ export function AnimateMixin<T extends LitConstructor>(
         new Event("open", { cancelable: true }),
       );
       if (canceled) {
+        this.opening = false;
         this._onOpenCanceled();
-        this.#opening = false;
         return;
       }
 
       this._showElement();
       await this._animate({ animate, opening: true });
+      this.opening = false;
       this.dispatchEvent(new Event("opened"));
-      this.#opening = false;
     }
 
     async close(options: BaseAnimateOptions = {}): Promise<void> {
       const { animate } = options;
 
-      this.#opening = false;
+      this.opening = false;
       if (!this.isConnected) {
         this._onNotConnectedClose();
         return;
       }
 
+      this.closing = true;
       await this.updateComplete;
-      if (this.#opening || !this._isClosable()) {
+      if (this.opening || !this._isClosable()) {
+        this.closing = false;
         this._onNotClosable();
         return;
       }
@@ -100,13 +109,17 @@ export function AnimateMixin<T extends LitConstructor>(
         new Event("close", { cancelable: true }),
       );
       if (canceled) {
+        this.closing = false;
         this._onCloseCanceled();
         return;
       }
 
       await this._animate({ animate, opening: false });
+      this.closing = false;
       this._closeElement();
       this.dispatchEvent(new Event("closed"));
     }
-  };
+  }
+
+  return AnimatedLitElement;
 }

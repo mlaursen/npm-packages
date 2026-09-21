@@ -52,8 +52,6 @@ $-configure-tokens: (
 );
 
 $-popover-styles: (
-  background: transparent,
-  border: 0,
   box-sizing: border-box,
   inset: auto,
   margin: 0,
@@ -71,10 +69,23 @@ $-popover-styles: (
     "popover.transform": "popover.open.transform",
   ),
 );
+$-popover-surface-styles: (
+  background: transparent,
+  border: 0,
+);
+// if the popover is closed via the browser's own behavior, the `hidePopover()`
+// is called immediately before any of the animations occur. there is a
+// workaround to enable the animations by capturing the `beforetoggle` event, but
+// the open styles need to be reapplied so that the element doesn't flash
+$-popover-closing-styles: (
+  "popover.opacity": "popover.open.opacity",
+  "popover.transform": "popover.open.transform",
+  display: block,
+);
 // this was added so that wrapping elements in a `<mwc-popover>` do not mess
 // up their alignment
 $-host-styles: (
-  display: inline-flex,
+  display: contents,
 );
 $-target-styles: (
   anchor-name: --popover-target,
@@ -228,8 +239,10 @@ $-vertical-anchor-styles: (
   $styles: (
     ":host": $-host-styles,
     "::slotted([slot=popover-target])": $-target-styles,
-    "#popover": $-popover-styles,
-    "#popover-content": $-popover-content-styles,
+    ":host([popover-type][closing]) .popover": $-popover-closing-styles,
+    ".popover": $-popover-styles,
+    ".popover-surface": $-popover-surface-styles,
+    ".popover-content": $-popover-content-styles,
   );
   @each $anchor, $anchor-styles in $-horizontal-anchor-styles {
     $styles: map.set($styles, ":host([anchor-x=#{$anchor}])", $anchor-styles);

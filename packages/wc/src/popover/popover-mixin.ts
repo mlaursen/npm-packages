@@ -42,22 +42,22 @@ export function PopoverMixin<T extends StylableLitElement>(
   let styles: CSSResultArray = [popoverStyles];
   if (Base.styles) {
     const baseStyles = Array.isArray(Base.styles) ? Base.styles : [Base.styles];
-    styles = [popoverStyles, ...baseStyles];
+    styles = [...baseStyles, popoverStyles];
   }
 
   class PopoverElement extends AnimateMixin(Base) implements PopoverProperties {
     static override styles = styles;
 
-    @property({ reflect: true, attribute: "anchor-x" })
+    @property({ attribute: "anchor-x" })
     anchorX: HorizontalAnchor = "center";
 
-    @property({ reflect: true, attribute: "anchor-y" })
+    @property({ attribute: "anchor-y" })
     anchorY: VerticalAnchor = "below";
 
     @property({ reflect: true, attribute: "popover-type" })
     popoverType?: PopoverType;
 
-    @property({ reflect: true, attribute: "popover-initiator" })
+    @property({ attribute: "popover-initiator" })
     popoverInitiator: PopoverInitiator = "all";
 
     @property({ type: Number, attribute: "show-delay" })
@@ -72,10 +72,10 @@ export function PopoverMixin<T extends StylableLitElement>(
     @property({ type: Number, attribute: "focus-delay" })
     focusDelay?: number;
 
-    @query("#popover")
+    @query(".popover")
     _popover?: HTMLSpanElement;
 
-    @query("#popover-content")
+    @query(".popover-content")
     _popoverContent?: HTMLDivElement;
 
     @query("slot[name=popover-target]")
@@ -91,9 +91,10 @@ export function PopoverMixin<T extends StylableLitElement>(
 
     #timeout: ReturnType<typeof globalThis.setTimeout> | undefined;
     #initiator: PopoverInitiatorAction | null = null;
+    #closing = false;
 
     override firstUpdated(): void {
-      this._popover?.addEventListener("toggle", this.#handleToggle);
+      this.#bindPopoverHandlers(true);
     }
 
     protected override willUpdate(changed: PropertyValues): void {
@@ -103,14 +104,39 @@ export function PopoverMixin<T extends StylableLitElement>(
         return;
       }
 
-      this.#bindHandlers(this._hasPopoverTarget);
+      this.#bindTargetHandlers(this._hasPopoverTarget);
+    }
+
+    override updated(changed: PropertyValues): void {
+      super.updated(changed);
+
+      if (
+        !changed.has("popoverType") &&
+        !changed.has("popoverInitiator") &&
+        !changed.has("anchorX") &&
+        !changed.has("anchorY")
+      ) {
+        return;
+      }
+
+      // only reflect the popover attributes if popoverType was defined. This
+      // helps for the `dialog` component which can opt-in to the popover API
+      if (this.hasAttribute("popover-type")) {
+        this.setAttribute("popover-initiator", this.popoverInitiator);
+        this.setAttribute("anchor-x", this.anchorX);
+        this.setAttribute("anchor-y", this.anchorY);
+      } else {
+        this.removeAttribute("popover-initiator");
+        this.removeAttribute("anchor-x");
+        this.removeAttribute("anchor-y");
+      }
     }
 
     override disconnectedCallback(): void {
       super.disconnectedCallback();
 
-      this._popover?.removeEventListener("toggle", this.#handleToggle);
-      this.#bindHandlers(false);
+      this.#bindPopoverHandlers(false);
+      this.#bindTargetHandlers(false);
       this.#clearTimeout();
     }
 
@@ -129,8 +155,11 @@ export function PopoverMixin<T extends StylableLitElement>(
       const { target, content } = options;
       return html`
         ${this.renderPopoverTarget(target)}
-        <div id="popover" popover=${ifDefined(this.popoverType)}>
-          <div id="popover-content">${content}</div>
+        <div
+          class="popover popover-surface"
+          popover=${ifDefined(this.popoverType)}
+        >
+          <div class="popover-content">${content}</div>
         </div>
       `;
     }
@@ -168,7 +197,26 @@ export function PopoverMixin<T extends StylableLitElement>(
       this.close();
     }
 
-    #bindHandlers(add: boolean): void {
+    override _onBeforeClose(): void {
+      this.#closing = true;
+    }
+
+    #bindPopoverHandlers(add: boolean): void {
+      const popover = this._popover;
+      if (!popover) {
+        return;
+      }
+
+      if (add) {
+        popover.addEventListener("toggle", this.#handleToggle);
+        popover.addEventListener("beforetoggle", this.#handleBeforeToggle);
+      } else {
+        popover.removeEventListener("toggle", this.#handleToggle);
+        popover.removeEventListener("beforetoggle", this.#handleBeforeToggle);
+      }
+    }
+
+    #bindTargetHandlers(add: boolean): void {
       const name = add ? "addEventListener" : "removeEventListener";
 
       this[name]("mouseenter", this.#handleMouseEnter);
@@ -204,8 +252,19 @@ export function PopoverMixin<T extends StylableLitElement>(
 
     #handleToggle = (event: ToggleEvent): void => {
       if (event.newState === "closed") {
+        this.#closing = false;
         this.#initiator = null;
         this.#clearTimeout();
+      }
+    };
+
+    #handleBeforeToggle = (event: ToggleEvent): void => {
+      // If the `popoverType` is set to `"hint"` and the browser closes the
+      // popover due to one of the other interactions, the normal close
+      // animation would not occur so capture that flow and animate.
+      if (event.newState === "closed" && !this.#closing) {
+        this.#closing = true;
+        this.close();
       }
     };
 
@@ -286,7 +345,12 @@ export function PopoverMixin<T extends StylableLitElement>(
       }
     }
 
-    #handleBlur(): void {
+    #handleBlur(event: Event): void {
+      // allow the popover to gain focus without closing
+      if (event.target instanceof HTMLElement && this.contains(event.target)) {
+        return;
+      }
+
       this.#hidePopover("focus");
     }
 

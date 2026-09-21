@@ -68,6 +68,22 @@ export interface BaseAnimatedElementProperties {
  */
 export interface AnimatedElementProperties extends BaseAnimatedElementProperties {
   /**
+   * This is a reflected property which will be `true` while the open animation
+   * is occurring.
+   */
+  opening: boolean;
+
+  /**
+   * This is a reflected property which will be `true` while the close animation
+   * is occurring.
+   *
+   * NOTE: This was added so that the `#popover` can gain the `display: block`
+   * styles while closing when triggered via `Escape` or outside click. Without
+   * the custom styles, the close animation will not occur.
+   */
+  closing: boolean;
+
+  /**
    * @see BaseAnimatedElementProperties._getAnimations
    * @override
    */
