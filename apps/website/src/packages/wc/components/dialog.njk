@@ -8,36 +8,34 @@ page:
   title: Dialog
 ---
 
-<mwc-box stacked align="stretch">
-  <mwc-box padding="none">
-    <mwc-button command="show-modal" commandfor="dialog-1">
-      Show Simple
-    </mwc-button>
-    <mwc-button command="show-modal" commandfor="dialog-2">
-      Show Alert
-    </mwc-button>
-    <mwc-button command="show-modal" commandfor="dialog-3">
-      Show Icon
-    </mwc-button>
-  </mwc-box>
-  <mwc-dialog id="dialog-1">
+<mwc-box stacked align="start">
+  <mwc-typography variant="headline">
+    <h2>Command API</h2>
+  </mwc-typography>
+  <mwc-button command="show-modal" commandfor="command-dialog-1">
+    Show Modal
+  </mwc-button>
+  <mwc-dialog id="command-dialog-1">
     <h2 slot="title">Title</h2>
     <p slot="content">Hello, world!</p>
     <mwc-button slot="actions"
                 variant="text"
                 command="close"
-                commandfor="dialog-1">
+                commandfor="command-dialog-1">
       Cancel
     </mwc-button>
     <mwc-button slot="actions"
                 variant="text"
                 command="close"
-                commandfor="dialog-1"
+                commandfor="command-dialog-1"
                 autofocus>
       Ok
     </mwc-button>
   </mwc-dialog>
-  <mwc-dialog id="dialog-2" type="alert">
+  <mwc-button command="show-modal" commandfor="command-dialog-2">
+    Show Alert
+  </mwc-button>
+  <mwc-dialog id="command-dialog-2" type="alert">
     <h2 slot="title">Alert dialog</h2>
     <p slot="content">
       This is a description of the alert. The alertdialog role is used to notify users of urgent information that demands the user's immediate attention.
@@ -45,11 +43,14 @@ page:
     <mwc-button slot="actions"
                 variant="text"
                 command="close"
-                commandfor="dialog-2">
+                commandfor="command-dialog-2">
       Ok
     </mwc-button>
   </mwc-dialog>
-  <mwc-dialog id="dialog-3" width="small">
+  <mwc-button command="show-modal" commandfor="command-dialog-3">
+    Show Icon Modal
+  </mwc-button>
+  <mwc-dialog id="command-dialog-3" width="small">
     <mwc-material-symbol slot="icon">
       delete
     </mwc-material-symbol>
@@ -60,54 +61,124 @@ page:
     <mwc-button slot="actions"
                 variant="text"
                 command="close"
-                commandfor="dialog-3">
+                commandfor="command-dialog-3">
       Delete
     </mwc-button>
     <mwc-button slot="actions"
                 variant="tonal"
                 command="close"
-                commandfor="dialog-3"
+                commandfor="command-dialog-3"
                 autofocus>
       Cancel
     </mwc-button>
   </mwc-dialog>
-  <mwc-dialog popover-initiator="click" popover-type="hint" type="popover">
-    <mwc-button slot="popover-target">
-      Show Popover
-    </mwc-button>
-    <p slot="content">This is the main content!</p>
-  </mwc-dialog>
-  <mwc-button command="show-modal" commandfor="dialog-5">
-    Show Form Dialog
-  </mwc-button>
-  <mwc-dialog id="dialog-5">
-    <h2 slot="title">Title</h2>
-    <form id="form" slot="content" method="dialog">
-      <input type="text" name="firstName" defaultValue="John" />
-      <input type="text" name="lastName" defaultValue="Doe" />
-    </form>
-    <mwc-button slot="actions" form="form" value="close">
-      Cancel
-    </mwc-button>
-    <mwc-button slot="actions" form="form" value="ok">
-      OK
-    </mwc-button>
-  </mwc-dialog>
-  <mwc-typography style="margin-top: 10rem">
-    <p>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. In sapien lorem, euismod quis leo ut, aliquam tristique arcu. Ut eros dui, faucibus id augue eget, accumsan convallis erat. Suspendisse quis porttitor nisl, sed lacinia ligula. Nunc pellentesque, ipsum a tristique lacinia, tellus ligula euismod libero, non pulvinar ipsum lectus sed dolor. Praesent at laoreet risus, id pretium sapien. Vestibulum accumsan, risus finibus ullamcorper volutpat, odio est euismod felis, id suscipit nulla lacus sed lectus. Mauris leo ex, laoreet et placerat vitae, pellentesque et lorem.
-    </p>
-    <p>
-      Aenean feugiat vitae odio nec placerat. In condimentum vitae urna a finibus. Suspendisse sit amet ex nulla. Praesent eget tortor et massa egestas faucibus. Integer vestibulum sem iaculis suscipit consectetur. Duis malesuada consequat est quis pulvinar. Pellentesque vitae dolor ac nibh semper rutrum. Cras pretium est nunc, vitae finibus arcu bibendum et. Suspendisse nec enim metus. Proin elementum ullamcorper sodales. Duis congue nisi justo, at tempus quam consequat eget. Integer dictum massa euismod luctus convallis. Etiam dignissim quis dui ut consequat. Aliquam cursus erat sed nisl blandit ultricies. Praesent dignissim condimentum lacus, ut porttitor quam faucibus in.
-    </p>
-    <p>
-      Suspendisse non efficitur velit. Cras tellus libero, ornare ac vestibulum at, hendrerit quis felis. Donec sollicitudin nibh urna, sed lacinia ligula maximus eget. Vestibulum condimentum, risus eget aliquet luctus, erat velit rutrum turpis, et auctor tortor diam nec turpis. Vivamus finibus lectus at tortor viverra gravida. Praesent aliquam dignissim venenatis. Nullam a urna sed mi lacinia efficitur. In bibendum dolor vitae purus vehicula finibus. Morbi mi tellus, malesuada a pretium eget, aliquet sit amet diam. Maecenas mauris nunc, porttitor eget fermentum et, accumsan sed libero. Sed sem nisl, mollis eu turpis quis, pulvinar consectetur turpis. Proin mattis, mauris vel hendrerit ullamcorper, nulla felis placerat nisl, id cursus libero lacus nec velit.
-    </p>
-    <p>
-      Nullam faucibus mollis massa ac feugiat. Quisque feugiat ultrices nibh vitae commodo. Vestibulum vulputate diam ac mauris luctus, non fringilla mi facilisis. In egestas arcu ante, at tempor massa fringilla eget. Maecenas sagittis, lacus vel elementum pulvinar, augue quam pulvinar magna, et euismod nisi turpis eget odio. Morbi ac massa suscipit, imperdiet erat ut, dapibus nulla. Donec aliquam nisl quis tincidunt maximus. Vivamus vestibulum massa turpis, ac mattis lacus volutpat vel. Proin efficitur nisi orci, vitae sodales sem malesuada quis. Vestibulum feugiat tortor metus.
-    </p>
-    <p>
-      Sed eu urna magna. Maecenas auctor, ipsum vel blandit finibus, leo justo malesuada elit, ut suscipit nisi lacus in ligula. In hac habitasse platea dictumst. Donec viverra facilisis vestibulum. Sed vel aliquam libero. Nam nec tortor non orci fringilla lacinia vitae a dolor. Suspendisse lacinia sit amet sapien vitae tincidunt. Nulla sed posuere est. Fusce placerat ante justo, quis posuere felis rhoncus in. Aenean cursus velit non neque blandit lacinia. Cras vestibulum libero nec nulla gravida semper.
-    </p>
+  <mwc-divider>
+  </mwc-divider>
+  <mwc-typography variant="headline">
+    <h2>Form API</h2>
   </mwc-typography>
+  <mwc-button command="show-modal"
+              commandfor="form-dialog-1"
+              onclick="document.querySelector('#form-dialog-1-form').reset()">
+    Show Modal
+  </mwc-button>
+  <mwc-dialog id="form-dialog-1">
+    <h2 slot="title">Form Example</h2>
+    <form id="form-dialog-1-form" slot="content" method="dialog">
+      <mwc-text-field name="animal" required>
+        <span slot="label">Favorite animal</span>
+      </mwc-text-field>
+    </form>
+    <mwc-button slot="actions"
+                form="form-dialog-1-form"
+                type="submit"
+                variant="text">
+      Normal Close
+    </mwc-button>
+    <mwc-button slot="actions"
+                form="form-dialog-1-form"
+                type="submit"
+                variant="outlined"
+                formnovalidate>
+      Novalidate Close
+    </mwc-button>
+    <mwc-button slot="actions"
+                variant="tonal"
+                onclick="document.querySelector('#form-dialog-1').close()">
+      JS Close
+    </mwc-button>
+  </mwc-dialog>
+  <mwc-divider>
+  </mwc-divider>
+  <mwc-typography variant="headline">
+    <h2>Cancelable API</h2>
+  </mwc-typography>
+  <mwc-box>
+    <mwc-button id="cancelable-dialog-button">
+      Show Dialog
+    </mwc-button>
+    <mwc-typography>
+      <label>
+        <mwc-box padding="none">
+          <mwc-checkbox id="cancelable-dialog-request-close"
+                        name="requestClose">
+          </mwc-checkbox>
+          <span>Use <code>dialog.requestClose()</code></span>
+        </mwc-box>
+      </label>
+    </mwc-typography>
+  </mwc-box>
+  <pre style="height: 20rem;
+              overflow: auto;
+              width: 100%"><ol id="cancelable-dialog-logs"></ol></pre>
+  <mwc-box justify="end">
+    <mwc-button id="clear-cancelable-dialog-logs">
+      Clear Logs
+    </mwc-button>
+  </mwc-box>
+  <mwc-dialog id="cancelable-dialog">
+    <h2 slot="title">Cancelable Dialog</h2>
+    <mwc-typography slot="content">
+      <p id="cancelable-dialog-close-message">
+        If the checkbox is checked, clicking the next two buttons will still
+        close the dialog since <code>dialog.close()</code> is called. Pressing
+        the <kbd>Escape</kbd> key or clicking the backdrop will not close the dialog.
+      </p>
+      <p id="cancelable-dialog-request-close-message" hidden>
+        If the checkbox is checked, clicking the next two buttons, the backdrop,
+        or pressing the <kbd>Escape</kbd> key will not close the dialog.
+      </p>
+    </mwc-typography>
+    <mwc-typography variant="label" slot="content">
+      <label>
+        <mwc-box padding="none" inline>
+          <mwc-checkbox id="force-cancel-close-checkbox" name="cancel">
+          </mwc-checkbox>
+          Cancel close
+        </mwc-box>
+      </label>
+    </mwc-typography>
+    <mwc-button variant="text" slot="actions">
+      Close
+    </mwc-button>
+    <mwc-button variant="tonal" slot="actions">
+      Close with value
+    </mwc-button>
+  </mwc-dialog>
+  <mwc-divider>
+  </mwc-divider>
+  <mwc-typography variant="headline">
+    <h2>Popover API</h2>
+  </mwc-typography>
+  <mwc-dialog popover-type="hint" popover-initiator="all">
+    <mwc-button slot="popover-target">
+      Show Dialog
+    </mwc-button>
+    <h2 slot="title">Hello, world!</h2>
+    <p slot="content">Here is some text content.</p>
+  </mwc-dialog>
+  <div style="height: 40rem"></div>
 </mwc-box>
+{% js "defer" %}
+{% include "scripts/wc/dialog.js" %}
+{% endjs %}

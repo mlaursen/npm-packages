@@ -136,8 +136,8 @@ export const card = {
 };
 
 export const dialog = {
-  /** @type {(import("@mlaursen/wc").DialogType | null)[]} **/
-  types: [null, "alert"],
+  /** @type {(import("@mlaursen/wc").DialogType)[]} **/
+  types: ["alert", "modal"],
 
   /** @type {(import("@mlaursen/wc").DialogWidth)[]} **/
   widths: defaultSizes,

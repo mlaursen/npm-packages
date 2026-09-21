@@ -58,12 +58,7 @@ export class SheetHeader extends LitElement implements SheetHeaderProperties {
   }
 
   #close(): void {
-    this.dispatchEvent(
-      new Event("request-close", {
-        bubbles: true,
-        composed: true,
-        cancelable: true,
-      }),
-    );
+    // the default header allows the close to be canceled
+    this.closest("dialog")?.requestClose();
   }
 }

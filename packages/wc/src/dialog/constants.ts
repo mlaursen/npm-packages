@@ -81,7 +81,10 @@ export const DEFAULT_DIALOG_CLOSE_ANIMATION = {
           clipPath: "inset(0 0 35% 0)",
         },
       ],
-      { duration: Duration.Short3, easing: Easing.EmphasizedAccelerate },
+      {
+        duration: Duration.Short3,
+        easing: Easing.EmphasizedAccelerate,
+      },
     ],
 
     // main dialog opacity

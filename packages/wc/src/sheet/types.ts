@@ -60,8 +60,13 @@ export interface SheetProperties
    */
   width: DialogWidth;
 
-  show: (options?: ShowSheetOptions) => Promise<void>;
-  close: (options?: ShowSheetOptions) => Promise<void>;
+  /** @see {@link DialogProperties.show} */
+  show: (options?: Readonly<ShowSheetOptions>) => Promise<void>;
+
+  /** @see {@link DialogProperties.close} */
+  close: (
+    returnValueOrOptions?: string | Readonly<ShowSheetOptions>,
+  ) => Promise<void>;
 
   /** @defaultValue `() => DEFAULT_SHEET_OPEN_ANIMATION` */
   getOpenAnimation: GetAnimationMap<AnimateDialogElementMap>;

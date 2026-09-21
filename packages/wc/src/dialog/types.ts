@@ -18,20 +18,26 @@ export type DialogWidth = OverridableStringUnion<
   DialogWidthOverrides
 >;
 
+export interface DialogTypeOverrides {}
+export type DefaultDialogType = "alert" | "modal" | "fixed";
 /**
- * The default dialog type is `"modal"`.
+ * The default dialog variant is `"modal"`.
  *
  * - `"modal"` - displays a clickable backdrop with the dialog when it is
  *   visible.
  * - `"alert"` - displays a non-interactive backdrop with the dialog when it is
  *   visible. The user must click on one of the actions within the dialog to
  *   close it and updates the role to `"alertdialog"`.
- * - `"popover"` - does not display a backdrop when the dialog is visible and should
- *   be used with the popover API.
  * - `"fixed"` - does not display any backdrop and sets `position: fixed` on
  *   the `dialog`.
+ *
+ * If the `popover-type` attribute exists, it will render as a popover instead
+ * which will not display the backdrop.
  */
-export type DialogType = "alert" | "modal" | "fixed" | "popover";
+export type DialogType = OverridableStringUnion<
+  DefaultDialogType,
+  DialogTypeOverrides
+>;
 
 export interface DialogShapeOverrides {}
 export type DefaultDialogShape = DefaultComponentShape;
@@ -105,11 +111,11 @@ export interface DialogProperties {
    * animations have completed.
    *
    * @example Show
-   * ```ts
-   * const dialog = document.querySelector("mwc-dialog");
-   * await dialog.show();
-   * console.log("Dialog is open!");
-   * ```
+```ts
+const dialog = document.querySelector("mwc-dialog");
+await dialog.show();
+console.log("Dialog is open!");
+```
    *
    * @see {@link getOpenAnimation} to configure the open animation.
    */
@@ -121,19 +127,37 @@ export interface DialogProperties {
    * have completed.
    *
    * @example Hide
-   * ```ts
-   * const dialog = document.querySelector("mwc-dialog");
-   * await dialog.close();
-   * console.log("Dialog is closed!");
-   * ```
+```ts
+const dialog = document.querySelector("mwc-dialog");
+await dialog.close();
+console.log("Dialog is closed!");
+```
    *
+   * @example Hide With Return Value
+```ts
+const dialog = document.querySelector("mwc-dialog");
+await dialog.close("accepted");
+console.log(`Dialog is closed! Return value: "${dialog.returnValue}"`);
+```
    * @see {@link getOpenAnimation} to configure the open animation.
+   * @see {@link HTMLDialogElement.close}
    */
-  close: (options?: Readonly<CloseDialogOptions>) => Promise<void>;
+  close: (
+    returnValueOrOptions?: string | Readonly<CloseDialogOptions>,
+  ) => Promise<void>;
+
+  /**
+   * This is implemented for the Invoker Commands API.
+   * @see {@link HTMLDialogElement.requestClose}
+   */
+  requestClose: (returnValue?: string) => void;
 
   /** @defaultValue `() => DEFAULT_DIALOG_OPEN_ANIMATION` */
   getOpenAnimation: GetAnimationMap<AnimateDialogElementMap>;
 
   /** @defaultValue `() => DEFAULT_DIALOG_CLOSE_ANIMATION` */
   getCloseAnimation: GetAnimationMap<AnimateDialogElementMap>;
+
+  /** This is implemented for the Invoker Commands API */
+  showModal: () => void;
 }

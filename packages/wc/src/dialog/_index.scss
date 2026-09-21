@@ -54,6 +54,10 @@ $-tokens: (
   extra-large: (
     width: "dialog.max-width",
   ),
+
+  popover: (
+    max-height: none,
+  ),
 );
 
 $-configure-tokens: map.keys($-tokens);
@@ -108,17 +112,8 @@ $-content-and-actions-styles: (
 
 $-popover-dialog-styles: (
   "dialog.scrim.opacity": 0,
-  inset: auto,
-  margin: 0,
-  padding-block: "popover.spacing-y",
-  padding-inline: "popover.spacing-x",
-  position-anchor: --popover-target,
-  position-area: '"popover.area-y" "popover.area-x"',
-  position-try-fallbacks: "popover.fallbacks",
-  transform: "popover.transform",
+  "dialog.max-height": "dialog.popover.max-height",
 );
-$-popover-backdrop-styles: ();
-$-popover-target-styles: ();
 
 $-extra-small-width-styles: utils.remap-variants(dialog, extra-small, width);
 $-small-width-styles: utils.remap-variants(dialog, small, width);
@@ -155,13 +150,11 @@ $-extra-large-width-styles: utils.remap-variants(dialog, extra-large, width);
     ":host([width=large])": $-large-width-styles,
     ":host([width=extra-large])": $-extra-large-width-styles,
     ":host([shape=square])": $-square-styles,
+    ":host([popover-type])": $-popover-dialog-styles,
     "dialog": $-base-dialog-styles,
     "dialog::backdrop": $-backdrop-styles,
     ".header": $-header-and-content-styles,
     ".actions": $-content-and-actions-styles,
-    "dialog[popover]": $-popover-dialog-styles,
-    "dialog[popover]::backdrop": $-popover-backdrop-styles,
-    "::slotted([slot=popover-target])": $-popover-target-styles,
   );
 
   @include utils.host-styles($styles);

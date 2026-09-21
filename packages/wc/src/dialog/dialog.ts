@@ -5,12 +5,13 @@ import { classMap } from "lit/directives/class-map.js";
 import { ifDefined } from "lit/directives/if-defined.js";
 
 import { FocusTrapMixin } from "../focus/focus-trap-mixin.js";
-import { AnimateMixin } from "../transition/animate-mixin.js";
+import { PopoverMixin } from "../popover/popover-mixin.js";
 import type {
   AnimateOptions,
   AnimationList,
   GetAnimationMap,
 } from "../transition/types.js";
+import { redispatchEvent } from "../utils/redispatchEvent.js";
 import { isSlotted } from "../utils/slots.js";
 import {
   DEFAULT_DIALOG_CLOSE_ANIMATION,
@@ -27,7 +28,7 @@ import type {
   RenderDialogOptions,
 } from "./types.js";
 
-const BaseDialog = AnimateMixin(FocusTrapMixin(LitElement));
+const BaseDialog = PopoverMixin(FocusTrapMixin(LitElement));
 
 /**
  * The dialog's open state can be controlled any of the following:
@@ -106,9 +107,16 @@ const BaseDialog = AnimateMixin(FocusTrapMixin(LitElement));
  * used to cancel closing the element by calling `event.preventDefault()`.
  * @fires {Event} closed - Fired once the element has closed and the animations
  * have completed.
+ * @fires {Event} cancel - Fired before the dialog attempts to close after a
+ * `requestClose` call and can prevent closing the dialog by calling
+ * `event.preventDefault()`.
+ *
+ * NOTE: The `cancel` event will NOT be cancelable if the user spams the
+ * `Escape` key or the back button on a mobile device as it is a browser
+ * security feature to prevent users from being trapped within a `dialog`.
  */
 export class Dialog extends BaseDialog implements DialogProperties {
-  static override styles = [styles];
+  static override styles = [...BaseDialog.styles, styles];
 
   protected readonly titleId = "title";
   protected readonly headerId = "header";
@@ -167,6 +175,10 @@ export class Dialog extends BaseDialog implements DialogProperties {
   protected _hasActions = false;
 
   #prevReturnValue = "";
+  #requestCloseValue?: string;
+  #enabledScrollLock = false;
+  #escaped = false;
+  #forceOpenFrame = 0;
 
   getOpenAnimation: GetAnimationMap<AnimateDialogElementMap> = () =>
     DEFAULT_DIALOG_OPEN_ANIMATION;
@@ -180,14 +192,13 @@ export class Dialog extends BaseDialog implements DialogProperties {
     super.connectedCallback();
 
     this.addEventListener("submit", this.#handleSubmit);
-    this.addEventListener("request-close", this.#handleRequestClose);
   }
 
   override disconnectedCallback(): void {
     super.disconnectedCallback();
 
     this.removeEventListener("submit", this.#handleSubmit);
-    this.removeEventListener("request-close", this.#handleRequestClose);
+    globalThis.cancelAnimationFrame(this.#forceOpenFrame);
   }
 
   protected override willUpdate(changed: PropertyValues): void {
@@ -196,7 +207,9 @@ export class Dialog extends BaseDialog implements DialogProperties {
     if (changed.has("open")) {
       if (this.open) {
         this.show();
-      } else {
+      } else if (this._initialized) {
+        // do not go through the closing flow with animations until it has been
+        // opened at least once
         this.close();
       }
     }
@@ -205,14 +218,22 @@ export class Dialog extends BaseDialog implements DialogProperties {
   protected override updated(changed: PropertyValues): void {
     super.updated(changed);
 
-    if (!changed.has("open")) {
+    if (!changed.has("open") || this.popoverType || this.type === "fixed") {
       return;
     }
 
-    if (this.open && (this.type === "alert" || this.type === "modal")) {
-      document.documentElement.style.overflow = "hidden";
-    } else {
-      document.documentElement.style.removeProperty("overflow");
+    const rootEl = document.documentElement;
+    if (this.open) {
+      if (rootEl.inert || rootEl.style.overflow) {
+        return;
+      }
+
+      this.#enabledScrollLock = true;
+      rootEl.inert = true;
+      rootEl.style.overflow = "hidden";
+    } else if (this.#enabledScrollLock) {
+      rootEl.inert = false;
+      rootEl.style.removeProperty("overflow");
     }
   }
 
@@ -231,21 +252,27 @@ export class Dialog extends BaseDialog implements DialogProperties {
       this.labelledBy || (this._hasTitle && this.titleId) || nothing;
     const describedBy =
       this.describedBy || (this._hasContent && isAlert && "content") || nothing;
+    const role = isAlert ? "alertdialog" : undefined;
 
     const className = classMap({
+      popover: !!this.popoverType,
       header: hasHeader && this._hasContent,
       actions: this._hasActions && this._hasContent,
     });
 
     return html`
+      ${this.renderPopoverTarget()}
       <dialog
         aria-label=${this.label || nothing}
         aria-labelledby=${labelledBy}
         aria-describedby=${describedBy}
-        role=${ifDefined(isAlert ? "alertdialog" : undefined)}
+        role=${ifDefined(role)}
+        class="${className}"
+        popover=${ifDefined(this.popoverType)}
         @click=${this.#handleClick}
         @cancel=${this.#handleCancel}
-        class=${className}
+        @keydown=${this.#handleKeyDown}
+        .returnValue=${this.returnValue}
       >
         ${(this.open && this.renderFocusTrap("first")) || nothing} ${header}
         <slot name="dialog-header"></slot>
@@ -293,21 +320,59 @@ export class Dialog extends BaseDialog implements DialogProperties {
     `;
   }
 
-  // this is just added to provide the correct definitions
-  override close(options?: CloseDialogOptions): Promise<void> {
+  showModal(): void {
+    this.show();
+  }
+
+  override close(
+    returnValueOrOptions?: string | Readonly<CloseDialogOptions>,
+  ): Promise<void> {
+    let options: CloseDialogOptions;
+    if (typeof returnValueOrOptions === "string") {
+      options = { returnValue: returnValueOrOptions };
+    } else {
+      options = {
+        ...returnValueOrOptions,
+        returnValue:
+          returnValueOrOptions?.returnValue ??
+          this.#requestCloseValue ??
+          this.returnValue,
+      };
+    }
+
+    this.#requestCloseValue = undefined;
+
     return super.close(options);
   }
 
+  requestClose(returnValue?: string): void {
+    this.#requestCloseValue =
+      typeof returnValue === "string" ? returnValue : undefined;
+
+    this._dialog?.requestClose(returnValue);
+  }
+
   override _isOpenable(): boolean {
-    return !!this._dialog && !this._dialog.open;
+    if (!this._dialog) {
+      return false;
+    }
+
+    if (this.popoverType) {
+      return !this._dialog.matches(":popover-open");
+    }
+
+    return !this._dialog.open;
   }
 
   override _isClosable(): boolean {
-    return !!this._dialog && this._dialog.open;
+    // if there is a popoverType, consider it closable since
+    // `this._dialog.matches(":popover-open")` will be `false` if the user
+    // closed via escape key or clicking outside when `popoverType === "hint"`
+    return !!this._dialog && (!!this.popoverType || this._dialog.open);
   }
 
   override _showElement(): void {
-    if (this.type === "popover") {
+    if (this.popoverType) {
       this._dialog?.showPopover();
     } else if (this.type === "fixed") {
       this._dialog?.show();
@@ -321,7 +386,12 @@ export class Dialog extends BaseDialog implements DialogProperties {
   }
 
   override _closeElement(): void {
-    this._dialog?.close();
+    if (this.popoverType) {
+      this._dialog?.hidePopover();
+    } else {
+      this._dialog?.close();
+    }
+
     this.open = false;
   }
 
@@ -352,16 +422,17 @@ export class Dialog extends BaseDialog implements DialogProperties {
   }
 
   override _onBeforeClose(options: CloseDialogOptions): void {
+    // Need to call the PopoverMixin version as well to fix the popover toggle
+    // variant when using `"hint"`.
+    super._onBeforeClose(options);
+
     this.#prevReturnValue = this.returnValue;
-    this.returnValue = options.returnValue ?? "";
+    this.returnValue = options.returnValue ?? this.returnValue;
   }
 
   override _onCloseCanceled(): void {
+    this.#requestCloseValue = undefined;
     this.returnValue = this.#prevReturnValue;
-  }
-
-  showModal(): void {
-    this.show();
   }
 
   #handleSubmit(event: SubmitEvent): void {
@@ -380,19 +451,14 @@ export class Dialog extends BaseDialog implements DialogProperties {
     });
   }
 
-  #handleRequestClose(event: Event): void {
-    if (event.defaultPrevented) {
-      return;
-    }
-
-    this.close();
-  }
-
   #handleClick(event: MouseEvent): void {
     if (this.type === "alert" || event.target !== event.currentTarget) {
       return;
     }
 
+    // check to see if the user has clicked inside the dialog. if they have, do
+    // nothing special. otherwise they have clicked the backdrop so the dialog
+    // should attempt to close
     const rect = this._dialog?.getBoundingClientRect();
     if (
       rect &&
@@ -404,12 +470,18 @@ export class Dialog extends BaseDialog implements DialogProperties {
       return;
     }
 
-    const success = this.dispatchEvent(
+    const canceled = !this.dispatchEvent(
       new Event("cancel", { cancelable: true }),
     );
-    if (success) {
+    if (canceled) {
+      this._onCloseCanceled();
+    } else {
       this.close();
     }
+  }
+
+  #handleKeyDown(event: KeyboardEvent): void {
+    this.#escaped = event.key === "Escape";
   }
 
   #handleCancel(event: Event): void {
@@ -417,8 +489,52 @@ export class Dialog extends BaseDialog implements DialogProperties {
       return;
     }
 
-    event.preventDefault();
-    this.close();
+    const escaped = this.#escaped;
+    this.#escaped = false;
+
+    let canceled: boolean;
+    if (!event.cancelable && escaped) {
+      event.preventDefault();
+      canceled = !this.dispatchEvent(
+        new Event("cancel", {
+          bubbles: true,
+          composed: true,
+          cancelable: true,
+        }),
+      );
+
+      this.#forceReopenDialogAfterEscape(canceled);
+    } else {
+      canceled = !redispatchEvent(this, event);
+      event.preventDefault();
+    }
+
+    if (canceled) {
+      this._onCloseCanceled();
+    } else {
+      this.close();
+    }
+  }
+
+  /**
+   * See the notes around the browser security feature at the root of this class.
+   * @see {@link Dialog}
+   */
+  #forceReopenDialogAfterEscape(reopen: boolean): void {
+    if (!reopen) {
+      return;
+    }
+
+    const currentFocus =
+      document.activeElement instanceof HTMLElement
+        ? document.activeElement
+        : null;
+
+    globalThis.cancelAnimationFrame(this.#forceOpenFrame);
+    globalThis.requestAnimationFrame(() => {
+      this._showElement();
+      currentFocus?.focus();
+    });
   }
 
   #handleHeaderSlotChange(event: Event): void {
