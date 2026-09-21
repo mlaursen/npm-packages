@@ -143,6 +143,9 @@ export class Button extends BaseButton implements ButtonProperties {
   @property()
   popovertargetaction?: PopoverTargetAction;
 
+  @property({ type: Boolean, attribute: "formnovalidate" })
+  formNoValidate = false;
+
   @property()
   value?: string;
 
@@ -220,7 +223,14 @@ export class Button extends BaseButton implements ButtonProperties {
     );
 
     internals.setFormValue(this.value ?? "");
-    form.requestSubmit();
+    if (this.formNoValidate) {
+      const prevNoValidate = form.noValidate;
+      form.noValidate = true;
+      form.requestSubmit();
+      form.noValidate = prevNoValidate;
+    } else {
+      form.requestSubmit();
+    }
   }
 
   #clickLink(forceNewTab = false): void {

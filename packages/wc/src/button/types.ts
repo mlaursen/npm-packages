@@ -83,4 +83,9 @@ export interface ButtonProperties extends ButtonLinkProperties {
    * @see [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/button#popovertargetaction)
    */
   popovertargetaction?: PopoverTargetAction;
+
+  /**
+   * @see {@link HTMLButtonElement.formNoValidate}
+   */
+  formNoValidate?: boolean;
 }

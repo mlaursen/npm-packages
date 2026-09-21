@@ -13,6 +13,7 @@ import { requiredValidator } from "../form-control/required-validator.js";
 import { InternalsMixin } from "../internals-mixin/internals-mixin.js";
 import { MarginMixin } from "../margin/margin-mixin.js";
 import { PaletteMixin } from "../palette/palette-mixin.js";
+import { redispatchEvent } from "../utils/redispatchEvent.js";
 import styles from "./text-field-styles.js";
 import type {
   AutoCapitalize,
@@ -91,6 +92,9 @@ export class TextField extends BaseTextField implements TextFieldProperties {
    */
   @property()
   override autocapitalize: AutoCapitalize = "";
+
+  @property({ type: Boolean, attribute: "formnovalidate" })
+  formNoValidate = false;
 
   /**
    * The **`min`** property of the HTMLInputElement interface reflects the input element's `min` attribute, which generally defines the minimum valid value for a numeric or date-time input.
@@ -429,6 +433,7 @@ export class TextField extends BaseTextField implements TextFieldProperties {
         inputmode=${this.inputMode}
         autocomplete=${ifDefined(this.autocomplete || undefined) as "on"}
         autocapitalize=${ifDefined(this.autocapitalize || undefined)}
+        ?formnovalidate=${this.formNoValidate}
         pattern=${ifDefined(this.pattern || undefined)}
         placeholder=${ifDefined(this.placeholder || undefined)}
         ?required=${this.required}
@@ -445,6 +450,7 @@ export class TextField extends BaseTextField implements TextFieldProperties {
         @blur=${this.#handleFocusChange}
         @input=${this.#handleInput}
         @change=${this.#redispatch}
+        @select=${this.#redispatch}
         @invalid=${this.#redispatch}
       />
     `;
@@ -479,6 +485,8 @@ export class TextField extends BaseTextField implements TextFieldProperties {
         @focus=${this.#handleFocusChange}
         @blur=${this.#handleFocusChange}
         @input=${this.#handleInput}
+        @change=${this.#redispatch}
+        @select=${this.#redispatch}
       ></textarea>
       <div
         class="resize"
@@ -525,12 +533,7 @@ export class TextField extends BaseTextField implements TextFieldProperties {
   }
 
   #redispatch(event: Event): void {
-    this.dispatchEvent(
-      new Event(event.type, {
-        bubbles: true,
-        composed: true,
-      }),
-    );
+    redispatchEvent(this, event);
   }
 
   #handleInput(event: InputEvent): void {

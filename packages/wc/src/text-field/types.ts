@@ -37,6 +37,7 @@ export type ForwardedInputProperties = Pick<
   | "disabled"
   | "required"
   | "multiple"
+  | "formNoValidate"
   // these are more getters and setters
   | "selectionStart"
   | "selectionEnd"
