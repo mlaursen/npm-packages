@@ -172,6 +172,9 @@ export class Dialog extends BaseDialog implements DialogProperties {
   protected _hasContent = false;
 
   @state()
+  protected _hasDialogContent = false;
+
+  @state()
   protected _hasActions = false;
 
   #prevReturnValue = "";
@@ -277,7 +280,12 @@ export class Dialog extends BaseDialog implements DialogProperties {
         ${(this.open && this.renderFocusTrap("first")) || nothing} ${header}
         <slot name="dialog-header"></slot>
         ${content}
-        <slot name="dialog-content"></slot>
+        <slot
+          name="dialog-content"
+          class="content"
+          @slotchange=${this.#handleDialogContentSlotChange}
+          ?hidden=${!this._hasDialogContent}
+        ></slot>
         ${actions}
         <slot></slot>
         ${(this.open && this.renderFocusTrap("last")) || nothing}
@@ -300,7 +308,11 @@ export class Dialog extends BaseDialog implements DialogProperties {
 
   protected renderDefaultContent(): TemplateResult {
     return html`
-      <mwc-dialog-content id=${this.contentId} ?hidden=${!this._hasContent}>
+      <mwc-dialog-content
+        id=${this.contentId}
+        ?hidden=${!this._hasContent}
+        class="content"
+      >
         <slot name="content" @slotchange=${this.#handleContentSlotChange}>
         </slot>
       </mwc-dialog-content>
@@ -547,6 +559,10 @@ export class Dialog extends BaseDialog implements DialogProperties {
 
   #handleContentSlotChange(event: Event): void {
     this._hasContent = isSlotted(event);
+  }
+
+  #handleDialogContentSlotChange(event: Event): void {
+    this._hasDialogContent = isSlotted(event);
   }
 
   #handleActionsSlotChange(event: Event): void {

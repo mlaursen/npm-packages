@@ -96,6 +96,11 @@ $-base-dialog-styles: (
   z-index: "dialog.z-index",
 
   "&::before": utils.pseudo-element(),
+
+  "&:open": (
+    display: flex,
+    flex-direction: column,
+  ),
 );
 $-backdrop-styles: (
   background: "dialog.scrim.background",
@@ -110,6 +115,13 @@ $-header-and-content-styles: (
 );
 $-content-and-actions-styles: (
   "dialog.actions.padding-v": '0 "dialog.padding-v"',
+);
+
+// make the dialog content stretch to fill the dialog space, pushing actions to
+// the bottom and displaying a scrollbar if too large
+$-dialog-content-styles: (
+  flex: 1 1 auto,
+  overflow: auto,
 );
 
 $-popover-dialog-styles: (
@@ -157,6 +169,7 @@ $-extra-large-width-styles: utils.remap-variants(dialog, extra-large, width);
     "dialog::backdrop": $-backdrop-styles,
     ".header": $-header-and-content-styles,
     ".actions": $-content-and-actions-styles,
+    ".content": $-dialog-content-styles,
   );
 
   @include utils.host-styles($styles);
