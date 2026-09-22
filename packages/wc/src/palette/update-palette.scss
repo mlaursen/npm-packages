@@ -3,13 +3,10 @@
 
 $styles: (
   ":host": (
-    // background: "palette.background",
-    // color: "palette.on-background",
-    // color-scheme: "palette.color-scheme",
-    background: utils.get-var("palette.background"),
-    color: utils.get-var("palette.on-background"),
-    color-scheme: utils.get-var("palette.color-scheme"),
-    display: block,
+    background: "palette.background",
+    color-scheme: "palette.color-scheme",
+    color: "palette.on-background",
+    display: contents,
   ),
 );
 

@@ -141,7 +141,9 @@ export class ConfigurePalette extends LitElement {
 
   #renderColorScheme(): TemplateResult {
     return html`
-      <mwc-typography variant="title" size="small">Color Scheme</mwc-typography>
+      <mwc-typography variant="title" size="small" margin="none"
+        ><h3>Color Scheme</h3></mwc-typography
+      >
       <mwc-box>
         ${map(colorSchemes, (colorScheme) => {
           const active = this.colorScheme === colorScheme;
@@ -161,8 +163,8 @@ export class ConfigurePalette extends LitElement {
 
   #renderMaterialColors(): TemplateResult {
     return html`
-      <mwc-typography variant="title" size="medium"
-        >Material Colors</mwc-typography
+      <mwc-typography variant="title" size="medium" margin="none"
+        ><h3>Material Colors</h3></mwc-typography
       >
       <mwc-box>
         ${map(contrasts, (contrast) => {
@@ -184,8 +186,8 @@ export class ConfigurePalette extends LitElement {
   #renderCustomTheme(): TemplateResult {
     return html`
       <mwc-divider></mwc-divider>
-      <mwc-typography variant="title" size="medium"
-        >Custom Theme</mwc-typography
+      <mwc-typography variant="title" size="medium" margin="none"
+        ><h3>Custom Theme</h3></mwc-typography
       >
       <mwc-link href=${materialThemeBuilderUrl} target="_blank"
         >Material Theme Builder</mwc-link
@@ -215,7 +217,9 @@ export class ConfigurePalette extends LitElement {
 
   #renderOrientation(): TemplateResult {
     return html`
-      <mwc-typography variant="title" size="medium">Orientation</mwc-typography>
+      <mwc-typography variant="title" size="medium" margin="none"
+        ><h3>Orientation</h3></mwc-typography
+      >
       <mwc-box>
         ${map(dirs, (dir) => {
           const active = this.dir === dir;
