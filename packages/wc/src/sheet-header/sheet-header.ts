@@ -5,6 +5,14 @@ import { property } from "lit/decorators.js";
 import styles from "./sheet-header-styles.js";
 import type { SheetHeaderAutoFocus, SheetHeaderProperties } from "./types.js";
 
+/**
+ * @slot back-icon -
+ * @slot back-button-
+ * @slot close-icon -
+ * @slot close-button -
+ * @slot title -
+ * @slot
+ */
 export class SheetHeader extends LitElement implements SheetHeaderProperties {
   static override styles = styles;
 
@@ -40,6 +48,7 @@ export class SheetHeader extends LitElement implements SheetHeaderProperties {
       </mwc-icon-button>
       <slot name="back-button"></slot>
       <slot name="title"></slot>
+      <slot></slot>
       <slot name="close-button"></slot>
       <mwc-icon-button
         aria-label=${this.closeLabel}

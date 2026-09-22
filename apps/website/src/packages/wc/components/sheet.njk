@@ -58,6 +58,23 @@ page:
       favorite
     </mwc-material-symbol>
   </mwc-sheet>
+  <mwc-divider>
+  </mwc-divider>
+  <mwc-typography variant="headline">
+    <h2>Inline With Content</h2>
+  </mwc-typography>
+  <mwc-button onclick="document.querySelector('#fixed-sheet').show()">
+    Show
+  </mwc-button>
+  <mwc-sheet id="fixed-sheet"
+             type="fixed"
+             position="left"
+             close-button
+             back-button>
+    <h1 slot="title">Headline</h1>
+    <p slot="content">Hello, world!</p>
+  </mwc-sheet>
+  <div style="height: 80rem"></div>
 </mwc-box>
 {% js "defer" %}
 {% include "scripts/wc/sheet.js" %}

@@ -34,6 +34,25 @@ $-tokens: (
     max-height: none,
   ),
 
+  fixed: (
+    bottom: 0,
+    left: 0,
+    right: auto,
+    top: 0,
+
+    height: auto,
+    max-height: none,
+
+    margin: (
+      all: 0,
+
+      inline-start: "dialog.fixed.margin.all",
+      inline-end: "dialog.fixed.margin.all",
+      block-start: "dialog.fixed.margin.all",
+      block-end: "dialog.fixed.margin.all",
+    ),
+  ),
+
   shape: (
     all: "dialog.shape.round",
     square: "shape.corner.none",
@@ -124,6 +143,27 @@ $-dialog-content-styles: (
   overflow: auto,
 );
 
+// fixed dialogs are mostly for supporting sheets
+$-fixed-dialog-styles: utils.deep-merge(
+  utils.remap-variants(
+    dialog,
+    fixed,
+    height,
+    max-height,
+    "margin.all",
+    "margin.inline-start",
+    "margin.inline-end",
+    "margin.block-start",
+    "margin.block-end"
+  ),
+  (
+    bottom: "dialog.fixed.bottom",
+    left: "dialog.fixed.left",
+    position: fixed,
+    right: "dialog.fixed.right",
+    top: "dialog.fixed.top",
+  )
+);
 $-popover-dialog-styles: (
   "dialog.scrim.opacity": 0,
   "dialog.max-height": "dialog.popover.max-height",
@@ -167,6 +207,7 @@ $-extra-large-width-styles: utils.remap-variants(dialog, extra-large, width);
     ":host([popover-type])": $-popover-dialog-styles,
     "dialog": $-base-dialog-styles,
     "dialog::backdrop": $-backdrop-styles,
+    ".fixed": $-fixed-dialog-styles,
     ".header": $-header-and-content-styles,
     ".actions": $-content-and-actions-styles,
     ".content": $-dialog-content-styles,

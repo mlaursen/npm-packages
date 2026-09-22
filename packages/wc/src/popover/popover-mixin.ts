@@ -93,7 +93,9 @@ export function PopoverMixin<T extends StylableLitElement>(
     #initiator: PopoverInitiatorAction | null = null;
     #closing = false;
 
-    override firstUpdated(): void {
+    override firstUpdated(changed: PropertyValues): void {
+      super.firstUpdated(changed);
+
       this.#bindPopoverHandlers(true);
     }
 

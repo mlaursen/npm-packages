@@ -177,6 +177,32 @@ page:
     <h2 slot="title">Hello, world!</h2>
     <p slot="content">Here is some text content.</p>
   </mwc-dialog>
+  <mwc-typography variant="headline">
+    <h2>Fixed Dialog</h2>
+  </mwc-typography>
+  <mwc-button id="show-fixed-1"
+              onclick="document.querySelector('#fixed-dialog-1').show()">
+    Show
+  </mwc-button>
+  <mwc-dialog id="fixed-dialog-1" type="fixed">
+    <h2 slot="title">Fixed Dialog Title</h2>
+    <p slot="content">
+      Fixed dialogs were mostly added to support "inline" sheets.
+    </p>
+    <mwc-button slot="actions"
+                variant="text"
+                command="close"
+                commandfor="fixed-dialog-1">
+      Delete
+    </mwc-button>
+    <mwc-button slot="actions"
+                variant="tonal"
+                command="close"
+                commandfor="fixed-dialog-1"
+                autofocus>
+      Cancel
+    </mwc-button>
+  </mwc-dialog>
   <div style="height: 40rem"></div>
 </mwc-box>
 {% js "defer" %}

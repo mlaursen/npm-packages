@@ -25,14 +25,14 @@ export type SheetShape = OverridableStringUnion<
 >;
 
 interface SheetPositionOverrides {}
-export type DefaultSheetPosition = "top" | "right" | "bottom" | "eft";
+export type DefaultSheetPosition = "top" | "right" | "bottom" | "left";
 export type SheetPosition = OverridableStringUnion<
   DefaultSheetPosition,
   SheetPositionOverrides
 >;
 
 export interface SheetVariantOverrides {}
-export type DefaultSheetVariant = "modal" | "fixed" | "detached";
+export type DefaultSheetVariant = "modal" | "detached";
 export type SheetVariant = OverridableStringUnion<
   DefaultSheetVariant,
   SheetVariantOverrides

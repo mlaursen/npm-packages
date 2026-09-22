@@ -60,7 +60,8 @@ export function AnimateMixin<T extends LitConstructor>(
     }
 
     async show(options: BaseAnimateOptions = {}): Promise<void> {
-      const { animate } = options;
+      // do not animate if not yet initialized by default
+      const { animate = this._initialized } = options;
       this.closing = false;
       this.opening = true;
 

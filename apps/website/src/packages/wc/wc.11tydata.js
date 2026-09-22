@@ -163,7 +163,7 @@ export const sheet = {
   positions: ["right", "left", "bottom", "top"],
 
   /** @type {(import("@mlaursen/wc").SheetVariant)[]} **/
-  variants: ["modal", "detached", "inline"],
+  variants: ["modal", "detached"],
 
   /** @type {(import("@mlaursen/wc").DialogWidth)[]} **/
   widths: defaultSizes,

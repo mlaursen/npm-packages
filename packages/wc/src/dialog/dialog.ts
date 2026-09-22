@@ -261,6 +261,7 @@ export class Dialog extends BaseDialog implements DialogProperties {
       popover: !!this.popoverType,
       header: hasHeader && this._hasContent,
       actions: this._hasActions && this._hasContent,
+      fixed: this.type === "fixed",
     });
 
     return html`
