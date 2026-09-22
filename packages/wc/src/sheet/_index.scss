@@ -47,7 +47,7 @@ $-tokens: (
     width: 100%,
   ),
 
-  inline: (
+  fixed: (
     background: "palette.surface",
     elevation: 0,
   ),
@@ -127,12 +127,10 @@ $-detached-vertical-styles: (
   "sheet.max-width": 'calc(100dvw - calc("sheet.margin" * 2))',
 );
 
-$-inline-styles: (
-  display: grid,
-  grid-template-columns: '1fr "sheet.horizontal.width"',
-);
-$-sheet-styles: (
-  background: "sheet.background",
+$-fixed-styles: (
+  "sheet.elevation": "sheet.fixed.elevation",
+  "sheet.background": "sheet.fixed.background",
+  position: fixed,
 );
 
 @mixin configure() {
@@ -163,6 +161,7 @@ $-sheet-styles: (
       $-detached-vertical-styles,
     ":host(:is([variant=detached], :is([position=left], [position=right])))":
       $-detached-horizontal-styles,
+    ":host(:is([variant=fixed]))": $-fixed-styles,
     ":host([position=top])": $-top-styles,
     ":host([position=right])": $-right-styles,
     ":host([position=bottom])": $-bottom-styles,
@@ -171,8 +170,6 @@ $-sheet-styles: (
     ":host([shape=round][position=right])": $-round-right-styles,
     ":host([shape=round][position=bottom])": $-round-bottom-styles,
     ":host([shape=round][position=left])": $-round-left-styles,
-    ":host([variant=inline])": $-inline-styles,
-    ".sheet": $-sheet-styles,
   );
   @include utils.host-styles($styles);
 }

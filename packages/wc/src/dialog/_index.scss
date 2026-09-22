@@ -22,10 +22,16 @@ $-tokens: (
   z-index: "z-index.modal",
 
   margin: (
-    inline-start: auto,
-    inline-end: auto,
-    block-start: auto,
-    block-end: auto,
+    all: auto,
+
+    inline-start: "dialog.margin.all",
+    inline-end: "dialog.margin.all",
+    block-start: "dialog.margin.all",
+    block-end: "dialog.margin.all",
+  ),
+
+  popover: (
+    max-height: none,
   ),
 
   shape: (
@@ -53,10 +59,6 @@ $-tokens: (
   ),
   extra-large: (
     width: "dialog.max-width",
-  ),
-
-  popover: (
-    max-height: none,
   ),
 );
 

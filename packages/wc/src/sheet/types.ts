@@ -32,7 +32,7 @@ export type SheetPosition = OverridableStringUnion<
 >;
 
 export interface SheetVariantOverrides {}
-export type DefaultSheetVariant = "modal" | "detached" | "inline";
+export type DefaultSheetVariant = "modal" | "fixed" | "detached";
 export type SheetVariant = OverridableStringUnion<
   DefaultSheetVariant,
   SheetVariantOverrides
