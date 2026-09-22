@@ -11,9 +11,16 @@ $-tokens: (
   gap-h: "box.gap",
   gap-v: "box.gap",
 
-  padding: "spacing.large",
-  padding-h: "box.padding",
-  padding-v: "box.padding",
+  padding: (
+    all: "spacing.large",
+
+    h: "box.padding.all",
+    v: "box.padding.all",
+    block-start: "box.padding.v",
+    block-end: "box.padding.v",
+    inline-start: "box.padding.h",
+    inline-end: "box.padding.h",
+  ),
 
   columns: auto-fit,
   item-min-size: 8rem,
@@ -66,10 +73,12 @@ $-column-gap-styles: (
   column-gap: "box.gap-h",
 );
 $-padding-block-styles: (
-  padding-block: "box.padding-v",
+  padding-block-start: "box.padding.block-start",
+  padding-block-end: "box.padding.block-end",
 );
 $-padding-inline-styles: (
-  padding-inline: "box.padding-h",
+  padding-inline-start: "box.padding.inline-start",
+  padding-inline-end: "box.padding.inline-end",
 );
 $-flex-wrap-styles: (
   flex-wrap: wrap,

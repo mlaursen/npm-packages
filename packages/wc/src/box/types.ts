@@ -50,11 +50,15 @@ export type BoxGap = "all" | "row" | "column" | "none";
  * - `"none"` - no padding applied
  *
  * The padding values can be configured using the following custom properties:
+ * - `--mwc-box-padding-block-start` - defaults to `var(--mwc-box-padding-v)`
+ * - `--mwc-box-padding-block-end` - defaults to `var(--mwc-box-padding-v)`
+ * - `--mwc-box-padding-inline-start` - defaults to `var(--mwc-box-padding-h)`
+ * - `--mwc-box-padding-inline-end` - defaults to `var(--mwc-box-padding-h)`
  * - `--mwc-box-padding-h` - horizontal padding (padding-inline) defaults to
- *   `var(--mwc-box-padding)`
+ *   `var(--mwc-box-padding-all)`
  * - `--mwc-box-padding-v` - vertical padding (padding-block) defaults to
- *   `var(--mwc-box-padding)`
- * - `--mwc-box-padding`   - defaults to `var(--mwc-spacing-large, 1rem)`
+ *   `var(--mwc-box-padding-all)`
+ * - `--mwc-box-padding-all` - defaults to `var(--mwc-spacing-large, 1rem)`
  */
 export type BoxPadding = "all" | "block" | "inline" | "none";
 
