@@ -393,10 +393,18 @@ export class Dialog extends BaseDialog implements DialogProperties {
   }
 
   override _isClosable(): boolean {
-    // if there is a popoverType, consider it closable since
-    // `this._dialog.matches(":popover-open")` will be `false` if the user
-    // closed via escape key or clicking outside when `popoverType === "hint"`
-    return !!this._dialog && (!!this.popoverType || this._dialog.open);
+    if (!this._dialog) {
+      return false;
+    }
+
+    if (this.popoverType) {
+      // `this._dialog.matches(":popover-open")` will be `false` if the user
+      // closed via `Escape` so just consider it closable if `this.open` is
+      // still true
+      return this.open; // || this._dialog.matches(":popover-open");
+    }
+
+    return this._dialog.open;
   }
 
   override _showElement(): void {
@@ -423,10 +431,6 @@ export class Dialog extends BaseDialog implements DialogProperties {
     this.open = false;
   }
 
-  override _onNotClosable(): void {
-    this.open = false;
-  }
-
   override _onNotConnectedClose(): void {
     this.open = false;
   }
@@ -450,10 +454,6 @@ export class Dialog extends BaseDialog implements DialogProperties {
   }
 
   override _onBeforeClose(options: CloseDialogOptions): void {
-    // Need to call the PopoverMixin version as well to fix the popover toggle
-    // variant when using `"hint"`.
-    super._onBeforeClose(options);
-
     this.#prevReturnValue = this.returnValue;
     this.returnValue = options.returnValue ?? this.returnValue;
   }
