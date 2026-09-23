@@ -31,20 +31,36 @@ const BaseSheet = Dialog;
  * NOTE: The `<mwc-dialog-actions>` will be hidden if the `actions` slot was not
  * provided.
  *
- * @slot - The default slot that should only be used if none of the default
- * styling should be used. This is placed after all the other slots but before
- * the last focus trap
- * @slot back-button -
- * @slot back-icon -
- * @slot title -
- * @slot header -
- * @slot close-button -
- * @slot close-icon -
+ * @slot - The default slot is rendered in the `<mwc-dialog-content>`. If you
+ * do not want the default dialog content styling, but would still like the
+ * content to automatically expand to fill the remaining height within the
+ * dialog and add a scrollbar when overflown, use the `"dialog-content"` slot
+ * instead.
+ * @slot dialog-content - An optional slot that can be used if the default
+ * `<mwc-dialog-content>` slot does not work for your use case.
+ * @slot custom - An optional slot that is rendered before the last focus trap.
+ * This can be used if none of the existing slots work for your use-case and
+ * none of the styling is correct for those slots.
+ * @slot back-icon - An optional slot that can be used to change the default
+ * back icon.
+ * @slot back-button - An optional slot that can be used to change the default
+ * back button. This button will no longer automatically close the sheet and
+ * will need to be implemented yourself.
+ * @slot close-icon - An optional slot that can be used to change the default
+ * close icon.
+ * @slot close-button - An optional slot that can be used to change the default
+ * close button. This button will no longer automatically close the sheet and
+ * will need to be implemented yourself.
+ * @slot title - An optional slot for rendering a title in the header. This
+ * is rendered in the `<mwc-sheet-title>` element.
+ * @slot actions - An optional repeatable slot for rendering within the
+ * `<mwc-dialog-actions>` element. This should generally be `<mwc-button>` or
+ * `<mwc-icon-button>`.
  *
- * @slot dialog-header -
- * @slot dialog-content -
- * @slot content -
- * @slot actions -
+ * @slot dialog-header - An optional slot that can be used if the
+ * `<mwc-dialog-header>` slots do not work for your use case.
+ * @slot dialog-actions - An optional slot that can be used if the default
+ * `<mwc-dialog-actions>` slot does not work for your use case
  *
  * @fires {Event} open - Fired before the show animation occurs and can be used
  * to cancel opening the element by calling `event.preventDefault()`.

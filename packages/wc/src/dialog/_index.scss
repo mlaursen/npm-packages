@@ -14,8 +14,6 @@ $-tokens: (
   max-width: 35rem,
   min-width: 17.5rem,
   gap: "spacing.large",
-  padding-v: "spacing.extra-large",
-  padding-h: "spacing.extra-large",
   max-height: 100%,
   height: fit-content,
   width: fit-content,
@@ -28,6 +26,15 @@ $-tokens: (
     inline-end: "dialog.margin.all",
     block-start: "dialog.margin.all",
     block-end: "dialog.margin.all",
+  ),
+
+  padding: (
+    all: "spacing.extra-large",
+
+    block-start: "dialog.padding.all",
+    block-end: "dialog.padding.all",
+    inline-start: "dialog.padding.all",
+    inline-end: "dialog.padding.all",
   ),
 
   popover: (
@@ -115,7 +122,6 @@ $-base-dialog-styles: (
   z-index: "dialog.z-index",
 
   "&::before": utils.pseudo-element(),
-
   "&:open": (
     display: flex,
     flex-direction: column,
@@ -129,11 +135,11 @@ $-square-styles: (
   "dialog.shape.all": "dialog.shape.square",
 );
 $-header-and-content-styles: (
-  "dialog.header.padding-v": '"dialog.padding-v" 0',
-  "dialog.content.padding-v": '"spacing.large" "dialog.padding-v"',
+  "dialog.header.padding.block-end": 0,
+  "dialog.content.padding.block-start": "spacing.large",
 );
 $-content-and-actions-styles: (
-  "dialog.actions.padding-v": '0 "dialog.padding-v"',
+  "dialog.actions.padding.block-start": 0,
 );
 
 // make the dialog content stretch to fill the dialog space, pushing actions to

@@ -80,13 +80,20 @@ const BaseDialog = PopoverMixin(FocusTrapMixin(LitElement));
  * NOTE: The `<mwc-dialog-actions>` will be hidden if the `actions` slot was not
  * provided.
  *
- * @slot - The default slot that should only be used if none of the default
- * styling should be used. This is placed after all the other slots but before
- * the last focus trap
+ * @slot - The default slot is rendered in the `<mwc-dialog-content>`. If you
+ * do not want the default dialog content styling, but would still like the
+ * content to automatically expand to fill the remaining height within the
+ * dialog and add a scrollbar when overflown, use the `"dialog-content"` slot
+ * instead.
+ * @slot dialog-content - An optional slot that can be used if the default
+ * `<mwc-dialog-content>` slot does not work for your use case.
+ * @slot custom - An optional slot that is rendered before the last focus trap.
+ * This can be used if none of the existing slots work for your use-case and
+ * none of the styling is correct for those slots.
  * @slot title - An optional slot that will be rendered in
- * the`<mwc-dialog-header>` in the `title` slot
+ * the `<mwc-dialog-header>` in the `title` slot
  * @slot icon - An optional slot that will be rendered in
- * the`<mwc-dialog-header>` above the `title`
+ * the `<mwc-dialog-header>` above the `title`
  * @slot header - An optional slot for rendering any custom content in the
  * `<mwc-dialog-header>` after the `title` and `icon`
  * @slot content - An optional slot where the main content of the dialog should
@@ -150,6 +157,9 @@ export class Dialog extends BaseDialog implements DialogProperties {
   @property()
   width?: DialogWidth;
 
+  @property({ type: Boolean, attribute: "disable-content-stretch" })
+  disableContentStretch?: boolean;
+
   @query("dialog")
   protected _dialog?: HTMLDialogElement;
 
@@ -206,6 +216,12 @@ export class Dialog extends BaseDialog implements DialogProperties {
 
   protected override willUpdate(changed: PropertyValues): void {
     super.willUpdate(changed);
+
+    if (changed.has("popoverType") && !changed.has("disableFocusTrap")) {
+      changed.set("disableFocusTrap", this.disableFocusTrap);
+      this.disableFocusTrap =
+        this.hasAttribute("disable-focus-trap") || !!this.popoverType;
+    }
 
     if (changed.has("open")) {
       if (this.open) {
@@ -283,12 +299,12 @@ export class Dialog extends BaseDialog implements DialogProperties {
         ${content}
         <slot
           name="dialog-content"
-          class="content"
+          class=${classMap({ content: !this.disableContentStretch })}
           @slotchange=${this.#handleDialogContentSlotChange}
           ?hidden=${!this._hasDialogContent}
         ></slot>
         ${actions}
-        <slot></slot>
+        <slot name="other-content"></slot>
         ${(this.open && this.renderFocusTrap("last")) || nothing}
       </dialog>
     `;
@@ -312,10 +328,9 @@ export class Dialog extends BaseDialog implements DialogProperties {
       <mwc-dialog-content
         id=${this.contentId}
         ?hidden=${!this._hasContent}
-        class="content"
+        class=${classMap({ content: !this.disableContentStretch })}
       >
-        <slot name="content" @slotchange=${this.#handleContentSlotChange}>
-        </slot>
+        <slot @slotchange=${this.#handleContentSlotChange}></slot>
       </mwc-dialog-content>
     `;
   }

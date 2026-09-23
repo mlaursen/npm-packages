@@ -11,10 +11,12 @@ $-tokens: (
     gap: "spacing.extra-small",
 
     padding: (
-      block-start: "spacing.extra-large",
-      block-end: "spacing.extra-large",
-      inline-start: "spacing.extra-large",
-      inline-end: "spacing.extra-large",
+      all: "spacing.extra-large",
+
+      block-start: "sheet.header.padding.all",
+      block-end: "sheet.header.padding.all",
+      inline-start: "sheet.header.padding.all",
+      inline-end: "sheet.header.padding.all",
     ),
 
     // the "real" padding is 1.5rem, but from icon edge instead of button edge.

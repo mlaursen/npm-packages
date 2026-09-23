@@ -6,12 +6,23 @@ import styles from "./sheet-header-styles.js";
 import type { SheetHeaderAutoFocus, SheetHeaderProperties } from "./types.js";
 
 /**
- * @slot back-icon -
- * @slot back-button-
- * @slot close-icon -
- * @slot close-button -
- * @slot title -
- * @slot
+ * @slot - The default slot can be used to render any content after the
+ * optional title slot but before the optional close button slot. It is
+ * generally not recommended to use the default slot too much and instead swap
+ * the sheet header with the dialog header or a custom header.
+ * @slot back-icon - An optional slot that can be used to change the default
+ * back icon.
+ * @slot back-button - An optional slot that can be used to change the default
+ * back button. This button will no longer automatically close the sheet and
+ * will need to be implemented yourself.
+ * @slot close-icon - An optional slot that can be used to change the default
+ * close icon.
+ * @slot close-button - An optional slot that can be used to change the default
+ * close button. This button will no longer automatically close the sheet and
+ * will need to be implemented yourself.
+ * @slot title - An optional slot for rendering a title in the header. This
+ * should generally be the `<mwc-sheet-title>` or another `<mwc-typography>`
+ * implementation.
  */
 export class SheetHeader extends LitElement implements SheetHeaderProperties {
   static override styles = styles;

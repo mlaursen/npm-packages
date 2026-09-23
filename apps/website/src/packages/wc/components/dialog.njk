@@ -17,7 +17,7 @@ page:
   </mwc-button>
   <mwc-dialog id="command-dialog-1">
     <h2 slot="title">Title</h2>
-    <p slot="content">Hello, world!</p>
+    <p>Hello, world!</p>
     <mwc-button slot="actions"
                 variant="text"
                 command="close"
@@ -37,7 +37,7 @@ page:
   </mwc-button>
   <mwc-dialog id="command-dialog-2" type="alert">
     <h2 slot="title">Alert dialog</h2>
-    <p slot="content">
+    <p>
       This is a description of the alert. The alertdialog role is used to notify users of urgent information that demands the user's immediate attention.
     </p>
     <mwc-button slot="actions"
@@ -55,7 +55,7 @@ page:
       delete
     </mwc-material-symbol>
     <h2 slot="title">Permanently delete?</h2>
-    <p slot="content">
+    <p>
       Deleting the selected photos will also remove them from all synced devices.
     </p>
     <mwc-button slot="actions"
@@ -84,7 +84,7 @@ page:
   </mwc-button>
   <mwc-dialog id="form-dialog-1">
     <h2 slot="title">Form Example</h2>
-    <form id="form-dialog-1-form" slot="content" method="dialog">
+    <form id="form-dialog-1-form"  method="dialog">
       <mwc-text-field name="animal" required>
         <span slot="label">Favorite animal</span>
       </mwc-text-field>
@@ -138,7 +138,7 @@ page:
   </mwc-box>
   <mwc-dialog id="cancelable-dialog">
     <h2 slot="title">Cancelable Dialog</h2>
-    <mwc-typography slot="content">
+    <mwc-typography>
       <p id="cancelable-dialog-close-message">
         If the checkbox is checked, clicking the next two buttons will still
         close the dialog since <code>dialog.close()</code> is called. Pressing
@@ -149,7 +149,7 @@ page:
         or pressing the <kbd>Escape</kbd> key will not close the dialog.
       </p>
     </mwc-typography>
-    <mwc-typography variant="label" slot="content">
+    <mwc-typography variant="label">
       <label>
         <mwc-box padding="none" inline>
           <mwc-checkbox id="force-cancel-close-checkbox" name="cancel">
@@ -175,7 +175,7 @@ page:
       Show Dialog
     </mwc-button>
     <h2 slot="title">Hello, world!</h2>
-    <p slot="content">Here is some text content.</p>
+    <p>Here is some text content.</p>
   </mwc-dialog>
   <mwc-typography variant="headline">
     <h2>Fixed Dialog</h2>
@@ -186,9 +186,7 @@ page:
   </mwc-button>
   <mwc-dialog id="fixed-dialog-1" type="fixed">
     <h2 slot="title">Fixed Dialog Title</h2>
-    <p slot="content">
-      Fixed dialogs were mostly added to support "inline" sheets.
-    </p>
+    <p>Fixed dialogs were mostly added to support "inline" sheets.</p>
     <mwc-button slot="actions"
                 variant="text"
                 command="close"

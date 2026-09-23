@@ -106,6 +106,18 @@ export interface DialogProperties {
   returnValue: HTMLDialogElement["returnValue"];
 
   /**
+   * Set to true to prevent the default `<mwc-dialog-content>` from applying:
+   *
+   * ```css
+   * flex: 1 1 auto;
+   * overflow: auto;
+   * ```
+   *
+   * @defaultValue `false`
+   */
+  disableContentStretch?: boolean;
+
+  /**
    * This function will show the dialog with an animation using
    * `dialog.showModal()` returning a promise that will resolve once the
    * animations have completed.

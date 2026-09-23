@@ -5,16 +5,22 @@
 $-tokens-registered: false;
 $-tokens: (
   header: (
-    padding-h: "dialog.padding-h",
-    padding-v: "dialog.padding-v",
+    padding: (
+      block-start: "dialog.padding.block-start",
+      block-end: "dialog.padding.block-end",
+      inline-start: "dialog.padding.inline-start",
+      inline-end: "dialog.padding.inline-end",
+    ),
   ),
 );
 
 $-configure-tokens: map.keys($-tokens);
 
 $-base-styles: (
-  "box.padding-v": "dialog.header.padding-v",
-  "box.padding-h": "dialog.header.padding-h",
+  "box.padding.block-end": "dialog.header.padding.block-end",
+  "box.padding.block-start": "dialog.header.padding.block-start",
+  "box.padding.inline-end": "dialog.header.padding.inline-end",
+  "box.padding.inline-start": "dialog.header.padding.inline-start",
 );
 $-icon-styles: (
   color: "palette.secondary",

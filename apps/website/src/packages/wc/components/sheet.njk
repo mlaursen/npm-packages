@@ -14,8 +14,8 @@ page:
   </mwc-button>
   <mwc-sheet id="sheet-1" close-button>
     <h1 slot="title">Headline</h1>
-    <p slot="content">Hello, world!</p>
-    <mwc-box disable-padding stacked align="start">
+    <p>Hello, world!</p>
+    <mwc-box stacked align="start" padding="block">
       <mwc-button id="toggle-position">
         Toggle Position
       </mwc-button>
@@ -46,14 +46,14 @@ page:
   </mwc-button>
   <mwc-sheet id="sheet-2" back-button close-button>
     <h1 slot="title">Headline</h1>
-    <p slot="content">Hello, world!</p>
+    <p>Hello, world!</p>
   </mwc-sheet>
   <mwc-button command="show-modal" commandfor="sheet-3">
     Show Title
   </mwc-button>
   <mwc-sheet id="sheet-3">
     <h1 slot="title">Headline</h1>
-    <p slot="content">Hello, world!</p>
+    <p>Hello, world!</p>
     <mwc-material-symbol slot="back-icon">
       favorite
     </mwc-material-symbol>
@@ -72,7 +72,7 @@ page:
              close-button
              back-button>
     <h1 slot="title">Headline</h1>
-    <p slot="content">Hello, world!</p>
+    <p>Hello, world!</p>
   </mwc-sheet>
   <div style="height: 80rem"></div>
 </mwc-box>

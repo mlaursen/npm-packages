@@ -38,9 +38,14 @@ if (
   throw new Error("Missing stuffs");
 }
 
+const formatter = new Intl.DateTimeFormat(undefined, {
+  hour: "numeric",
+  minute: "2-digit",
+  second: "2-digit",
+});
 const log = (message: string): void => {
   const li = document.createElement("li");
-  li.textContent = message;
+  li.textContent = `[${formatter.format(new Date())}] ${message}`;
   logs.append(li);
   pre.scrollTop = pre.scrollHeight;
 };
@@ -76,5 +81,11 @@ closeWithValueButton.addEventListener("click", () => {
     dialog.requestClose("some value");
   } else {
     dialog.close("some value");
+  }
+});
+
+clearLogsButton.addEventListener("click", () => {
+  while (logs.lastChild) {
+    logs.lastChild.remove();
   }
 });

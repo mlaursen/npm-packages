@@ -5,8 +5,12 @@
 $-tokens-registered: false;
 $-tokens: (
   content: (
-    padding-h: "dialog.padding-h",
-    padding-v: "dialog.padding-v",
+    padding: (
+      block-start: "dialog.padding.block-start",
+      block-end: "dialog.padding.block-end",
+      inline-start: "dialog.padding.inline-start",
+      inline-end: "dialog.padding.inline-end",
+    ),
   ),
 );
 
@@ -15,8 +19,10 @@ $-configure-tokens: map.keys($-tokens);
 $-base-styles: (
   box-sizing: border-box,
   display: block,
-  padding-block: "dialog.content.padding-v",
-  padding-inline: "dialog.content.padding-h",
+  padding-block-end: "dialog.content.padding.block-end",
+  padding-block-start: "dialog.content.padding.block-start",
+  padding-inline-end: "dialog.content.padding.inline-end",
+  padding-inline-start: "dialog.content.padding.inline-start",
 );
 
 @mixin configure() {
