@@ -48,7 +48,7 @@ export type MaterialSymbolOpticalSize = 20 | 24 | 40 | 48;
 
 export type MaterialSymbolFamily = "outlined" | "rounded" | "sharp";
 
-export interface MaterialSymbolProperties extends IconProperties {
+export interface MaterialSymbolCustomProperties {
   /**
    * Used to override the current material symbol font family. This can also be
    * configured using the `--mwc-icon-symbol-family` custom property.
@@ -79,3 +79,9 @@ export interface MaterialSymbolProperties extends IconProperties {
    */
   opsz?: MaterialSymbolOpticalSize;
 }
+
+export type MaterialSymbolCustomPropertyName =
+  keyof MaterialSymbolCustomProperties;
+
+export interface MaterialSymbolProperties
+  extends IconProperties, MaterialSymbolCustomProperties {}

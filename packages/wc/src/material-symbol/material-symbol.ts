@@ -5,6 +5,7 @@ import { property } from "lit/decorators.js";
 import { Icon } from "../icon/icon.js";
 import styles from "./material-symbol-styles.js";
 import type {
+  MaterialSymbolCustomPropertyName,
   MaterialSymbolFamily,
   MaterialSymbolFill,
   MaterialSymbolGrade,
@@ -12,6 +13,7 @@ import type {
   MaterialSymbolProperties,
   MaterialSymbolWeight,
 } from "./types.js";
+import { toggleMaterialSymbolVar } from "./utils.js";
 
 const LIVE_STYLE_PROPERTIES = [
   "fill",
@@ -19,8 +21,7 @@ const LIVE_STYLE_PROPERTIES = [
   "grade",
   "opsz",
   "family",
-] as const;
-type LiveStyleProperty = (typeof LIVE_STYLE_PROPERTIES)[number];
+] as const satisfies MaterialSymbolCustomPropertyName[];
 
 /**
  * @slot - The default content slot that should just be the name of one of the
@@ -44,6 +45,8 @@ export class MaterialSymbol extends Icon implements MaterialSymbolProperties {
   @property({ type: Number })
   opsz?: MaterialSymbolOpticalSize;
 
+  #managed = new Set<MaterialSymbolCustomPropertyName>();
+
   protected override render(): unknown {
     return html`<slot></slot>`;
   }
@@ -52,7 +55,7 @@ export class MaterialSymbol extends Icon implements MaterialSymbolProperties {
     super.connectedCallback();
 
     for (const property of LIVE_STYLE_PROPERTIES) {
-      this.#updateProperty(property, true);
+      this.#updateProperty(property);
     }
   }
 
@@ -64,21 +67,23 @@ export class MaterialSymbol extends Icon implements MaterialSymbolProperties {
     }
   }
 
-  #updateProperty(name: LiveStyleProperty, init = false): void {
-    const varName = `--mwc-icon-symbol-${name}`;
+  #updateProperty(name: MaterialSymbolCustomPropertyName): void {
     const value = this[name];
-    if (name === "family") {
-      if (this.family) {
-        const titleCase =
-          this.family.slice(0, 1).toUpperCase() + this.family.slice(1);
-        this.style.setProperty(varName, `Material Symbols ${titleCase}`);
-      }
-    } else if (value !== undefined) {
-      this.style.setProperty(varName, `${value}`);
+    const isNullOrUndefined = value === null || value === undefined;
+    if (isNullOrUndefined && !this.#managed.has(name)) {
+      return;
     }
 
-    if (!init && !value) {
-      this.style.removeProperty(varName);
+    if (isNullOrUndefined) {
+      this.#managed.delete(name);
+    } else {
+      this.#managed.add(name);
     }
+
+    toggleMaterialSymbolVar({
+      root: this,
+      name,
+      value,
+    });
   }
 }
