@@ -7,6 +7,15 @@ import type {
   BaseAnimatedElementProperties,
 } from "./types.js";
 
+/**
+ * The `BaseAnimateMixin` should generally be used when the animation should be
+ * triggered programmatically; otherwise the `AnimateMixin` is recommended to
+ * toggle open/close states.
+ *
+ * The extending class should override the
+ * {@link AnimatedElementProperties._getAnimations} function to define the
+ * animations and call `this._animate()` to animate.
+ */
 export function BaseAnimateMixin<T extends LitConstructor>(
   Base: T,
 ): T & LitConstructor<BaseAnimatedElementProperties> {
@@ -38,7 +47,7 @@ export function BaseAnimateMixin<T extends LitConstructor>(
       return [];
     }
 
-    async _animate(options: BaseAnimateOptions): Promise<void> {
+    async _animate(options: BaseAnimateOptions = {}): Promise<void> {
       this.#animationController?.abort();
       this.#animationController = new AbortController();
 

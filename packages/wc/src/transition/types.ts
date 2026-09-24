@@ -53,7 +53,7 @@ export interface BaseAnimatedElementProperties {
    *
    * @virtual
    */
-  _animate(options: BaseAnimateOptions): Promise<void>;
+  _animate(options?: BaseAnimateOptions): Promise<void>;
 }
 
 /**

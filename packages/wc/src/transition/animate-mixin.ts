@@ -9,6 +9,27 @@ import type {
   BaseAnimateOptions,
 } from "./types.js";
 
+/**
+ * The `AnimateMixin` is used to add a toggleable animation usually based on an
+ * `open` state that is controlled with the
+ * {@link AnimatedElementProperties.show} and
+ * {@link AnimatedElementProperties.close} methods.
+ *
+ * The extending class should override the
+ * {@link AnimatedElementProperties._getAnimations} function to define the
+ * animations.
+ *
+ * @see {@link BaseAnimateMixin} for more information around the animations.
+ *
+ * @fires {Event} open - Fired before the show animation occurs and can be used
+ * to cancel opening the element by calling `event.preventDefault()`.
+ * @fires {Event} opened - Fired once the element has opened and the animations
+ * have completed.
+ * @fires {Event} close - Fired before the hide animation occurs and can be
+ * used to cancel closing the element by calling `event.preventDefault()`.
+ * @fires {Event} closed - Fired once the element has closed and the animations
+ * have completed.
+ */
 export function AnimateMixin<T extends LitConstructor>(
   Base: T,
 ): T & LitConstructor<AnimatedElementProperties> {

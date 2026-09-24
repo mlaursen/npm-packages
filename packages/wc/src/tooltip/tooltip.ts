@@ -24,6 +24,8 @@ const BaseTooltip = MarginMixin(PopoverMixin(LitElement));
  * @slot popover-target - Required slot that is used to be the anchor element
  * and used to show/hide the tooltip.
  *
+ * @see {@link PopoverMixin} for additional configuration options
+ *
  * @fires {Event} open - Fired before the show animation occurs and can be used
  * to cancel opening the element by calling `event.preventDefault()`.
  * @fires {Event} opened - Fired once the element has opened and the animations

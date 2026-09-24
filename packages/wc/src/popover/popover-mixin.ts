@@ -35,6 +35,8 @@ import type {
  * `popoverBehavior` property exists. It is generally recommended to use this
  * alongside the `MarginMixin` so that wrapping the popover targets can still
  * have general margin and spacing applied.
+ *
+ * @see {@link AnimateMixin} for animation behavior
  */
 export function PopoverMixin<T extends StylableLitElement>(
   Base: T,
