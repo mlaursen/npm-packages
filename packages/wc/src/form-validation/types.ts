@@ -30,23 +30,23 @@ export interface CustomValidityState extends ValidityStateFlags {
   valid?: boolean;
 }
 
-export interface FormControlStaticProperties {
-  formControlValidators: Validator[];
+export interface FormValidationStaticProperties {
+  formValidators: Validator[];
 }
 
-export interface FormControlStates {
+export interface FormValidationStates {
   error: boolean;
   disabled: boolean;
   required: boolean;
   readOnly: boolean;
 }
 
-export interface FormControlProperties extends FormControlStates {
+export interface FormValidationProperties extends FormValidationStates {
   value: string;
   setValue(value: FormValue): void;
 
   updateInternals(): void;
-  resetFormControl: () => void;
+  _onFormReset: () => void;
   validationTarget: HTMLElement | null;
 
   isErrored(): boolean;
@@ -59,6 +59,16 @@ export interface FormControlProperties extends FormControlStates {
 export type LitConstructorWithElementInternals = LitConstructor<
   LitElement & ElementWithInternalsProperties
 >;
-export type LitElementWithFormControlProperties<
+export type LitElementWithFormValidationProperties<
   T extends LitConstructorWithElementInternals,
-> = T & LitConstructor<FormControlProperties> & FormControlStaticProperties;
+> = T &
+  LitConstructor<FormValidationProperties> &
+  FormValidationStaticProperties;
+
+export interface FormValidationMixinOptions {
+  /** @defaultValue `true` */
+  reflectAriaInvalid?: boolean;
+
+  /** @defaultValue `[]` */
+  updateInternalsAttributes?: readonly string[];
+}

@@ -3,7 +3,7 @@ import { LitElement, html, isServer } from "lit";
 import { property, query } from "lit/decorators.js";
 
 import { AriaMixin } from "../aria-mixin/aria-mixin.js";
-import { FormControlMixin } from "../form-control/form-control-mixin.js";
+import { FormValidationMixin } from "../form-validation/form-validation-mixin.js";
 import { InteractionMixin } from "../interaction/interaction-mixin.js";
 import { MarginMixin } from "../margin/margin-mixin.js";
 import { PaletteMixin } from "../palette/palette-mixin.js";
@@ -27,7 +27,7 @@ import type {
 const BaseStyledRadio = BaseAnimateMixin(
   InteractionMixin(PaletteMixin(MarginMixin(LitElement))),
 );
-const BaseRadio = FormControlMixin(AriaMixin(BaseStyledRadio, "radio"), {
+const BaseRadio = FormValidationMixin(AriaMixin(BaseStyledRadio, "radio"), {
   updateInternalsAttributes: ["error", "checked", "required"],
 });
 
@@ -194,7 +194,7 @@ export class Radio extends BaseRadio implements RadioProperties {
     this.internals.ariaRequired = this.required ? "true" : null;
   }
 
-  override resetFormControl = (): void => {
+  override _onFormReset = (): void => {
     const defaultChecked = this.hasAttribute("checked");
     this.#reset = this.checked !== defaultChecked;
     this.checked = defaultChecked;

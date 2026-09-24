@@ -3,8 +3,8 @@ import { LitElement, html, isServer } from "lit";
 import { property, query } from "lit/decorators.js";
 
 import { AriaMixin } from "../aria-mixin/aria-mixin.js";
-import { FormControlMixin } from "../form-control/form-control-mixin.js";
-import { requiredValidator } from "../form-control/required-validator.js";
+import { FormValidationMixin } from "../form-validation/form-validation-mixin.js";
+import { requiredValidator } from "../form-validation/required-validator.js";
 import { InteractionMixin } from "../interaction/interaction-mixin.js";
 import { MarginMixin } from "../margin/margin-mixin.js";
 import { PaletteMixin } from "../palette/palette-mixin.js";
@@ -29,7 +29,7 @@ import type {
 const BaseStyledCheckbox = BaseAnimateMixin(
   InteractionMixin(PaletteMixin(MarginMixin(LitElement))),
 );
-const BaseCheckbox = FormControlMixin(
+const BaseCheckbox = FormValidationMixin(
   AriaMixin(BaseStyledCheckbox, "checkbox"),
   {
     updateInternalsAttributes: [
@@ -46,7 +46,7 @@ const INDETERMINATE = Symbol("indeterminate");
 
 export class Checkbox extends BaseCheckbox implements CheckboxProperties {
   static override styles = [...BaseCheckbox.styles, styles];
-  static override formControlValidators = [requiredValidator];
+  static override formValidators = [requiredValidator];
 
   @property()
   size: CheckboxSize = "medium";
@@ -240,7 +240,7 @@ export class Checkbox extends BaseCheckbox implements CheckboxProperties {
     this.internals.ariaRequired = this.required ? "true" : null;
   }
 
-  override resetFormControl = (): void => {
+  override _onFormReset = (): void => {
     const defaultChecked = this.hasAttribute("checked");
     const defaultIndeterminate = this.hasAttribute("indeterminate");
 

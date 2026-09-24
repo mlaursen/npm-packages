@@ -5,11 +5,11 @@ import { classMap } from "lit/directives/class-map.js";
 import { ifDefined } from "lit/directives/if-defined.js";
 import { live } from "lit/directives/live.js";
 
-import { FormControlMixin } from "../form-control/form-control-mixin.js";
-import { maxLengthValidator } from "../form-control/max-length-validator.js";
-import { minLengthValidator } from "../form-control/min-length-validator.js";
-import { patternValidator } from "../form-control/pattern-validator.js";
-import { requiredValidator } from "../form-control/required-validator.js";
+import { FormValidationMixin } from "../form-validation/form-validation-mixin.js";
+import { maxLengthValidator } from "../form-validation/max-length-validator.js";
+import { minLengthValidator } from "../form-validation/min-length-validator.js";
+import { patternValidator } from "../form-validation/pattern-validator.js";
+import { requiredValidator } from "../form-validation/required-validator.js";
 import { InternalsMixin } from "../internals-mixin/internals-mixin.js";
 import { MarginMixin } from "../margin/margin-mixin.js";
 import { PaletteMixin } from "../palette/palette-mixin.js";
@@ -26,11 +26,11 @@ import type {
 } from "./types.js";
 
 const BaseStyledTextField = PaletteMixin(MarginMixin(LitElement));
-const BaseTextField = FormControlMixin(InternalsMixin(BaseStyledTextField));
+const BaseTextField = FormValidationMixin(InternalsMixin(BaseStyledTextField));
 
 export class TextField extends BaseTextField implements TextFieldProperties {
   static override styles = [...BaseTextField.styles, styles];
-  static override formControlValidators = [
+  static override formValidators = [
     requiredValidator,
     minLengthValidator,
     maxLengthValidator,
@@ -403,7 +403,7 @@ export class TextField extends BaseTextField implements TextFieldProperties {
     return html`${this.#renderLabel()}${this.#renderInput()}${this.#renderTextArea()}${this.#renderOutline()}`;
   }
 
-  override resetFormControl = (): void => {
+  override _onFormReset = (): void => {
     this.value = this.getAttribute("value") || "";
   };
 

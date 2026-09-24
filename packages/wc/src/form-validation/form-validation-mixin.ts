@@ -3,31 +3,26 @@ import { property } from "lit/decorators.js";
 
 import type {
   CustomValidityState,
-  FormControlProperties,
+  FormValidationProperties,
+  FormValidationMixinOptions,
   FormValue,
   LitConstructorWithElementInternals,
-  LitElementWithFormControlProperties,
+  LitElementWithFormValidationProperties,
   Validator,
 } from "./types.js";
 
 const SHOW_ERROR_VAR = "--show-error";
 
-export interface FormControlElementOptions {
-  /** @defaultValue `true` */
-  reflectAriaInvalid?: boolean;
-
-  /** @defaultValue `[]` */
-  updateInternalsAttributes?: readonly string[];
-}
-
-export function FormControlMixin<T extends LitConstructorWithElementInternals>(
+export function FormValidationMixin<
+  T extends LitConstructorWithElementInternals,
+>(
   Base: T,
-  options: FormControlElementOptions = {},
-): LitElementWithFormControlProperties<T> {
+  options: FormValidationMixinOptions = {},
+): LitElementWithFormValidationProperties<T> {
   const { reflectAriaInvalid = true, updateInternalsAttributes = [] } = options;
 
-  class FormControlElement extends Base implements FormControlProperties {
-    static formControlValidators: Validator[] = [];
+  class FormValidatorElement extends Base implements FormValidationProperties {
+    static formValidators: Validator[] = [];
 
     @property({ type: Boolean })
     error = false;
@@ -99,7 +94,7 @@ export function FormControlMixin<T extends LitConstructorWithElementInternals>(
       this.form?.removeEventListener("reset", this.#handleReset);
     }
 
-    resetFormControl = (): void => {};
+    _onFormReset = (): void => {};
     updateInternals(): void {}
 
     get validationTarget(): HTMLElement | null {
@@ -131,8 +126,8 @@ export function FormControlMixin<T extends LitConstructorWithElementInternals>(
     }
 
     #getValidators(): readonly Validator[] {
-      const proto = this.constructor as typeof FormControlElement;
-      return proto.formControlValidators ?? [];
+      const proto = this.constructor as typeof FormValidatorElement;
+      return proto.formValidators ?? [];
     }
 
     async #validate(value: FormValue): Promise<void> {
@@ -217,7 +212,7 @@ export function FormControlMixin<T extends LitConstructorWithElementInternals>(
       this.#forceError = false;
       this.#setErrorState(this.#shouldShowError());
 
-      this.resetFormControl();
+      this._onFormReset();
     };
 
     #shouldShowError(): boolean {
@@ -258,5 +253,5 @@ export function FormControlMixin<T extends LitConstructorWithElementInternals>(
     }
   }
 
-  return FormControlElement;
+  return FormValidatorElement;
 }
