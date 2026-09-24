@@ -93,6 +93,7 @@ export function PopoverMixin<T extends StylableLitElement>(
 
     #timeout: ReturnType<typeof globalThis.setTimeout> | undefined;
     #initiator: PopoverInitiatorAction | null = null;
+    #closing = false;
 
     override firstUpdated(changed: PropertyValues): void {
       super.firstUpdated(changed);
@@ -200,6 +201,10 @@ export function PopoverMixin<T extends StylableLitElement>(
       this.close();
     }
 
+    override _onBeforeClose(): void {
+      this.#closing = true;
+    }
+
     #bindPopoverHandlers(add: boolean): void {
       const popover = this._popover;
       if (!popover) {
@@ -251,6 +256,7 @@ export function PopoverMixin<T extends StylableLitElement>(
 
     #handleToggle = (event: ToggleEvent): void => {
       if (event.newState === "closed") {
+        this.#closing = false;
         this.#initiator = null;
         this.#clearTimeout();
       }
@@ -260,7 +266,8 @@ export function PopoverMixin<T extends StylableLitElement>(
       // If the `popoverType` is set to `"hint"` and the browser closes the
       // popover due to one of the other interactions, the normal close
       // animation would not occur so capture that flow and animate.
-      if (event.newState === "closed" && !this.closing) {
+      if (event.newState === "closed" && !this.#closing && !this.closing) {
+        this.#closing = true;
         this.close();
       }
     };
