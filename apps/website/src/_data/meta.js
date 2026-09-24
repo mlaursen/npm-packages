@@ -32,3 +32,5 @@ export const fonts = {
 };
 
 export const symbols = false;
+
+export const showHomeNavigation = process.env.SHOW_HOME_NAVIGATION === "true";

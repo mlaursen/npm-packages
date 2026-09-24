@@ -18,4 +18,17 @@ layout: base
       </p>
     </mwc-typography>
   </mwc-text-container>
+  {% if meta.showHomeNavigation %}
+    <mwc-text-container>
+      <mwc-typography variant="display" size="small">
+        <h2>Navigation</h2>
+      </mwc-typography>
+      <mwc-typography variant="headline" size="small">
+        <h3>@mlaursen/wc</h3>
+      </mwc-typography>
+      <mwc-typography>
+        {{ collections.all | eleventyNavigation | eleventyNavigationToHtml | safe }}
+      </mwc-typography>
+    </mwc-text-container>
+  {% endif %}
 </main>
