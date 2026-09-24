@@ -8,7 +8,14 @@ $-tokens-registered: false;
 $-tokens: (
   background: "palette.inverse-surface",
   color: "palette.inverse-on-surface",
-  border-radius: null,
+  shape: (
+    all: null,
+
+    start-start: "popover.shape.all",
+    start-end: "popover.shape.all",
+    end-start: "popover.shape.all",
+    end-end: "popover.shape.all",
+  ),
 
   // the area tokens are for configuring the position
   area-x: "center",
@@ -92,8 +99,11 @@ $-target-styles: (
 );
 $-popover-content-styles: (
   background: "popover.background",
+  border-end-end-radius: "popover.shape.end-end",
+  border-end-start-radius: "popover.shape.end-start",
+  border-start-end-radius: "popover.shape.start-end",
+  border-start-start-radius: "popover.shape.start-start",
   border: 0,
-  border-radius: "popover.border-radius",
   box-sizing: border-box,
   color: "popover.color",
   display: flex,

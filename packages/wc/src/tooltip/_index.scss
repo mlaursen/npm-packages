@@ -6,7 +6,14 @@
 $-tokens-registered: false;
 $-tokens: (
   background: "palette.inverse-surface",
-  border-radius: "shape.corner.extra-small",
+  shape: (
+    all: "shape.corner.extra-small",
+
+    start-start: "popover.shape.all",
+    start-end: "popover.shape.all",
+    end-start: "popover.shape.all",
+    end-end: "popover.shape.all",
+  ),
   color: "palette.inverse-on-surface",
   padding: "spacing.small",
   max-width: "15rem",
@@ -20,7 +27,11 @@ $-base-styles: (
   "popover.color": "tooltip.color",
   "popover.spacing": "spacing.extra-small",
   "popover.fallbacks": "block-start, block-end, inline-start, inline-end",
-  "popover.border-radius": "tooltip.border-radius",
+  "popover.shape.all": "tooltip.shape.all",
+  "popover.shape.start-start": "tooltip.shape.start-start",
+  "popover.shape.start-end": "tooltip.shape.start-end",
+  "popover.shape.end-start": "tooltip.shape.end-start",
+  "popover.shape.end-end": "tooltip.shape.end-end",
 );
 $-tooltip-styles: (
   font: typography.typescale(body-small),
