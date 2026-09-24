@@ -81,16 +81,16 @@
     "concurrently": "^10.0.5",
     "glob": "^13.0.6",
     "lightningcss": "^1.32.0",
-    "oxfmt": "^0.68.0",
-    "oxlint": "^1.83.0",
-    "prettier": "^3.9.7",
+    "oxfmt": "^0.70.0",
+    "oxlint": "^1.85.0",
+    "prettier": "^3.9.9",
     "prettier-plugin-css-order": "^2.2.0",
-    "rollup": "^4.63.3",
+    "rollup": "^4.63.4",
     "rollup-plugin-dts": "^6.4.1",
     "rollup-plugin-summary": "^3.0.1",
     "rollup-plugin-swc3": "^0.12.1",
     "ts-lit-plugin": "^2.0.2",
-    "tsx": "^4.23.13",
+    "tsx": "^4.23.15",
     "typescript": "^6.0.3"
   }
 }

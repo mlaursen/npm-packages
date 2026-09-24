@@ -47,9 +47,9 @@
     "cross-env": "^10.1.0",
     "husky": "^9.1.7",
     "lint-staged": "^17.5.1",
-    "oxfmt": "^0.68.0",
-    "tsx": "^4.23.13",
-    "turbo": "^2.10.13"
+    "oxfmt": "^0.70.0",
+    "tsx": "^4.23.15",
+    "turbo": "^2.11.3"
   },
   "lint-staged": {
     "*": "oxfmt --no-error-on-unmatched-pattern"
