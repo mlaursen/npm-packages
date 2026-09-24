@@ -1,5 +1,11 @@
 # @mlaursen/scss
 
+## 0.0.8
+
+### Patch Changes
+
+- f6a9fa5: Fixed pnpm not handling wildcards correctly like npm in .npmignore
+
 ## 0.0.7
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @mlaursen/node-utils
 
+## 0.3.2
+
+### Patch Changes
+
+- f6a9fa5: Fixed pnpm not handling wildcards correctly like npm in .npmignore
+
 ## 0.3.1
 
 ### Patch Changes

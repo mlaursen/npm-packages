@@ -1,5 +1,11 @@
 # @mlaursen/eslint-config
 
+## 12.0.13
+
+### Patch Changes
+
+- f6a9fa5: Fixed pnpm not handling wildcards correctly like npm in .npmignore
+
 ## 12.0.12
 
 ### Patch Changes

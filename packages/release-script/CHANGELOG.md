@@ -1,5 +1,11 @@
 # @mlaursen/release-script
 
+## 1.0.2
+
+### Patch Changes
+
+- f6a9fa5: Fixed pnpm not handling wildcards correctly like npm in .npmignore
+
 ## 1.0.1
 
 ### Patch Changes

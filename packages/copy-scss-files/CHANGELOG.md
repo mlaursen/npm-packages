@@ -1,5 +1,13 @@
 # @mlaursen/copy-scss-files
 
+## 0.2.2
+
+### Patch Changes
+
+- f6a9fa5: Fixed pnpm not handling wildcards correctly like npm in .npmignore
+- Updated dependencies [f6a9fa5]
+  - @mlaursen/node-utils@0.3.2
+
 ## 0.2.1
 
 ### Patch Changes
