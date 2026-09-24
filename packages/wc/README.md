@@ -31,12 +31,12 @@ pnpm add @mlaursen/wc
     />
     <link
       rel="stylesheet"
-      href="https://cdn.jsdelivr/npm/@mlaursen/dist/light-dark.css"
+      href="https://cdn.jsdelivr.net/npm/@mlaursen/wc/dist/light-dark.css"
     />
     <script type="importmap">
       {
         "imports": {
-          "@mlaursen/wc": "https://esm.run/@mlaursen/wc"
+          "@mlaursen/wc/": "https://esm.run/@mlaursen/wc/"
         }
       }
     </script>
