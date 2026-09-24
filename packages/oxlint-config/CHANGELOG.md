@@ -1,5 +1,11 @@
 # @mlaursen/oxlint-config
 
+## 1.0.2
+
+### Patch Changes
+
+- 6ecef43: Prefer separate type imports since it helps with side-effect files
+
 ## 1.0.1
 
 ### Patch Changes

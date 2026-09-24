@@ -1,5 +1,12 @@
 # @mlaursen/utils
 
+## 0.3.0
+
+### Minor Changes
+
+- ed6a98d: Added the debounce and throttle utils
+- fe06caf: Added a simple chunk function
+
 ## 0.2.0
 
 ### Minor Changes

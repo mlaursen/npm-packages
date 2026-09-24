@@ -1,5 +1,11 @@
 # @mlaursen/release-script
 
+## 1.0.1
+
+### Patch Changes
+
+- 8a69ab0: Bumped dependencies to latest
+
 ## 1.0.0
 
 ### Major Changes

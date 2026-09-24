@@ -1,5 +1,14 @@
 # @mlaursen/node-utils
 
+## 0.3.1
+
+### Patch Changes
+
+- 8a69ab0: Bumped dependencies to latest
+- 8e5988e: Added jsdoc to define the default values for the generateFile options
+- 43dd977: Updated watching message to be "Watching for file changes" to match tsc instead of "Watching changes..."
+- 2796c3a: Updated the generateFile util to use oxfmt instead of prettier
+
 ## 0.3.0
 
 ### Minor Changes
