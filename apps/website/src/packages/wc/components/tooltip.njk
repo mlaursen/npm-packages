@@ -25,7 +25,9 @@ anchors:
 <mwc-box style="--mwc-box-gap: 6rem" stacked>
   {% for y in anchors.y %}
     {% for x in anchors.x %}
-      <mwc-tooltip anchor-x="{{ x }}" anchor-y="{{ y }}" popover-behavior="manual" arrow>
+      <mwc-tooltip anchor-x="{{ x }}"
+                   anchor-y="{{ y }}"
+                   popover-behavior="manual">
         <mwc-button slot="popover-target">
           {{ x }} - {{ y }}
         </mwc-button>
