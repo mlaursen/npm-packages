@@ -39,6 +39,12 @@ $-tooltip-styles: (
   text-wrap: nowrap,
   width: minmax("tooltip.min-width", "tooltip.max-width"),
 );
+// not sure when or why, but firefox started automatically resolving this to
+// always be above when using the default fallbacks. Using only `flip-inline`
+// appears to use the expected behavior
+$-anchor-y-center-styles: (
+  "popover.fallbacks": "flip-inline",
+);
 
 @mixin configure() {
   @if not $-tokens-registered {
@@ -55,6 +61,7 @@ $-tooltip-styles: (
 @mixin css-styles {
   $styles: (
     "&tooltip": utils.deep-merge($-base-styles, $-tooltip-styles),
+    "&tooltip--y-center": $-anchor-y-center-styles,
   );
   @include utils.css-styles($styles);
 }
@@ -62,6 +69,7 @@ $-tooltip-styles: (
 @mixin host-styles {
   $styles: (
     ":host": $-base-styles,
+    ":host([anchor-y=center])": $-anchor-y-center-styles,
     ".popover-content": $-tooltip-styles,
   );
   @include utils.map-to-styles($styles);
