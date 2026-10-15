@@ -16,6 +16,7 @@ npm install @mlaursen/node-utils
 
 ```ts
 import { readFile } from "node:fs/promises";
+
 import { filesize } from "@mlaursen/node-utils";
 
 const contents = await readFile("README.md", "utf8");
@@ -76,6 +77,7 @@ await logTask(someTask(), "Starting some task", "Some task complete!");
 
 ```ts
 import { readFile } from "node:fs/promises";
+
 import { prettyFilesize } from "@mlaursen/node-utils";
 
 const contents = await readFile("README.md", "utf8");

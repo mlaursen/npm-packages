@@ -17,6 +17,7 @@ npm install @mlaursen/scss
 
 ```ts
 import { readFileSync } from "node:fs";
+
 import { compileScss } from "@mlaursen/scss";
 
 // start by setting a base path for everything. using process.cwd() is
@@ -78,8 +79,9 @@ const { css } = compileScss({
 
 ```ts
 import { readFileSync, writeFileSync } from "node:fs";
-import { format } from "oxfmt";
+
 import { assertScssResolvePackageJson, compileScss } from "@mlaursen/scss";
+import { format } from "oxfmt";
 
 const basePath = process.cwd();
 const browserBasePath = "/__home__";
@@ -126,6 +128,7 @@ writeFileSync(browserOutFilePath, formatted.code, "utf8");
 ```ts
 import { readFileSync } from "node:fs";
 import { basename } from "node:path";
+
 import { compileScssModule } from "@mlaursen/scss";
 
 const filePath = "./src/Example.scss";
@@ -166,10 +169,11 @@ This is no longer part of this package, but it can be easily done using
 [lightningcss](https://github.com/parcel-bundler/lightningcss):
 
 ```ts
+import { readFileSync } from "node:fs";
+
 import { compileScss } from "@mlaursen/scss";
 import browserslist from "browserslist";
 import { browserslistToTargets, transform } from "lightningcss";
-import { readFileSync } from "node:fs";
 
 const basePath = process.cwd();
 const fileName = "./some/path/to/file.scss";
