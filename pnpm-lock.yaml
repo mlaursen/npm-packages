@@ -181,9 +181,6 @@ importers:
       cross-env:
         specifier: ^10.1.0
         version: 10.1.0
-      dotenv:
-        specifier: ^17.4.2
-        version: 17.4.2
       esbuild:
         specifier: ^0.28.2
         version: 0.28.2
@@ -486,12 +483,12 @@ importers:
       '@inquirer/rawlist':
         specifier: ^5.3.1
         version: 5.3.6(@types/node@24.13.3)
+      '@mlaursen/node-utils':
+        specifier: workspace:*
+        version: link:../node-utils
       '@octokit/core':
         specifier: ^7.0.8
         version: 7.0.8
-      dotenv:
-        specifier: ^17.4.2
-        version: 17.4.2
     devDependencies:
       '@mlaursen/oxlint-config':
         specifier: workspace:*
@@ -3201,10 +3198,6 @@ packages:
 
   dot-case@3.0.4:
     resolution: {integrity: sha512-Kv5nKlh6yRrdrGvxeJ2e5y2eRUpkUosIW4A2AS38zwSz27zu7ufDwQPi5Jhs3XAlGNetl3bmnGhQsMtkKJnj3w==}
-
-  dotenv@17.4.2:
-    resolution: {integrity: sha512-nI4U3TottKAcAD9LLud4Cb7b2QztQMUEfHbvhTH09bqXTxnSie8WnjPALV/WMCrJZ6UV/qHJ6L03OqO3LcdYZw==}
-    engines: {node: '>=12'}
 
   dunder-proto@1.0.1:
     resolution: {integrity: sha512-KIN/nDJBQRcXw0MLVhZE9iQHmG68qAVIBg9CqmUYjmQIhgij9U5MFvrqkUL5FbtyyzZuOeOt0zdeRe4UY7ct+A==}
@@ -7754,8 +7747,6 @@ snapshots:
     dependencies:
       no-case: 3.0.4
       tslib: 2.8.1
-
-  dotenv@17.4.2: {}
 
   dunder-proto@1.0.1:
     dependencies:

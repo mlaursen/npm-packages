@@ -1,17 +1,17 @@
 import confirm from "@inquirer/confirm";
+import { loadConfigFile } from "@mlaursen/node-utils";
 import { Octokit } from "@octokit/core";
-import dotenv from "dotenv";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { createRelease } from "../createRelease.js";
 
 vi.mock("@octokit/core");
-vi.mock("dotenv");
+vi.mock("@mlaursen/node-utils");
 vi.mock("@inquirer/confirm");
 
 const confirmMock = vi.mocked(confirm);
 const OctokitMock = vi.mocked(Octokit);
-const dotenvMock = vi.mocked(dotenv);
+const loadConfigFileMock = vi.mocked(loadConfigFile);
 
 const octokitRequestMock = vi.fn();
 const consoleLog = vi.spyOn(console, "log");
@@ -69,9 +69,8 @@ describe("createRelease", () => {
       tagName: "example-repo@1.0.0",
     });
 
-    expect(dotenvMock.config).toHaveBeenCalledExactlyOnceWith({
+    expect(loadConfigFileMock).toHaveBeenCalledExactlyOnceWith({
       path: ".env.local",
-      quiet: true,
       override: false,
     });
     expect(consoleError).not.toHaveBeenCalled();
@@ -112,15 +111,13 @@ describe("createRelease", () => {
       tagName: "example-repo@1.0.0",
     });
 
-    expect(dotenvMock.config).toHaveBeenCalledTimes(2);
-    expect(dotenvMock.config.mock.calls[0]?.[0]).toEqual({
+    expect(loadConfigFileMock).toHaveBeenCalledTimes(2);
+    expect(loadConfigFileMock.mock.calls[0]?.[0]).toEqual({
       path: ".env.local",
-      quiet: true,
       override: false,
     });
-    expect(dotenvMock.config.mock.calls[1]?.[0]).toEqual({
+    expect(loadConfigFileMock.mock.calls[1]?.[0]).toEqual({
       path: ".env.local",
-      quiet: true,
       override: true,
     });
     expect(OctokitMock).toHaveBeenCalledTimes(2);

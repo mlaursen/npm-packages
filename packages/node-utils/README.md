@@ -39,6 +39,18 @@ export const y = "hello, world!"`,
 });
 ```
 
+## loadConfigFile
+
+### Simple Example
+
+```ts
+// uses `".env"`
+loadConfigFile();
+
+// use `".env.local"` and override existing values
+loadConfigFile({ path: ".env.local", override: true });
+```
+
 ## log
 
 ### Simple Example

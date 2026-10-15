@@ -1,6 +1,6 @@
 import confirm from "@inquirer/confirm";
+import { loadConfigFile } from "@mlaursen/node-utils";
 import { Octokit } from "@octokit/core";
-import dotenv from "dotenv";
 
 export interface ConfigurableCreateReleaseOptions {
   repo: string;
@@ -44,7 +44,7 @@ export async function createRelease(
     tokenName = "GITHUB_RELEASE_TOKEN",
   } = options;
 
-  dotenv.config({ path: envPath, override, quiet: true });
+  loadConfigFile({ path: envPath, override });
   const octokit = new Octokit({ auth: process.env[tokenName] });
   try {
     const response = await octokit.request(

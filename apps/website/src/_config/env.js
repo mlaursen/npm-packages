@@ -1,3 +1,4 @@
-import dotenv from "dotenv";
+import { readFileSync } from "node:fs";
+import { parseEnv } from "node:util";
 
-dotenv.config({ quiet: true, override: true });
+Object.assign(process.env, parseEnv(readFileSync(".env", "utf8")));
