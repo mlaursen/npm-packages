@@ -1,4 +1,3 @@
-import { readFileSync } from "node:fs";
-import { parseEnv } from "node:util";
+import { loadConfigFile } from "@mlaursen/node-utils";
 
-Object.assign(process.env, parseEnv(readFileSync(".env", "utf8")));
+loadConfigFile();
