@@ -60,6 +60,7 @@ import type { ${pascalName}Properties } from "./types.js";
 
 export class ${pascalName} extends LitElement implements ${pascalName}Properties {
   static override styles = styles;
+  static readonly elementName: string = "mwc-${kebabName}";
 
   override render(): TemplateResult {
     return html\`<slot></slot>\`;
@@ -85,7 +86,7 @@ function getDefineFile({ kebabName, pascalName }: ComponentNames): string {
   return `import { safeDefine } from "../utils/safeDefine.js";
 import { ${pascalName} } from "./${kebabName}.js";
 
-safeDefine("mwc-${kebabName}", ${pascalName});
+safeDefine(${pascalName});
 
 declare global {
   interface HTMLElementTagNameMap {
