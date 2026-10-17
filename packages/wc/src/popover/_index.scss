@@ -46,16 +46,7 @@ $-configure-tokens: (
   host-styles,
   target-styles,
   popover-styles,
-  left-styles,
-  inner-left-styles,
-  center-x-styles,
-  inner-right-styles,
-  right-styles,
-  above-styles,
-  top-styles,
-  center-y-styles,
-  bottom-styles,
-  below-styles
+  popover-content-styles
 );
 
 $-popover-styles: (
@@ -143,42 +134,11 @@ $-vertical-anchor-styles: (
   ),
 );
 
-@mixin -configure-horizontal-anchor($anchor, $styles) {
-  @if $styles != null {
-    $-horizontal-anchor-styles: utils.deep-merge(
-      $-horizontal-anchor-styles,
-      (
-        $name: $styles,
-      )
-    ) !global;
-  }
-}
-
-@mixin -configure-vertical-anchor($anchor, $styles) {
-  @if $styles != null {
-    $-vertical-anchor-styles: utils.deep-merge(
-      $-vertical-anchor-styles,
-      (
-        $name: $styles,
-      )
-    ) !global;
-  }
-}
-
 @mixin configure(
   $host-styles: null,
   $target-styles: null,
   $popover-styles: null,
-  $left-styles: null,
-  $inner-left-styles: null,
-  $center-x-styles: null,
-  $inner-right-styles: null,
-  $right-styles: null,
-  $above-styles: null,
-  $top-styles: null,
-  $center-y-styles: null,
-  $bottom-styles: null,
-  $below-styles: null
+  $popover-content-styles: null
 ) {
   @if $host-styles != null {
     $-host-styles: $host-styles !global;
@@ -192,17 +152,12 @@ $-vertical-anchor-styles: (
     $-popover-styles: map.merge($-popover-styles, $popover-styles) !global;
   }
 
-  @include -configure-horizontal-anchor(left, $left-styles);
-  @include -configure-horizontal-anchor(inner-left, $inner-left-styles);
-  @include -configure-horizontal-anchor(center-x, $center-x-styles);
-  @include -configure-horizontal-anchor(inner-right, $inner-right-styles);
-  @include -configure-horizontal-anchor(right, $right-styles);
-
-  @include -configure-vertical-anchor(above, $above-styles);
-  @include -configure-vertical-anchor(top, $top-styles);
-  @include -configure-vertical-anchor(center-y, $center-y-styles);
-  @include -configure-vertical-anchor(bottom, $bottom-styles);
-  @include -configure-vertical-anchor(below, $below-styles);
+  @if $popover-content-styles != null {
+    $-popover-content-styles: map.merge(
+      $-popover-content-styles,
+      $popover-content-styles
+    ) !global;
+  }
 
   @if not $-tokens-registered {
     $-tokens-registered: true !global;
@@ -213,18 +168,10 @@ $-vertical-anchor-styles: (
 @mixin configure-global($overrides: null) {
   $overrides: utils.get-config-map(popover, $overrides, $-configure-tokens);
   @include configure(
+    $host-styles: map.get($overrides, host-styles),
     $target-styles: map.get($overrides, target-styles),
     $popover-styles: map.get($overrides, popover-styles),
-    $left-styles: map.get($overrides, left-styles),
-    $inner-left-styles: map.get($overrides, inner-left-styles),
-    $center-x-styles: map.get($overrides, center-x-styles),
-    $inner-right-styles: map.get($overrides, inner-right-styles),
-    $right-styles: map.get($overrides, right-styles),
-    $above-styles: map.get($overrides, above-styles),
-    $top-styles: map.get($overrides, top-styles),
-    $center-y-styles: map.get($overrides, center-y-styles),
-    $bottom-styles: map.get($overrides, bottom-styles),
-    $below-styles: map.get($overrides, below-styles)
+    $popover-content-styles: map.get($overrides, popover-content-styles)
   );
 }
 
