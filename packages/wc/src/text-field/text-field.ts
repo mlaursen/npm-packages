@@ -187,7 +187,8 @@ export class TextField extends BaseTextField implements TextFieldProperties {
   floating = !!this.value;
 
   #fieldId = "field";
-  #resizeObserver?: ResizeObserver;
+  #labelResizeObserver?: ResizeObserver;
+  #textAreaResizeObserver?: ResizeObserver;
   #observedOnce = false;
 
   @query("#field")
@@ -195,6 +196,9 @@ export class TextField extends BaseTextField implements TextFieldProperties {
 
   @query(".notch-2")
   _notchWithLabel?: HTMLDivElement;
+
+  @query(".label")
+  _label?: HTMLLabelElement;
 
   @query(".resize")
   _resize?: HTMLDivElement;
@@ -397,7 +401,8 @@ export class TextField extends BaseTextField implements TextFieldProperties {
   override disconnectedCallback(): void {
     super.disconnectedCallback();
 
-    this.#resizeObserver?.disconnect();
+    this.#textAreaResizeObserver?.disconnect();
+    this.#labelResizeObserver?.disconnect();
   }
 
   override render(): TemplateResult {
@@ -524,13 +529,22 @@ export class TextField extends BaseTextField implements TextFieldProperties {
         flatten: true,
       }) ?? [];
     this._hasLabel = elements.length > 0;
+    this.#labelResizeObserver?.disconnect();
 
-    if (this._notchWithLabel && this.variant === "outlined") {
-      this._notchWithLabel.replaceChildren();
-      for (const element of elements) {
-        this._notchWithLabel.append(element.cloneNode(true));
-      }
+    if (!this._hasLabel || !this._label || this.variant !== "outlined") {
+      return;
     }
+
+    this.#labelResizeObserver ??= new ResizeObserver(([entry]) => {
+      const width = entry?.borderBoxSize[0]?.inlineSize;
+      if (typeof width === "number") {
+        this.style.setProperty(
+          "--mwc-text-field-floating-label-width",
+          `${width}px`,
+        );
+      }
+    });
+    this.#labelResizeObserver.observe(this._label);
   }
 
   #redispatch(event: Event): void {
@@ -557,7 +571,7 @@ export class TextField extends BaseTextField implements TextFieldProperties {
   }
 
   #stopObserving(): void {
-    this.#resizeObserver?.disconnect();
+    this.#textAreaResizeObserver?.disconnect();
     if (!this._resize) {
       return;
     }
@@ -583,7 +597,7 @@ export class TextField extends BaseTextField implements TextFieldProperties {
 
     // skip the initial resize observer callback so it is only once the user
     // starts resizing that it updates
-    this.#resizeObserver ??= new ResizeObserver((entries) => {
+    this.#textAreaResizeObserver ??= new ResizeObserver((entries) => {
       if (!this.#observedOnce) {
         this.#observedOnce = true;
         return;
@@ -601,8 +615,8 @@ export class TextField extends BaseTextField implements TextFieldProperties {
         }
       }
     });
-    this.#resizeObserver.observe(this);
-    this.#resizeObserver.observe(resize);
+    this.#textAreaResizeObserver.observe(this);
+    this.#textAreaResizeObserver.observe(resize);
   }
 
   #syncHandleWithTextArea(

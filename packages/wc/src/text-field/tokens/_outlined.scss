@@ -120,10 +120,8 @@ $outlined-notch-2-styles: utils.deep-merge(
   ),
   (
     padding-inline: "text-field.floating.label.padding-inline",
+    width: "text-field.floating.label.width",
 
-    "*": (
-      opacity: 0,
-    ),
     "&::before, &::after": (
       border-left: 0,
       border-radius: 0,
