@@ -28,7 +28,7 @@ async function build(entryPoint) {
       "process.env.NODE_ENV": JSON.stringify(NODE_ENV),
       "process.env.URL": JSON.stringify(url),
       "process.env.SHOW_HOME_NAVIGATION": JSON.stringify(
-        process.env.SHOW_HOME_NAVIGATION,
+        process.env.SHOW_HOME_NAVIGATION ?? "",
       ),
     },
   });
