@@ -57,6 +57,7 @@ export * from "./margin/margin-mixin.js";
 export * from "./margin/types.js";
 export * from "./material-symbol/material-symbol.js";
 export * from "./material-symbol/types.js";
+export * from "./material-symbol/utils.js";
 export * from "./object-fit/object-fit.js";
 export * from "./object-fit/types.js";
 export * from "./palette/palette-mixin.js";
