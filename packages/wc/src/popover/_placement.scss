@@ -1,0 +1,169 @@
+@use "sass:list";
+@use "sass:map";
+
+$-popover-arrow-placement-styles: (
+  // Side: `above` means the popover is above the target, so the arrow is on
+  // its bottom edge. `left` means the popover is left of the target, so the
+  // arrow is on its right edge.
+  above: (
+    "popover.flex-direction": column,
+    "popover.arrow.points": "popover.arrow.top.points",
+    "popover.arrow.width": "popover.arrow.base",
+    "popover.arrow.height": "popover.arrow.depth",
+  ),
+  below: (
+    "popover.flex-direction": column-reverse,
+    "popover.arrow.points": "popover.arrow.bottom.points",
+    "popover.arrow.width": "popover.arrow.base",
+    "popover.arrow.height": "popover.arrow.depth",
+  ),
+  left: (
+    "popover.flex-direction": row,
+    "popover.arrow.points": "popover.arrow.right.points",
+    "popover.arrow.width": "popover.arrow.depth",
+    "popover.arrow.height": "popover.arrow.base",
+  ),
+  right: (
+    "popover.flex-direction": row-reverse,
+    "popover.arrow.points": "popover.arrow.left.points",
+    "popover.arrow.width": "popover.arrow.depth",
+    "popover.arrow.height": "popover.arrow.base",
+  ),
+
+  // Alignment along the edge (auto margin on the opposite side)
+  inline-start: (
+    "popover.arrow.margin.inline-end": auto,
+  ),
+  inline-end: (
+    "popover.arrow.margin.inline-start": auto,
+  ),
+  inline-center: (
+    "popover.arrow.margin.inline-start": auto,
+    "popover.arrow.margin.inline-end": auto,
+  ),
+  block-start: (
+    "popover.arrow.margin.block-end": auto,
+  ),
+  block-end: (
+    "popover.arrow.margin.block-start": auto,
+  ),
+  block-center: (
+    "popover.arrow.margin.block-start": auto,
+    "popover.arrow.margin.block-end": auto,
+  ),
+
+  // Offset from the rounded corner the arrow sits next to
+  above-start: (
+    "popover.arrow.margin.inline-start": "popover.shape.end-start",
+  ),
+  above-end: (
+    "popover.arrow.margin.inline-end": "popover.shape.end-end",
+  ),
+  below-start: (
+    "popover.arrow.margin.inline-start": "popover.shape.start-start",
+  ),
+  below-end: (
+    "popover.arrow.margin.inline-end": "popover.shape.start-end",
+  ),
+  left-start: (
+    "popover.arrow.margin.block-start": "popover.shape.start-end",
+  ),
+  left-end: (
+    "popover.arrow.margin.block-end": "popover.shape.end-end",
+  ),
+  right-start: (
+    "popover.arrow.margin.block-start": "popover.shape.start-start",
+  ),
+  right-end: (
+    "popover.arrow.margin.block-end": "popover.shape.end-start",
+  ),
+);
+
+// Each distinct entry is written once. Names read side-alignment.
+// Arrow on the top/bottom edge of the popover
+$-above-start: (above, inline-start, above-start);
+$-above-end: (above, inline-end, above-end);
+$-above-center: (above, inline-center);
+
+$-below-start: (below, inline-start, below-start);
+$-below-end: (below, inline-end, below-end);
+$-below-center: (below, inline-center);
+
+// Arrow on the left/right edge of the popover
+$-left-top: (left, block-start, left-start);
+$-left-middle: (left, block-center);
+$-left-bottom: (left, block-end, left-end);
+
+$-right-top: (right, block-start, right-start);
+$-right-middle: (right, block-center);
+$-right-bottom: (right, block-end, right-end);
+
+// y -> x -> groups. Key order matches the working version.
+$-popover-arrow-groups: (
+  above: (
+    left: $-above-end,
+    inner-left: $-above-start,
+    center: $-above-center,
+    inner-right: $-above-end,
+    right: $-above-start,
+  ),
+  below: (
+    left: $-below-end,
+    inner-left: $-below-start,
+    center: $-below-center,
+    inner-right: $-below-end,
+    right: $-below-start,
+  ),
+  top: (
+    left: $-left-top,
+    inner-left: $-left-top,
+    center: $-above-center,
+    inner-right: $-right-top,
+    right: $-right-top,
+  ),
+  center: (
+    left: $-left-middle,
+    inner-left: $-left-middle,
+    center: $-above-center,
+    inner-right: $-right-middle,
+    right: $-right-middle,
+  ),
+  bottom: (
+    left: $-left-bottom,
+    inner-left: $-left-bottom,
+    center: $-below-center,
+    inner-right: $-right-bottom,
+    right: $-right-bottom,
+  ),
+);
+
+@function -arrow-placement($groups...) {
+  $result: ();
+  @each $group in $groups {
+    $group-styles: map.get($-popover-arrow-placement-styles, $group);
+    @if $group-styles == null {
+      @error "Unknown popover arrow placement group: #{$group}";
+    }
+
+    $result: map.merge($result, $group-styles);
+  }
+
+  @return $result;
+}
+
+@function popover-arrow-placement-styles($is-host) {
+  $styles: ();
+
+  @each $y, $row in $-popover-arrow-groups {
+    @each $x, $groups in $row {
+      $selector: "&popover--arrow-#{$x}-#{$y}";
+      @if $is-host {
+        $selector: ":host([anchor-y=#{$y}][anchor-x=#{$x}])";
+      }
+
+      $styles: map.set($styles, $selector, -arrow-placement($groups...));
+    }
+  }
+
+  @return $styles;
+}

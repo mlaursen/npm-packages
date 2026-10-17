@@ -79,6 +79,7 @@ export type PopoverInitiator =
 export type PopoverInitiatorAction = "focus" | "hover" | "click" | "force";
 
 export interface RenderPopoverTargetOptions {
+  arrow?: TemplateResult;
   target?: TemplateResult;
   content: TemplateResult;
 }
@@ -97,6 +98,14 @@ export interface PopoverProperties extends AnimatedElementProperties {
    * @defaultValue `"below"`
    */
   anchorY: VerticalAnchor;
+
+  /**
+   * Set to true to render an arrow from the popover to the target element.
+   * This will also be `true` if a `slot="popover-arrow"` was provided.
+   *
+   * @defaultValue `false`
+   */
+  popoverArrow?: boolean;
 
   /**
    * The popover will only be enabled if this property is defined.
@@ -207,6 +216,13 @@ override render(): TemplateResult {
    * @sealed
    */
   renderPopoverTarget(target?: TemplateResult): TemplateResult;
+
+  /**
+   * This can be used to override how the popover arrow element is rendered.
+   *
+   * @sealed
+   */
+  renderPopoverArrow(arrow?: TemplateResult): TemplateResult;
 
   /**
    * This can be used to override the animation used when showing the popover.

@@ -74,6 +74,9 @@ export function PopoverMixin<T extends StylableLitElement>(
     @property({ type: Number, attribute: "focus-delay" })
     focusDelay?: number;
 
+    @property({ type: Boolean, attribute: "popover-arrow" })
+    popoverArrow?: boolean;
+
     @query(".popover")
     _popover?: HTMLSpanElement;
 
@@ -85,6 +88,9 @@ export function PopoverMixin<T extends StylableLitElement>(
 
     @state()
     _hasPopoverTarget = false;
+
+    @state()
+    _hasPopoverArrow = false;
 
     getShowPopoverAnimation: GetAnimationMap<AnimatePopoverElementMap> = () =>
       DEFAULT_SHOW_POPOVER_ANIMATION;
@@ -149,23 +155,34 @@ export function PopoverMixin<T extends StylableLitElement>(
         <slot
           name="popover-target"
           @slotchange=${this.#handlePopoverTargetSlotChange}
+          >${target}</slot
         >
-          ${target}
-        </slot>
       `;
     }
 
+    renderPopoverArrow(arrow?: TemplateResult): TemplateResult {
+      return html`<div
+          class="popover-arrow"
+          ?hidden=${this._hasPopoverArrow || !this.popoverArrow}
+        ></div>
+        <slot
+          name="popover-arrow"
+          @slotchange=${this.#handlePopoverArrowSlotChange}
+          ?hidden=${!this._hasPopoverArrow}
+          >${arrow}</slot
+        >`;
+    }
+
     renderPopover(options: RenderPopoverTargetOptions): TemplateResult {
-      const { target, content } = options;
-      return html`
-        ${this.renderPopoverTarget(target)}
+      const { arrow, target, content } = options;
+      return html`${this.renderPopoverTarget(target)}
         <div
           class="popover popover-surface"
           popover=${ifDefined(this.popoverType)}
         >
           <div class="popover-content">${content}</div>
-        </div>
-      `;
+          ${this.renderPopoverArrow(arrow)}
+        </div>`;
     }
 
     override _getAnimations(options: AnimateOptions): AnimationList {
@@ -360,6 +377,10 @@ export function PopoverMixin<T extends StylableLitElement>(
 
     #handlePopoverTargetSlotChange(event: Event): void {
       this._hasPopoverTarget = isSlotted(event);
+    }
+
+    #handlePopoverArrowSlotChange(event: Event): void {
+      this._hasPopoverArrow = isSlotted(event);
     }
 
     #handlePopoverTargetClick = (event: Event): void => {

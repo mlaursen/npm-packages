@@ -6,28 +6,38 @@ eleventyNavigation:
 
 page:
   title: Tooltip
-
-anchors:
-  x:
-    - left
-    - inner-left
-    - center
-    - inner-right
-    - right
-  y:
-   - above
-   - top
-   - center
-   - bottom
-   - below
 ---
 
-<mwc-box style="--mwc-box-gap: 6rem" stacked>
-  {% for y in anchors.y %}
-    {% for x in anchors.x %}
-      <mwc-tooltip anchor-x="{{ x }}"
-                   anchor-y="{{ y }}"
-                   popover-behavior="manual">
+<mwc-card style="position: sticky;
+                 top: 4rem;
+                 z-index: 8;
+                 --mwc-box-item-min-size: 10rem">
+  <form style="width: 100%">
+    <mwc-dialog-header>
+      <mwc-dialog-title>
+        Settings
+      </mwc-dialog-title>
+    </mwc-dialog-header>
+    <mwc-box grid>
+      <mwc-typography variant="label">
+        <label>
+          <mwc-box padding="none">
+            <mwc-checkbox name="arrow">
+            </mwc-checkbox>
+            Arrow
+          </mwc-box>
+        </label>
+      </mwc-typography>
+    </mwc-box>
+  </form>
+</mwc-card>
+<mwc-typography variant="title" margin="top">
+  <h3>Placements</h3>
+</mwc-typography>
+<mwc-box id="tooltips-playground" style="--mwc-box-gap: 6rem" stacked>
+  {% for y in popover.verticalAnchors %}
+    {% for x in popover.horizontalAnchors %}
+      <mwc-tooltip anchor-x="{{ x }}" anchor-y="{{ y }}">
         <mwc-button slot="popover-target">
           {{ x }} - {{ y }}
         </mwc-button>
@@ -36,3 +46,6 @@ anchors:
     {% endfor %}
   {% endfor %}
 </mwc-box>
+{% js "defer" %}
+{% include "scripts/wc/tooltip.js" %}
+{% endjs %}

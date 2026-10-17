@@ -194,6 +194,25 @@ export const textField = {
   states: ["normal", "disabled", "readOnly", "error"],
 };
 
+export const popover = {
+  /** @type {import("@mlaursen/wc").HorizontalAnchor[]} */
+  horizontalAnchors: ["left", "inner-left", "center", "inner-right", "right"],
+  /** @type {import("@mlaursen/wc").VerticalAnchor[]} */
+  verticalAnchors: ["above", "top", "center", "bottom", "below"],
+  /** @type {import("@mlaursen/wc").PopoverType[]} */
+  types: ["auto", "hint", "manual"],
+  /** @type {import("@mlaursen/wc").PopoverInitiator[]} */
+  initiators: [
+    "all",
+    "focus",
+    "hover",
+    "click",
+    "no-click",
+    "no-focus",
+    "no-hover",
+  ],
+};
+
 export const objectFit = {
   /** @type {import("@mlaursen/wc").ObjectFitVariant[]} */
   variants: ["contain", "cover", "fill", "none", "scale-down"],

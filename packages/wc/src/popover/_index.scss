@@ -1,8 +1,10 @@
 @use "sass:list";
 @use "sass:map";
+@use "sass:math";
 @use "sass:string";
 
 @use "../utils";
+@use "./placement" as *;
 
 $-tokens-registered: false;
 $-tokens: (
@@ -16,6 +18,7 @@ $-tokens: (
     end-start: "popover.shape.all",
     end-end: "popover.shape.all",
   ),
+  flex-direction: column,
 
   // the area tokens are for configuring the position
   area-x: "center",
@@ -40,6 +43,42 @@ $-tokens: (
     opacity: 0,
     transform: "scale(1)",
   ),
+
+  arrow: (
+    base: 0.5rem,
+    // the arrow defaults to an isosceles triangle with a base of 0.5rem and depth
+    // of 0.375rem
+    depth-ratio: math.div(0.375, 0.5),
+    // if you want an equilateral triangle:
+    // depth-ratio: math.div(math.sqrt(3), 2),
+    depth: 'calc("popover.arrow.base" * "popover.arrow.depth-ratio")',
+
+    height: null,
+    width: null,
+
+    points: null,
+
+    // named by the direction the triangle points
+    top: (
+      points: "0 0, 100% 0, 50% 100%",
+    ),
+    right: (
+      points: "0 0, 0 100%, 100% 50%",
+    ),
+    bottom: (
+      points: "0 100%, 100% 100%, 50% 0",
+    ),
+    left: (
+      points: "100% 0, 100% 100%, 0 50%",
+    ),
+
+    margin: (
+      block-start: null,
+      block-end: null,
+      inline-start: null,
+      inline-end: null,
+    ),
+  ),
 );
 
 $-configure-tokens: (
@@ -51,6 +90,7 @@ $-configure-tokens: (
 
 $-popover-styles: (
   box-sizing: border-box,
+  flex-direction: "popover.flex-direction",
   inset: auto,
   margin: 0,
   opacity: "popover.opacity",
@@ -63,6 +103,7 @@ $-popover-styles: (
   z-index: "popover.z-index",
 
   "&:popover-open": (
+    display: flex,
     "popover.opacity": "popover.open.opacity",
     "popover.transform": "popover.open.transform",
   ),
@@ -78,7 +119,7 @@ $-popover-surface-styles: (
 $-popover-closing-styles: (
   "popover.opacity": "popover.open.opacity",
   "popover.transform": "popover.open.transform",
-  display: block,
+  display: flex,
 );
 // this was added so that wrapping elements in a `<mwc-popover>` do not mess
 // up their alignment
@@ -98,6 +139,19 @@ $-popover-content-styles: (
   box-sizing: border-box,
   color: "popover.color",
   display: flex,
+);
+$-popover-arrow-styles: (
+  background: "popover.background",
+  box-sizing: border-box,
+  clip-path: 'polygon("popover.arrow.points")',
+  display: block,
+  flex: none,
+  height: "popover.arrow.height",
+  margin-block-end: "popover.arrow.margin.block-end",
+  margin-block-start: "popover.arrow.margin.block-start",
+  margin-inline-end: "popover.arrow.margin.inline-end",
+  margin-inline-start: "popover.arrow.margin.inline-start",
+  width: "popover.arrow.width",
 );
 $-horizontal-anchor-styles: (
   left: (
@@ -123,7 +177,7 @@ $-vertical-anchor-styles: (
   top: (
     "popover.area-y": span-start,
   ),
-  center-y: (
+  center: (
     "popover.area-y": center,
   ),
   bottom: (
@@ -188,6 +242,7 @@ $-vertical-anchor-styles: (
     $name: if(sass($anchor == "center"): then center-y; else: $anchor);
     $styles: map.set($styles, "&popover--#{$name}", $anchor-styles);
   }
+  $styles: utils.deep-merge($styles, popover-arrow-placement-styles(false));
 
   @include utils.css-styles($styles);
 }
@@ -200,6 +255,7 @@ $-vertical-anchor-styles: (
     ".popover": $-popover-styles,
     ".popover-surface": $-popover-surface-styles,
     ".popover-content": $-popover-content-styles,
+    ".popover-arrow": $-popover-arrow-styles,
   );
   @each $anchor, $anchor-styles in $-horizontal-anchor-styles {
     $styles: map.set($styles, ":host([anchor-x=#{$anchor}])", $anchor-styles);
@@ -207,6 +263,7 @@ $-vertical-anchor-styles: (
   @each $anchor, $anchor-styles in $-vertical-anchor-styles {
     $styles: map.set($styles, ":host([anchor-y=#{$anchor}])", $anchor-styles);
   }
+  $styles: utils.deep-merge($styles, popover-arrow-placement-styles(true));
 
   @include utils.host-styles($styles);
 }
