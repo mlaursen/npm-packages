@@ -18,6 +18,7 @@ $-tokens: (
     end-start: "popover.shape.all",
     end-end: "popover.shape.all",
   ),
+  display: block,
   flex-direction: column,
 
   // the area tokens are for configuring the position
@@ -103,7 +104,7 @@ $-popover-styles: (
   z-index: "popover.z-index",
 
   "&:popover-open": (
-    display: flex,
+    display: "popover.display",
     "popover.opacity": "popover.open.opacity",
     "popover.transform": "popover.open.transform",
   ),
@@ -119,7 +120,7 @@ $-popover-surface-styles: (
 $-popover-closing-styles: (
   "popover.opacity": "popover.open.opacity",
   "popover.transform": "popover.open.transform",
-  display: flex,
+  display: "popover.display",
 );
 // this was added so that wrapping elements in a `<mwc-popover>` do not mess
 // up their alignment
@@ -139,6 +140,9 @@ $-popover-content-styles: (
   box-sizing: border-box,
   color: "popover.color",
   display: flex,
+);
+$-popover-arrow-enabled-styles: (
+  "popover.display": flex,
 );
 $-popover-arrow-styles: (
   background: "popover.background",
@@ -232,7 +236,13 @@ $-vertical-anchor-styles: (
 @mixin css-styles {
   $styles: (
     "&popover": $-popover-styles,
+    "&popover--closing": $-popover-closing-styles,
     "&popover-target": $-target-styles,
+    "&popover-content": $-popover-content-styles,
+    "&popover-surface": $-popover-surface-styles,
+
+    "&popover--arrow": $-popover-arrow-enabled-styles,
+    "&popover-arrow": $-popover-arrow-styles,
   );
   @each $anchor, $anchor-styles in $-horizontal-anchor-styles {
     $name: if(sass($anchor == "center"): then center-x; else: $anchor);
@@ -252,6 +262,8 @@ $-vertical-anchor-styles: (
     ":host": $-host-styles,
     "::slotted([slot=popover-target])": $-target-styles,
     ":host([popover-type][closing]) .popover": $-popover-closing-styles,
+    ":host(:is([popover-arrow], :has([slot=popover-arrow])))":
+      $-popover-arrow-enabled-styles,
     ".popover": $-popover-styles,
     ".popover-surface": $-popover-surface-styles,
     ".popover-content": $-popover-content-styles,

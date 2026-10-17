@@ -158,7 +158,7 @@ $-popover-arrow-groups: (
     @each $x, $groups in $row {
       $selector: "&popover--arrow-#{$x}-#{$y}";
       @if $is-host {
-        $selector: ":host([anchor-y=#{$y}][anchor-x=#{$x}])";
+        $selector: ":host(:is([popover-arrow], :has([slot=popover-arrow]))[popover-arrow][anchor-y=#{$y}][anchor-x=#{$x}])";
       }
 
       $styles: map.set($styles, $selector, -arrow-placement($groups...));

@@ -238,13 +238,27 @@ export function PopoverMixin<T extends StylableLitElement>(
     }
 
     #bindTargetHandlers(add: boolean): void {
-      const name = add ? "addEventListener" : "removeEventListener";
+      if (add) {
+        this.addEventListener("mouseenter", this.#handleMouseEnter);
+        this.addEventListener("mouseleave", this.#handleMouseLeave);
+        this.addEventListener("focus", this.#handleFocus, { capture: true });
+        this.addEventListener("blur", this.#handleBlur, { capture: true });
 
-      this[name]("mouseenter", this.#handleMouseEnter);
-      this[name]("mouseleave", this.#handleMouseLeave);
-      this[name]("focus", this.#handleFocus, true);
-      this[name]("blur", this.#handleBlur, true);
-      this._popoverTarget?.[name]("click", this.#handlePopoverTargetClick);
+        this._popoverTarget?.addEventListener(
+          "click",
+          this.#handlePopoverTargetClick,
+        );
+      } else {
+        this.removeEventListener("mouseenter", this.#handleMouseEnter);
+        this.removeEventListener("mouseleave", this.#handleMouseLeave);
+        this.removeEventListener("focus", this.#handleFocus, { capture: true });
+        this.removeEventListener("blur", this.#handleBlur, { capture: true });
+
+        this._popoverTarget?.removeEventListener(
+          "click",
+          this.#handlePopoverTargetClick,
+        );
+      }
     }
 
     #isInitiatorPrevented = (
@@ -356,7 +370,7 @@ export function PopoverMixin<T extends StylableLitElement>(
       this.#hidePopover("hover");
     }
 
-    #handleFocus(event: Event): void {
+    #handleFocus(event: FocusEvent): void {
       // only show when the user is focusing via keyboard
       if (
         event.target instanceof HTMLElement &&
@@ -366,9 +380,12 @@ export function PopoverMixin<T extends StylableLitElement>(
       }
     }
 
-    #handleBlur(event: Event): void {
+    #handleBlur(event: FocusEvent): void {
       // allow the popover to gain focus without closing
-      if (event.target instanceof HTMLElement && this.contains(event.target)) {
+      if (
+        event.relatedTarget instanceof HTMLElement &&
+        this.contains(event.relatedTarget)
+      ) {
         return;
       }
 
