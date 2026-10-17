@@ -32,6 +32,10 @@
     "dev-ghpages": "pnpm dev-11ty --pathprefix=/npm-packages/wc/ --serve --quiet",
     "start": "python3 -m http.server 8080 -d _site"
   },
+  "dependencies": {
+    "@tanstack/lit-virtual": "^3.14.2",
+    "fuse.js": "^7.5.0"
+  },
   "devDependencies": {
     "11ty.ts": "^0.0.7",
     "@11ty/eleventy": "^3.1.6",

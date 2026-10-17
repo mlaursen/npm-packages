@@ -1,0 +1,7 @@
+@use "@mlaursen/wc" as *;
+@use "configure-website";
+
+main {
+  padding-inline: 0;
+  max-width: none;
+}

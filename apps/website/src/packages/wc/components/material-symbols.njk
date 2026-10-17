@@ -1,0 +1,55 @@
+---
+layout: base-nav
+
+eleventyNavigation:
+  key: Material Symbols
+  parent: Home
+
+page:
+  title: Material Symbols
+---
+
+<material-symbols-virtualizer></material-symbols-virtualizer>
+{% if false %}
+  <mwc-box>
+    <mwc-text-field id="search-icons" placeholder="Search icons" full-width size="small">
+    </mwc-text-field>
+  </mwc-box>
+  <mwc-box id="search-results" grid hidden class="grid">
+  </mwc-box>
+  <div id="symbols-container">
+    {% for category, symbols in materialSymbols.categories %}
+      <mwc-box>
+        <mwc-typography class="category"
+                        variant="title"
+                        size="small"
+                        color="on-surface"
+                        margin="none">
+          <h3>{{ category }}</h3>
+        </mwc-typography>
+      </mwc-box>
+      <mwc-box grid class="grid">
+        {% for name in symbols %}
+          <mwc-button variant="text"
+                      class="symbol"
+                      shape="square"
+                      data-name="{{ name }}"
+                      data-category="{{ category }}">
+            <mwc-material-symbol>
+              {{ name }}
+            </mwc-material-symbol>
+            <mwc-typography text-transform="capitalize" text-align="center">
+              <span>{{ name | replace('_', ' ') }}</span>
+            </mwc-typography>
+          </mwc-button>
+        {% endfor %}
+      </mwc-box>
+    {% endfor %}
+  </div>
+{% endif %}
+{% css "local" %}
+{% include "css/wc/material-symbols.css" %}
+{% endcss %}
+{% js "defer" %}
+{% include "scripts/wc/material-symbols.js" %}
+{% endjs %}
