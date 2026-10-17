@@ -1,4 +1,4 @@
-import type { Radio } from "@mlaursen/wc";
+import { isCustomElement, Radio } from "@mlaursen/wc";
 
 const form = document.querySelector("form");
 const objectFits = document.querySelectorAll("mwc-object-fit");
@@ -11,14 +11,8 @@ for (const el of objectFits) {
   el.style.setProperty("--mwc-object-fit", "var(--object-fit)");
 }
 
-function isRadio(target: EventTarget | null): target is Radio {
-  return (
-    target instanceof Element && target.matches("mwc-radio[name=object-fit]")
-  );
-}
-
 form.addEventListener("change", (event) => {
-  if (!isRadio(event.target)) {
+  if (!isCustomElement(event.target, Radio)) {
     return;
   }
 

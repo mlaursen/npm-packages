@@ -60,6 +60,7 @@ const BaseBox = PaletteMixin(MarginMixin(LitElement));
  */
 export class Box extends BaseBox implements BoxProperties {
   static override styles = [...BaseBox.styles, boxStyles];
+  static readonly elementName: string = "mwc-box";
 
   @property()
   align?: BoxAlignItems;

@@ -5,7 +5,7 @@ import "../dialog-content/define.js";
 import "../dialog-header/define.js";
 import "../dialog-title/define.js";
 
-safeDefine("mwc-dialog", Dialog);
+safeDefine(Dialog);
 
 declare global {
   interface HTMLElementTagNameMap {

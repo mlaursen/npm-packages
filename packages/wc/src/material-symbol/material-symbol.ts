@@ -29,6 +29,7 @@ const LIVE_STYLE_PROPERTIES = [
  */
 export class MaterialSymbol extends Icon implements MaterialSymbolProperties {
   static override styles = [...Icon.styles, styles];
+  static readonly elementName: string = "mwc-material-symbol";
 
   @property()
   family?: MaterialSymbolFamily;

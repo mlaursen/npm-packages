@@ -1,7 +1,7 @@
 import { safeDefine } from "../utils/safeDefine.js";
 import { Typography } from "./typography.js";
 
-safeDefine("mwc-typography", Typography);
+safeDefine(Typography);
 
 declare global {
   interface HTMLElementTagNameMap {

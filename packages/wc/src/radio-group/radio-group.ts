@@ -33,6 +33,7 @@ interface CheckableElement extends HTMLElement {
  */
 export class RadioGroup extends BaseRadioGroup {
   static formAssociated = true;
+  static readonly elementName: string = "mwc-radio-group";
 
   #syncFrame = 0;
 

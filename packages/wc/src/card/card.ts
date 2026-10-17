@@ -52,6 +52,7 @@ const BaseCard = PaletteMixin(MarginMixin(LitElement));
  */
 export class Card extends BaseCard implements CardProperties {
   static override styles = [...BaseCard.styles, styles];
+  static readonly elementName: string = "mwc-card";
 
   @property()
   align: BoxAlignItems = "stretch";

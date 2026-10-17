@@ -12,6 +12,7 @@ const BaseStyledAvatar = PaletteMixin(MarginMixin(LitElement));
 
 export class Avatar extends BaseStyledAvatar implements AvatarProperties {
   static override styles = [...BaseStyledAvatar.styles, styles];
+  static readonly elementName: string = "mwc-avatar";
 
   @property()
   size: AvatarSize = "medium";

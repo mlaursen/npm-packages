@@ -12,6 +12,7 @@ export class DialogContent
   implements DialogContentProperties
 {
   static override styles = [...Typography.styles, styles];
+  static override readonly elementName: string = "mwc-dialog-content";
 
   @property({ reflect: true })
   override size: TypographySize = "medium";

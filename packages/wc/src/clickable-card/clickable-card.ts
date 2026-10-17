@@ -10,6 +10,8 @@ const InteractableCard = InteractionMixin(Card);
 const ButtonCard = AriaMixin(InteractableCard, "button");
 
 export class ClickableCard extends ButtonCard {
+  static override readonly elementName: string = "mwc-clickable-card";
+
   @property({ type: Boolean, reflect: true })
   clickable = true;
 

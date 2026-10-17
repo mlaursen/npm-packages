@@ -80,6 +80,7 @@ const BaseSheet = Dialog;
  */
 export class Sheet extends BaseSheet implements SheetProperties {
   static override styles = [...BaseSheet.styles, styles];
+  static override readonly elementName: string = "mwc-sheet";
 
   @property({ reflect: true })
   variant: SheetVariant = "modal";

@@ -7,6 +7,7 @@ import type { IconButtonProperties, IconButtonWidth } from "./types.js";
 
 export class IconButton extends Button implements IconButtonProperties {
   static override styles = [...Button.styles, styles];
+  static override readonly elementName: string = "mwc-icon-button";
 
   @property({ reflect: true })
   override variant: ButtonVariant = "text";

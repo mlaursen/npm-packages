@@ -1,7 +1,7 @@
 import { safeDefine } from "../utils/safeDefine.js";
 import { MaterialSymbol } from "./material-symbol.js";
 
-safeDefine("mwc-material-symbol", MaterialSymbol);
+safeDefine(MaterialSymbol);
 
 declare global {
   interface HTMLElementTagNameMap {

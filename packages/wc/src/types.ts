@@ -32,6 +32,11 @@ export type PopoverTargetAction = "show" | "hide" | "toggle";
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type Constructor<T = object> = new (...args: any[]) => T;
 export type LitConstructor<T = LitElement> = Constructor<T>;
+export type TaggedConstructor<T extends Element = LitElement> =
+  Constructor<T> & {
+    elementName: string;
+  };
+
 export type StylableLitElement<T = LitElement> = LitConstructor<T> & {
   styles?: CSSResultGroup;
   shadowRootOptions?: ShadowRootInit;

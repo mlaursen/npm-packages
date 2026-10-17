@@ -27,6 +27,7 @@ import type { ObjectFitProperties, ObjectFitVariant } from "./types.js";
  */
 export class ObjectFit extends LitElement implements ObjectFitProperties {
   static override styles = styles;
+  static readonly elementName: string = "mwc-object-fit";
 
   @property({ type: Boolean })
   inline = false;

@@ -1,5 +1,10 @@
 import { kebabCase } from "@mlaursen/utils";
-import type { Box, MaterialSymbol, Radio, TextField } from "@mlaursen/wc";
+import {
+  isCustomElement,
+  Radio,
+  type Box,
+  type MaterialSymbol,
+} from "@mlaursen/wc";
 
 const form = document.querySelector("form");
 const playgroundTarget = document.querySelector<Box>("#playground-target");
@@ -20,11 +25,6 @@ if (
 ) {
   throw new Error("Missing stuffs");
 }
-
-const _isTextField = (element: Element): element is TextField =>
-  element.matches("mwc-text-field");
-const isRadio = (element: Element): element is Radio =>
-  element.matches("mwc-radio");
 
 const ADORNMENT_TEMPLATES: Record<string, Element> = {
   icon: startIcon,
@@ -56,7 +56,7 @@ form.addEventListener("change", (event) => {
     return;
   }
 
-  if (isRadio(event.target)) {
+  if (isCustomElement(event.target, Radio)) {
     const { value } = event.target;
     const name = kebabCase(event.target.name);
 

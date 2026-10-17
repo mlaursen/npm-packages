@@ -26,6 +26,7 @@ import type { SheetHeaderAutoFocus, SheetHeaderProperties } from "./types.js";
  */
 export class SheetHeader extends LitElement implements SheetHeaderProperties {
   static override styles = styles;
+  static readonly elementName: string = "mwc-sheet-header";
 
   @property({ attribute: "auto-focus" })
   autoFocus: SheetHeaderAutoFocus = "auto";

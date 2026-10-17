@@ -96,6 +96,7 @@ declare const CommandEvent: {
  */
 export class Button extends BaseButton implements ButtonProperties {
   static override styles = [...BaseButton.styles, styles];
+  static readonly elementName: string = "mwc-button";
 
   @property()
   type: HTMLButtonElement["type"] = "submit";

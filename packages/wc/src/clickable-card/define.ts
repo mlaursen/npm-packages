@@ -3,7 +3,7 @@ import { ClickableCard } from "./clickable-card.js";
 import "../box/define.js";
 import "../elevation/define.js";
 
-safeDefine("mwc-clickable-card", ClickableCard);
+safeDefine(ClickableCard);
 
 declare global {
   interface HTMLElementTagNameMap {

@@ -4,7 +4,7 @@ import "../sheet-header/define.js";
 import "../sheet-title/define.js";
 import "../material-symbol/define.js";
 
-safeDefine("mwc-sheet", Sheet);
+safeDefine(Sheet);
 
 declare global {
   interface HTMLElementTagNameMap {

@@ -36,6 +36,7 @@ export class TextField extends BaseTextField implements TextFieldProperties {
     maxLengthValidator,
     patternValidator,
   ];
+  static readonly elementName: string = "mwc-text-field";
 
   static override shadowRootOptions: ShadowRootInit = {
     ...BaseTextField.shadowRootOptions,

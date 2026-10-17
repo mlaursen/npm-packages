@@ -28,6 +28,7 @@ import type { AppBarTitleProperties } from "./types.js";
  */
 export class AppBarTitle extends LitElement implements AppBarTitleProperties {
   static override styles = styles;
+  static readonly elementName: string = "mwc-app-bar-title";
 
   @property()
   size: AppBarSize = "small";

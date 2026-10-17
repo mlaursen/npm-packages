@@ -1,6 +1,6 @@
 import { kebabCase } from "@mlaursen/utils";
-import type { Box, Card } from "@mlaursen/wc";
-import type { Checkbox, Radio, TextField } from "@mlaursen/wc";
+import { isCustomElement, type Box, type Card } from "@mlaursen/wc";
+import { Checkbox, Radio, TextField } from "@mlaursen/wc";
 
 const form = document.querySelector("form");
 const playgroundTarget = document.querySelector<Box>("#playground-target");
@@ -62,13 +62,6 @@ const createCard = (i: number): Node => {
   return cloned;
 };
 
-const isTextField = (element: Element): element is TextField =>
-  element.matches("mwc-text-field");
-const isRadio = (element: Element): element is Radio =>
-  element.matches("mwc-radio");
-const isCheckbox = (element: Element): element is Checkbox =>
-  element.matches("mwc-checkbox");
-
 const forceTwoItems = (): void => {
   items.valueAsNumber = 2;
   items.dispatchEvent(new Event("change", { bubbles: true }));
@@ -97,7 +90,7 @@ form.addEventListener("change", (event) => {
     return;
   }
 
-  if (isTextField(event.target)) {
+  if (isCustomElement(event.target, TextField)) {
     const value = event.target.valueAsNumber;
     if (Number.isNaN(value) || value <= 0) {
       return;
@@ -113,7 +106,7 @@ form.addEventListener("change", (event) => {
     }
 
     setNumberOfCards(value);
-  } else if (isRadio(event.target)) {
+  } else if (isCustomElement(event.target, Radio)) {
     const { value } = event.target;
     const name = kebabCase(event.target.name);
 
@@ -152,7 +145,7 @@ form.addEventListener("change", (event) => {
     } else {
       playgroundTarget.setAttribute(name, value);
     }
-  } else if (isCheckbox(event.target)) {
+  } else if (isCustomElement(event.target, Checkbox)) {
     const name = kebabCase(event.target.name);
     if (event.target.checked) {
       playgroundTarget.setAttribute(name, "");

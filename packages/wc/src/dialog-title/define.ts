@@ -1,7 +1,7 @@
 import { safeDefine } from "../utils/safeDefine.js";
 import { DialogTitle } from "./dialog-title.js";
 
-safeDefine("mwc-dialog-title", DialogTitle);
+safeDefine(DialogTitle);
 
 declare global {
   interface HTMLElementTagNameMap {

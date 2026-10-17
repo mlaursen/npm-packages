@@ -3,7 +3,7 @@ import "../box/define.js";
 import "../elevation/define.js";
 import { Card } from "./card.js";
 
-safeDefine("mwc-card", Card);
+safeDefine(Card);
 
 declare global {
   interface HTMLElementTagNameMap {

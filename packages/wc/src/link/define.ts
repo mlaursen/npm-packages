@@ -1,7 +1,7 @@
 import { safeDefine } from "../utils/safeDefine.js";
 import { Link } from "./link.js";
 
-safeDefine("mwc-link", Link);
+safeDefine(Link);
 
 declare global {
   interface HTMLElementTagNameMap {

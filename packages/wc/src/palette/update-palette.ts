@@ -25,6 +25,7 @@ export class UpdatePalette
   implements PaletteTokenProperties
 {
   static override styles = styles;
+  static readonly elementName: string = "mwc-update-palette";
 
   @property({ type: Boolean })
   root = false;

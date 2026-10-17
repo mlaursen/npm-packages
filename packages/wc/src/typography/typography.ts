@@ -32,6 +32,7 @@ const BaseTypography = PaletteMixin(MarginMixin(LitElement));
  */
 export class Typography extends BaseTypography implements TypographyProperties {
   static override styles = [...BaseTypography.styles, styles];
+  static readonly elementName: string = "mwc-typography";
 
   @property({ reflect: true })
   size: TypographySize = "large";

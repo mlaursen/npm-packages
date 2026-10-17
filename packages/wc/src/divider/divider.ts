@@ -7,6 +7,7 @@ import type { DividerProperties, DividerVariant } from "./types.js";
 
 export class Divider extends LitElement implements DividerProperties {
   static override styles = styles;
+  static readonly elementName: string = "mwc-divider";
 
   @property()
   size?: string;

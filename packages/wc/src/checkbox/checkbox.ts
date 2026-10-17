@@ -47,6 +47,7 @@ const INDETERMINATE = Symbol("indeterminate");
 export class Checkbox extends BaseCheckbox implements CheckboxProperties {
   static override styles = [...BaseCheckbox.styles, styles];
   static override formValidators = [requiredValidator];
+  static readonly elementName: string = "mwc-checkbox";
 
   @property()
   size: CheckboxSize = "medium";

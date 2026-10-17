@@ -1,7 +1,7 @@
-import type { LitConstructor } from "../types.js";
+import type { TaggedConstructor } from "../types.js";
 
-export function safeDefine(name: string, instance: LitConstructor): void {
-  if (!customElements.get(name)) {
-    customElements.define(name, instance);
+export function safeDefine(instance: TaggedConstructor): void {
+  if (!customElements.get(instance.elementName)) {
+    customElements.define(instance.elementName, instance);
   }
 }

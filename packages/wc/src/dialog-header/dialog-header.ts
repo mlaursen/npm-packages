@@ -7,6 +7,7 @@ import styles from "./dialog-header-styles.js";
 
 export class DialogHeader extends Box {
   static override styles = [...Box.styles, styles];
+  static override readonly elementName: string = "mwc-dialog-header";
 
   override render(): TemplateResult {
     return html`

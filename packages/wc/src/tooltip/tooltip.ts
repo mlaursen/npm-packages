@@ -37,6 +37,7 @@ const BaseTooltip = MarginMixin(PopoverMixin(LitElement));
  */
 export class Tooltip extends BaseTooltip implements TooltipProperties {
   static override styles = [...BaseTooltip.styles, styles];
+  static readonly elementName: string = "mwc-tooltip";
 
   override popoverType: PopoverType = "hint";
   override popoverInitiator: PopoverInitiator = "no-click";

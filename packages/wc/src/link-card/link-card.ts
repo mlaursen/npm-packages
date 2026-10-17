@@ -16,6 +16,7 @@ export class LinkCard extends BaseLinkCard {
     ...BaseLinkCard.shadowRootOptions,
     delegatesFocus: true,
   };
+  static override readonly elementName: string = "mwc-link-card";
 
   @property()
   rel?: string;

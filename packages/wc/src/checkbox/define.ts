@@ -1,7 +1,7 @@
 import { safeDefine } from "../utils/safeDefine.js";
 import { Checkbox } from "./checkbox.js";
 
-safeDefine("mwc-checkbox", Checkbox);
+safeDefine(Checkbox);
 
 declare global {
   interface HTMLElementTagNameMap {

@@ -51,6 +51,7 @@ const CHECKED = Symbol("checked");
  */
 export class Radio extends BaseRadio implements RadioProperties {
   static override styles = [...BaseRadio.styles, styles];
+  static readonly elementName: string = "mwc-radio";
 
   @property()
   name = "";

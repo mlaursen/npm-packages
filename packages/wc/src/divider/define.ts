@@ -1,7 +1,7 @@
 import { safeDefine } from "../utils/safeDefine.js";
 import { Divider } from "./divider.js";
 
-safeDefine("mwc-divider", Divider);
+safeDefine(Divider);
 
 declare global {
   interface HTMLElementTagNameMap {

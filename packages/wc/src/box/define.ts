@@ -1,7 +1,7 @@
 import { safeDefine } from "../utils/safeDefine.js";
 import { Box } from "./box.js";
 
-safeDefine("mwc-box", Box);
+safeDefine(Box);
 
 declare global {
   interface HTMLElementTagNameMap {

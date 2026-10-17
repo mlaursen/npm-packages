@@ -18,6 +18,7 @@ export class Link extends BaseLink implements LinkProperties {
     ...BaseLink.shadowRootOptions,
     delegatesFocus: true,
   };
+  static readonly elementName: string = "mwc-link";
 
   @property()
   rel?: string;

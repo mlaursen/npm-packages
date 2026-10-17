@@ -4,4 +4,5 @@ import styles from "./elevation-styles.js";
 
 export class Elevation extends LitElement {
   static override styles = styles;
+  static readonly elementName: string = "mwc-elevation";
 }

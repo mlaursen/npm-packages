@@ -1,7 +1,7 @@
 import { safeDefine } from "../utils/safeDefine.js";
 import { SheetTitle } from "./sheet-title.js";
 
-safeDefine("mwc-sheet-title", SheetTitle);
+safeDefine(SheetTitle);
 
 declare global {
   interface HTMLElementTagNameMap {

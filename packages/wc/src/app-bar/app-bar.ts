@@ -77,6 +77,7 @@ const BaseAppBar = PaletteMixin(LitElement);
  */
 export class AppBar extends BaseAppBar implements AppBarProperties {
   static override styles = [...BaseAppBar.styles, styles];
+  static readonly elementName: string = "mwc-app-bar";
 
   @property({ reflect: true })
   size: AppBarSize = "small";

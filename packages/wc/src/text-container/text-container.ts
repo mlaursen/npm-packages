@@ -22,6 +22,7 @@ import styles from "./text-container-styles.js";
  */
 export class TextContainer extends LitElement {
   static override styles = styles;
+  static readonly elementName: string = "mwc-text-container";
 
   override render(): TemplateResult {
     return html`<slot></slot>`;

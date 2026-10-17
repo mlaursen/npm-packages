@@ -10,6 +10,7 @@ const BaseList = AriaMixin(PaletteMixin(LitElement), "list", false);
 
 export class List extends BaseList implements ListProperties {
   static override styles = [...BaseList.styles, styles];
+  static readonly elementName: string = "mwc-list";
 
   @property()
   size: ListSize = "large";

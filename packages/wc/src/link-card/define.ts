@@ -3,7 +3,7 @@ import { LinkCard } from "./link-card.js";
 import "../box/define.js";
 import "../elevation/define.js";
 
-safeDefine("mwc-link-card", LinkCard);
+safeDefine(LinkCard);
 
 declare global {
   interface HTMLElementTagNameMap {

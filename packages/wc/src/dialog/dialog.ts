@@ -124,6 +124,7 @@ const BaseDialog = PopoverMixin(FocusTrapMixin(LitElement));
  */
 export class Dialog extends BaseDialog implements DialogProperties {
   static override styles = [...BaseDialog.styles, styles];
+  static readonly elementName: string = "mwc-dialog";
 
   protected readonly titleId = "title";
   protected readonly headerId = "header";

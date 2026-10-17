@@ -27,6 +27,7 @@ import type { SvgIconProperties } from "./types.js";
  */
 export class SvgIcon extends Icon implements SvgIconProperties {
   static override styles = [...Icon.styles, styles];
+  static readonly elementName: string = "mwc-svg-icon";
 
   @property()
   viewBox = "0 0 24 24";

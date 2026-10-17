@@ -1,7 +1,7 @@
 import { safeDefine } from "../utils/safeDefine.js";
 import { ListItem } from "./list-item.js";
 
-safeDefine("mwc-list-item", ListItem);
+safeDefine(ListItem);
 
 declare global {
   interface HTMLElementTagNameMap {
