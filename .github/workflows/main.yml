@@ -32,3 +32,30 @@ jobs:
       - run: pnpm lint
       - run: pnpm typecheck
       - run: pnpm test-run-coverage
+
+      - name: Upload website
+        if: github.event_name == 'push'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: apps/website/_site
+
+  deploy:
+    name: Deploy to mlaursen.com
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: validate_node_lts
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+
+    # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+
+    # Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
+    # However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
+    concurrency:
+      group: "pages"
+      cancel-in-progress: false
