@@ -25,7 +25,11 @@ $-force-added: ();
     $-force-added: list.append($-force-added, $name) !global;
   }
 
-  $hyphenated-name: str-replace($name, ".", "-");
+  $hyphenated-name: str-replace(
+    str-replace($name, ".", "-"),
+    "object-fit-object-fit",
+    "object-fit"
+  );
 
   // I do not want to display the palette or transition prefix
   @if string.index($hyphenated-name, "palette-") == 1 {
