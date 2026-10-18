@@ -1,0 +1,298 @@
+@use "sass:map";
+
+@use "../utils";
+@use "../interaction";
+
+$-tokens-registered: false;
+$-tokens: (
+  background: "palette.surface-container-highest",
+  background-opacity: 1,
+  color: "palette.surface-container-highest",
+  color-opacity: 1,
+  height: 2em,
+  width: 3.25em,
+  size: "switch.small.size",
+
+  outline: (
+    color: "palette.outline",
+    width: 2px,
+  ),
+
+  small: (
+    size: 0.75rem,
+  ),
+  medium: (
+    size: 1rem,
+  ),
+  large: (
+    size: 2rem,
+  ),
+
+  shape: (
+    all: "shape.corner.full",
+    start-start: "switch.shape.all",
+    start-end: "switch.shape.all",
+    end-start: "switch.shape.all",
+    end-end: "switch.shape.all",
+  ),
+
+  icon: (
+    color: currentcolor,
+    size: 1em,
+  ),
+
+  handle: (
+    background: "palette.outline",
+    background-opacity: 1,
+    shape: "shape.corner.full",
+    multiplier: -1,
+    duration: "transition.duration.medium-2",
+    easing: cubic-bezier(0.175, 0.885, 0.32, 1.275),
+
+    size: 1em,
+    icon: (
+      size: 1.5em,
+    ),
+  ),
+
+  checked: (
+    background: "palette.primary",
+    color: "palette.primary",
+
+    handle: (
+      background: "palette.on-primary",
+      background-opacity: 1,
+      multiplier: 1,
+    ),
+
+    hovered: (
+      background: "palette.primary",
+      color: "palette.primary",
+
+      handle: (
+        background: "palette.primary-container",
+      ),
+    ),
+
+    focused: (
+      background: "palette.primary",
+      color: "palette.primary",
+
+      handle: (
+        background: "palette.primary-container",
+      ),
+    ),
+
+    disabled: (
+      background: "palette.on-surface",
+      color: "palette.on-surface",
+
+      handle: (
+        background: "palette.surface",
+        background-opacity: 1,
+      ),
+    ),
+  ),
+
+  hovered: (
+    background: "palette.surface-container-highest",
+    color: "palette.surface-container-highest",
+
+    outline: (
+      color: "palette.outline",
+    ),
+
+    handle: (
+      background: "palette.on-surface-variant",
+    ),
+  ),
+
+  focused: (
+    background: "palette.surface-container-highest",
+    color: "palette.surface-container-highest",
+
+    outline: (
+      color: "palette.outline",
+    ),
+
+    handle: (
+      background: "palette.outline",
+    ),
+  ),
+
+  disabled: (
+    background: "palette.surface-container-highest",
+    background-opacity: 0.12,
+    color: "palette.surface-container-highest",
+    color-opacity: "interaction.disabled.container.opacity",
+
+    outline: (
+      color: "palette.on-surface",
+    ),
+
+    handle: (
+      background: "palette.on-surface",
+      background-opacity: "switch.disabled.color-opacity",
+    ),
+  ),
+);
+
+$-configure-tokens: map.keys($-tokens);
+
+$-base-styles: (
+  "icon.size": "switch.icon.size",
+  "icon.color": "switch.icon.color",
+  "interaction.focused.container.opacity": 0,
+
+  align-items: center,
+  border-end-end-radius: "switch.shape.end-end",
+  border-end-start-radius: "switch.shape.end-start",
+  border-start-end-radius: "switch.shape.start-end",
+  border-start-start-radius: "switch.shape.start-start",
+  color: utils.get-rgb-var("switch.color", "switch.color-opacity"),
+  display: inline-flex,
+  flex-shrink: 0,
+  font-size: "switch.size",
+  height: "switch.height",
+  justify-content: center,
+  place-content: center,
+  place-items: center,
+  width: "switch.width",
+
+  "&::before":
+    utils.deep-merge(
+      utils.pseudo-element(),
+      (
+        background: "switch.background",
+        border: '"switch.outline.width" solid "switch.outline.color"',
+        opacity: "switch.background-opacity",
+        transition-duration: "transition.duration.short-1",
+        transition-property: "background, opacity",
+        transition-timing-function: "transition.easing.linear",
+      )
+    ),
+);
+$-handle-styles: (
+  align-items: center,
+  display: flex,
+  height: "switch.handle.size",
+  justify-content: center,
+  position: relative,
+  transform:
+    'translateX(calc("switch.handle.multiplier" * (("switch.width" - "switch.height") / 2)))',
+  transition: 'transform "switch.handle.duration" "switch.handle.easing"',
+  width: "switch.handle.size",
+
+  "&::before":
+    utils.deep-merge(
+      utils.pseudo-element(),
+      (
+        background:
+          utils.get-rgb-var(
+            "switch.handle.background",
+            "switch.handle.background-opacity"
+          ),
+        border-radius: "switch.handle.shape",
+        transition:
+          'background "transition.duration.short-1" "transition.easing.linear"',
+      )
+    ),
+);
+$-handle-size-styles: (
+  "switch.handle.size": "switch.handle.icon.size",
+);
+
+// raise the icons above the ::background
+$-icon-styles: (
+  z-index: 1,
+);
+
+$-small-styles: (
+  "switch.size": "switch.small.size",
+);
+$-medium-styles: (
+  "switch.size": "switch.medium.size",
+);
+$-large-styles: (
+  "switch.size": "switch.large.size",
+);
+$-checked-styles: utils.remap-variants(
+  switch,
+  checked,
+  background,
+  color,
+  "handle.multiplier",
+  "handle.background",
+  "hovered.background",
+  "hovered.color",
+  "hovered.handle.background",
+  "focused.background",
+  "focused.color",
+  "focused.handle.background"
+);
+$-disabled-styles: utils.deep-merge(
+  utils.remap-variants(switch, disabled, map.get($-tokens, disabled)),
+  (
+    "switch.disabled.background": "switch.checked.disabled.background",
+    "switch.disabled.color": "switch.checked.disabled.color",
+    "switch.disabled.handle.background":
+      "switch.checked.disabled.handle.background",
+    "switch.disabled.handle.background-opacity":
+      "switch.checked.disabled.handle.background-opacity",
+  )
+);
+$-hovered-styles: utils.remap-variants(
+  switch,
+  hovered,
+  background,
+  color,
+  "outline.color",
+  "handle.background"
+);
+$-focused-styles: utils.remap-variants(
+  switch,
+  focused,
+  background,
+  color,
+  "outline.color",
+  "handle.background"
+);
+
+@mixin configure() {
+  @if not $-tokens-registered {
+    $-tokens-registered: true !global;
+    @include utils.register-tokens($tokens: $-tokens, $prefix: "switch");
+  }
+}
+
+@mixin configure-global($overrides: null) {
+  $overrides: utils.get-config-map(list, $overrides, $-configure-tokens);
+  @include configure();
+}
+
+@mixin css-styles {
+  $styles: ();
+  @include utils.css-styles($styles);
+}
+
+@mixin host-styles {
+  $styles: (
+    ":host": $-base-styles,
+    ":host([size=small])": $-small-styles,
+    ":host([size=medium])": $-medium-styles,
+    ":host([size=large])": $-large-styles,
+    ":host(.checked)": $-checked-styles,
+    ":host(:is(.checked, [icons=always]))": $-handle-size-styles,
+    "slot > *": $-icon-styles,
+    ".handle": $-handle-styles,
+    "host-hover": $-hovered-styles,
+    ":host(#{interaction.$is-focus-visible})": $-focused-styles,
+    ":host([disabled])": $-disabled-styles,
+  );
+  @include utils.host-styles($styles);
+}
+
+@mixin styles {
+  @include css-styles;
+  @include host-styles;
+}

@@ -41,6 +41,7 @@
 @use "list";
 @use "list-item";
 @use "avatar";
+@use "switch";
 
 @mixin configure(
   $output: null,
@@ -83,7 +84,8 @@
   $tooltip: null,
   $list: null,
   $list-item: null,
-  $avatar: null
+  $avatar: null,
+  $switch: null
 ) {
   @include utils.configure-setup(
     $output: $output,
@@ -129,4 +131,5 @@
   @include list.configure-global($list);
   @include list-item.configure-global($list-item);
   @include avatar.configure-global($avatar);
+  @include switch.configure-global($switch);
 }

@@ -27,6 +27,7 @@ import "./sheet-header/define.js";
 import "./sheet-title/define.js";
 import "./sheet/define.js";
 import "./svg-icon/define.js";
+import "./switch/define.js";
 import "./text-container/define.js";
 import "./text-field/define.js";
 import "./tooltip/define.js";

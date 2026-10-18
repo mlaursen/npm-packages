@@ -155,6 +155,16 @@ export const radio = {
   sizes: defaultSizes,
 };
 
+export const switchEl = {
+  /** @type {(import("@mlaursen/wc").SwitchSize)[]} **/
+  sizes: defaultSizes,
+
+  /** @type {(import("@mlaursen/wc").SwitchIcons)[]} **/
+  icons: ["none", "checked", "always"],
+
+  states: ["unchecked", "checked", "error", "disabled"],
+};
+
 export const sheet = {
   /** @type {(import("@mlaursen/wc").SheetShape)[]} **/
   shapes: defaultShapes,

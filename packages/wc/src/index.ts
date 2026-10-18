@@ -80,6 +80,8 @@ export * from "./sheet/sheet.js";
 export * from "./sheet/types.js";
 export * from "./svg-icon/svg-icon.js";
 export * from "./svg-icon/types.js";
+export * from "./switch/switch.js";
+export * from "./switch/types.js";
 export * from "./text-container/text-container.js";
 export * from "./text-field/text-field.js";
 export * from "./text-field/types.js";

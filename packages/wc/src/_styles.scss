@@ -26,6 +26,7 @@
 @use "list";
 @use "list-item";
 @use "avatar";
+@use "switch";
 
 @mixin styles {
   @include palette.styles;
@@ -59,4 +60,5 @@
   @include list.styles;
   @include list-item.styles;
   @include avatar.styles;
+  @include switch.styles;
 }

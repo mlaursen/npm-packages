@@ -1,0 +1,85 @@
+---
+layout: docs
+
+eleventyNavigation:
+  key: Switch
+  parent: Home
+
+page:
+  title: Switch
+---
+
+<mwc-card style="position: sticky;
+                 top: 4rem;
+                 z-index: 8;
+                 --mwc-box-item-min-size: 10rem">
+  <form style="width: 100%">
+    <mwc-dialog-header>
+      <mwc-dialog-title>
+        Settings
+      </mwc-dialog-title>
+    </mwc-dialog-header>
+    <mwc-box stacked align="stretch">
+      <mwc-typography variant="title" margin="none">
+        <h3>Icons</h3>
+      </mwc-typography>
+      <mwc-radio-group aria-label="Icons">
+        <mwc-box padding="none">
+          {% for icons in switchEl.icons %}
+            <mwc-typography variant="label" text-transform="capitalize">
+              <label>
+                <mwc-box padding="none" inline>
+                  <mwc-radio name="icons"
+                             value="{{ icons }}"
+                             required
+                             {{ "checked" if icons === "none" }}>
+                  </mwc-radio>
+                  {{ icons }}
+                </mwc-box>
+              </label>
+            </mwc-typography>
+          {% endfor %}
+        </mwc-box>
+      </mwc-radio-group>
+    </mwc-box>
+  </form>
+</mwc-card>
+<form>
+  {% for size in switchEl.sizes %}
+    <mwc-typography variant="title" text-transform="capitalize">
+      <h3>{{ size }}{{ " (Default)" if size == "medium" }}</h3>
+    </mwc-typography>
+    <mwc-box padding="block">
+      {% for state in switchEl.states %}
+        <mwc-switch aria-label="Switch {{ state }}"
+                    size="{{ size }}"
+                    name="{{ size }}"
+                    {{ state if state !== "unchecked" }}>
+        </mwc-switch>
+        {% if state == "error" or state == "disabled" %}
+          <mwc-switch aria-label="Switch {{ state }} Checked"
+                      size="{{ size }}"
+                      name="{{ size }}"
+                      {{ state }}
+                      checked>
+          </mwc-switch>
+        {% endif %}
+      {% endfor %}
+    </mwc-box>
+    {% if size !== switchEl.sizes.at(-1) %}
+      <mwc-divider>
+      </mwc-divider>
+    {% endif %}
+  {% endfor %}
+  <mwc-box>
+    <mwc-button variant="tonal" type="reset">
+      Reset
+    </mwc-button>
+    <mwc-button type="submit">
+      Submit
+    </mwc-button>
+  </mwc-box>
+</form>
+{% js "defer" %}
+{% include "scripts/wc/switch.js" %}
+{% endjs %}
