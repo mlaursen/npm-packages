@@ -1,3 +1,5 @@
+import { clamp } from "./clamp.js";
+
 export interface LoopOptions {
   /**
    * The current value that should be modified.
@@ -13,8 +15,10 @@ export interface LoopOptions {
 
   /**
    * The max number that can be used before looping to the `min` value.
+   *
+   * @defaultValue `100`
    */
-  max: number;
+  max?: number;
 
   /**
    * Boolean if the `value` should be incremented or decremented by `1`.
@@ -22,13 +26,12 @@ export interface LoopOptions {
   increment: boolean;
 
   /**
-   * Boolean if the looping should be ignored and only the `min`/`max` options
-   * should be respected. In other words, the looping  behavior will be disabled
-   * and the `value` must be: `min >= value <= max`
+   * If this is `true` the value is just clamped between the min and max
+   * instead of looping.
    *
    * @defaultValue `false`
    */
-  minmax?: boolean;
+  clamp?: boolean;
 }
 
 /**
@@ -40,11 +43,14 @@ export interface LoopOptions {
  * @param options - {@link LoopOptions}
  */
 export function loop(options: LoopOptions): number {
-  const { value, min = 0, max, increment, minmax = false } = options;
+  const { value, min = 0, max = 100, increment } = options;
+
+  if (options.clamp) {
+    return clamp({ min, max, value });
+  }
+
   let next = value + (increment ? 1 : -1);
-  if (minmax) {
-    next = Math.min(max, Math.max(min, next));
-  } else if (next > max) {
+  if (next > max) {
     next = min;
   } else if (next < min) {
     next = max;

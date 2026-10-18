@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-const RGB_REGEX = /^rgb\(((\b([01]?\d\d?|2[0-4]\d|25[0-5])\b),?){3}\)$/;
+const RGB_REGEX = /^rgb\((\d{1,3}),(\d{1,3}),(\d{1,3})\)$/;
 const SHORTHAND_REGEX = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
 const VERBOSE_REGEX = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i;
 
@@ -40,9 +40,15 @@ export function getRGB(color: string): RGB {
   color = color.replaceAll(/\s/g, "");
   const rgbMatches = color.match(RGB_REGEX);
   if (rgbMatches) {
-    const r = Number.parseInt(rgbMatches[1] || "", 16) || 0;
-    const g = Number.parseInt(rgbMatches[2] || "", 16) || 0;
-    const b = Number.parseInt(rgbMatches[3] || "", 16) || 0;
+    const [r, g, b] = rgbMatches.slice(1).map(Number);
+    if (
+      r === undefined ||
+      g === undefined ||
+      b === undefined ||
+      [r, g, b].some((n) => n > 255)
+    ) {
+      throw new TypeError("Invalid color string.");
+    }
 
     return { r, g, b };
   }

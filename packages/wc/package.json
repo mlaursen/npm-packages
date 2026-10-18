@@ -47,6 +47,11 @@
     "typecheck-watch": "tsc --noEmit --watch",
     "bootstrap": "pnpm node-run scripts/bootstrap.ts",
     "test-scss": "pnpm node-run scripts/test-scss.ts",
+    "test": "vitest",
+    "test-coverage": "vitest --coverage",
+    "test-run": "vitest run",
+    "test-run-snapshot": "vitest run -u",
+    "test-run-coverage": "vitest run --coverage",
     "build-default-css": "pnpm node-run scripts/build-default-css.ts",
     "build-scss": "mlaursen-cli copy-scss-files \"src/**/_*.scss\"",
     "build-scss-watch": "pnpm build-scss -w",
@@ -76,10 +81,12 @@
     "@swc/cli": "^0.8.1",
     "@swc/core": "^1.16.18",
     "@types/node": "^24.12.2",
+    "@vitest/coverage-v8": "^5.0.5",
     "browserslist": "^4.29.3",
     "chokidar": "^5.0.0",
     "concurrently": "^10.0.6",
     "glob": "^13.0.6",
+    "happy-dom": "^21.0.3",
     "lightningcss": "^1.32.0",
     "oxfmt": "^0.73.0",
     "oxlint": "^1.88.0",
@@ -91,6 +98,7 @@
     "rollup-plugin-swc3": "^0.12.1",
     "ts-lit-plugin": "^2.0.2",
     "tsx": "^4.23.15",
-    "typescript": "^6.0.3"
+    "typescript": "^6.0.3",
+    "vitest": "^5.0.5"
   }
 }

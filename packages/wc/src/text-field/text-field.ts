@@ -14,6 +14,8 @@ import { InternalsMixin } from "../internals-mixin/internals-mixin.js";
 import { MarginMixin } from "../margin/margin-mixin.js";
 import { PaletteMixin } from "../palette/palette-mixin.js";
 import { redispatchEvent } from "../utils/redispatchEvent.js";
+import { getEventSlotElements } from "../utils/slots.js";
+import { getVarName } from "../utils/tokens.js";
 import styles from "./text-field-styles.js";
 import type {
   AutoCapitalize,
@@ -524,10 +526,7 @@ export class TextField extends BaseTextField implements TextFieldProperties {
   }
 
   #handleLabelSlotChange(event: Event): void {
-    const elements =
-      (event.currentTarget as HTMLSlotElement | null)?.assignedElements({
-        flatten: true,
-      }) ?? [];
+    const elements = getEventSlotElements(event);
     this._hasLabel = elements.length > 0;
     this.#labelResizeObserver?.disconnect();
 
@@ -539,7 +538,7 @@ export class TextField extends BaseTextField implements TextFieldProperties {
       const width = entry?.borderBoxSize[0]?.inlineSize;
       if (typeof width === "number") {
         this.style.setProperty(
-          "--mwc-text-field-floating-label-width",
+          getVarName("text-field.floating.label.width"),
           `${width}px`,
         );
       }

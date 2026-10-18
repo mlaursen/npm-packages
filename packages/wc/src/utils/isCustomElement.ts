@@ -1,4 +1,4 @@
-import type { TaggedConstructor } from "../types.js";
+import type { TaggedCustomElementConstructor } from "../types.js";
 
 /**
  * This is a small type-guard to help determine if an element is one of the
@@ -17,7 +17,7 @@ if (isCustomElement(event.target, TextField)) {
  * @param target - The target to check against
  * @param ctor - the constructor that has a static `elementName` defined that can be read
  */
-export function isCustomElement<T extends TaggedConstructor>(
+export function isCustomElement<T extends TaggedCustomElementConstructor>(
   target: unknown,
   ctor: T,
 ): target is InstanceType<T> {

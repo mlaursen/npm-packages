@@ -3,6 +3,7 @@ import { html } from "lit";
 import { property } from "lit/decorators.js";
 
 import { Icon } from "../icon/icon.js";
+import { getEventSlotElements } from "../utils/slots.js";
 import styles from "./svg-icon-styles.js";
 import type { SvgIconProperties } from "./types.js";
 
@@ -33,7 +34,7 @@ export class SvgIcon extends Icon implements SvgIconProperties {
   viewBox = "0 0 24 24";
 
   #handleSlotChange(event: Event): void {
-    const svg = (event.target as HTMLSlotElement)?.assignedElements()?.[0];
+    const svg = getEventSlotElements(event, {})[0];
     if (!svg || svg.getAttribute("viewBox")) {
       return;
     }

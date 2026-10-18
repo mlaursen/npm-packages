@@ -2,6 +2,7 @@ import type { PropertyValues, TemplateResult } from "lit";
 import { LitElement, html } from "lit";
 import { property } from "lit/decorators.js";
 
+import { getVarName } from "../utils/tokens.js";
 import styles from "./divider-styles.js";
 import type { DividerProperties, DividerVariant } from "./types.js";
 
@@ -27,7 +28,7 @@ export class Divider extends LitElement implements DividerProperties {
   #updateProperties(): void {
     const properties = ["size", "stretch"] as const;
     for (const property of properties) {
-      const varName = `--mwc-${property}`;
+      const varName = getVarName(property);
       const value = this[property];
       if (typeof value === "string" && value.length > 0) {
         this.style.setProperty(varName, value);

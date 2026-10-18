@@ -1,3 +1,6 @@
+/**
+ * @returns `true` if the node is an `HTMLElement` with a `ShadowRoot`
+ */
 export function isShadowRootNode(
   node: Node,
 ): node is HTMLElement & { shadowRoot: ShadowRoot } {
@@ -14,6 +17,9 @@ export interface TraverseOptions<E extends HTMLElement> {
   filter?: NodeFilter | null | undefined;
 }
 
+/**
+ * This is an internal util for traversing the shadow dom to find elements.
+ */
 export function traverse<E extends HTMLElement>(
   options: Readonly<TraverseOptions<E>> & { first: true },
 ): E | undefined;

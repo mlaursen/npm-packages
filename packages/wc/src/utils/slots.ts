@@ -1,13 +1,19 @@
 const DEFAULT_OPTIONS = { flatten: true } satisfies AssignedNodesOptions;
 
-export function isSlotted(
+export function getEventSlotElements(
   event: Event,
   options: AssignedNodesOptions = DEFAULT_OPTIONS,
-): boolean {
-  const elements =
+): readonly Element[] {
+  return (
     (event.currentTarget as HTMLSlotElement | null)?.assignedElements(
       options,
-    ) ?? [];
+    ) ?? []
+  );
+}
 
-  return elements.length > 0;
+export function isSlotted(
+  event: Event,
+  options?: AssignedNodesOptions,
+): boolean {
+  return getEventSlotElements(event, options).length > 0;
 }

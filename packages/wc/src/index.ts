@@ -94,6 +94,8 @@ export * from "./transition/types.js";
 export * from "./types.js";
 export * from "./typography/types.js";
 export * from "./typography/typography.js";
+export * from "./utils/clamp.js";
+export * from "./utils/getPercentage.js";
 export * from "./utils/isCustomElement.js";
 export * from "./utils/loop.js";
 export * from "./utils/luminance.js";
