@@ -57,6 +57,16 @@ export function watcher(
     shortVarNames = output === "minified",
   } = options;
 
+  const createOptions = {
+    quiet,
+    colorScheme,
+    basePath,
+    output,
+    sassOptions,
+    targets,
+    shortVarNames,
+  } as const satisfies Partial<CreateStylesOptions>;
+
   enableLogger();
   logPending(`Using ${colorScheme} color scheme for styles`);
   disableLogger();
@@ -87,16 +97,7 @@ export function watcher(
           const promises: Promise<void>[] = [];
           for (const file of rebuild) {
             promises.push(
-              createStylesWhileWatching({
-                quiet,
-                colorScheme,
-                filePath: file,
-                basePath,
-                output,
-                sassOptions,
-                targets,
-                shortVarNames,
-              }),
+              createStylesWhileWatching({ ...createOptions, filePath: file }),
             );
           }
 
@@ -106,16 +107,7 @@ export function watcher(
       }
 
       rebuild.add(filePath);
-      await createStylesWhileWatching({
-        quiet,
-        colorScheme,
-        filePath,
-        basePath,
-        output,
-        sassOptions,
-        targets,
-        shortVarNames,
-      });
+      await createStylesWhileWatching({ ...createOptions, filePath });
     },
   });
 
