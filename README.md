@@ -1,7 +1,9 @@
 # npm-packages
 
-This is a for all the packages I publish under the `@mlaursen` scope.
+This is a for all the packages I publish under the `@mlaursen` scope and my
+personal website: [mlaursen.com](https://mlaursen.com).
 
+- [mlaursen.com](./apps/website)
 - [@mlaursen/cli](./packages/cli)
 - [@mlaursen/copy-scss-files](./packages/copy-scss-files)
 - [@mlaursen/eslint-config](./packages/eslint-config)
