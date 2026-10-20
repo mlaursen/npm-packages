@@ -42,6 +42,8 @@
 @use "list-item";
 @use "avatar";
 @use "switch";
+@use "progress";
+@use "linear-progress";
 
 @mixin configure(
   $output: null,
@@ -85,7 +87,9 @@
   $list: null,
   $list-item: null,
   $avatar: null,
-  $switch: null
+  $switch: null,
+  $progress: null,
+  $linear-progress: null
 ) {
   @include utils.configure-setup(
     $output: $output,
@@ -132,4 +136,6 @@
   @include list-item.configure-global($list-item);
   @include avatar.configure-global($avatar);
   @include switch.configure-global($switch);
+  @include progress.configure-global($progress);
+  @include linear-progress.configure-global($linear-progress);
 }

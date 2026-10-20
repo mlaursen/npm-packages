@@ -1,0 +1,129 @@
+---
+layout: docs
+
+eleventyNavigation:
+  key: Linear Progress
+  parent: Home
+
+page:
+  title: Linear Progress
+
+toggles:
+  - vertical
+  - reversed
+  - paused
+  - disableGap
+  - disableTransition
+  - disableStopIndicator
+---
+
+<form>
+  <mwc-card style="position: sticky;
+                   top: 4rem;
+                   z-index: 8;
+                   --mwc-box-item-min-size: 12rem">
+    <mwc-box nowrap
+             stacked
+             align="stretch"
+             style="max-height: 40vh;
+                    overflow: auto">
+      <mwc-box padding="none">
+        <mwc-text-field type="number" name="value" value="0" min="0" max="100">
+          <span slot="label">Value</span>
+        </mwc-text-field>
+        <mwc-text-field type="number" name="buffer" value="0" min="0" max="100">
+          <span slot="label">Buffer</span>
+        </mwc-text-field>
+      </mwc-box>
+      <mwc-typography id="variant-title" variant="title" margin="none">
+        <h4>Variant</h4>
+      </mwc-typography>
+      <mwc-radio-group aria-labelledby="variant-title">
+        <mwc-box padding="inline" stacked align="start">
+          {% for value in progress.variants %}
+            <mwc-typography>
+              <label>
+                <mwc-box padding="none" inline>
+                  <mwc-radio name="variant"
+                             value="{{ value }}"
+                             required
+                             {{ "checked" if value == "primary" }}>
+                  </mwc-radio>
+                  {{ value }}
+                </mwc-box>
+              </label>
+            </mwc-typography>
+          {% endfor %}
+        </mwc-box>
+      </mwc-radio-group>
+      <mwc-typography id="size-title" variant="title" margin="none">
+        <h4>Size</h4>
+      </mwc-typography>
+      <mwc-radio-group aria-labelledby="size-title">
+        <mwc-box padding="inline" stacked align="start">
+          {% for value in progress.linear.sizes %}
+            <mwc-typography>
+              <label>
+                <mwc-box padding="none" inline>
+                  <mwc-radio name="size"
+                             value="{{ value }}"
+                             required
+                             {{ "checked" if value == "small" }}>
+                  </mwc-radio>
+                  {{ value }}
+                </mwc-box>
+              </label>
+            </mwc-typography>
+          {% endfor %}
+        </mwc-box>
+      </mwc-radio-group>
+      <mwc-typography id="shape-title" variant="title" margin="top">
+        <h4>Shape</h4>
+      </mwc-typography>
+      <mwc-radio-group aria-labelledby="shape-title">
+        <mwc-box padding="inline" stacked align="start">
+          {% for value in progress.linear.shapes %}
+            <mwc-typography>
+              <label>
+                <mwc-box padding="none" inline>
+                  <mwc-radio name="shape"
+                             value="{{ value }}"
+                             required
+                             {{ "checked" if value == "round" }}>
+                  </mwc-radio>
+                  {{ value }}
+                </mwc-box>
+              </label>
+            </mwc-typography>
+          {% endfor %}
+        </mwc-box>
+      </mwc-radio-group>
+      <mwc-typography variant="title" margin="top">
+        <h4>Other Toggles</h4>
+      </mwc-typography>
+      <mwc-box grid>
+        {% for toggle in toggles %}
+          <mwc-typography variant="label" text-transform="capitalize">
+            <label>
+              <mwc-box padding="none">
+                <mwc-checkbox name="{{ toggle }}">
+                </mwc-checkbox>
+                {{ toggle }}
+              </mwc-box>
+            </label>
+          </mwc-typography>
+        {% endfor %}
+      </mwc-box>
+    </mwc-box>
+  </mwc-card>
+</form>
+<mwc-box style="height: 30rem" justify="center">
+  <mwc-linear-progress id="editable" aria-label="Editable">
+  </mwc-linear-progress>
+</mwc-box>
+{% css "local" %}
+{% include "css/wc/linear-progress.css" %}
+{% endcss %}
+{% js "defer" %}
+{% include "scripts/wc/linear-progress.js" %}
+{% endjs %}

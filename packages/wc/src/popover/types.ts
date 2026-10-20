@@ -178,7 +178,7 @@ export interface PopoverProperties extends AnimatedElementProperties {
    * This will be `true` when the `<slot name="popover-target">` has at least
    * one element.
    *
-   * @sealed
+   * @readonly
    */
   _hasPopoverTarget: boolean;
 

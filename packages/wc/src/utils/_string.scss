@@ -58,7 +58,11 @@
 /// @param {unknown} $token -
 /// @return {Boolean} -
 @function is-maybe-token-string($token) {
-  @if (meta.type-of($token) != string) or string.index($token, " ") {
+  @if (meta.type-of($token) != string) or
+    string.index($token, " ") or
+    // this was added to support `'scaleX("progress.percentage")'` like strings
+    string.index($token, "(")
+  {
     @return false;
   }
 

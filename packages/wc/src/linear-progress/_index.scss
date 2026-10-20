@@ -1,0 +1,507 @@
+@use "sass:list";
+@use "sass:map";
+@use "sass:string";
+
+@use "../utils";
+
+$-tokens-registered: false;
+$-tokens: (
+  shape: (
+    square: "shape.corner.none",
+    round: "shape.corner.full",
+  ),
+
+  min-size: 5rem,
+  size: "linear-progress.small.size",
+  small: (
+    size: 0.25rem,
+  ),
+  medium: (
+    size: 0.625rem,
+  ),
+  large: (
+    size: 1rem,
+  ),
+
+  track: (
+    size: 1em,
+  ),
+
+  stop-indicator: (
+    size: "linear-progress.size",
+    start-start: "shape.corner.full",
+    start-end: "shape.corner.full",
+    end-start: "shape.corner.full",
+    end-end: "shape.corner.full",
+  ),
+);
+
+$-configure-tokens: map.keys($-tokens);
+
+/// There are a lot of tokens that need to be reused for animations,
+/// positioning, offset, etc based on orientation and where they're used. To
+/// keep size small, always use short-vars for these and don't publicize them
+/// in the normal tokens API
+$-short-tokens: (
+  border-radius: "--_br",
+  translate-name: "--_itn",
+  scale-name: "--_isn",
+  indeterminate-display: "--_id",
+  determinate-display: "--_dd",
+  stop-indicator-display: "--_sid",
+
+  stop-indicator-inset: "--_sii",
+  stop-indicator-place: "--_sip",
+  stop-indicator-block-start: "--_ibs",
+  stop-indicator-inline-start: "--_iis",
+
+  percentage: "--_p",
+  active-x: "--_ax",
+  active-y: "--_ay",
+  inactive-x: "--_ix",
+  inactive-y: "--_iy",
+
+  primary-inset: "--_ipi",
+  secondary-inset: "--_isi",
+  primary-block-start: "--_ipibs",
+  primary-inline-start: "--_ipiis",
+  secondary-block-start: "--_isibs",
+  secondary-inline-start: "--_isiis",
+
+  primary-scale-x-1: "--_psx1",
+  primary-scale-y-1: "--_psy1",
+  primary-scale-x-2: "--_psx2",
+  primary-scale-y-2: "--_psy2",
+  primary-scale-x-3: "--_psx3",
+  primary-scale-y-3: "--_psy3",
+  primary-scale-x-4: "--_psx4",
+  primary-scale-y-4: "--_psy4",
+  primary-translate-x-1: "--_ptx1",
+  primary-translate-y-1: "--_pty1",
+  primary-translate-x-2: "--_ptx2",
+  primary-translate-y-2: "--_pty2",
+  primary-translate-x-3: "--_ptx3",
+  primary-translate-y-3: "--_pty3",
+  primary-translate-x-4: "--_ptx4",
+  primary-translate-y-4: "--_pty4",
+
+  secondary-scale-x-1: "--_ssx1",
+  secondary-scale-y-1: "--_ssy1",
+  secondary-scale-x-2: "--_ssx2",
+  secondary-scale-y-2: "--_ssy2",
+  secondary-scale-x-3: "--_ssx3",
+  secondary-scale-y-3: "--_ssy3",
+  secondary-scale-x-4: "--_ssx4",
+  secondary-scale-y-4: "--_ssy4",
+  secondary-translate-x-1: "--_stx1",
+  secondary-translate-y-1: "--_sty1",
+  secondary-translate-x-2: "--_stx2",
+  secondary-translate-y-2: "--_sty2",
+  secondary-translate-x-3: "--_stx3",
+  secondary-translate-y-3: "--_sty3",
+  secondary-translate-x-4: "--_stx4",
+  secondary-translate-y-4: "--_sty4",
+);
+
+@function -short-name($name) {
+  @return utils.validate(
+    $-short-tokens,
+    $name,
+    "invalid linear-progress short token name"
+  );
+}
+
+@function -short-var($name, $fallback: null) {
+  @if $fallback {
+    @return var(#{-short-name($name)}, #{$fallback});
+  }
+
+  @return var(#{-short-name($name)});
+}
+
+// NOTE: The animation values were pulled from:
+// https://github.com/material-components/material-web/blob/60c3e5377ea15d0c6e3b8e3d6bac90889063ebbf/progress/internal/_linear-progress.scss#L244
+// The individual `scale` and `translate` properties are space-separated.
+$-keyframes: (
+  primary-scale: (
+    "0%": (
+      scale: "#{-short-var(primary-scale-x-1)} #{-short-var(primary-scale-y-1)}",
+    ),
+
+    "36.65%": (
+      animation-timing-function: cubic-bezier(0.334731, 0.12482, 0.785844, 1),
+      scale: "#{-short-var(primary-scale-x-2)} #{-short-var(primary-scale-y-2)}",
+    ),
+
+    "69.15%": (
+      animation-timing-function: cubic-bezier(0.06, 0.11, 0.6, 1),
+      scale: "#{-short-var(primary-scale-x-3)} #{-short-var(primary-scale-y-3)}",
+    ),
+
+    "100%": (
+      scale: "#{-short-var(primary-scale-x-4)} #{-short-var(primary-scale-y-4)}",
+    ),
+  ),
+
+  primary-translate: (
+    "0%": (
+      translate:
+        "#{-short-var(primary-translate-x-1)} #{-short-var(primary-translate-y-1)}",
+    ),
+
+    "20%": (
+      animation-timing-function: cubic-bezier(0.5, 0, 0.701732, 0.495819),
+      translate:
+        "#{-short-var(primary-translate-x-2)} #{-short-var(primary-translate-y-2)}",
+    ),
+
+    "59.15%": (
+      animation-timing-function:
+        cubic-bezier(0.302435, 0.381352, 0.55, 0.956352),
+      translate:
+        "#{-short-var(primary-translate-x-3)} #{-short-var(primary-translate-y-3)}",
+    ),
+
+    "100%": (
+      translate:
+        "#{-short-var(primary-translate-x-4)} #{-short-var(primary-translate-y-4)}",
+    ),
+  ),
+
+  secondary-scale: (
+    "0%": (
+      animation-timing-function:
+        cubic-bezier(0.205028, 0.057051, 0.57661, 0.453971),
+      scale:
+        "#{-short-var(secondary-scale-x-1)} #{-short-var(secondary-scale-y-1)}",
+    ),
+
+    "19.15%": (
+      animation-timing-function:
+        cubic-bezier(0.152313, 0.196432, 0.648374, 1.00432),
+      scale:
+        "#{-short-var(secondary-scale-x-2)} #{-short-var(secondary-scale-y-2)}",
+    ),
+
+    "44.15%": (
+      animation-timing-function:
+        cubic-bezier(0.257759, -0.003163, 0.211762, 1.38179),
+      scale:
+        "#{-short-var(secondary-scale-x-3)} #{-short-var(secondary-scale-y-3)}",
+    ),
+
+    "100%": (
+      scale:
+        "#{-short-var(secondary-scale-x-4)} #{-short-var(secondary-scale-y-4)}",
+    ),
+  ),
+
+  secondary-translate: (
+    "0%": (
+      animation-timing-function: cubic-bezier(0.15, 0, 0.515058, 0.409685),
+      translate:
+        "#{-short-var(secondary-translate-x-1)} #{-short-var(secondary-translate-y-1)}",
+    ),
+
+    "25%": (
+      animation-timing-function: cubic-bezier(0.31033, 0.284058, 0.8, 0.733712),
+      translate:
+        "#{-short-var(secondary-translate-x-2)} #{-short-var(secondary-translate-y-2)}",
+    ),
+
+    "48.35%": (
+      animation-timing-function: cubic-bezier(0.4, 0.627035, 0.6, 0.902026),
+      translate:
+        "#{-short-var(secondary-translate-x-3)} #{-short-var(secondary-translate-y-3)}",
+    ),
+
+    "100%": (
+      translate:
+        "#{-short-var(secondary-translate-x-4)} #{-short-var(secondary-translate-y-4)}",
+    ),
+  ),
+);
+
+/// An ordered list of:
+/// 1. long-name: for readability only
+/// 2. values: one per keyframe step, applied to the active axis
+/// 3. fallback: the neutral value applied to the inactive axis
+$-keyframe-values: (
+  (primary-scale, (0.08, 0.08, 0.661479, 0.08), 1),
+  (primary-translate, (0px, 0px, 83.6714%, 200.611%), 0px),
+  (secondary-scale, (0.08, 0.457104, 0.72796, 0.08), 1),
+  (secondary-translate, (0px, 37.6519%, 84.3862%, 160.278%), 0px)
+);
+
+@function -get-keyframe-tokens-map($active-suffix, $inactive-suffix) {
+  $map: ();
+
+  @each $long-name, $values, $fallback in $-keyframe-values {
+    @for $i from 1 through list.length($values) {
+      $active: -short-name("#{$long-name}-#{$active-suffix}-#{$i}");
+      $inactive: -short-name("#{$long-name}-#{$inactive-suffix}-#{$i}");
+
+      $map: map.set($map, $active, list.nth($values, $i));
+      $map: map.set($map, $inactive, $fallback);
+    }
+  }
+
+  @return $map;
+}
+
+$-base-styles: (
+  #{-short-name(percentage)}: "progress.percentage",
+  #{-short-name(active-x)}: 0%,
+  #{-short-name(active-y)}: 0%,
+  #{-short-name(inactive-x)}: 0%,
+  #{-short-name(inactive-y)}: 0%,
+  #{-short-name(primary-inset)}: -145.167%,
+  #{-short-name(secondary-inset)}: -54.8889%,
+  #{-short-name(primary-block-start)}: 0,
+  #{-short-name(primary-inline-start)}: 0,
+  #{-short-name(secondary-block-start)}: 0,
+  #{-short-name(secondary-inline-start)}: 0,
+  #{-short-name(stop-indicator-inset)}: calc(100% - 1em),
+  #{-short-name(stop-indicator-block-start)}: 0,
+  #{-short-name(stop-indicator-inline-start)}: 0,
+
+  border-radius: -short-var(border-radius),
+  font-size: "linear-progress.size",
+  overflow: hidden,
+  position: relative,
+);
+$-horizontal-styles: utils.deep-merge(
+  -get-keyframe-tokens-map(x, y),
+  (
+    #{-short-name(active-x)}: calc(-100% + #{-short-var(percentage)}),
+    #{-short-name(inactive-x)}:
+      'calc("progress.gap" +  #{-short-var(percentage)})',
+    #{-short-name(primary-inline-start)}: -short-var(primary-inset),
+    #{-short-name(secondary-inline-start)}: -short-var(secondary-inset),
+    #{-short-name(stop-indicator-inline-start)}:
+      -short-var(stop-indicator-inset),
+    #{-short-name(stop-indicator-place)}: center end,
+
+    display: flex,
+    height: "linear-progress.track.size",
+    min-width: "linear-progress.min-size",
+    width: 100%,
+  )
+);
+$-horizontal-reversed-styles: (
+  transform: scaleX(-1),
+);
+// NOTE: Vertical styles start from the bottom instead of top.
+$-vertical-styles: utils.deep-merge(
+  -get-keyframe-tokens-map(y, x),
+  (
+    #{-short-name(active-y)}: calc(#{-short-var(percentage)} - 100%),
+    #{-short-name(inactive-y)}:
+      'calc(#{-short-var(percentage)} - "progress.gap")',
+    #{-short-name(primary-block-start)}: -short-var(primary-inset),
+    #{-short-name(secondary-block-start)}: -short-var(secondary-inset),
+    #{-short-name(stop-indicator-block-start)}: -short-var(stop-indicator-inset),
+    #{-short-name(stop-indicator-place)}: end center,
+
+    display: inline-flex,
+    height: auto,
+    min-height: "linear-progress.min-size",
+    width: "linear-progress.track.size",
+  )
+);
+$-vertical-reversed-styles: (
+  transform: scaleY(-1),
+);
+$-round-styles: (
+  #{-short-name(border-radius)}: "linear-progress.shape.round",
+);
+$-square-styles: (
+  #{-short-name(border-radius)}: "linear-progress.shape.square",
+);
+$-small-styles: utils.remap-variants(linear-progress, small, size);
+$-medium-styles: utils.remap-variants(linear-progress, medium, size);
+$-large-styles: utils.remap-variants(linear-progress, large, size);
+
+$-indeterminate-styles: (
+  #{-short-name(determinate-display)}: none,
+);
+$-determinate-styles: (
+  #{-short-name(indeterminate-display)}: none,
+);
+$-base-position-styles: (
+  "&, &::before, &::after": (
+    inset: 0,
+    position: absolute,
+  ),
+);
+$-base-track-pseudo-styles: (
+  "&::before, &::after":
+    map.remove(
+      utils.pseudo-element(
+        $border-radius: -short-var(border-radius),
+        $inset: null,
+        $z-index: null
+      ),
+      position
+    ),
+);
+$-indeterminate-track-styles: (
+  background: "progress.inactive-color",
+  display: -short-var(indeterminate-display),
+
+  "&::before, &::after": (
+    animation-duration: "progress.indeterminate.duration",
+    animation-iteration-count: infinite,
+    animation-name: "#{-short-var(translate-name)}, #{-short-var(scale-name)}",
+    animation-play-state: "progress.indeterminate.play-state",
+    animation-timing-function: linear,
+    background: "progress.active-color",
+    block-size: 100%,
+    inline-size: 100%,
+  ),
+  "&::before": (
+    #{-short-name(translate-name)}: "primary-translate",
+    #{-short-name(scale-name)}: "primary-scale",
+
+    inset-block-start: -short-var(primary-block-start),
+    inset-inline-start: -short-var(primary-inline-start),
+  ),
+  "&::after": (
+    #{-short-name(translate-name)}: "secondary-translate",
+    #{-short-name(scale-name)}: "secondary-scale",
+
+    inset-block-start: -short-var(secondary-block-start),
+    inset-inline-start: -short-var(secondary-inline-start),
+  ),
+);
+$-determinate-track-styles: (
+  display: -short-var(determinate-display),
+
+  "&::before": (
+    background: "progress.active-color",
+    transform: "translate(#{-short-var(active-x), #{-short-var(active-y)}})",
+  ),
+  "&::after": (
+    background: "progress.inactive-color",
+    transform: "translate(#{-short-var(inactive-x), #{-short-var(inactive-y)}})",
+    z-index: -1,
+  ),
+);
+$-determinate-track-transition-styles: (
+  transition:
+    'transform "progress.transition.duration" "progress.transition.easing"',
+
+  "&::before, &::after": (
+    transition: inherit,
+  ),
+);
+$-stop-indicator-styles: (
+  display:
+    -short-var(stop-indicator-display, -short-var(determinate-display, grid)),
+  inset: 0,
+  place-content: -short-var(stop-indicator-place),
+  pointer-events: none,
+  position: absolute,
+
+  "&::after":
+    utils.deep-merge(
+      map.remove(utils.pseudo-element($inset: null, $z-index: null), position),
+      (
+        background: "progress.active-color",
+        border-end-end-radius: "linear-progress.stop-indicator.end-end",
+        border-end-start-radius: "linear-progress.stop-indicator.end-start",
+        border-start-end-radius: "linear-progress.stop-indicator.start-end",
+        border-start-start-radius: "linear-progress.stop-indicator.start-start",
+        height: "linear-progress.stop-indicator.size",
+        width: "linear-progress.stop-indicator.size",
+      )
+    ),
+);
+$-disable-stop-indicator-styles: (
+  #{-short-name(stop-indicator-display)}: none,
+);
+
+@mixin configure() {
+  @if not $-tokens-registered {
+    $-tokens-registered: true !global;
+    @include utils.register-tokens(
+      $tokens: $-tokens,
+      $prefix: "linear-progress"
+    );
+  }
+}
+
+@mixin configure-global($overrides: null) {
+  $overrides: utils.get-config-map(list, $overrides, $-configure-tokens);
+  @include configure();
+}
+
+@mixin css-styles {
+  $styles: (
+    "&linear-progress": $-base-styles,
+    "&linear-progress--round": $-round-styles,
+    "&linear-progress--square": $-square-styles,
+    "&linear-progress--small": $-small-styles,
+    "&linear-progress--medium": $-medium-styles,
+    "&linear-progress--large": $-large-styles,
+    "&linear-progress--horizontal": $-horizontal-styles,
+    "&linear-progress--horizontal-reversed": $-horizontal-reversed-styles,
+    "&linear-progress--vertical": $-vertical-styles,
+    // make the vertical progress bar animate upwards by default. this is
+    // "technically" reversed though
+    "&linear-progress--vertical-reversed": $-vertical-reversed-styles,
+    "&linear-progress--transition": $-determinate-track-transition-styles,
+
+    "&linear-progress--determinate": $-determinate-styles,
+    "&linear-progress--indeterminate": $-indeterminate-styles,
+    "&linear-progress__track, &linear-progress__stop-indicator":
+      $-base-position-styles,
+    "&linear-progress__determinate-track": $-determinate-track-styles,
+    "&linear-progress__indeterminate-track": $-indeterminate-track-styles,
+    "&linear-progress__stop-indicator": $-stop-indicator-styles,
+  );
+
+  @include utils.css-styles($styles, $keyframes: $-keyframes);
+}
+
+@mixin host-styles {
+  $styles: (
+    ":host": $-base-styles,
+
+    ":host([shape=round])": $-round-styles,
+    ":host([shape=square])": $-square-styles,
+
+    ":host([size=small])": $-small-styles,
+    ":host([size=medium])": $-medium-styles,
+    ":host([size=large])": $-large-styles,
+
+    ":host([aria-orientation=horizontal])": $-horizontal-styles,
+    ":host([aria-orientation=horizontal]:is([reversed]:dir(ltr), :not([reversed]):dir(rtl)))":
+      $-horizontal-reversed-styles,
+    ":host([aria-orientation=vertical])": $-vertical-styles,
+    // make the vertical progress bar animate upwards by default. this is
+    // "technically" reversed though
+    ":host([aria-orientation=vertical]:not([reversed]))":
+      $-vertical-reversed-styles,
+
+    ":host(:not([disable-transition])) .track":
+      $-determinate-track-transition-styles,
+
+    ":host([disable-stop-indicator])": $-disable-stop-indicator-styles,
+
+    ":host([value])": $-determinate-styles,
+    ":host(:not([value]))": $-indeterminate-styles,
+    ".track": $-base-position-styles,
+    ".pseudo": $-base-track-pseudo-styles,
+    ".indeterminate": $-indeterminate-track-styles,
+    ".determinate": $-determinate-track-styles,
+    ".stop-indicator": $-stop-indicator-styles,
+  );
+
+  @include utils.host-styles($styles, $keyframes: $-keyframes);
+}
+
+@mixin styles {
+  @include css-styles;
+  @include host-styles;
+}

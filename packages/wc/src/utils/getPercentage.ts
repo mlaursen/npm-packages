@@ -20,7 +20,8 @@ export interface GetPercentageOptions {
 }
 
 /**
- * Gets the current percentage based on the min, max, and current value.
+ * Gets the current percentage based on the min, max, and current value. The
+ * percentage will be a number >= 0 and <= 100.
  *
  * @returns the percentage that the `value` is between the `min` and `max`
  * values.

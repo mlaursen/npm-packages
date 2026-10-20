@@ -223,6 +223,18 @@ export const popover = {
   ],
 };
 
+export const progress = {
+  /** @type {import("@mlaursen/wc").ProgressVariant[]} */
+  variants: ["primary", "secondary", "tertiary", "error"],
+
+  linear: {
+    /** @type {import("@mlaursen/wc").LinearProgressSize[]} */
+    sizes: defaultSizes,
+    /** @type {import("@mlaursen/wc").LinearProgressShape[]} */
+    shapes: defaultShapes,
+  },
+};
+
 export const objectFit = {
   /** @type {import("@mlaursen/wc").ObjectFitVariant[]} */
   variants: ["contain", "cover", "fill", "none", "scale-down"],

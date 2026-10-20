@@ -32,7 +32,7 @@ export interface BaseAnimatedElementProperties {
    * component should only animate after the first change and not initial
    * render.
    *
-   * @sealed
+   * @readonly
    */
   _initialized: boolean;
 

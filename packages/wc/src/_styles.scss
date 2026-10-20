@@ -27,6 +27,8 @@
 @use "list-item";
 @use "avatar";
 @use "switch";
+@use "progress";
+@use "linear-progress";
 
 @mixin styles {
   @include palette.styles;
@@ -61,4 +63,6 @@
   @include list-item.styles;
   @include avatar.styles;
   @include switch.styles;
+  @include progress.styles;
+  @include linear-progress.styles;
 }

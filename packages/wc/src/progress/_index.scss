@@ -1,0 +1,99 @@
+@use "sass:map";
+
+@use "../utils";
+
+$-tokens-registered: false;
+$-tokens: (
+  active-color: "palette.primary",
+  inactive-color: "palette.secondary-container",
+  stop-color: "palette.primary",
+  animation-play-state: running,
+
+  gap: "spacing.extra-small",
+  percentage: 0%,
+
+  transition: (
+    duration: "transition.duration.medium-1",
+    easing: "transition.easing.linear",
+  ),
+
+  indeterminate: (
+    duration: 2s,
+    play-state: playing,
+  ),
+);
+
+$-configure-tokens: map.keys($-tokens);
+
+$-base-styles: (
+  contain: strict,
+);
+$-primary-styles: (
+  "progress.active-color": "palette.primary",
+  "progress.inactive-color": "palette.secondary-container",
+  "progress.stop-color": "palette.primary",
+);
+$-secondary-styles: (
+  "progress.active-color": "palette.secondary",
+  "progress.inactive-color": "palette.primary-container",
+  "progress.stop-color": "palette.secondary",
+);
+$-tertiary-styles: (
+  "progress.active-color": "palette.tertiary",
+  "progress.inactive-color": "palette.tertiary-container",
+  "progress.stop-color": "palette.tertiary",
+);
+$-error-styles: (
+  "progress.active-color": "palette.error",
+  "progress.inactive-color": "palette.error-container",
+  "progress.stop-color": "palette.error",
+);
+$-paused-styles: (
+  "progress.indeterminate.play-state": paused,
+);
+$-disable-gap-styles: (
+  "progress.gap": 0,
+);
+
+@mixin configure() {
+  @if not $-tokens-registered {
+    $-tokens-registered: true !global;
+    @include utils.register-tokens($tokens: $-tokens, $prefix: "progress");
+  }
+}
+
+@mixin configure-global($overrides: null) {
+  $overrides: utils.get-config-map(list, $overrides, $-configure-tokens);
+  @include configure();
+}
+
+// currently defines no styles
+@mixin css-styles {
+  $styles: (
+    "&progress": $-base-styles,
+    "&progress--primary": $-primary-styles,
+    "&progress--secondary": $-secondary-styles,
+    "&progress--tertiary": $-tertiary-styles,
+    "&progress--error": $-error-styles,
+    "&progress--paused": $-paused-styles,
+  );
+  @include utils.css-styles($styles);
+}
+
+@mixin host-styles {
+  $styles: (
+    ":host": $-base-styles,
+    ":host([variant=primary])": $-primary-styles,
+    ":host([variant=secondary])": $-secondary-styles,
+    ":host([variant=tertiary])": $-tertiary-styles,
+    ":host([variant=error])": $-error-styles,
+    ":host([paused])": $-paused-styles,
+    ":host([disable-gap])": $-disable-gap-styles,
+  );
+  @include utils.host-styles($styles);
+}
+
+@mixin styles {
+  @include css-styles;
+  @include host-styles;
+}
