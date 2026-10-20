@@ -1,5 +1,5 @@
 import type { PropertyValues, TemplateResult } from "lit";
-import { LitElement, html } from "lit";
+import { LitElement, html, nothing } from "lit";
 import { property, query, state } from "lit/decorators.js";
 import { classMap } from "lit/directives/class-map.js";
 import { ifDefined } from "lit/directives/if-defined.js";
@@ -438,7 +438,7 @@ export class TextField extends BaseTextField implements TextFieldProperties {
         class="input ${classMap({ labeled: this._hasLabel })}"
         type=${this.type}
         name=${ifDefined(this.name || undefined)}
-        inputmode=${this.inputMode}
+        inputmode=${this.inputMode || nothing}
         autocomplete=${ifDefined(this.autocomplete || undefined) as "on"}
         autocapitalize=${ifDefined(this.autocapitalize || undefined)}
         ?formnovalidate=${this.formNoValidate}
