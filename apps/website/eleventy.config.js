@@ -1,12 +1,12 @@
 // @ts-check
-import "./src/_config/env.js";
 import { defineConfig } from "11ty.ts";
 import { EleventyRenderPlugin } from "@11ty/eleventy";
 import { eleventyImageTransformPlugin } from "@11ty/eleventy-img";
 import eleventyNavigationPlugin from "@11ty/eleventy-navigation";
 import litPlugin from "@lit-labs/eleventy-plugin-lit";
-import { enableLogger, log } from "@mlaursen/node-utils";
+import { enableLogger, log, logTask } from "@mlaursen/node-utils";
 
+import "./src/_config/env.js";
 import {
   ASSETS_DIR,
   ENABLE_SSR,
@@ -18,9 +18,17 @@ import { buildScss } from "./src/_config/events/build-scss.js";
 import { slugify } from "./src/_config/filters/slugify.js";
 import { draftsPlugin } from "./src/_config/plugins/drafts.js";
 import { htmlPlugin } from "./src/_config/plugins/html.js";
+import { markdownRenderers } from "./src/_config/plugins/markdown-renderers.js";
+import {
+  getShikiCssFile,
+  loadShiki,
+  shikiCssPreprocessor,
+} from "./src/_config/plugins/shiki.js";
+
+enableLogger();
+const shiki = await logTask(loadShiki(), "Loading shiki", "Shiki loaded!");
 
 export default defineConfig((eleventyConfig) => {
-  enableLogger();
   eleventyConfig.on("eleventy.before", async () => {
     await buildScss();
     await buildJs();
@@ -65,6 +73,15 @@ export default defineConfig((eleventyConfig) => {
 
   eleventyConfig.addBundle("js", { hoist: true });
   eleventyConfig.addBundle("css", { hoist: true });
+  eleventyConfig.amendLibrary(
+    "md",
+    /** @param {import("markdown-it").MarkdownIt} mdLib */
+    (mdLib) => {
+      mdLib.use(shiki);
+      mdLib.use(markdownRenderers);
+    },
+  );
+  eleventyConfig.addPreprocessor("shiki-css", "md", shikiCssPreprocessor);
 
   eleventyConfig.addFilter("slugify", slugify);
 
@@ -78,6 +95,8 @@ export default defineConfig((eleventyConfig) => {
   eleventyConfig.setServerOptions({
     domDiff: false,
   });
+
+  eleventyConfig.addGlobalData("shikiCssFile", () => getShikiCssFile());
 
   return {
     markdownTemplateEngine: "njk",

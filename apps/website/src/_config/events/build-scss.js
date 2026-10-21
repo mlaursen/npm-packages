@@ -1,5 +1,6 @@
 import { readFileSync } from "node:fs";
-import { readFile } from "node:fs/promises";
+import { readFile, rm } from "node:fs/promises";
+import { basename } from "node:path";
 
 import { generateFile, log, logFailure } from "@mlaursen/node-utils";
 import { compileScss } from "@mlaursen/scss";
@@ -14,18 +15,8 @@ import {
   SCSS_DIR,
   SCSS_OUT_DIR,
 } from "../constants.js";
-
-function getConfigureCode() {
-  return `
-@use "@mlaursen/wc" as *;
-
-@include configure(
-  $palette: (
-    color-scheme: ${colorScheme.replace(" ", "-")},
-  )
-);
-`;
-}
+import { setShikiCssFile } from "../plugins/shiki.js";
+import { getContentHash } from "../utils/getContentHash.js";
 
 function getGlobalStyles() {
   if (DISABLE_FOCUS_ANIMATION) {
@@ -77,12 +68,15 @@ async function compile({ cwd, code, filePath, outFileName }) {
   const result = compileScss({
     code,
     basePath: cwd,
-    load: (filePath) => {
-      let code;
-      if (filePath.endsWith("/configure-website.scss")) {
-        code = getConfigureCode();
-      } else {
-        code = readFileSync(filePath, "utf8");
+    load: (currentFilePath) => {
+      const isConfigureWebsite = currentFilePath.includes("_configure-website");
+      const filePath = isConfigureWebsite
+        ? `${SCSS_DIR}/_configure-website.scss`
+        : currentFilePath;
+
+      let code = readFileSync(filePath, "utf8");
+      if (isConfigureWebsite) {
+        code = code.replace("light-dark", colorScheme.replace(" ", "-"));
       }
 
       if (code.includes('@use "@mlaursen/wc"')) {
@@ -113,11 +107,18 @@ async function compile({ cwd, code, filePath, outFileName }) {
     css = minified.code.toString();
   }
 
+  let cssFileName = `${SCSS_OUT_DIR}/${outFileName}.css`;
+  if (cssFileName.endsWith("shiki.css")) {
+    const hash = getContentHash(css);
+    cssFileName = cssFileName.replace(".css", `.${hash}.css`);
+    setShikiCssFile(basename(cssFileName));
+  }
+
   await generateFile({
     banner: false,
     format: !IS_PRODUCTION,
     contents: css,
-    filePath: `${SCSS_OUT_DIR}/${outFileName}.css`,
+    filePath: cssFileName,
   });
 }
 
@@ -127,8 +128,19 @@ async function readCompile({ cwd, filePath, outFileName }) {
   return compile({ code, cwd, filePath, outFileName });
 }
 
+async function removeShikiFiles() {
+  const shiki = await glob("shiki.*", {
+    cwd: SCSS_OUT_DIR,
+  });
+  await Promise.all(
+    shiki.map((file) => rm(`${SCSS_OUT_DIR}/${file}`, { force: true })),
+  );
+  setShikiCssFile("");
+}
+
 export async function buildScss() {
   const cwd = process.cwd();
+  await removeShikiFiles();
 
   const tasks = [
     compile({

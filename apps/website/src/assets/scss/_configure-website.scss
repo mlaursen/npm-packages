@@ -1,0 +1,40 @@
+@use "@mlaursen/wc" as *;
+
+// NOTE: this will be replaced by `buildScss`;
+$color-scheme: light-dark;
+
+@include configure(
+  $palette: (
+    color-scheme: $color-scheme,
+  )
+);
+
+$-code-tokens: (
+  margin: (
+    inline: 0,
+    block: "spacing.extra-large",
+  ),
+  padding: (
+    inline: null,
+    block: null,
+  ),
+  max-height: 50rem,
+  tablet-max-height: min(60dvh, 50rem),
+  font-family: '"Source Code Pro", Consolas, Monaco, monospace',
+  font-size: null,
+  line-height: null,
+  letter-spacing: null,
+
+  pre: (
+    margin: (
+      inline: 0,
+      block: 0,
+    ),
+    padding: (
+      inline: 1em,
+      block: 1em,
+    ),
+  ),
+);
+
+@include register-tokens($tokens: $-code-tokens, $prefix: "code-block");

@@ -1,0 +1,191 @@
+@use "@mlaursen/wc" as *;
+@use "configure-website";
+
+$counter-name: "shiki-line";
+$counter-width: 3ch;
+
+@include map-to-styles(
+  (
+    "@media (min-width: 48em)": (
+      ":root": (
+        "code-block.max-height": "code-block.tablet-max-height",
+      ),
+    ),
+    ".code-block": (
+      margin-block: "code-block.margin.block",
+      margin-inline: "code-block.margin.inline",
+      padding-block: "code-block.padding.block",
+      padding-inline: "code-block.padding.inline",
+      position: relative,
+      width: 100%,
+
+      "&__scroll-container": (
+        max-height: "code-block.max-height",
+        position: relative,
+        outline: 0,
+        overflow: auto,
+
+        // outline styles.. should probably make this a function
+        // yeah. really need to make this reusable
+        "&::before":
+          deep-merge(
+            pseudo-element($z-index: 2),
+            (
+              animation-delay: '0s, calc("interaction.focused.duration" * 0.25)',
+              animation-duration:
+                'calc("interaction.focused.duration" * 0.25), calc("interaction.focused.duration" * 0.75)',
+              animation-name: "interaction.focused.animation-name",
+              animation-timing-function: "transition.easing.emphasized",
+              background:
+                get-rgb-var(
+                  "interaction.container.color",
+                  "interaction.container.opacity"
+                ),
+              border: "interaction.focused.border",
+              box-sizing: border-box,
+              inset: "interaction.focused.inset",
+              outline: "interaction.focused.outline",
+              transition:
+                'background "transition.duration.short-3" "transition.easing.linear"',
+
+              "@media (prefers-reduced-motion)": (
+                "&": (
+                  animation: none,
+                ),
+              ),
+            )
+          ),
+
+        "&:focus-visible, &:has(:focus-visible)": (
+          "interaction.focused.animation-name":
+            "interaction.focused.inward.animation-name",
+          "interaction.focused.border":
+            '"interaction.focused.width" solid "interaction.focused.color"',
+          "interaction.focused.inset": "interaction.focused.inward.offset",
+          // "interaction.focused.animation-name":
+          //   "interaction.focused.outward.animation-name",
+          // "interaction.focused.inset":
+          //   'calc(-1 * "interaction.focused.outward.offset")',
+          // "interaction.focused.outline":
+          //   '"interaction.focused.width" solid "interaction.focused.color"',
+        ),
+        // tablet media, set tablet max height
+      ),
+
+      "&__pre-container": (
+        float: left,
+        min-width: 100%,
+        overflow: hidden,
+        position: relative,
+      ),
+      "&__pre": (
+        font-size: "code-block.font-size",
+        line-height: "code-block.line-height",
+        margin-block: "code-block.pre.margin.block",
+        margin-inline: "code-block.pre.margin.inline",
+        padding-block: "code-block.pre.padding.block",
+        padding-inline: "code-block.pre.padding.inline",
+        white-space: pre,
+
+        "&--wrap": (
+          overflow-wrap: anywhere,
+          white-space: pre-wrap,
+          word-break: break-all,
+        ),
+      ),
+
+      "&__code": (
+        font-family: "code-block.font-family",
+      ),
+    ),
+
+    ".shiki-pre-container": (
+      "&--counter": (
+        counter-reset: #{$counter-name},
+        counter-increment:
+          "#{$counter-name} calc(var(--shiki-counter-start, 1) - 1)",
+
+        ":where(&) .line::before": (
+          content: counter(#{$counter-name}),
+          counter-increment: #{$counter-name},
+          display: inline-block,
+          margin-inline-end: 'var(--shiki-margin-inline-end, "spacing.medium")',
+          text-align: right,
+          width: var(--shiki-counter-width, #{$counter-width}),
+        ),
+      ),
+    ),
+    ".shiki": (
+      ".line": (
+        display: inline-block,
+      ),
+
+      ".line.highlighted": (
+        background-color: var(--shiki-highlighted-bg, #073642),
+        width: 100%,
+      ),
+    ),
+
+    // TODO: Handle diffs and highlights
+    ".has-diff": (
+      ".line::before": (
+        content: var(--shiki-diff-content, " "),
+        color: var(--shiki-diff-color),
+        white-space: pre,
+      ),
+
+      '.line.diff [style*="--shiki"]': (
+        color: "var(--shiki-diff-color) !important",
+      ),
+
+      ".line.diff.add": (
+        --shiki-diff-color: #859900,
+        --shiki-diff-content: "+",
+        // background-color: var(--shiki-diff-add-bg, #022b1d),
+      ),
+
+      ".line.diff.remove": (
+        --shiki-diff-color: #dc322f,
+        --shiki-diff-content: "-",
+        // background-color: var(--shiki-diff-remove-bg, #3d1914),
+      ),
+    ),
+  )
+);
+
+$-keyframes: (
+  "inward-grow": (
+    from: (
+      border-width: 0,
+    ),
+    to: (
+      border-width: "interaction.focused.active-width",
+    ),
+  ),
+  "inward-shrink": (
+    from: (
+      border-width: "interaction.focused.active-width",
+    ),
+  ),
+  // "outward-grow": (
+  //   from: (
+  //     outline-width: 0,
+  //   ),
+  //   to: (
+  //     outline-width: "interaction.focused.active-width",
+  //   ),
+  // ),
+  // "outward-shrink": (
+  //   from: (
+  //     outline-width: "interaction.focused.active-width",
+  //   ),
+  // ),
+);
+
+@each $name, $styles in $-keyframes {
+  @keyframes #{$name} {
+    @include map-to-styles($styles);
+  }
+}
+
+@include verify-tokens;
