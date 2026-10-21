@@ -267,7 +267,7 @@ $is-focus-visible: ":is(:focus-visible, [focus-visible])";
     outward-keyframes: map.remove($-keyframes, "inward-grow", "inward-shrink"),
   );
 
-  @return utils.validate($styles-lookup, $name, "Invalid focus style name");
+  @return utils.validate($styles-lookup, $name, "focus style name");
 }
 
 @mixin css-styles {

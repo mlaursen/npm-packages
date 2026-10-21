@@ -11,6 +11,13 @@ export class CopyToClipboard extends LitElement {
         inset-inline-end: 1rem;
         position: absolute;
       }
+
+      @media screen and (max-width: 47.9375em) {
+        /* copy to clipboard doesn't make much sense on phones */
+        :host {
+          display: none;
+        }
+      }
     `,
   ];
 

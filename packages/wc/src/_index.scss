@@ -5,3 +5,4 @@
 @forward "typography" show typescale;
 @forward "styles";
 @forward "interaction" show disable-focus-animation;
+@forward "media-queries" hide configure, configure-global, is-media-query;

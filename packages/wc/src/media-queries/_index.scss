@@ -1,0 +1,177 @@
+@use "sass:list";
+@use "sass:map";
+@use "sass:string";
+
+@use "../utils/validate";
+
+$-tokens: (
+  phone-max-width: 47.9375em,
+  tablet-min-width: 48em,
+  tablet-max-width: 64em,
+  desktop-min-width: 64.0625em,
+  large-desktop-min-width: 80em,
+);
+$-configure-tokens: map.keys($-tokens);
+
+$-token-names: (
+  phone-media,
+  tablet-media,
+  tablet-only-media,
+  desktop-media,
+  large-desktop-media
+);
+
+@mixin configure() {
+  // don't register tokens
+
+  // @if not $-tokens-registered {
+  //   $-tokens-registered: true !global;
+  //   @include utils.register-tokens($tokens: $-tokens, $prefix: "media-queries");
+  // }
+}
+
+@mixin configure-global($overrides: null) {
+  $overrides: validate.get-config-map(sheet, $overrides, $-configure-tokens);
+  @include configure();
+}
+
+@function -is-custom-media-query($name) {
+  @return string.slice($name, 1, 6) == "@media";
+}
+
+@function is-media-query($name) {
+  @return list.index($-token-names, $name) != null or
+    -is-custom-media-query($name);
+}
+
+/// Applies styles for phones only.
+///
+/// Note: This will need to be included at the end of a block with the new Sass
+/// rules or prefix styles with `& {}`
+///
+/// @example scss - Example Usage SCSS
+///   .example {
+///     background-color: red;
+///
+///     @include phone-media {
+///       color: blue;
+///     }
+///   }
+///
+/// @content
+@mixin phone-media {
+  @media screen and (max-width: #{map.get($-tokens, phone-max-width)}) {
+    @content;
+  }
+}
+
+/// Applies styles when the viewport is at least as wide as a tablet's min
+/// width.
+///
+/// Note: This will need to be included at the end of a block with the new Sass
+/// rules or prefix styles with `& {}`
+///
+/// @example scss
+///   .example {
+///     display: flex;
+///     flex-direction: column;
+///
+///     @include tablet-media {
+///       flex-direction: row;
+///     }
+///   }
+///
+/// @content
+@mixin tablet-media {
+  @media screen and (min-width: #{map.get($-tokens, tablet-min-width)}) {
+    @content;
+  }
+}
+
+/// Applies styles for tablets only.
+///
+/// Note: This will need to be included at the end of a block with the new Sass
+/// rules or prefix styles with `& {}`
+///
+/// @example scss
+///   .example {
+///     background-color: red;
+///
+///     @include tablet-only-media {
+///       color: blue;
+///     }
+///   }
+///
+/// @content
+@mixin tablet-only-media {
+  @media screen and (min-width: #{map.get($-tokens, tablet-min-width)}) and (max-width: #{map.get($-tokens, tablet-max-width)}) {
+    @content;
+  }
+}
+
+/// Applies styles when the viewport is at least as wide as a desktop's min
+/// width.
+///
+/// Note: This will need to be included at the end of a block with the new Sass
+/// rules or prefix styles with `& {}`
+///
+/// @example scss
+///   .example {
+///     width: 100%;
+///
+///     @include desktop-media {
+///       width: 33%;
+///     }
+///   }
+///
+/// @content
+@mixin desktop-media {
+  @media screen and (min-width: #{map.get($-tokens, desktop-min-width)}) {
+    @content;
+  }
+}
+
+/// Applies styles when the viewport is at least as wide as a large desktop's
+/// min width.
+///
+/// Note: This will need to be included at the end of a block with the new Sass
+/// rules or prefix styles with `& {}`
+///
+/// @example scss
+///   .example {
+///     width: 100%;
+///
+///     @include large-desktop-media {
+///       width: 33%;
+///     }
+///   }
+///
+/// @content
+@mixin large-desktop-media {
+  @media screen and (min-width: #{map.get($-tokens, large-desktop-min-width)}) {
+    @content;
+  }
+}
+
+/// Applies one of the media queries.
+///
+/// Note: This will need to be included at the end of a block with the new Sass
+/// rules or prefix styles with `& {}`
+///
+/// @param {String} $type-or-media-query - This should be one of `phone`, `tablet`,
+/// `tablet-only`, `desktop`, or `large-desktop` or a generic media query
+/// @content
+@mixin media-query($name) {
+  @if -is-custom-media-query($name) {
+    @media #{string.slice($name, 7)} {
+      @content;
+    }
+  } @else {
+    $name: validate.validate($-token-names, $name, "media query");
+    @if $name == phone-media {
+      @include phone-media {
+        @content;
+      }
+    }
+  }
+}

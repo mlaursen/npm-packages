@@ -8,6 +8,7 @@
 @use "setup" as *;
 @use "string" as *;
 @use "tokens" as *;
+@use "../media-queries";
 
 /// This is used to convert a Map into styles for each module. The map is a
 /// simple `property: value` pair for most cases. There are a few additions to
@@ -77,7 +78,11 @@
   @if $styles {
     @each $property, $value in $styles {
       $value-type: meta.type-of($value);
-      @if $property == "mouse-hover" {
+      @if media-queries.is-media-query($property) {
+        @include media-queries.media-query($property) {
+          @include map-to-styles($value, $short-names);
+        }
+      } @else if $property == "mouse-hover" {
         @include mouse-hover(true) {
           @include map-to-styles($value, $short-names);
         }
@@ -99,10 +104,6 @@
         font: $shorthand;
       } @else if $property == "font" and $value-type == map {
         @include map-to-styles($value, $short-names);
-      } @else if string.slice($property, 1, 6) == "@media" {
-        @media #{string.slice($property, 7)} {
-          @include map-to-styles($value, $short-names);
-        }
       } @else if string.index($property, "@starting-style") {
         @starting-style {
           @include map-to-styles($value, $short-names);

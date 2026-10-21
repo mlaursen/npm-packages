@@ -9,6 +9,7 @@
 @use "elevation";
 @use "interaction";
 @use "typography";
+@use "media-queries";
 @use "z-index";
 
 @use "css-reset";
@@ -56,6 +57,7 @@
   $shape: null,
   $spacing: null,
   $margin: null,
+  $media-queries: null,
   $z-index: null,
   $interaction: null,
   $elevation: null,
@@ -108,6 +110,7 @@
   @include transition.configure-global($transition);
   @include elevation.configure-global($elevation);
   @include interaction.configure-global($interaction);
+  @include media-queries.configure-global($media-queries);
   @include popover.configure-global($popover);
   @include divider.configure-global($divider);
   @include object-fit.configure-global($object-fit);
