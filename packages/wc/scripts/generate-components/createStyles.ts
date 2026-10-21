@@ -8,7 +8,6 @@ import { compileScss } from "@mlaursen/scss";
 import { transform } from "lightningcss";
 import { format } from "prettier";
 
-import { TOKENS_MESSAGE, VALID_TOKENS_MESSAGE } from "./constants.js";
 import { createLoadScssFile } from "./createLoadScssFile.js";
 import { getStyles } from "./getStyles.js";
 import type { CreateStylesOptions } from "./types.js";
@@ -74,32 +73,6 @@ export async function createStyles(
     logFailure(`Unable to compile ${filePath.replace(basePath, "")}.`);
     disableLogger();
 
-    const err = error instanceof Error ? error : new Error(String(error));
-    const startIndex = err.message.indexOf(TOKENS_MESSAGE);
-    const validIndex = err.message.indexOf(VALID_TOKENS_MESSAGE);
-    const quoteIndex = err.message.indexOf('"', validIndex);
-
-    // make the verify-tokens call prettier since sass error doesn't support
-    // newlines
-    if (startIndex !== -1 && validIndex !== -1) {
-      const invalid = err.message
-        .slice(startIndex + TOKENS_MESSAGE.length, validIndex)
-        .split(" ");
-      const valid = err.message
-        .slice(validIndex + VALID_TOKENS_MESSAGE.length, quoteIndex)
-        .split(" ");
-
-      const message = `The following tokens are invalid:
-${invalid.map((token) => `   - ${token}`).join("\n")}
-
-   Choose one of:
-${valid.map((token) => `   - ${token}`).join("\n")}
-${err.message.slice(quoteIndex + 1)}
-`;
-
-      throw new Error(message);
-    } else {
-      throw error;
-    }
+    throw error;
   }
 }
