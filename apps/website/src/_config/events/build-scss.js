@@ -15,7 +15,6 @@ import {
   SCSS_DIR,
   SCSS_OUT_DIR,
 } from "../constants.js";
-import { setShikiCssFile } from "../plugins/shiki.js";
 import { getContentHash } from "../utils/getContentHash.js";
 
 function getGlobalStyles() {
@@ -64,7 +63,7 @@ function getGlobalStyles() {
 `;
 }
 
-async function compile({ cwd, code, filePath, outFileName }) {
+async function compile({ cwd, code, filePath, outFileName, shikiCache }) {
   const result = compileScss({
     code,
     basePath: cwd,
@@ -111,7 +110,7 @@ async function compile({ cwd, code, filePath, outFileName }) {
   if (cssFileName.endsWith("shiki.css")) {
     const hash = getContentHash(css);
     cssFileName = cssFileName.replace(".css", `.${hash}.css`);
-    setShikiCssFile(basename(cssFileName));
+    shikiCache.fileName = basename(cssFileName);
   }
 
   await generateFile({
@@ -122,10 +121,10 @@ async function compile({ cwd, code, filePath, outFileName }) {
   });
 }
 
-async function readCompile({ cwd, filePath, outFileName }) {
-  const code = await readFile(filePath, "utf8");
+async function readCompile(options) {
+  const code = await readFile(options.filePath, "utf8");
 
-  return compile({ code, cwd, filePath, outFileName });
+  return compile({ ...options, code });
 }
 
 async function removeShikiFiles() {
@@ -135,12 +134,15 @@ async function removeShikiFiles() {
   await Promise.all(
     shiki.map((file) => rm(`${SCSS_OUT_DIR}/${file}`, { force: true })),
   );
-  setShikiCssFile("");
 }
 
-export async function buildScss() {
+/**
+ * @param {import("../utils/shiki.js").ShikiCssFileCache} shikiCache
+ */
+export async function buildScss(shikiCache) {
   const cwd = process.cwd();
   await removeShikiFiles();
+  shikiCache.fileName = "";
 
   const tasks = [
     compile({
@@ -148,6 +150,7 @@ export async function buildScss() {
       code: getGlobalStyles(),
       filePath: `${SCSS_DIR}/global.scss`,
       outFileName: "global",
+      shikiCache,
     }),
   ];
 
@@ -160,6 +163,7 @@ export async function buildScss() {
         cwd,
         filePath: `${SCSS_DIR}/${filePath}`,
         outFileName: filePath.replace(".scss", ""),
+        shikiCache,
       }),
     );
   }

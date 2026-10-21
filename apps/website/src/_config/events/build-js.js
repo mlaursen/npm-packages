@@ -1,4 +1,4 @@
-import { dirname } from "node:path";
+import { basename, dirname } from "node:path";
 
 import { generateFile } from "@mlaursen/node-utils";
 import esbuild from "esbuild";
@@ -66,6 +66,18 @@ export async function buildJs() {
       compile({
         filePath: `${SCRIPTS_DIR}/${filePath}`,
         outFileName: dirname(filePath),
+      }),
+    );
+  }
+  const components = await glob("components/**.ts", {
+    cwd: SCRIPTS_DIR,
+    ignore: ["**/configure-palette.ts"],
+  });
+  for (const filePath of components) {
+    tasks.push(
+      compile({
+        filePath: `${SCRIPTS_DIR}/${filePath}`,
+        outFileName: basename(filePath, ".ts"),
       }),
     );
   }

@@ -30,6 +30,12 @@ const HEADINGS = {
   h6: ["medium", "title"],
 };
 
+/**
+ * this is just used to get highlighting and formatting for html
+ */
+const html = (strings, ...values) =>
+  strings.reduce((out, str, i) => out + str + (values[i] ?? ""), "");
+
 /** @param {import("markdown-it").MarkdownIt} md */
 export function markdownRenderers(md) {
   md.renderer.rules.paragraph_open = () => "<mwc-typography><p>";
@@ -76,26 +82,13 @@ export function markdownRenderers(md) {
 
   // Code fences: wrap Shiki's output instead of replacing it
   const shikiFence = md.renderer.rules.fence;
-  md.renderer.rules.fence = (tokens, i, options, env, self) => {
-    const lang = md.utils.escapeHtml(tokens[i].info.trim().split(/\s+/)[0]);
-    const inner = shikiFence(tokens, i, options, env, self);
-    const lineNumbers = inner.includes("data-line-numbers");
-
-    let counter = "";
-    if (lang !== "sh" && inner.split(/\n/).length > 5 && lineNumbers) {
-      counter = " shiki-pre-container--counter";
-    }
-
-    // NOTE: I eventually want to add a `mwc-code-block` element for this
-    const code = [
-      '<div class="code-block">',
-      '<div class="code-block__scroll-container">',
-      `<div class="code-block__pre-container shiki-pre-container${counter}">`,
-      inner,
-      "</div>",
-      "</div>",
-      "</div>",
+  md.renderer.rules.fence = (tokens, idx, options, env, renderer) => {
+    const preHtml = shikiFence(tokens, idx, options, env, renderer);
+    const lines = [
+      preHtml.replace("pre", 'pre slot="pre"'),
+      html`<copy-to-clipboard slot="sticky"></copy-to-clipboard>`,
     ];
-    return code.join("");
+
+    return `<mwc-code-block>${lines.join("")}</mwc-code-block>`;
   };
 }

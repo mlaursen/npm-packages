@@ -20,17 +20,18 @@ import { draftsPlugin } from "./src/_config/plugins/drafts.js";
 import { htmlPlugin } from "./src/_config/plugins/html.js";
 import { markdownRenderers } from "./src/_config/plugins/markdown-renderers.js";
 import {
-  getShikiCssFile,
   loadShiki,
   shikiCssPreprocessor,
 } from "./src/_config/plugins/shiki.js";
+import { ShikiCssFileCache } from "./src/_config/utils/shiki.js";
 
 enableLogger();
 const shiki = await logTask(loadShiki(), "Loading shiki", "Shiki loaded!");
+const shikiCache = new ShikiCssFileCache();
 
 export default defineConfig((eleventyConfig) => {
   eleventyConfig.on("eleventy.before", async () => {
-    await buildScss();
+    await buildScss(shikiCache);
     await buildJs();
   });
 
@@ -96,7 +97,7 @@ export default defineConfig((eleventyConfig) => {
     domDiff: false,
   });
 
-  eleventyConfig.addGlobalData("shikiCssFile", () => getShikiCssFile());
+  eleventyConfig.addGlobalData("shikiCssFile", () => shikiCache.fileName);
 
   return {
     markdownTemplateEngine: "njk",

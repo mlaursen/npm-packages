@@ -4,10 +4,6 @@ import {
   transformerNotationHighlight,
 } from "@shikijs/transformers";
 
-const cache = {
-  fileName: "",
-};
-
 export async function loadShiki() {
   return await Shiki({
     themes: {
@@ -47,7 +43,6 @@ export async function loadShiki() {
         name: "@mlaursen/shiki-highlight",
         enforce: "post",
         pre(element) {
-          this.addClassToHast(element, "code-block__pre");
           if (this.options.meta?.lineNumbers) {
             element.properties["data-line-numbers"] = "";
           }
@@ -55,23 +50,9 @@ export async function loadShiki() {
           element.properties["dir"] = "ltr";
           delete element.properties.tabindex;
         },
-        code(element) {
-          this.addClassToHast(element, "code-block__code");
-        },
       },
     ],
   });
-}
-
-/**
- * @param {string} fileName
- */
-export function setShikiCssFile(fileName) {
-  cache.fileName = fileName;
-}
-
-export function getShikiCssFile() {
-  return cache.fileName;
 }
 
 /** @type {Parameters<import ("11ty.ts").EleventyConfig["addPreprocessor"]>[2]} */
@@ -84,5 +65,8 @@ export function shikiCssPreprocessor(_data, content) {
 {% css "global" %}
 {% include "css/" + shikiCssFile %}
 {% endcss %}
+{% js "defer" %}
+{% include "scripts/copy-to-clipboard.js" %}
+{% endjs %}
 `;
 }
