@@ -246,6 +246,30 @@ $is-focus-visible: ":is(:focus-visible, [focus-visible])";
   );
 }
 
+/// This was added to support the code-block where I only want the focus styles
+/// since hover/background caused other issues since there can be other
+/// focusable/interactable nodes within the main container
+///
+/// @param {String} $name -
+/// @return {Map} -
+@function get-focus-styles($name) {
+  $styles-lookup: (
+    base: $-base-styles,
+    base-clickable: $-base-clickable-styles,
+    base-focusable: $-base-focusable-styles,
+    base-state-layer: $-base-state-layer-styles,
+    base-interaction-layer: $-base-interaction-layer-styles,
+    base-focusable-animation: $-base-focusable-animation-styles,
+    focused-inward: $-focused-inward-styles,
+    focused-outward: $-focused-outward-styles,
+
+    inward-keyframes: map.remove($-keyframes, "outward-grow", "outward-shrink"),
+    outward-keyframes: map.remove($-keyframes, "inward-grow", "inward-shrink"),
+  );
+
+  @return utils.validate($styles-lookup, $name, "Invalid focus style name");
+}
+
 @mixin css-styles {
   // NOTE: Probably incorrect
   $root-styles: utils.deep-merge(

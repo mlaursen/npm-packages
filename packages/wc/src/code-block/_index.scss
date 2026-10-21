@@ -1,0 +1,135 @@
+@use "sass:map";
+
+@use "../utils";
+@use "../interaction";
+
+$-tokens-registered: false;
+$-tokens: (
+  margin: (
+    inline: 0,
+    block: "spacing.extra-large",
+  ),
+  padding: (
+    inline: null,
+    block: null,
+  ),
+  max-height: 50rem,
+  tablet-max-height: min(60dvh, 50rem),
+  font-family: '"Source Code Pro", Consolas, Monaco, monospace',
+  font-size: null,
+  line-height: null,
+  letter-spacing: null,
+
+  pre: (
+    margin: (
+      inline: 0,
+      block: 0,
+    ),
+    padding: (
+      inline: 1em,
+      block: 1em,
+    ),
+  ),
+);
+
+$-configure-tokens: map.keys($-tokens);
+
+$-base-styles: (
+  display: block,
+  margin-block: "code-block.margin.block",
+  margin-inline: "code-block.margin.inline",
+  padding-block: "code-block.padding.block",
+  padding-inline: "code-block.padding.inline",
+  position: relative,
+  width: 100%,
+);
+
+$-scroll-container-styles: (
+  max-height: "code-block.max-height",
+  outline: 0,
+  overflow: auto,
+  position: relative,
+);
+$-state-layer-styles: utils.deep-merge(
+  interaction.get-focus-styles(base-state-layer),
+  interaction.get-focus-styles(base-interaction-layer)
+);
+$-pre-container-styles: (
+  float: left,
+  min-width: 100%,
+  overflow: hidden,
+  position: relative,
+);
+$-pre-styles: (
+  font-size: "code-block.font-size",
+  line-height: "code-block.line-height",
+  margin-block: "code-block.pre.margin.block",
+  margin-inline: "code-block.pre.margin.inline",
+  padding-block: "code-block.pre.padding.block",
+  padding-inline: "code-block.pre.padding.inline",
+  overflow: visible,
+  white-space: pre,
+);
+$-pre-wrap-styles: (
+  overflow-wrap: anywhere,
+  white-space: pre-wrap,
+  word-break: break-all,
+);
+
+$-counter-styles: (
+  // counter-reset: #{$counter-name},
+  // counter-increment: "#{$counter-name} calc(var(--shiki-counter-start, 1) - 1)",
+  ":where(&) .line::before": (
+    // content: counter(#{$counter-name}),
+    // counter-increment: #{$counter-name},
+    // display: inline-block,
+    // margin-inline-end: 'var(--shiki-margin-inline-end, "spacing.medium")',
+    text-align: right,
+    // width: var(--shiki-counter-width, #{$counter-width}),
+  ),
+);
+
+@mixin configure() {
+  @if not $-tokens-registered {
+    $-tokens-registered: true !global;
+    @include utils.register-tokens($tokens: $-tokens, $prefix: "code-block");
+  }
+}
+
+@mixin configure-global($overrides: null) {
+  $overrides: utils.get-config-map(list, $overrides, $-configure-tokens);
+  @include configure();
+}
+
+@mixin css-styles {
+  $styles: ();
+  @include utils.css-styles(
+    $styles,
+    $keyframes: interaction.get-focus-styles(inward-keyframes)
+  );
+}
+
+@mixin host-styles {
+  $styles: (
+    ":host": $-base-styles,
+    ".scroll-container": $-scroll-container-styles,
+    ".state-layer": $-state-layer-styles,
+    ".state-layer::before":
+      interaction.get-focus-styles(base-focusable-animation),
+    ".pre-container": $-pre-container-styles,
+    ".pre, ::slotted(pre)": $-pre-styles,
+    ".wrap": $-pre-wrap-styles,
+
+    ":has(.scroll-container:focus-visible) ~ .state-layer":
+      interaction.get-focus-styles(focused-inward),
+  );
+  @include utils.host-styles(
+    $styles,
+    $keyframes: interaction.get-focus-styles(inward-keyframes)
+  );
+}
+
+@mixin styles {
+  @include css-styles;
+  @include host-styles;
+}

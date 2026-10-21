@@ -29,6 +29,7 @@
 @use "switch";
 @use "progress";
 @use "linear-progress";
+@use "code-block";
 
 @mixin styles {
   @include palette.styles;
@@ -65,4 +66,5 @@
   @include switch.styles;
   @include progress.styles;
   @include linear-progress.styles;
+  @include code-block.styles;
 }

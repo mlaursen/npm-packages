@@ -44,6 +44,7 @@
 @use "switch";
 @use "progress";
 @use "linear-progress";
+@use "code-block";
 
 @mixin configure(
   $output: null,
@@ -89,7 +90,8 @@
   $avatar: null,
   $switch: null,
   $progress: null,
-  $linear-progress: null
+  $linear-progress: null,
+  $code-block: null
 ) {
   @include utils.configure-setup(
     $output: $output,
@@ -138,4 +140,5 @@
   @include switch.configure-global($switch);
   @include progress.configure-global($progress);
   @include linear-progress.configure-global($linear-progress);
+  @include code-block.configure-global($code-block);
 }

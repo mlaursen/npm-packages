@@ -14,6 +14,8 @@ export * from "./checkbox/checkbox.js";
 export * from "./checkbox/constants.js";
 export * from "./checkbox/types.js";
 export * from "./clickable-card/clickable-card.js";
+export * from "./code-block/code-block.js";
+export * from "./code-block/types.js";
 export * from "./dialog-actions/dialog-actions.js";
 export * from "./dialog-content/dialog-content.js";
 export * from "./dialog-header/dialog-header.js";

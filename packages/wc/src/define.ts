@@ -6,6 +6,7 @@ import "./button/define.js";
 import "./card/define.js";
 import "./checkbox/define.js";
 import "./clickable-card/define.js";
+import "./code-block/define.js";
 import "./dialog-actions/define.js";
 import "./dialog-content/define.js";
 import "./dialog-header/define.js";
