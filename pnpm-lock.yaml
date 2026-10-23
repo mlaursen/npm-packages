@@ -283,8 +283,8 @@ importers:
         specifier: workspace:*
         version: link:../node-utils
       chokidar:
-        specifier: ^5.0.0
-        version: 5.0.0
+        specifier: ^6.0.0
+        version: 6.0.0
       glob:
         specifier: ^13.0.6
         version: 13.0.6
@@ -399,8 +399,8 @@ importers:
   packages/node-utils:
     dependencies:
       chokidar:
-        specifier: ^5.0.0
-        version: 5.0.0
+        specifier: ^6.0.0
+        version: 6.0.0
       oxfmt:
         specifier: ^0.74.0
         version: 0.74.0
@@ -718,7 +718,7 @@ importers:
         version: 16.0.3(rollup@4.64.12)
       '@swc/cli':
         specifier: ^0.8.1
-        version: 0.8.1(@swc/core@1.16.18)(chokidar@5.0.0)(supports-color@10.2.2)
+        version: 0.8.1(@swc/core@1.16.18)(chokidar@6.0.0)(supports-color@10.2.2)
       '@swc/core':
         specifier: ^1.16.18
         version: 1.16.18
@@ -732,8 +732,8 @@ importers:
         specifier: ^4.29.4
         version: 4.29.4
       chokidar:
-        specifier: ^5.0.0
-        version: 5.0.0
+        specifier: ^6.0.0
+        version: 6.0.0
       concurrently:
         specifier: ^10.0.6
         version: 10.0.6
@@ -3100,6 +3100,10 @@ packages:
   chokidar@5.0.0:
     resolution: {integrity: sha512-TQMmc3w+5AxjpL8iIiwebF73dRDF4fBIieAqGn9RGCWaEVwQ6Fb2cGe31Yns0RRIzii5goJ1Y7xbMwo1TxMplw==}
     engines: {node: '>= 20.19.0'}
+
+  chokidar@6.0.0:
+    resolution: {integrity: sha512-Ec2Z7wpcKBiMpR7DxteoqS/sq5G5d2A4fpxzPv6+fD7xNNdrTghn7L11YwV5EN1B3i72Erc3XVT5FkWIDx90+A==}
+    engines: {node: '>= 22.22'}
 
   ci-info@4.4.0:
     resolution: {integrity: sha512-77PSwercCZU2Fc4sX94eF8k8Pxte6JAwL4/ICZLFjJLqegs7kCuAsqqj/70NQF6TvDpgFjkubQB2FW2ZZddvQg==}
@@ -7088,7 +7092,7 @@ snapshots:
   '@standard-schema/spec@1.1.0':
     optional: true
 
-  '@swc/cli@0.8.1(@swc/core@1.16.18)(chokidar@5.0.0)(supports-color@10.2.2)':
+  '@swc/cli@0.8.1(@swc/core@1.16.18)(chokidar@6.0.0)(supports-color@10.2.2)':
     dependencies:
       '@swc/core': 1.16.18
       '@swc/counter': 0.1.3
@@ -7101,7 +7105,7 @@ snapshots:
       source-map: 0.7.6
       tinyglobby: 0.2.17
     optionalDependencies:
-      chokidar: 5.0.0
+      chokidar: 6.0.0
     transitivePeerDependencies:
       - bare-abort-controller
       - react-native-b4a
@@ -7825,6 +7829,10 @@ snapshots:
       readdirp: 4.1.2
 
   chokidar@5.0.0:
+    dependencies:
+      readdirp: 5.1.1
+
+  chokidar@6.0.0:
     dependencies:
       readdirp: 5.1.1
 

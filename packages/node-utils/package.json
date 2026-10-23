@@ -54,7 +54,7 @@
     "dev": "concurrently 'pnpm build-types-watch' 'pnpm build-dist-watch'"
   },
   "dependencies": {
-    "chokidar": "^5.0.0",
+    "chokidar": "^6.0.0",
     "oxfmt": "^0.74.0",
     "pretty-bytes": "^7.2.0",
     "pretty-ms": "^10.0.0"
