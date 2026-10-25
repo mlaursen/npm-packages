@@ -1,7 +1,8 @@
 import { readFile } from "node:fs/promises";
+import { resolve } from "node:path";
 
 import { input } from "@inquirer/prompts";
-import { enableLogger, generateFile } from "@mlaursen/node-utils";
+import { enableLogger, generateFile, getGitRoot } from "@mlaursen/node-utils";
 import { alphaNumericSort, pascalCase } from "@mlaursen/utils";
 
 enableLogger();
@@ -10,6 +11,10 @@ const ROOT_INDEX_FILE = "src/index.ts";
 const ROOT_DEFINE_FILE = "src/define.ts";
 const ROOT_CONFIGURE_FILE = "src/_configure.scss";
 const ROOT_STYLES_FILE = "src/_styles.scss";
+const WEBSITE_COMPONENTS_FOLDER = resolve(
+  getGitRoot(),
+  "apps/website/src/packages/wc/components",
+);
 
 const STYLES_FILE_CONTENTS = `@use "./index" as *;
 
@@ -204,6 +209,41 @@ $-base-styles: (
 `;
 }
 
+function getWebsitePageContents({
+  kebabName,
+  pascalName,
+}: ComponentNames): string {
+  return `
+---
+layout: docs
+
+eleventyNavigation:
+  key: ${pascalName}
+  parent: Home
+
+page:
+  title: ${pascalName}
+---
+
+<form>
+  <mwc-card style="position: sticky;
+                   top: 4rem;
+                   z-index: 8;
+                   --mwc-box-item-min-size: 12rem">
+    <mwc-box nowrap
+             stacked
+             align="stretch"
+             style="max-height: 40vh;
+                    overflow: auto">
+    </mwc-box>
+  </mwc-card>
+</form>
+
+<${kebabName}></${kebabName}>
+
+`;
+}
+
 const kebabName = await input({
   message: "Input the component name (should be kebab-cased)",
   pattern: /^[a-z-]+$/,
@@ -247,5 +287,10 @@ await Promise.all([
     banner: false,
     contents: getIndexScssContents(names),
     filePath: `${srcFolder}/_index.scss`,
+  }),
+  generateFile({
+    banner: false,
+    contents: getWebsitePageContents(names),
+    filePath: `${WEBSITE_COMPONENTS_FOLDER}/${kebabName}.njk`,
   }),
 ]);
