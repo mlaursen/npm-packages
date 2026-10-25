@@ -30,6 +30,7 @@
 @use "progress";
 @use "linear-progress";
 @use "code-block";
+@use "circular-progress";
 
 @mixin styles {
   @include palette.styles;
@@ -67,4 +68,5 @@
   @include progress.styles;
   @include linear-progress.styles;
   @include code-block.styles;
+  @include circular-progress.styles;
 }

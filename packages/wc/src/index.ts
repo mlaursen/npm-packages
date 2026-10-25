@@ -13,6 +13,8 @@ export * from "./card/types.js";
 export * from "./checkbox/checkbox.js";
 export * from "./checkbox/constants.js";
 export * from "./checkbox/types.js";
+export * from "./circular-progress/circular-progress.js";
+export * from "./circular-progress/types.js";
 export * from "./clickable-card/clickable-card.js";
 export * from "./code-block/code-block.js";
 export * from "./code-block/types.js";

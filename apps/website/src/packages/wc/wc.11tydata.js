@@ -233,6 +233,14 @@ export const progress = {
     /** @type {import("@mlaursen/wc").LinearProgressShape[]} */
     shapes: defaultShapes,
   },
+
+  circular: {
+    /** @type {import("@mlaursen/wc").CircularProgressSize[]} */
+    sizes: defaultExtraSizes,
+
+    /** @type {import("@mlaursen/wc").CircularProgressIndicatorWidth[]} */
+    indicatorWidths: defaultSizes,
+  },
 };
 
 export const objectFit = {

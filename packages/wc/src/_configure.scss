@@ -46,6 +46,7 @@
 @use "progress";
 @use "linear-progress";
 @use "code-block";
+@use "circular-progress";
 
 @mixin configure(
   $output: null,
@@ -93,7 +94,8 @@
   $switch: null,
   $progress: null,
   $linear-progress: null,
-  $code-block: null
+  $code-block: null,
+  $circular-progress: null
 ) {
   @include utils.configure-setup(
     $output: $output,
@@ -144,4 +146,5 @@
   @include progress.configure-global($progress);
   @include linear-progress.configure-global($linear-progress);
   @include code-block.configure-global($code-block);
+  @include circular-progress.configure-global($circular-progress);
 }

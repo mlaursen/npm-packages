@@ -1,4 +1,3 @@
-// oxlint-disable no-use-before-define
 import { kebabCase } from "@mlaursen/utils";
 import {
   Checkbox,

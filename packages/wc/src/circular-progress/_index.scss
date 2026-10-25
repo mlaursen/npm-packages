@@ -1,0 +1,267 @@
+@use "sass:map";
+@use "sass:math";
+
+@use "../utils";
+
+$-tokens-registered: false;
+$-tokens: (
+  size: "circular-progress.small.size",
+
+  extra-small: (
+    size: "icon.small.size",
+  ),
+  small: (
+    size: "icon.medium.size",
+  ),
+  // this is the material design size
+  medium: (
+    size: 2.5rem,
+  ),
+  large: (
+    size: 3rem,
+  ),
+  extra-large: (
+    size: 3.5rem,
+  ),
+
+  indicator: (
+    // must be unitless
+    width: "circular-progress.indicator.small.width",
+
+    small: (
+      width: 4,
+    ),
+    medium: (
+      // this is the material design size
+      width: 10,
+    ),
+    large: (
+      width: 16,
+    ),
+  ),
+);
+
+$-configure-tokens: map.keys($-tokens);
+
+$-short-tokens: (
+  size: "--_s",
+  active-color: "--_ac",
+  indicator-width: "--_iw",
+);
+@function -short-name($name) {
+  @return utils.validate(
+    $-short-tokens,
+    $name,
+    "invalid linear-progress short token name"
+  );
+}
+
+@function -short-var($name, $fallback: null) {
+  @if $fallback {
+    @return var(#{-short-name($name)}, #{$fallback});
+  }
+
+  @return var(#{-short-name($name)});
+}
+
+$-base-styles: (
+  #{-short-name(size)}: "circular-progress.size",
+  #{-short-name(active-color)}: "progress.active-color",
+  #{-short-name(indicator-width)}: "circular-progress.indicator.width",
+
+  align-items: center,
+
+  /// Source:
+  /// https://github.com/material-components/material-web/blob/fd45953c77876d7964dfe1181e1e30ae55b69a73/progress/internal/_circular-progress.scss#L64-L69
+  contain: strict,
+  content-visibility: auto,
+
+  display: inline-flex,
+  font-size: -short-var(size),
+  height: 1em,
+  justify-content: center,
+  position: relative,
+  width: 1em,
+);
+$-extra-small-styles: utils.remap-variants(
+  circular-progress,
+  extra-small,
+  size
+);
+$-small-styles: utils.remap-variants(circular-progress, small, size);
+$-medium-styles: utils.remap-variants(circular-progress, medium, size);
+$-large-styles: utils.remap-variants(circular-progress, large, size);
+$-extra-large-styles: utils.remap-variants(
+  circular-progress,
+  extra-large,
+  size
+);
+$-small-indicator-styles: (
+  #{-short-name(indicator-width)}: "circular-progress.indicator.small.width",
+);
+$-medium-indicator-styles: (
+  #{-short-name(indicator-width)}: "circular-progress.indicator.medium.width",
+);
+$-large-indicator-styles: (
+  #{-short-name(indicator-width)}: "circular-progress.indicator.large.width",
+);
+
+$-base-position-styles: (
+  inset: 0,
+  position: absolute,
+);
+$-base-hidden-styles: (
+  overflow: hidden,
+);
+
+// Source:
+// https://github.com/material-components/material-web/blob/fd45953c77876d7964dfe1181e1e30ae55b69a73/progress/internal/_circular-progress.scss#L33-L49
+// Indeterminate mode is 3 animations composed together:
+// 1. expand-arc: an arc is expanded/contracted between 10deg and 270deg.
+// 2. rotate-arc: at the same time, the arc is rotated in increments
+// of 270deg.
+// 3. linear-rotate: that rotating arc is then linearly rotated to produce
+// a spinning expanding/contracting arc.
+//
+// See original implementation:
+// https://github.com/PolymerElements/paper-spinner/blob/master/paper-spinner-styles.js.
+$-arc-duration: 1333ms;
+$-cycle-duration: 4 * $-arc-duration;
+$-linear-rotate-duration: math.div($-arc-duration * 360, 306);
+$-indeterminate-easing: cubic-bezier(0.4, 0, 0.2, 1);
+
+$-indeterminate-styles: (
+  animation: linear infinite $-linear-rotate-duration linear-rotate,
+);
+$-indeterminate-circle-styles: (
+  animation-duration: "#{$-arc-duration}, #{$-cycle-duration}",
+  animation-fill-mode: both,
+  animation-iteration-count: infinite,
+  animation-name: expand-arc,
+  animation-timing-function: $-indeterminate-easing,
+  box-sizing: border-box,
+  border-radius: 50%,
+  border-color:
+    "#{-short-var(active-color)} #{-short-var(active-color)} transparent transparent",
+  border-style: solid,
+  border-width:
+    "calc((#{-short-var(indicator-width)} / 100) * #{-short-var(size)})",
+);
+$-indeterminate-left-styles: (
+  inset: 0 50% 0 0,
+);
+$-indeterminate-left-circle-styles: (
+  inset: 0 -100% 0 0,
+  rotate: 135deg,
+);
+$-indeterminate-right-styles: (
+  inset: 0 0 0 50%,
+);
+$-indeterminate-right-circle-styles: (
+  animation-delay: "calc(-0.5 * #{$-arc-duration}), 0ms",
+  inset: 0 0 0 -100%,
+  rotate: 100deg,
+);
+$-indeterminate-spinner-styles: (
+  animation: infinite both rotate-arc,
+  animation-duration: $-cycle-duration,
+  animation-timing-function: $-indeterminate-easing,
+);
+
+// Source:
+// https://github.com/material-components/material-web/blob/fd45953c77876d7964dfe1181e1e30ae55b69a73/progress/internal/_circular-progress.scss#L203-L209
+//
+// 2. rotate-arc
+// The arc seamlessly travels around the circle indefinitely so it needs to
+// end at a full rotation of the circle. This rotates the 270 deg
+// (270/360 = 3/4) arc 4x (4 * 3/4 = 3) so it ends at
+// (3 * 360 = 1080).
+// This is sub-divided into increments of 135deg since the arc is rendered
+// with 2 divs acting together.
+@function -rotate-arc-keyframes() {
+  $steps: 8;
+  $step: math.div(100%, $steps);
+  $step-degree: 135deg;
+
+  $keyframes: ();
+  @for $i from 1 through $steps {
+    $percent: $step * $i;
+    $keyframes: map.set(
+      $keyframes,
+      "#{$percent}",
+      (
+        transform: rotate($step-degree * $i),
+      )
+    );
+  }
+  @return $keyframes;
+}
+
+$-keyframes: (
+  expand-arc: (
+    "0%": (
+      transform: rotate(265deg),
+    ),
+    "50%": (
+      transform: rotate(130deg),
+    ),
+    "100%": (
+      transform: rotate(265deg),
+    ),
+  ),
+  rotate-arc: -rotate-arc-keyframes(),
+  linear-rotate: (
+    to: (
+      transform: rotate(360deg),
+    ),
+  ),
+);
+
+@mixin configure() {
+  @if not $-tokens-registered {
+    $-tokens-registered: true !global;
+    @include utils.register-tokens(
+      $tokens: $-tokens,
+      $prefix: "circular-progress"
+    );
+  }
+}
+
+@mixin configure-global($overrides: null) {
+  $overrides: utils.get-config-map(list, $overrides, $-configure-tokens);
+  @include configure();
+}
+
+@mixin css-styles {
+  $styles: ();
+  @include utils.css-styles($styles);
+}
+
+@mixin host-styles {
+  $styles: (
+    ":host": $-base-styles,
+    ":host(:not([value]))": $-indeterminate-styles,
+    ":host([size=extra-small])": $-extra-small-styles,
+    ":host([size=small])": $-small-styles,
+    ":host([size=medium])": $-medium-styles,
+    ":host([size=large])": $-large-styles,
+    ":host([size=extra-large])": $-extra-large-styles,
+    ":host([indicator-width=small])": $-small-indicator-styles,
+    ":host([indicator-width=medium])": $-medium-indicator-styles,
+    ":host([indicator-width=large])": $-large-indicator-styles,
+    ".spinner, .left, .right, .circle": $-base-position-styles,
+    ".spinner": $-indeterminate-spinner-styles,
+    ".left, .right": $-base-hidden-styles,
+    ".left": $-indeterminate-left-styles,
+    ".left .circle": $-indeterminate-left-circle-styles,
+    ".right": $-indeterminate-right-styles,
+    ".right .circle": $-indeterminate-right-circle-styles,
+    ".circle": $-indeterminate-circle-styles,
+  );
+  @include utils.host-styles($styles, $keyframes: $-keyframes);
+}
+
+@mixin styles {
+  @include css-styles;
+  @include host-styles;
+}

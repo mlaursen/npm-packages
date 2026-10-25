@@ -5,6 +5,7 @@ import "./box/define.js";
 import "./button/define.js";
 import "./card/define.js";
 import "./checkbox/define.js";
+import "./circular-progress/define.js";
 import "./clickable-card/define.js";
 import "./code-block/define.js";
 import "./dialog-actions/define.js";
