@@ -239,7 +239,7 @@ page:
   </mwc-card>
 </form>
 
-<${kebabName}></${kebabName}>
+<mwc-${kebabName}></mwc-${kebabName}>
 
 `;
 }
@@ -292,5 +292,6 @@ await Promise.all([
     banner: false,
     contents: getWebsitePageContents(names),
     filePath: `${WEBSITE_COMPONENTS_FOLDER}/${kebabName}.njk`,
+    format: false,
   }),
 ]);

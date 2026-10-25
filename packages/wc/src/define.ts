@@ -1,5 +1,6 @@
 import "./app-bar-title/define.js";
 import "./app-bar/define.js";
+import "./async-button/define.js";
 import "./avatar/define.js";
 import "./box/define.js";
 import "./button/define.js";

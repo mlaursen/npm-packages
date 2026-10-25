@@ -73,7 +73,7 @@ export function InteractionMixin<T extends StylableLitElement>(
       super.updated(changed);
 
       if (changed.has("disableRipple") || changed.has("disabled")) {
-        this.#bindRippleHandlers(!this.disableRipple && !this.disabled);
+        this.#bindRippleHandlers(!this.disableRipple && !this.isDisabled());
       }
     }
 
@@ -82,6 +82,10 @@ export function InteractionMixin<T extends StylableLitElement>(
 
       this.#animationController?.abort();
       this.#bindRippleHandlers(false);
+    }
+
+    isDisabled(): boolean {
+      return this.disabled || this.ariaDisabled === "true";
     }
 
     _renderStateLayer(): TemplateResult {
@@ -115,7 +119,7 @@ export function InteractionMixin<T extends StylableLitElement>(
 
     #getStateLayerClassName(): ReturnType<typeof classMap> {
       return classMap({
-        disabled: this.disabled,
+        disabled: this.isDisabled(),
         pressed: this._pressed,
       });
     }
@@ -187,7 +191,7 @@ export function InteractionMixin<T extends StylableLitElement>(
     #isActionableEvent(event: Event): event is PointerEvent {
       return isActionableEvent({
         event,
-        disabled: this.disabled,
+        disabled: this.isDisabled(),
         startEvent: this.#startEvent,
       });
     }
@@ -246,7 +250,7 @@ export function InteractionMixin<T extends StylableLitElement>(
     }
 
     #handleContextMenu(): void {
-      if (this.disabled) {
+      if (this.isDisabled()) {
         return;
       }
 
@@ -254,7 +258,7 @@ export function InteractionMixin<T extends StylableLitElement>(
     }
 
     #handleClick(): void {
-      if (this.disabled) {
+      if (this.isDisabled()) {
         return;
       }
 

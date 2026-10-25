@@ -30,6 +30,17 @@ export interface Interactable extends InteractionProperties {
   _renderStateLayer(): TemplateResult;
 
   /**
+   * Public helper to determine if an element is considered disabled via aria
+   * role behavior.
+   *
+   * Override this function if the click and keyboard events should be
+   * prevented due to disabled states that are not one of these two.
+   *
+   * @return `true` if `disabled` or `aria-disabled === "true"`
+   */
+  isDisabled(): boolean;
+
+  /**
    * This should be used when the host itself cannot gain focus since
    * `:host(:has())` selectors do not really work at this time.
    *

@@ -1,0 +1,72 @@
+---
+layout: docs
+
+eleventyNavigation:
+  key: Async Button
+  parent: Home
+
+page:
+  title: Async Button
+---
+
+<form>
+  <mwc-typography variant="label">
+    <label>
+      <mwc-box padding="none">
+        <mwc-checkbox name="pending">
+        </mwc-checkbox>
+        Pending
+      </mwc-box>
+    </label>
+  </mwc-typography>
+  <mwc-typography id="async-disabled-variant-title"
+                  variant="title"
+                  margin="top">
+    <h4>Async Disabled Variant</h4>
+  </mwc-typography>
+  <mwc-radio-group aria-labelledby="async-disabled-variant-title">
+    <mwc-box grid>
+      {% for value in asyncButton.asyncDisabledVariants %}
+        <mwc-typography>
+          <label>
+            <mwc-box padding="none" inline>
+              <mwc-radio name="async-disabled-variant"
+                         value="{{ value or "null" }}"
+                         required
+                         {{ "checked" if value == null }}>
+              </mwc-radio>
+              {{ value or "null" }}
+            </mwc-box>
+          </label>
+        </mwc-typography>
+      {% endfor %}
+    </mwc-box>
+  </mwc-radio-group>
+</form>
+<mwc-box stacked align="start">
+  {% for asyncVariant in asyncButton.asyncVariants %}
+    <mwc-async-button async-variant="{{ asyncVariant }}">
+      {{ asyncVariant }}
+    </mwc-async-button>
+    {% if asyncVariant === "circular-start" or asyncVariant === "circular-end" %}
+      {% for i in range(1, 3) %}
+        <mwc-async-button async-variant="{{ asyncVariant }}">
+          {% if i === 1 or i === 3 %}
+            <mwc-material-symbol slot="start-addon">
+              favorite
+            </mwc-material-symbol>
+          {% endif %}
+          {{ asyncVariant }}
+          {% if i == 2 or i == 3 %}
+            <mwc-material-symbol slot="end-addon">
+              close
+            </mwc-material-symbol>
+          {% endif %}
+        </mwc-async-button>
+      {% endfor %}
+    {% endif %}
+  {% endfor %}
+</mwc-box>
+{% js "defer" %}
+{% include "scripts/wc/async-button.js" %}
+{% endjs %}

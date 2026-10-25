@@ -19,7 +19,9 @@ import type {
  * reflects the `role` so those test libraries can find it.
  */
 export function AriaMixin<
-  T extends LitConstructor<LitElement & { disabled?: boolean | null }>,
+  T extends LitConstructor<
+    LitElement & { disabled?: boolean | null; isDisabled?(): boolean }
+  >,
 >(
   Base: T,
   role: AriaRole,
@@ -56,14 +58,17 @@ export function AriaMixin<
       this.removeEventListener("keydown", this.handleKeyDown);
     }
 
-    isDisabled(): boolean {
+    override isDisabled(): boolean {
+      if (super.isDisabled) {
+        return super.isDisabled();
+      }
+
       return this.disabled || this.ariaDisabled === "true";
     }
 
     handleClick(event: MouseEvent): void {
       if (this.isDisabled()) {
         event.preventDefault();
-        event.stopPropagation();
       }
     }
 

@@ -47,6 +47,7 @@
 @use "linear-progress";
 @use "code-block";
 @use "circular-progress";
+@use "async-button";
 
 @mixin configure(
   $output: null,
@@ -95,7 +96,8 @@
   $progress: null,
   $linear-progress: null,
   $code-block: null,
-  $circular-progress: null
+  $circular-progress: null,
+  $async-button: null
 ) {
   @include utils.configure-setup(
     $output: $output,
@@ -147,4 +149,5 @@
   @include linear-progress.configure-global($linear-progress);
   @include code-block.configure-global($code-block);
   @include circular-progress.configure-global($circular-progress);
+  @include async-button.configure-global($async-button);
 }

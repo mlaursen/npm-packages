@@ -31,6 +31,7 @@
 @use "linear-progress";
 @use "code-block";
 @use "circular-progress";
+@use "async-button";
 
 @mixin styles {
   @include palette.styles;
@@ -69,4 +70,5 @@
   @include linear-progress.styles;
   @include code-block.styles;
   @include circular-progress.styles;
+  @include async-button.styles;
 }

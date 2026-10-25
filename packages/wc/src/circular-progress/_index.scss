@@ -5,7 +5,10 @@
 
 $-tokens-registered: false;
 $-tokens: (
-  size: "circular-progress.small.size",
+  active-color: "progress.active-color",
+  inactive-color: "progress.inactive-color",
+
+  size: "circular-progress.medium.size",
   extra-small: (
     size: "icon.small.size",
   ),
@@ -85,8 +88,8 @@ $-short-tokens: (
 
 $-base-styles: (
   #{-short-name(size)}: "circular-progress.size",
-  #{-short-name(active-color)}: "progress.active-color",
-  #{-short-name(inactive-color)}: "progress.inactive-color",
+  #{-short-name(active-color)}: "circular-progress.active-color",
+  #{-short-name(inactive-color)}: "circular-progress.inactive-color",
   #{-short-name(indicator-width)}: "circular-progress.indicator.width",
   #{-short-name(determinate-display)}: inline,
   #{-short-name(indeterminate-display)}: none,

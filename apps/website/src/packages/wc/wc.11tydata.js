@@ -125,6 +125,19 @@ export const button = {
   states: ["normal", "unselected", "selected"],
 };
 
+export const asyncButton = {
+  /** @type {import("@mlaursen/wc").AsyncButtonVariant[]} */
+  asyncVariants: [
+    "circular-overlay",
+    "circular-start",
+    "circular-end",
+    "linear-start",
+    "linear-end",
+  ],
+  /** @type {import("@mlaursen/wc").AsyncButtonDisabledVariant[]} */
+  asyncDisabledVariants: ["aria-disabled", "disabled", null],
+};
+
 export const iconButton = {
   /** @type {(import("@mlaursen/wc").IconButtonWidth | null)[]} **/
   widths: ["narrow", null, "wide"],

@@ -20,7 +20,7 @@ export class CircularProgress
   @property()
   shape: CircularProgressShape = "round";
 
-  @property({ reflect: true })
+  @property()
   size: CircularProgressSize = "medium";
 
   @property({ reflect: true, attribute: "indicator-width" })

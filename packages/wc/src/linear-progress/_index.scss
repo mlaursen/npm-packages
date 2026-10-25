@@ -6,6 +6,9 @@
 
 $-tokens-registered: false;
 $-tokens: (
+  active-color: "progress.active-color",
+  inactive-color: "progress.inactive-color",
+
   shape: (
     square: "shape.corner.none",
     round: "shape.corner.full",
@@ -52,6 +55,9 @@ $-configure-tokens: map.keys($-tokens);
 /// keep size small, always use short-vars for these and don't publicize them
 /// in the normal tokens API
 $-short-tokens: (
+  active-color: "--_ac",
+  inactive-color: "--_ic",
+
   border-radius: "--_br",
   translate-name: "--_itn",
   scale-name: "--_isn",
@@ -261,6 +267,8 @@ $-keyframe-values: (
 }
 
 $-base-styles: (
+  #{-short-name(active-color)}: "linear-progress.active-color",
+  #{-short-name(inactive-color)}: "linear-progress.inactive-color",
   #{-short-name(active-x)}: 0%,
   #{-short-name(active-y)}: 0%,
   #{-short-name(inactive-x)}: 0%,
@@ -356,7 +364,7 @@ $-base-track-pseudo-styles: (
     ),
 );
 $-indeterminate-track-styles: (
-  background: "progress.inactive-color",
+  background: -short-var(inactive-color),
   display: -short-var(indeterminate-display),
 
   "&::before, &::after": (
@@ -365,7 +373,7 @@ $-indeterminate-track-styles: (
     animation-name: "#{-short-var(translate-name)}, #{-short-var(scale-name)}",
     animation-play-state: "progress.animation-play-state",
     animation-timing-function: linear,
-    background: "progress.active-color",
+    background: -short-var(active-color),
     block-size: 100%,
     inline-size: 100%,
   ),
@@ -388,11 +396,11 @@ $-determinate-track-styles: (
   display: -short-var(determinate-display),
 
   "&::before": (
-    background: "progress.active-color",
+    background: -short-var(active-color),
     transform: "translate(#{-short-var(active-x), #{-short-var(active-y)}})",
   ),
   "&::after": (
-    background: "progress.inactive-color",
+    background: -short-var(inactive-color),
     transform: "translate(#{-short-var(inactive-x), #{-short-var(inactive-y)}})",
     z-index: -1,
   ),
@@ -417,7 +425,7 @@ $-stop-indicator-styles: (
     utils.deep-merge(
       map.remove(utils.pseudo-element($inset: null, $z-index: null), position),
       (
-        background: "progress.active-color",
+        background: -short-var(active-color),
         border-end-end-radius: "linear-progress.stop-indicator.end-end",
         border-end-start-radius: "linear-progress.stop-indicator.end-start",
         border-start-end-radius: "linear-progress.stop-indicator.start-end",

@@ -1,0 +1,96 @@
+@use "sass:map";
+
+@use "../utils";
+
+// $-tokens-registered: false;
+// $-tokens: ();
+// $-configure-tokens: map.keys($-tokens);
+$-configure-tokens: ();
+
+$-base-styles: (
+  "circular-progress.size": "button.icon.size",
+);
+$-current-color-styles: (
+  "circular-progress.active-color": currentcolor,
+);
+$-align-center-styles: (
+  display: inline-flex,
+  place-content: center,
+  place-items: center,
+);
+$-progress-styles: (
+  border-radius: inherit,
+  overflow: hidden,
+);
+$-progress-overlay-styles: (
+  position: absolute,
+  inset: 0,
+  z-index: 1,
+);
+$-progress-circular-end-styles: (
+  order: 1,
+);
+$-progress-overlay-active-content-styles: (
+  opacity: 0,
+);
+$-display-none-styles: (
+  display: none,
+);
+$-progress-linear-start-styles: (
+  place-items: flex-start,
+);
+$-progress-linear-end-styles: (
+  place-items: flex-end,
+);
+
+@mixin configure() {
+  // no tokens at this time
+  // @if not $-tokens-registered {
+  //   $-tokens-registered: true !global;
+  //   @include utils.register-tokens($tokens: $-tokens, $prefix: "async-button");
+  // }
+}
+
+@mixin configure-global($overrides: null) {
+  $overrides: utils.get-config-map(list, $overrides, $-configure-tokens);
+  @include configure();
+}
+
+@mixin css-styles {
+  $styles: ();
+  @include utils.css-styles($styles);
+}
+
+@mixin host-styles {
+  $display-none-selectors: (
+    ":host(:not([pending])) .progress",
+    ":host([async-variant*=circular]) slot[name=linear]",
+    ":host([async-variant*=linear]) slot[name=circular]",
+    ":host([pending][async-variant=circular-start]) slot[name=start]",
+    ":host([pending][async-variant=circular-end]) slot[name=end]"
+  );
+
+  $styles: (
+    ":host": $-base-styles,
+    ":host(:not([async-disabled-variant]))": $-current-color-styles,
+
+    ".content, .progress": $-align-center-styles,
+    ".progress": $-progress-styles,
+    "#{$display-none-selectors}": $-display-none-styles,
+    ":host(:is([async-variant=circular-overlay], [async-variant*=linear])) .progress":
+      $-progress-overlay-styles,
+    ":host([async-variant=circular-overlay][pending]) :is(slot[name=start], slot[name=end], .content)":
+      $-progress-overlay-active-content-styles,
+    ":host([async-variant=circular-end]) .progress":
+      $-progress-circular-end-styles,
+    ":host([async-variant=linear-start]) .progress":
+      $-progress-linear-start-styles,
+    ":host([async-variant=linear-end]) .progress": $-progress-linear-end-styles,
+  );
+  @include utils.host-styles($styles);
+}
+
+@mixin styles {
+  @include css-styles;
+  @include host-styles;
+}
