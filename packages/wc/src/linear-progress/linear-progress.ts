@@ -30,11 +30,11 @@ export class LinearProgress
 
   override render(): TemplateResult {
     return html`
-      <span class="track pseudo indeterminate"></span>
+      <div class="track pseudo indeterminate"></div>
 
-      <span class="track buffer"></span>
-      <span class="track pseudo determinate"></span>
-      <span class="stop-indicator"></span>
+      <div class="track buffer"></div>
+      <div class="track pseudo determinate"></div>
+      <div class="stop-indicator"></div>
     `;
   }
 }
