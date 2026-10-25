@@ -27,6 +27,15 @@ $-tokens: (
     size: 1em,
   ),
 
+  transition: (
+    duration: "transition.duration.medium-1",
+    easing: "transition.easing.linear",
+  ),
+
+  indeterminate: (
+    duration: 2s,
+  ),
+
   stop-indicator: (
     size: "linear-progress.size",
     start-start: "shape.corner.full",
@@ -55,6 +64,8 @@ $-short-tokens: (
   stop-indicator-block-start: "--_ibs",
   stop-indicator-inline-start: "--_iis",
 
+  // See progress/_index.scss
+  gap: "--_g",
   percentage: "--_p",
   active-x: "--_ax",
   active-y: "--_ay",
@@ -250,7 +261,6 @@ $-keyframe-values: (
 }
 
 $-base-styles: (
-  #{-short-name(percentage)}: "progress.percentage",
   #{-short-name(active-x)}: 0%,
   #{-short-name(active-y)}: 0%,
   #{-short-name(inactive-x)}: 0%,
@@ -275,7 +285,7 @@ $-horizontal-styles: utils.deep-merge(
   (
     #{-short-name(active-x)}: calc(-100% + #{-short-var(percentage)}),
     #{-short-name(inactive-x)}:
-      'calc("progress.gap" +  #{-short-var(percentage)})',
+      "calc(#{-short-var(gap)} +  #{-short-var(percentage)})",
     #{-short-name(primary-inline-start)}: -short-var(primary-inset),
     #{-short-name(secondary-inline-start)}: -short-var(secondary-inset),
     #{-short-name(stop-indicator-inline-start)}:
@@ -297,7 +307,7 @@ $-vertical-styles: utils.deep-merge(
   (
     #{-short-name(active-y)}: calc(#{-short-var(percentage)} - 100%),
     #{-short-name(inactive-y)}:
-      'calc(#{-short-var(percentage)} - "progress.gap")',
+      "calc(#{-short-var(percentage)} - #{-short-var(gap)})",
     #{-short-name(primary-block-start)}: -short-var(primary-inset),
     #{-short-name(secondary-block-start)}: -short-var(secondary-inset),
     #{-short-name(stop-indicator-block-start)}: -short-var(stop-indicator-inset),
@@ -350,10 +360,10 @@ $-indeterminate-track-styles: (
   display: -short-var(indeterminate-display),
 
   "&::before, &::after": (
-    animation-duration: "progress.indeterminate.duration",
+    animation-duration: "linear-progress.indeterminate.duration",
     animation-iteration-count: infinite,
     animation-name: "#{-short-var(translate-name)}, #{-short-var(scale-name)}",
-    animation-play-state: "progress.indeterminate.play-state",
+    animation-play-state: "progress.animation-play-state",
     animation-timing-function: linear,
     background: "progress.active-color",
     block-size: 100%,
@@ -389,7 +399,7 @@ $-determinate-track-styles: (
 );
 $-determinate-track-transition-styles: (
   transition:
-    'transform "progress.transition.duration" "progress.transition.easing"',
+    'transform "linear-progress.transition.duration" "linear-progress.transition.easing"',
 
   "&::before, &::after": (
     transition: inherit,

@@ -4,7 +4,6 @@ import { property } from "lit/decorators.js";
 import { InternalsMixin } from "../internals-mixin/internals-mixin.js";
 import { MarginMixin } from "../margin/margin-mixin.js";
 import { getPercentage } from "../utils/getPercentage.js";
-import { getVarName } from "../utils/tokens.js";
 import styles from "./progress-styles.js";
 import type { ProgressProperties, ProgressVariant } from "./types.js";
 
@@ -81,19 +80,19 @@ export class Progress extends BaseStyledProgress implements ProgressProperties {
   }
 
   #updatePercentage(): void {
-    const property = getVarName("progress.percentage");
+    const valueVar = "--_v";
     if (this.indeterminate) {
-      this.style.removeProperty(property);
+      this.style.removeProperty(valueVar);
       return;
     }
 
-    const value =
-      getPercentage({
-        min: this.min,
-        max: this.max,
-        value: this.value,
-      }) * 100;
+    const percentage = getPercentage({
+      min: this.min,
+      max: this.max,
+      value: this.value,
+    });
+    const value = percentage * 100;
 
-    this.style.setProperty(property, `${value}%`);
+    this.style.setProperty(valueVar, `${value}`);
   }
 }

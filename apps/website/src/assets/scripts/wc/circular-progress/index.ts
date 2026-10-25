@@ -20,8 +20,8 @@ if (!form || !editable || !indeterminate || !valueField) {
   throw new Error("Missing stuff");
 }
 
-const syncValue = (): void => {
-  if (indeterminate.checked) {
+const syncValue = (checked: boolean): void => {
+  if (checked) {
     editable.removeAttribute("value");
   } else {
     const value = Number.isFinite(valueField.valueAsNumber)
@@ -36,8 +36,11 @@ form.addEventListener("change", (event) => {
     editable.setAttribute(kebabCase(event.target.name), event.target.value);
   } else if (isCustomElement(event.target, Checkbox)) {
     const { name, checked } = event.target;
-    editable.toggleAttribute(kebabCase(name), checked);
-    syncValue();
+    if (name === "indeterminate") {
+      syncValue(checked);
+    } else {
+      editable.toggleAttribute(kebabCase(name), checked);
+    }
   } else if (isCustomElement(event.target, TextField)) {
     let value = event.target.valueAsNumber;
     if (!Number.isFinite(value)) {
@@ -48,6 +51,6 @@ form.addEventListener("change", (event) => {
 
     event.target.value = clamped;
     editable.setAttribute(event.target.name, clamped);
-    indeterminate.removeAttribute("checked");
+    indeterminate.checked = false;
   }
 });

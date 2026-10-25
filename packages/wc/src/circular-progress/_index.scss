@@ -6,7 +6,6 @@
 $-tokens-registered: false;
 $-tokens: (
   size: "circular-progress.small.size",
-
   extra-small: (
     size: "icon.small.size",
   ),
@@ -22,6 +21,14 @@ $-tokens: (
   ),
   extra-large: (
     size: 3.5rem,
+  ),
+
+  shape: "circular-progress.round.shape",
+  round: (
+    shape: round,
+  ),
+  square: (
+    shape: square,
   ),
 
   indicator: (
@@ -44,9 +51,21 @@ $-tokens: (
 $-configure-tokens: map.keys($-tokens);
 
 $-short-tokens: (
+  // See progress/_index.scss
+  value: "--_v",
+  gap: "--_g",
+
   size: "--_s",
   active-color: "--_ac",
+  inactive-color: "--_ic",
   indicator-width: "--_iw",
+
+  determinate-display: "--_dd",
+  indeterminate-display: "--_id",
+
+  circumference: "--_c",
+  stroke-width: "--_sw",
+  circle-gap: "--_cg",
 );
 @function -short-name($name) {
   @return utils.validate(
@@ -67,14 +86,24 @@ $-short-tokens: (
 $-base-styles: (
   #{-short-name(size)}: "circular-progress.size",
   #{-short-name(active-color)}: "progress.active-color",
+  #{-short-name(inactive-color)}: "progress.inactive-color",
   #{-short-name(indicator-width)}: "circular-progress.indicator.width",
+  #{-short-name(determinate-display)}: inline,
+  #{-short-name(indeterminate-display)}: none,
+
+  // stroke thickness as a length: size * width%
+  #{-short-name(stroke-width)}:
+    "calc(#{-short-var(size)} * #{-short-var(indicator-width)} / 100)",
+
+  // circumference of the circle the stroke is centered on
+  #{-short-name(circumference)}:
+    "calc(pi * #{-short-var(size)} * (1 - #{-short-var(indicator-width)} / 100))",
+
+  // visible gap + round-cap overhang (one full stroke width)
+  #{-short-name(circle-gap)}:
+    "calc(#{-short-var(gap)} + #{-short-var(stroke-width)})",
 
   align-items: center,
-
-  /// Source:
-  /// https://github.com/material-components/material-web/blob/fd45953c77876d7964dfe1181e1e30ae55b69a73/progress/internal/_circular-progress.scss#L64-L69
-  contain: strict,
-  content-visibility: auto,
 
   display: inline-flex,
   font-size: -short-var(size),
@@ -83,6 +112,8 @@ $-base-styles: (
   position: relative,
   width: 1em,
 );
+$-round-styles: utils.remap-variants(circular-progress, round, shape);
+$-square-styles: utils.remap-variants(circular-progress, square, shape);
 $-extra-small-styles: utils.remap-variants(
   circular-progress,
   extra-small,
@@ -106,12 +137,51 @@ $-large-indicator-styles: (
   #{-short-name(indicator-width)}: "circular-progress.indicator.large.width",
 );
 
+$-disable-gap-styles: (
+  #{-short-name(circle-gap)}: 0px,
+);
+$-reversed-styles: (
+  scale: -1 1,
+);
+
 $-base-position-styles: (
   inset: 0,
   position: absolute,
 );
 $-base-hidden-styles: (
   overflow: hidden,
+);
+
+$-determinate-svg-styles: (
+  display: -short-var(determinate-display),
+  height: 100%,
+  transform: rotate(-90deg),
+  width: 100%,
+);
+$-determinate-circle-styles: (
+  cx: 50%,
+  cy: 50%,
+  r: "calc(50% * (1 - #{-short-var(indicator-width)} / 100))",
+  fill: transparent,
+  stroke-linecap: "circular-progress.shape",
+  stroke-width: -short-var(stroke-width),
+);
+$-determinate-circle-transition-styles: (
+  transition: 500ms cubic-bezier(0, 0, 0.2, 1),
+  transition-property: "stroke-dasharray, stroke-dashoffset",
+);
+$-determinate-track-styles: (
+  stroke: -short-var(inactive-color),
+  stroke-dasharray:
+    "max(0px, calc(#{-short-var(circumference)} * (100 - #{-short-var(value)}) / 100 - 2 * #{-short-var(circle-gap)})) #{-short-var(circumference)}",
+  stroke-dashoffset:
+    "calc(-1 * (#{-short-var(circumference)} * #{-short-var(value)} / 100 + #{-short-var(circle-gap)}))",
+);
+
+$-determinate-active-track-styles: (
+  stroke: -short-var(active-color),
+  stroke-dasharray:
+    "calc(#{-short-var(circumference)} * #{-short-var(value)} / 100) #{-short-var(circumference)}",
 );
 
 // Source:
@@ -131,13 +201,17 @@ $-linear-rotate-duration: math.div($-arc-duration * 360, 306);
 $-indeterminate-easing: cubic-bezier(0.4, 0, 0.2, 1);
 
 $-indeterminate-styles: (
+  #{-short-name(determinate-display)}: none,
+  #{-short-name(indeterminate-display)}: block,
   animation: linear infinite $-linear-rotate-duration linear-rotate,
+  animation-play-state: "progress.animation-play-state",
 );
 $-indeterminate-circle-styles: (
   animation-duration: "#{$-arc-duration}, #{$-cycle-duration}",
   animation-fill-mode: both,
   animation-iteration-count: infinite,
   animation-name: expand-arc,
+  animation-play-state: "progress.animation-play-state",
   animation-timing-function: $-indeterminate-easing,
   box-sizing: border-box,
   border-radius: 50%,
@@ -165,7 +239,9 @@ $-indeterminate-right-circle-styles: (
 $-indeterminate-spinner-styles: (
   animation: infinite both rotate-arc,
   animation-duration: $-cycle-duration,
+  animation-play-state: "progress.animation-play-state",
   animation-timing-function: $-indeterminate-easing,
+  display: -short-var(indeterminate-display),
 );
 
 // Source:
@@ -240,7 +316,8 @@ $-keyframes: (
 @mixin host-styles {
   $styles: (
     ":host": $-base-styles,
-    ":host(:not([value]))": $-indeterminate-styles,
+    ":host([shape=round])": $-round-styles,
+    ":host([shape=square])": $-square-styles,
     ":host([size=extra-small])": $-extra-small-styles,
     ":host([size=small])": $-small-styles,
     ":host([size=medium])": $-medium-styles,
@@ -249,6 +326,12 @@ $-keyframes: (
     ":host([indicator-width=small])": $-small-indicator-styles,
     ":host([indicator-width=medium])": $-medium-indicator-styles,
     ":host([indicator-width=large])": $-large-indicator-styles,
+
+    ":host([disable-gap])": $-disable-gap-styles,
+    ":host([reversed])": $-reversed-styles,
+
+    // indeterminate
+    ":host(:not([value]))": $-indeterminate-styles,
     ".spinner, .left, .right, .circle": $-base-position-styles,
     ".spinner": $-indeterminate-spinner-styles,
     ".left, .right": $-base-hidden-styles,
@@ -257,6 +340,14 @@ $-keyframes: (
     ".right": $-indeterminate-right-styles,
     ".right .circle": $-indeterminate-right-circle-styles,
     ".circle": $-indeterminate-circle-styles,
+
+    // determinate
+    "svg": $-determinate-svg-styles,
+    ":host(:not([disable-transition])) circle":
+      $-determinate-circle-transition-styles,
+    "circle": $-determinate-circle-styles,
+    ".track": $-determinate-track-styles,
+    ".active-track": $-determinate-active-track-styles,
   );
   @include utils.host-styles($styles, $keyframes: $-keyframes);
 }

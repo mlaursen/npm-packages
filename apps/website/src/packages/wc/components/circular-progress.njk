@@ -105,6 +105,27 @@ toggles:
           {% endfor %}
         </mwc-box>
       </mwc-radio-group>
+      <mwc-typography id="shape-title" variant="title" margin="top">
+        <h4>Shape</h4>
+      </mwc-typography>
+      <mwc-radio-group aria-labelledby="shape-title">
+        <mwc-box padding="inline" stacked align="start">
+          {% for value in progress.linear.shapes %}
+            <mwc-typography>
+              <label>
+                <mwc-box padding="none" inline>
+                  <mwc-radio name="shape"
+                             value="{{ value }}"
+                             required
+                             {{ "checked" if value == "round" }}>
+                  </mwc-radio>
+                  {{ value }}
+                </mwc-box>
+              </label>
+            </mwc-typography>
+          {% endfor %}
+        </mwc-box>
+      </mwc-radio-group>
       <mwc-typography variant="title" margin="top">
         <h4>Other Toggles</h4>
       </mwc-typography>

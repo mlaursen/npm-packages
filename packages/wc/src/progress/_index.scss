@@ -8,25 +8,20 @@ $-tokens: (
   inactive-color: "palette.secondary-container",
   stop-color: "palette.primary",
   animation-play-state: running,
-
   gap: "spacing.extra-small",
-  percentage: 0%,
-
-  transition: (
-    duration: "transition.duration.medium-1",
-    easing: "transition.easing.linear",
-  ),
-
-  indeterminate: (
-    duration: 2s,
-    play-state: playing,
-  ),
 );
 
 $-configure-tokens: map.keys($-tokens);
 
 $-base-styles: (
+  // current value
+  "--_v": 0,
+  // current percentage
+  "--_p": "calc(1% * var(--_v))",
+  "--_g": "progress.gap",
+
   contain: strict,
+  content-visibility: auto,
 );
 $-primary-styles: (
   "progress.active-color": "palette.primary",
@@ -49,7 +44,7 @@ $-error-styles: (
   "progress.stop-color": "palette.error",
 );
 $-paused-styles: (
-  "progress.indeterminate.play-state": paused,
+  "progress.animation-play-state": paused,
 );
 $-disable-gap-styles: (
   "progress.gap": 0,
