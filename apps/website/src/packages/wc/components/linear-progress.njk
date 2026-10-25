@@ -27,6 +27,15 @@ toggles:
              align="stretch"
              style="max-height: 40vh;
                     overflow: auto">
+      <mwc-typography variant="label" text-transform="capitalize">
+        <label>
+          <mwc-box padding="none">
+            <mwc-checkbox name="indeterminate" checked>
+            </mwc-checkbox>
+            Indeterminate
+          </mwc-box>
+        </label>
+      </mwc-typography>
       <mwc-box padding="none">
         <mwc-text-field type="number" name="value" value="0" min="0" max="100">
           <span slot="label">Value</span>
