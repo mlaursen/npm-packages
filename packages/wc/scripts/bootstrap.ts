@@ -213,8 +213,7 @@ function getWebsitePageContents({
   kebabName,
   pascalName,
 }: ComponentNames): string {
-  return `
----
+  return `---
 layout: docs
 
 eleventyNavigation:
@@ -241,7 +240,7 @@ page:
 
 <mwc-${kebabName}></mwc-${kebabName}>
 
-`;
+`.trimStart();
 }
 
 const kebabName = await input({
