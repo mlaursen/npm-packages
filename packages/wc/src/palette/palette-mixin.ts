@@ -1,11 +1,11 @@
-import type { CSSResultArray } from "lit";
 import { property } from "lit/decorators.js";
 
 import type {
   StylableLitElement,
   StyledLitElementWithProperties,
 } from "../types.js";
-import paletteStyles from "./palette-styles.js";
+import { mergeStyles } from "../utils/mergeStyles.js";
+import styles from "./palette-styles.js";
 import type {
   PaletteBackgroundColor,
   PaletteProperties,
@@ -15,14 +15,8 @@ import type {
 export function PaletteMixin<T extends StylableLitElement>(
   Base: T,
 ): StyledLitElementWithProperties<PaletteProperties, T> {
-  let styles: CSSResultArray = [paletteStyles];
-  if (Base.styles) {
-    const baseStyles = Array.isArray(Base.styles) ? Base.styles : [Base.styles];
-    styles = [paletteStyles, ...baseStyles];
-  }
-
   class PaletteStyledElement extends Base implements PaletteProperties {
-    static override styles = styles;
+    static override styles = mergeStyles(Base, styles);
 
     @property()
     background?: PaletteBackgroundColor;

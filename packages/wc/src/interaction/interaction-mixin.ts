@@ -1,5 +1,5 @@
 import { wait } from "@mlaursen/utils";
-import type { CSSResultArray, PropertyValues, TemplateResult } from "lit";
+import type { PropertyValues, TemplateResult } from "lit";
 import { html } from "lit";
 import { property, query, state } from "lit/decorators.js";
 import { classMap } from "lit/directives/class-map.js";
@@ -8,8 +8,9 @@ import type {
   StylableLitElement,
   StyledLitElementWithProperties,
 } from "../types.js";
+import { mergeStyles } from "../utils/mergeStyles.js";
 import { MINIMUM_PRESS_MS, TOUCH_DELAY_MS } from "./constants.js";
-import interactionStyles from "./interaction-styles.js";
+import styles from "./interaction-styles.js";
 import type { Interactable, InteractionDirection } from "./types.js";
 import {
   getRippleAnimationArgs,
@@ -28,14 +29,8 @@ export function InteractionMixin<T extends StylableLitElement>(
   Base: T,
   disableTabIndex = false,
 ): StyledLitElementWithProperties<Interactable, T> {
-  let styles: CSSResultArray = [interactionStyles];
-  if (Base.styles) {
-    const baseStyles = Array.isArray(Base.styles) ? Base.styles : [Base.styles];
-    styles = [interactionStyles, ...baseStyles];
-  }
-
   class InteractionElement extends Base implements Interactable {
-    static override styles = styles;
+    static override styles = mergeStyles(Base, styles);
 
     @property({ reflect: true })
     interaction: InteractionDirection = "outward";

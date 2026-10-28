@@ -1,4 +1,4 @@
-import type { CSSResultArray, PropertyValues, TemplateResult } from "lit";
+import type { PropertyValues, TemplateResult } from "lit";
 import { html } from "lit";
 import { property, query, state } from "lit/decorators.js";
 import { ifDefined } from "lit/directives/if-defined.js";
@@ -13,12 +13,13 @@ import type {
   StylableLitElement,
   StyledLitElementWithProperties,
 } from "../types.js";
+import { mergeStyles } from "../utils/mergeStyles.js";
 import { isSlotted } from "../utils/slots.js";
 import {
   DEFAULT_HIDE_POPOVER_ANIMATION,
   DEFAULT_SHOW_POPOVER_ANIMATION,
 } from "./constants.js";
-import popoverStyles from "./popover-styles.js";
+import styles from "./popover-styles.js";
 import type {
   AnimatePopoverElementMap,
   HorizontalAnchor,
@@ -41,14 +42,8 @@ import type {
 export function PopoverMixin<T extends StylableLitElement>(
   Base: T,
 ): StyledLitElementWithProperties<PopoverProperties, T> {
-  let styles: CSSResultArray = [popoverStyles];
-  if (Base.styles) {
-    const baseStyles = Array.isArray(Base.styles) ? Base.styles : [Base.styles];
-    styles = [...baseStyles, popoverStyles];
-  }
-
   class PopoverElement extends AnimateMixin(Base) implements PopoverProperties {
-    static override styles = styles;
+    static override styles = mergeStyles(Base, styles);
 
     @property({ attribute: "anchor-x" })
     anchorX: HorizontalAnchor = "center";
@@ -78,7 +73,7 @@ export function PopoverMixin<T extends StylableLitElement>(
     popoverArrow?: boolean;
 
     @query(".popover")
-    _popover?: HTMLSpanElement;
+    _popover?: HTMLDivElement;
 
     @query(".popover-content")
     _popoverContent?: HTMLDivElement;
