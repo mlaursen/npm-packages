@@ -6,6 +6,7 @@ import { ifDefined } from "lit/directives/if-defined.js";
 
 import { FocusTrapMixin } from "../focus/focus-trap-mixin.js";
 import { PopoverMixin } from "../popover/popover-mixin.js";
+import { ScrollLockMixin } from "../scroll-lock/scroll-lock-mixin.js";
 import type {
   AnimateOptions,
   AnimationList,
@@ -28,7 +29,7 @@ import type {
   RenderDialogOptions,
 } from "./types.js";
 
-const BaseDialog = PopoverMixin(FocusTrapMixin(LitElement));
+const BaseDialog = ScrollLockMixin(PopoverMixin(FocusTrapMixin(LitElement)));
 
 /**
  * The dialog's open state can be controlled any of the following:
@@ -190,7 +191,6 @@ export class Dialog extends BaseDialog implements DialogProperties {
 
   #prevReturnValue = "";
   #requestCloseValue?: string;
-  #enabledScrollLock = false;
   #escaped = false;
   #forceOpenFrame = 0;
 
@@ -242,19 +242,7 @@ export class Dialog extends BaseDialog implements DialogProperties {
       return;
     }
 
-    const rootEl = document.documentElement;
-    if (this.open) {
-      if (rootEl.inert || rootEl.style.overflow) {
-        return;
-      }
-
-      this.#enabledScrollLock = true;
-      rootEl.inert = true;
-      rootEl.style.overflow = "hidden";
-    } else if (this.#enabledScrollLock) {
-      rootEl.inert = false;
-      rootEl.style.removeProperty("overflow");
-    }
+    this._scrollLock(this.open);
   }
 
   override render(): TemplateResult {
