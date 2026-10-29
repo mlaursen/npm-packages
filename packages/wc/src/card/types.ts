@@ -7,6 +7,7 @@ import type {
   BoxPadding,
   BoxProperties,
 } from "../box/types.js";
+import type { PassThroughLinkProperties } from "../link/types.js";
 import type { DefaultComponentShape } from "../types.js";
 
 export interface CardVariantOverrides {}
@@ -61,7 +62,8 @@ export interface CardBoxProperties extends Omit<BoxProperties, "fullWidth"> {
   padding?: BoxPadding;
 }
 
-export interface CardProperties extends CardBoxProperties {
+export interface CardProperties
+  extends CardBoxProperties, PassThroughLinkProperties {
   /**
    * @defaultValue `"elevated"`
    */
@@ -71,4 +73,14 @@ export interface CardProperties extends CardBoxProperties {
    * @defaultValue `"round"`
    */
   shape?: CardShape;
+
+  /**
+   * @defaultValue `false`
+   */
+  dragging: boolean;
+
+  /**
+   * @defaultValue `false`
+   */
+  clickable: boolean;
 }

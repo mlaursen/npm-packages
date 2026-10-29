@@ -150,6 +150,21 @@ $-container-styles: (
   height: 100%,
   overflow: hidden,
 );
+$-state-layer-target-styles: (
+  border-radius: inherit,
+  display: flex,
+);
+$-link-styles: (
+  color: inherit,
+  text-decoration: none,
+);
+$-clickable-styles: (
+  user-select: none,
+);
+$-not-clickable-styles: (
+  "interaction.container.opacity": 0,
+  cursor: auto,
+);
 $-inline-styles: (
   display: inline-block,
 );
@@ -191,13 +206,6 @@ $-base-dragged-styles: utils.deep-merge(
     "card.hovered.elevation": "card.dragged.elevation",
     "interaction.container.opacity": 0,
   )
-);
-$-clickable-styles: (
-  user-select: none,
-);
-$-not-clickable-styles: (
-  "interaction.container.opacity": 0,
-  cursor: auto,
 );
 $-elevated-styles: utils.remap-variants(
   card,
@@ -284,17 +292,21 @@ $-square-styles: (
     "&card--disabled": $-base-disabled-styles,
     "&card:is(:focus-visible)": $-base-focused-styles,
     "&card--dragging": $-base-dragged-styles,
+    "&card--link": $-link-styles,
   );
   @include utils.css-styles($styles);
 }
 
 @mixin host-styles {
+  $clickable: "[clickable], [href]";
   $styles: (
     ":host": $-base-styles,
     ".container": $-container-styles,
+    ".state-layer-target": $-state-layer-target-styles,
+    "a": $-link-styles,
     ":host([inline])": $-inline-styles,
-    ":host([clickable])": $-clickable-styles,
-    ":host(:not([clickable]))": $-not-clickable-styles,
+    ":host(:is(#{$clickable}))": $-clickable-styles,
+    ":host(:not(#{$clickable}))": $-not-clickable-styles,
     ":host([variant=elevated])": $-elevated-styles,
     ":host([variant=filled])": $-filled-styles,
     ":host([variant=outlined])": $-outlined-styles,
@@ -302,7 +314,7 @@ $-square-styles: (
     ":host([shape=square])": $-square-styles,
     // "host-hover": $-base-hovered-styles,
     "@media (hover: hover) and (pointer: fine)": (
-      ":host([clickable]:hover)": $-base-hovered-styles,
+      ":host(:is(#{$clickable}):hover)": $-base-hovered-styles,
     ),
     ":host(#{interaction.$is-disabled})": $-base-disabled-styles,
     ":host(#{interaction.$is-focus-visible})": $-base-focused-styles,

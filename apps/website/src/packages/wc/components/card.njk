@@ -9,15 +9,14 @@ page:
   title: Card
 
 components:
-  - name: mwc-clickable-card
-    title: Clickable
-  - name: mwc-clickable-card
-    title: Disabled
+  - title: Non-interactive
+  - title: Clickable
+    clickable: true
+  - title: Disabled
+    clickable: true
     disabled: true
-  - name: mwc-link-card
-    title: Link
-  - name: mwc-card
-    title: Non-interactive
+  - title: Link
+    href: '#'
 ---
 
 <mwc-box stacked align="stretch" padding="none">
@@ -27,7 +26,10 @@ components:
     </mwc-typography>
     <mwc-box grid align="stretch" style="--mwc-box-item-min-size: 16rem">
       {% for component in components %}
-        <{{ component.name }} variant="{{ variant }}" {{ "disabled" if component.disabled }}>
+        <mwc-card variant="{{ variant }}"
+                  {{ "clickable" if component.clickable }}
+                  {{ "disabled" if component.disabled }}
+                  {%- if component.href %} href="{{ component.href }}" {% endif %}>
           <mwc-box stacked align="start">
             <mwc-typography variant="display" size="medium" margin="none">
               <h3>{{ component.title }}</h3>
@@ -39,7 +41,7 @@ components:
               <p>Explain more about the topic shown in the medium display and subhead through supporting text here.</p>
             </mwc-typography>
           </mwc-box>
-        </{{ component.name }}>
+        </mwc-card>
       {% endfor %}
     </mwc-box>
   {% endfor %}
