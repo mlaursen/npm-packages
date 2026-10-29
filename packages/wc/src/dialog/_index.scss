@@ -95,9 +95,13 @@ $-remap-tokens: utils.remap-tokens(
   utils.pick-keys($-tokens, ("margin", "shape"))
 );
 
-$-base-styles: $-remap-tokens;
+$-base-styles: map.merge(
+  $-remap-tokens,
+  (
+    "elevation.level": "dialog.elevation",
+  )
+);
 $-base-dialog-styles: (
-  "elevation.level": "dialog.elevation",
   background: "dialog.background",
   border-end-end-radius: "dialog.shape.end-end",
   border-end-start-radius: "dialog.shape.end-start",

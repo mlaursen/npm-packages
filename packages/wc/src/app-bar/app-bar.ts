@@ -3,6 +3,7 @@ import { LitElement, html } from "lit";
 import { property } from "lit/decorators.js";
 import { ifDefined } from "lit/directives/if-defined.js";
 
+import { ElevationMixin } from "../elevation/elevation-mixin.js";
 import { PaletteMixin } from "../palette/palette-mixin.js";
 import styles from "./app-bar-styles.js";
 import type {
@@ -14,7 +15,7 @@ import type {
   AppBarVariant,
 } from "./types.js";
 
-const BaseAppBar = PaletteMixin(LitElement);
+const BaseAppBar = ElevationMixin(PaletteMixin(LitElement));
 
 /**
  * This example will use an app bar stuck to the top of the page with
@@ -127,7 +128,6 @@ export class AppBar extends BaseAppBar implements AppBarProperties {
 
   override render(): TemplateResult {
     return html`
-      ${this.#renderElevation()}
       <slot name="nav"></slot>
       <slot name="search"></slot>
       ${this.#renderTitle()} ${this.#renderActions()}
@@ -148,14 +148,6 @@ export class AppBar extends BaseAppBar implements AppBarProperties {
       this.scrolled = !(entry?.isIntersecting ?? true);
     });
     this.#observer.observe(this.#scrollSentinel);
-  }
-
-  #renderElevation(): TemplateResult | null {
-    if (this.scrollBehavior === "static" || this.disableElevation) {
-      return null;
-    }
-
-    return html`<mwc-elevation></mwc-elevation>`;
   }
 
   #renderTitle(): TemplateResult | null {

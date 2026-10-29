@@ -14,7 +14,6 @@ import "./dialog-header/define.js";
 import "./dialog-title/define.js";
 import "./dialog/define.js";
 import "./divider/define.js";
-import "./elevation/define.js";
 import "./icon-button/define.js";
 import "./linear-progress/define.js";
 import "./link/define.js";

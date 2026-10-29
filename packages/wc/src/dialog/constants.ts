@@ -27,9 +27,15 @@ export const DEFAULT_DIALOG_OPEN_ANIMATION = {
       [
         {
           transform: `translateY(${getVar("dialog.transition.distance", "-1.875rem")})`,
-          clipPath: "inset(0 0 100% 0)",
+          // this is so the dialog progressively reveals more content as the
+          // animation progresses. the `-100vmax` is required so the box-shadow
+          // still displays
+          clipPath: "inset(0 -100vmax 100% -100vmax)",
         },
-        { transform: "translateY(0)", clipPath: "inset(0)" },
+        {
+          transform: "translateY(0)",
+          clipPath: "inset(-100vmax)",
+        },
       ],
       {
         duration: Duration.Long2,

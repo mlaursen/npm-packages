@@ -4,6 +4,7 @@ import { property, query, state } from "lit/decorators.js";
 import { classMap } from "lit/directives/class-map.js";
 import { ifDefined } from "lit/directives/if-defined.js";
 
+import { ElevationMixin } from "../elevation/elevation-mixin.js";
 import { FocusTrapMixin } from "../focus/focus-trap-mixin.js";
 import { PopoverMixin } from "../popover/popover-mixin.js";
 import { ScrollLockMixin } from "../scroll-lock/scroll-lock-mixin.js";
@@ -29,7 +30,9 @@ import type {
   RenderDialogOptions,
 } from "./types.js";
 
-const BaseDialog = ScrollLockMixin(PopoverMixin(FocusTrapMixin(LitElement)));
+const BaseDialog = ElevationMixin(
+  ScrollLockMixin(PopoverMixin(FocusTrapMixin(LitElement))),
+);
 
 /**
  * The dialog's open state can be controlled any of the following:
@@ -276,7 +279,7 @@ export class Dialog extends BaseDialog implements DialogProperties {
         aria-labelledby=${labelledBy}
         aria-describedby=${describedBy}
         role=${ifDefined(role)}
-        class="${className}"
+        class="${className} elevation"
         popover=${ifDefined(this.popoverType)}
         @click=${this.#handleClick}
         @cancel=${this.#handleCancel}

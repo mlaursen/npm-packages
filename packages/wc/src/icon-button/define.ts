@@ -1,6 +1,5 @@
 import { safeDefine } from "../utils/safeDefine.js";
 import { IconButton } from "./icon-button.js";
-import "../elevation/define.js";
 
 safeDefine(IconButton);
 

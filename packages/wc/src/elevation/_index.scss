@@ -11,19 +11,19 @@ $-tokens: (
   shadow-color: "palette.shadow",
   transition-duration: "transition.duration.short-3",
   transition-timing-function: "transition.easing.emphasized",
-  opacity-before: 0.3,
-  opacity-after: 0.15,
+  key-opacity: 0.3,
+  ambient-opacity: 0.15,
 );
 
 $-configure-tokens: (
   shadow-color,
   transition-duration,
   transition-timing-function,
-  opacity-before,
-  opacity-after
+  key-opacity,
+  ambient-opacity
 );
 
-/// @return {List} -
+/// @return {String} -
 @function -get-key-box-shadow() {
   // level0: box-shadow: 0px 0px 0px 0px;
   // level1: box-shadow: 0px 1px 2px 0px;
@@ -65,10 +65,11 @@ $-configure-tokens: (
   // Convert to px.
   $blur: calc(1px * ($level1-blur + $level3-blur + $level5-blur));
 
-  @return 0px $y $blur 0px var(--_shadow-color);
+  $color: 'color-mix(in srgb, var(--_shadow-color) calc("elevation.key-opacity" * 100%), transparent)';
+  @return "0px #{$y} #{$blur} 0px #{$color}";
 }
 
-/// @return {List} -
+/// @return {String} -
 @function -get-ambient-box-shadow() {
   // level0: box-shadow: 0px 0px 0px 0px;
   // level1: box-shadow: 0px 1px 3px 1px;
@@ -133,42 +134,20 @@ $-configure-tokens: (
   // Convert to px.
   $spread: calc(1px * ($level1to4-spread + $level5-spread));
 
-  @return 0px $y $blur $spread var(--_shadow-color);
+  $color: 'color-mix(in srgb, var(--_shadow-color) calc("elevation.ambient-opacity" * 100%), transparent);';
+  @return "0px #{$y} #{$blur} #{$spread} #{$color}";
 }
 
-$-styles: (
-  base: (
-    // the elevation level and shadow color are used a lot, so create "private"
-    // short remaps to decrease generated css size
-    "--_level": "elevation.level",
-    "--_shadow-color": "elevation.shadow-color",
-    display: flex,
-    pointer-events: none,
-  ),
+$-base-styles: (
+  "--_level": "elevation.level",
+  "--_shadow-color": "elevation.shadow-color",
+);
 
-  "&, &::before, &::after": (
-    border-radius: inherit,
-    inset: 0,
-    position: absolute,
-  ),
-  "&::before, &::after": (
-    content: '""',
-    transition-property: (
-      box-shadow,
-      opacity,
-    ),
-    transition-duration: "elevation.transition-duration",
-    transition-timing-function: "elevation.transition-timing-function",
-  ),
-
-  "&::before": (
-    box-shadow: -get-key-box-shadow(),
-    opacity: "elevation.opacity-before",
-  ),
-  "&::after": (
-    box-shadow: -get-ambient-box-shadow(),
-    opacity: "elevation.opacity-after",
-  ),
+$-box-shadow-styles: (
+  box-shadow: "#{-get-key-box-shadow()}, #{-get-ambient-box-shadow()}",
+  transition-property: "box-shadow, opacity",
+  transition-duration: "elevation.transition-duration",
+  transition-timing-function: "elevation.transition-timing-function",
 );
 
 @mixin -configure($name, $value) {
@@ -181,8 +160,8 @@ $-styles: (
   $shadow-color: null,
   $transition-duration: null,
   $transition-timing-function: null,
-  $opacity-before: null,
-  $opacity-after: null
+  $key-opacity: null,
+  $ambient-opacity: null
 ) {
   @if not $-tokens-registered {
     $-tokens-registered: true !global;
@@ -196,32 +175,33 @@ $-styles: (
     $shadow-color: map.get($overrides, shadow-color),
     $transition-duration: map.get($overrides, transition-duration),
     $transition-timing-function: map.get($overrides, transition-timing-function),
-    $opacity-before: map.get($overrides, opacity-before),
-    $opacity-after: map.get($overrides, opacity-after)
+    $key-opacity: map.get($overrides, key-opacity),
+    $ambient-opacity: map.get($overrides, ambient-opacity)
   );
 }
 
 @mixin css-styles {
   $styles: ();
-  @each $selector, $properties in $-styles {
-    @if $selector == base {
-      $styles: map.set($styles, "&elevation", $properties);
-    } @else {
-      $styles: map.set($styles, "&elevation", $selector, $properties);
-    }
-  }
+  // @each $selector, $properties in $-styles {
+  //   @if $selector == base {
+  //     $styles: map.set($styles, "&elevation", $properties);
+  //   } @else {
+  //     $styles: map.set($styles, "&elevation", $selector, $properties);
+  //   }
+  // }
+
   @include utils.css-styles($styles);
 }
 
 @mixin host-styles {
-  $styles: ();
-  @each $selector, $properties in $-styles {
-    @if $selector == base {
-      $styles: map.set($styles, ":host", $properties);
-    } @else {
-      $styles: map.set($styles, ":host", $selector, $properties);
-    }
-  }
+  $styles: (
+    ":host": $-base-styles,
+    ":host, .elevation, .elevation-before::before, .elevation-after::after":
+      $-box-shadow-styles,
+    ".elevation-before::before, .elevation-after::after":
+      utils.pseudo-element($z-index: null),
+  );
+
   @include utils.host-styles($styles);
 }
 

@@ -28,7 +28,6 @@ export * from "./dialog/dialog.js";
 export * from "./dialog/types.js";
 export * from "./divider/divider.js";
 export * from "./divider/types.js";
-export * from "./elevation/elevation.js";
 export * from "./elevation/types.js";
 export * from "./focus/constants.js";
 export * from "./focus/focus-trap-mixin.js";

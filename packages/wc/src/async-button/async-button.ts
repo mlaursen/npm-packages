@@ -135,7 +135,6 @@ export class AsyncButton extends Button implements AsyncButtonProperties {
       </span>
       <span class="content"><slot></slot></span>
       <slot name="end"></slot>
-      <mwc-elevation></mwc-elevation>
       ${this._renderStateLayer()}
     `;
   }

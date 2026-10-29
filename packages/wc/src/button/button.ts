@@ -3,6 +3,7 @@ import { LitElement, html } from "lit";
 import { property } from "lit/decorators.js";
 
 import { AriaMixin } from "../aria-mixin/aria-mixin.js";
+import { ElevationMixin } from "../elevation/elevation-mixin.js";
 import { InteractionMixin } from "../interaction/interaction-mixin.js";
 import { PASS_THROUGH_LINK_PROPS } from "../link/constants.js";
 import { MarginMixin } from "../margin/margin-mixin.js";
@@ -16,8 +17,8 @@ import type {
   ButtonVariant,
 } from "./types.js";
 
-const BaseStyledButton = InteractionMixin(
-  PaletteMixin(MarginMixin(LitElement)),
+const BaseStyledButton = ElevationMixin(
+  InteractionMixin(PaletteMixin(MarginMixin(LitElement))),
 );
 const BaseButton = AriaMixin(BaseStyledButton, "button");
 
@@ -182,7 +183,6 @@ export class Button extends BaseButton implements ButtonProperties {
   override render(): TemplateResult {
     return html`
       <slot></slot>
-      <mwc-elevation></mwc-elevation>
       ${this._renderStateLayer()}
     `;
   }

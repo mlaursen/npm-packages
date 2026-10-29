@@ -11,6 +11,7 @@ import type {
   BoxJustifyContent,
   BoxPadding,
 } from "../box/types.js";
+import { ElevationMixin } from "../elevation/elevation-mixin.js";
 import { InteractionMixin } from "../interaction/interaction-mixin.js";
 import { PASS_THROUGH_LINK_PROPS } from "../link/constants.js";
 import { MarginMixin } from "../margin/margin-mixin.js";
@@ -18,7 +19,9 @@ import { PaletteMixin } from "../palette/palette-mixin.js";
 import styles from "./card-styles.js";
 import type { CardProperties, CardShape, CardVariant } from "./types.js";
 
-const BaseCard = InteractionMixin(PaletteMixin(MarginMixin(LitElement)), true);
+const BaseCard = ElevationMixin(
+  InteractionMixin(PaletteMixin(MarginMixin(LitElement)), true),
+);
 
 /**
  * The card component is generally used to display lists of data with actions
@@ -155,7 +158,6 @@ export class Card extends BaseCard implements CardProperties {
       >
         <slot></slot>
       </mwc-box>
-      <mwc-elevation></mwc-elevation>
     `;
   }
 
