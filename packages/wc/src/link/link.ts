@@ -61,7 +61,7 @@ export class Link extends BaseLink implements LinkProperties {
         @blur=${this._updateFocusVisible}
       >
         <slot></slot>
-        ${this._renderStateLayer()}
+        ${this._renderStateLayer({ disableRipple: true })}
       </a>
     `;
   }

@@ -152,10 +152,6 @@ export class ListItem extends BaseListItem implements ListItemProperties {
     `;
   }
 
-  #renderStateLayer(): TemplateResult {
-    return html`${this._renderStateLayer()} ${this._renderRipple()}`;
-  }
-
   #renderLink(): TemplateResult {
     const props: Partial<HTMLAnchorElement> = {};
     for (const name of PASS_THROUGH_LINK_PROPS) {
@@ -169,7 +165,7 @@ export class ListItem extends BaseListItem implements ListItemProperties {
         @focus=${this._updateFocusVisible}
         @blur=${this._updateFocusVisible}
       >
-        ${this.#renderSlots()}${this.#renderStateLayer()}
+        ${this.#renderSlots()}${this._renderStateLayer()}
       </a>
     `;
   }
@@ -199,7 +195,7 @@ export class ListItem extends BaseListItem implements ListItemProperties {
         @focus=${this._updateFocusVisible}
         @blur=${this._updateFocusVisible}
       >
-        ${this.#renderSlots()}${this.#renderStateLayer()}
+        ${this.#renderSlots()}${this._renderStateLayer()}
       </div>
     `;
   }

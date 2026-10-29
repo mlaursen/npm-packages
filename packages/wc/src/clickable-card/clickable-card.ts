@@ -19,6 +19,6 @@ export class ClickableCard extends ButtonCard {
   dragging = false;
 
   override render(): TemplateResult {
-    return html`${super.render()}${this._renderStateLayer()}${this._renderRipple()}`;
+    return html`${super.render()}${this._renderStateLayer()}`;
   }
 }

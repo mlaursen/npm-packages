@@ -11,7 +11,11 @@ import type {
 import { mergeStyles } from "../utils/mergeStyles.js";
 import { MINIMUM_PRESS_MS, TOUCH_DELAY_MS } from "./constants.js";
 import styles from "./interaction-styles.js";
-import type { Interactable, InteractionDirection } from "./types.js";
+import type {
+  Interactable,
+  InteractionDirection,
+  RenderStateLayerOptions,
+} from "./types.js";
 import {
   getRippleAnimationArgs,
   isActionableEvent,
@@ -83,26 +87,31 @@ export function InteractionMixin<T extends StylableLitElement>(
       return this.disabled || this.ariaDisabled === "true";
     }
 
-    _renderStateLayer(): TemplateResult {
-      return html`
-        <span
-          aria-hidden="true"
-          class="state-layer ${this.#getStateLayerClassName()}"
-        ></span>
-      `;
-    }
-
-    _renderRipple(): TemplateResult | null {
-      if (this.disableRipple) {
+    _renderStateLayer({
+      disableRipple,
+      disableStateLayer,
+    }: RenderStateLayerOptions = {}): TemplateResult | null {
+      const className = this.#getStateLayerClassName();
+      if (disableRipple && disableStateLayer) {
         return null;
       }
-
-      return html`
-        <span
+      let ripple: TemplateResult | undefined;
+      if (!disableRipple && !this.disableRipple) {
+        ripple = html`<span
           aria-hidden="true"
-          class="ripple ${this.#getStateLayerClassName()}"
-        ></span>
-      `;
+          class="ripple ${className}"
+        ></span>`;
+      }
+
+      let stateLayer: TemplateResult | undefined;
+      if (!disableStateLayer) {
+        stateLayer = html`<span
+          aria-hidden="true"
+          class="state-layer ${className}"
+        ></span>`;
+      }
+
+      return html`${ripple}${stateLayer}`;
     }
 
     _updateFocusVisible(event: FocusEvent): void {

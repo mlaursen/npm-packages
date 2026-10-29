@@ -61,7 +61,7 @@ export class LinkCard extends BaseLinkCard {
         @focus=${this._updateFocusVisible}
         @blur=${this._updateFocusVisible}
       >
-        ${super.render()} ${this._renderStateLayer()} ${this._renderRipple()}
+        ${super.render()}${this._renderStateLayer()}
       </a>
     `;
   }

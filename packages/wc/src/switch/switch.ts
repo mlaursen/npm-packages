@@ -106,9 +106,9 @@ export class Switch extends BaseSwitch implements SwitchProperties {
             <mwc-material-symbol>check</mwc-material-symbol>
           </slot>
         </slot>
-        ${this._renderRipple()}
+        ${this._renderStateLayer({ disableStateLayer: true })}
       </span>
-      ${this._renderStateLayer()}
+      ${this._renderStateLayer({ disableRipple: true })}
     `;
   }
 

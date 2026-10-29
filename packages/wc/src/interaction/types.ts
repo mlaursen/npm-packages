@@ -19,6 +19,11 @@ export interface InteractionProperties {
   interaction: InteractionDirection;
 }
 
+export interface RenderStateLayerOptions {
+  disableRipple?: boolean;
+  disableStateLayer?: boolean;
+}
+
 export interface Interactable extends InteractionProperties {
   _pressed: boolean;
   _focusVisible: boolean;
@@ -26,8 +31,7 @@ export interface Interactable extends InteractionProperties {
   _ripple?: HTMLSpanElement;
   _stateLayer?: HTMLSpanElement;
 
-  _renderRipple(): TemplateResult | null;
-  _renderStateLayer(): TemplateResult;
+  _renderStateLayer(options?: RenderStateLayerOptions): TemplateResult | null;
 
   /**
    * Public helper to determine if an element is considered disabled via aria
