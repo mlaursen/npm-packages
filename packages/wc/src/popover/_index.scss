@@ -261,7 +261,7 @@ $-vertical-anchor-styles: (
   $styles: (
     ":host": $-host-styles,
     "::slotted([slot=popover-target])": $-target-styles,
-    ":host([popover-type][closing]) .popover": $-popover-closing-styles,
+    ":host([closing]) .popover[popover]": $-popover-closing-styles,
     ":host(:is([popover-arrow], :has([slot=popover-arrow])))":
       $-popover-arrow-enabled-styles,
     ".popover": $-popover-styles,

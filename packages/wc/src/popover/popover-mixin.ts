@@ -237,20 +237,21 @@ export function PopoverMixin<T extends StylableLitElement>(
 
     #bindTargetHandlers(add: boolean): void {
       if (add) {
-        this.addEventListener("mouseenter", this.#handleMouseEnter);
-        this.addEventListener("mouseleave", this.#handleMouseLeave);
-        this.addEventListener("focus", this.#handleFocus, { capture: true });
-        this.addEventListener("blur", this.#handleBlur, { capture: true });
+        this.addEventListener("pointerenter", this.#handleMouseEnter);
+        this.addEventListener("pointerleave", this.#handleMouseLeave);
+        // NOTE: have to use focusin/focusout since it bubbles and is composed
+        this.addEventListener("focusin", this.#handleFocus);
+        this.addEventListener("focusout", this.#handleBlur);
 
         this._popoverTarget?.addEventListener(
           "click",
           this.#handlePopoverTargetClick,
         );
       } else {
-        this.removeEventListener("mouseenter", this.#handleMouseEnter);
-        this.removeEventListener("mouseleave", this.#handleMouseLeave);
-        this.removeEventListener("focus", this.#handleFocus, { capture: true });
-        this.removeEventListener("blur", this.#handleBlur, { capture: true });
+        this.removeEventListener("pointerenter", this.#handleMouseEnter);
+        this.removeEventListener("pointerleave", this.#handleMouseLeave);
+        this.removeEventListener("focusin", this.#handleFocus);
+        this.removeEventListener("focusout", this.#handleBlur);
 
         this._popoverTarget?.removeEventListener(
           "click",
@@ -360,20 +361,26 @@ export function PopoverMixin<T extends StylableLitElement>(
       );
     }
 
-    #handleMouseEnter(): void {
+    #handleMouseEnter(event: PointerEvent): void {
+      if (event.pointerType === "touch") {
+        return;
+      }
+
       this.#showPopover("hover");
     }
 
-    #handleMouseLeave(): void {
+    #handleMouseLeave(event: PointerEvent): void {
+      if (event.pointerType === "touch") {
+        return;
+      }
+
       this.#hidePopover("hover");
     }
 
     #handleFocus(event: FocusEvent): void {
+      const target = event.composedPath()[0];
       // only show when the user is focusing via keyboard
-      if (
-        event.target instanceof HTMLElement &&
-        event.target.matches(":focus-visible")
-      ) {
+      if (target instanceof HTMLElement && target.matches(":focus-visible")) {
         this.#showPopover("focus");
       }
     }
