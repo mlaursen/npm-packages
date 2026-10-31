@@ -7,6 +7,7 @@ import { AnimateMixin } from "../transition/animate-mixin.js";
 import type {
   AnimateOptions,
   AnimationList,
+  BaseAnimateOptions,
   GetAnimationMap,
 } from "../transition/types.js";
 import type {
@@ -213,7 +214,9 @@ export function PopoverMixin<T extends StylableLitElement>(
       this.close();
     }
 
-    override _onBeforeClose(): void {
+    override _onBeforeClose(options: BaseAnimateOptions): void {
+      super._onBeforeClose(options);
+
       this.#closing = true;
     }
 
