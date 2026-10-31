@@ -7,6 +7,7 @@
     "lib": ["esnext", "DOM", "DOM.Iterable"],
     "types": ["node", "@mlaursen/wc", "./eleventy-fixes.d.ts"],
     "allowJs": true,
+    "checkJs": true,
 
     // Other Outputs
     "sourceMap": true,
@@ -46,5 +47,11 @@
       }
     ]
   },
-  "exclude": ["node_modules", "_site"]
+  "exclude": [
+    "node_modules",
+    "_site",
+    "src/_includes/scripts",
+    "playwright-report",
+    "test-results"
+  ]
 }

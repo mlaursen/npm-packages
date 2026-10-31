@@ -1,4 +1,3 @@
-// @ts-check
 import { defineConfig } from "11ty.ts";
 import { EleventyRenderPlugin } from "@11ty/eleventy";
 import { eleventyImageTransformPlugin } from "@11ty/eleventy-img";

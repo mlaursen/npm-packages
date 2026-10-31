@@ -14,7 +14,7 @@ import {
 
 /**
  * @param {string} entryPoint
- * @return {Promise<void>}
+ * @return {Promise<string>}
  */
 async function build(entryPoint) {
   const result = await esbuild.build({
@@ -35,9 +35,12 @@ async function build(entryPoint) {
 
   // prevent nunjucks from attempting to parse `{{`
   // really only an issue when minified
-  return result.outputFiles[0].text.replaceAll("{{", "{ {");
+  return result.outputFiles[0]?.text.replaceAll("{{", "{ {") ?? "";
 }
 
+/**
+ * @param {{ filePath: string; outFileName: string }} options
+ */
 async function compile({ filePath, outFileName }) {
   const output = await build(filePath);
   await generateFile({

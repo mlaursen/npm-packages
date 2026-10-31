@@ -56,7 +56,11 @@ export interface SiteData {
   pkg?: Record<string, unknown>;
 
   eleventyNavigation?: { key: string; parent: string };
+
+  // draft plugin
+  draft?: boolean;
   permalink?: string;
+
   eleventyExcludeFromCollections?: string;
   collections?: Record<string, unknown>;
 }

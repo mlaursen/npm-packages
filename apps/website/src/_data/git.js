@@ -2,6 +2,10 @@ import { execSync } from "node:child_process";
 
 import { IS_PRODUCTION } from "../_config/constants.js";
 
+/**
+ * @param {string} cmd
+ * @returns {string}
+ */
 const run = (cmd) => execSync(cmd, { encoding: "utf8" }).trim();
 
 export default function git() {

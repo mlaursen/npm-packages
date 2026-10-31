@@ -17,6 +17,18 @@ import {
 } from "../constants.js";
 import { getContentHash } from "../utils/getContentHash.js";
 
+/**
+ * @typedef {object} BaseCompileOptions
+ * @property {string} cwd
+ * @property {string} filePath
+ * @property {string} outFileName
+ * @property {import("../utils/shiki.js").ShikiCssFileCache} shikiCache
+ */
+
+/**
+ * @typedef {BaseCompileOptions & { code: string; }} CompileOptions
+ */
+
 function getGlobalStyles() {
   if (DISABLE_FOCUS_ANIMATION) {
     log("[SETTINGS] Disabling the default focus animation");
@@ -63,6 +75,9 @@ function getGlobalStyles() {
 `;
 }
 
+/**
+ * @param {CompileOptions} options
+ */
 async function compile({ cwd, code, filePath, outFileName, shikiCache }) {
   const result = compileScss({
     code,
@@ -121,6 +136,9 @@ async function compile({ cwd, code, filePath, outFileName, shikiCache }) {
   });
 }
 
+/**
+ * @param {BaseCompileOptions} options
+ */
 async function readCompile(options) {
   const code = await readFile(options.filePath, "utf8");
 

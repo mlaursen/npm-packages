@@ -1,3 +1,6 @@
+/**
+ * @param {import("#types").SiteData} data
+ */
 function permalink(data) {
   // Always skip during non-watch/serve builds
   if (data.draft && !process.env.BUILD_DRAFTS) {
@@ -7,6 +10,9 @@ function permalink(data) {
   return data.permalink;
 }
 
+/**
+ * @param {import("#types").SiteData} data
+ */
 function eleventyExcludeFromCollections(data) {
   // Always exclude from non-watch/serve builds
   if (data.draft && !process.env.BUILD_DRAFTS) {
@@ -16,6 +22,9 @@ function eleventyExcludeFromCollections(data) {
   return data.eleventyExcludeFromCollections ?? false;
 }
 
+/**
+ * @param {import("11ty.ts").EleventyConfig} eleventyConfig
+ */
 export function draftsPlugin(eleventyConfig) {
   eleventyConfig.addGlobalData("eleventyComputed.permalink", () => permalink);
 

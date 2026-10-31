@@ -21,6 +21,7 @@
 //
 // em, strong, s (strikethrough, with _open and _close)
 // link (link_open and link_close)
+/** @type {Record<string, string[]> & { h6: string[]}} */
 const HEADINGS = {
   h1: ["small", "display"],
   h2: ["large", "headline"],
@@ -32,6 +33,10 @@ const HEADINGS = {
 
 /**
  * this is just used to get highlighting and formatting for html
+ *
+ * @param {TemplateStringsArray} strings
+ * @param {string[]} values
+ * @returns {string}
  */
 const html = (strings, ...values) =>
   strings.reduce((out, str, i) => out + str + (values[i] ?? ""), "");
@@ -42,6 +47,10 @@ export function markdownRenderers(md) {
   md.renderer.rules.paragraph_close = () => "</p></mwc-typography>";
   md.renderer.rules.heading_open = (tokens, idx) => {
     const token = tokens[idx];
+    if (!token) {
+      return "";
+    }
+
     const id = token.attrGet("id");
     const [size, variant] = HEADINGS[token.tag] ?? HEADINGS.h6;
 
@@ -54,6 +63,10 @@ export function markdownRenderers(md) {
   };
   md.renderer.rules.heading_close = (tokens, idx) => {
     const token = tokens[idx];
+    if (!token) {
+      return "";
+    }
+
     return `</${token.tag}></mwc-typography>`;
   };
 
@@ -61,7 +74,12 @@ export function markdownRenderers(md) {
   // md.renderer.rules.blockquote_close = (tokens, idx, options, env, renderer) => {};
 
   md.renderer.rules.link_open = (tokens, idx, _options, _env, renderer) => {
-    return `<mwc-link${renderer.renderAttrs(tokens[idx])}>`;
+    const token = tokens[idx];
+    if (!token) {
+      return "";
+    }
+
+    return `<mwc-link${renderer.renderAttrs(token)}>`;
   };
   md.renderer.rules.link_close = () => "</mwc-link>";
 
@@ -82,13 +100,15 @@ export function markdownRenderers(md) {
 
   // Code fences: wrap Shiki's output instead of replacing it
   const shikiFence = md.renderer.rules.fence;
-  md.renderer.rules.fence = (tokens, idx, options, env, renderer) => {
-    const preHtml = shikiFence(tokens, idx, options, env, renderer);
-    const lines = [
-      preHtml.replace("pre", 'pre slot="pre"'),
-      html`<copy-to-clipboard slot="sticky"></copy-to-clipboard>`,
-    ];
+  if (shikiFence) {
+    md.renderer.rules.fence = (tokens, idx, options, env, renderer) => {
+      const preHtml = shikiFence(tokens, idx, options, env, renderer);
+      const lines = [
+        preHtml.replace("pre", 'pre slot="pre"'),
+        html`<copy-to-clipboard slot="sticky"></copy-to-clipboard>`,
+      ];
 
-    return `<mwc-code-block>${lines.join("")}</mwc-code-block>`;
-  };
+      return `<mwc-code-block>${lines.join("")}</mwc-code-block>`;
+    };
+  }
 }

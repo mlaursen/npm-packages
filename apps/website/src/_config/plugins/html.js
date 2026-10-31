@@ -2,6 +2,9 @@ import htmlMinify from "html-minifier-terser";
 
 import { IS_PRODUCTION } from "../constants.js";
 
+/**
+ * @param {import("11ty.ts").EleventyConfig} eleventyConfig
+ */
 export function htmlPlugin(eleventyConfig) {
   eleventyConfig.addTransform("html-minify", (content, path) => {
     if (!IS_PRODUCTION || !path?.endsWith(".html")) {
