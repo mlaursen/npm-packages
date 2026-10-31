@@ -75,11 +75,11 @@ export function FocusTrapMixin<T extends LitConstructor>(
         return;
       }
 
-      const focusables = getFocusableElements(
-        this,
-        this._firstFocusTrap,
-        this._lastFocusTrap,
-      );
+      const focusables = getFocusableElements({
+        root: this,
+        ignore: (node) =>
+          node === this._firstFocusTrap || node === this._lastFocusTrap,
+      });
       const firstFocusableChild = focusables.at(0);
       const lastFocusableChild = focusables.at(-1);
 

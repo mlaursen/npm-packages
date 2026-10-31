@@ -9,10 +9,23 @@ export function isShadowRootNode(
 
 const never = (): boolean => false;
 
-export interface TraverseOptions<E extends HTMLElement> {
+export type TraverseCheck<E extends HTMLElement = HTMLElement> = (
+  node: Node,
+) => node is E;
+
+export interface TraverseOptions<E extends HTMLElement = HTMLElement> {
   root: Node;
-  check: (node: Node) => node is E;
-  first?: boolean;
+  check: TraverseCheck<E>;
+
+  /**
+   * If this is `true` it will return the first element that matches the
+   * {@link check}.
+   *
+   * If this is a function, it will return the first node that returns `true`
+   * when called. Otherwise, it will return the first node that matches the
+   * {@link check}. If both failed, returns `undefined`.
+   */
+  first?: boolean | TraverseCheck<E>;
   ignore?: (node: Node) => boolean;
   filter?: NodeFilter | null | undefined;
 }
@@ -21,7 +34,9 @@ export interface TraverseOptions<E extends HTMLElement> {
  * This is an internal util for traversing the shadow dom to find elements.
  */
 export function traverse<E extends HTMLElement>(
-  options: Readonly<TraverseOptions<E>> & { first: true },
+  options: Readonly<TraverseOptions<E>> & {
+    first: true | TraverseCheck<E>;
+  },
 ): E | undefined;
 export function traverse<E extends HTMLElement>(
   options: Readonly<TraverseOptions<E>> & { first?: false | never },
@@ -48,6 +63,8 @@ export function traverse<E extends HTMLElement>(
     NodeFilter.SHOW_ELEMENT,
     filter,
   );
+
+  let fallback: E | undefined;
   while (treeWalker.nextNode()) {
     const node = treeWalker.currentNode;
     if (ignore(node)) {
@@ -55,7 +72,13 @@ export function traverse<E extends HTMLElement>(
     }
 
     if (check(node)) {
-      if (first) {
+      if (typeof first === "function") {
+        if (first(node)) {
+          return node;
+        }
+
+        fallback ??= node;
+      } else if (first) {
         return node;
       }
 
@@ -70,7 +93,11 @@ export function traverse<E extends HTMLElement>(
     }
   }
 
-  return first ? undefined : elements;
+  if (first) {
+    return fallback;
+  }
+
+  return elements;
 }
 
 /**

@@ -1,26 +1,41 @@
-import { traverse } from "../utils/traverse.js";
-import { FOCUSABLE, NOT_DISABLED_OR_HIDDEN } from "./constants.js";
+import { traverse, type TraverseOptions } from "../utils/traverse.js";
+import {
+  FOCUSABLE,
+  NOT_DISABLED_OR_HIDDEN,
+  PROGRAMMATICALLY_FOCUSABLE,
+} from "./constants.js";
 
 /**
  * @private
  */
-export function isFocusable(element: Element | Node): element is HTMLElement {
+export function isFocusable(
+  element: Element | Node,
+  programmatic?: boolean,
+): element is HTMLElement {
   if (!("matches" in element)) {
     return false;
   }
 
-  if (element.matches(FOCUSABLE)) {
+  const query = programmatic ? PROGRAMMATICALLY_FOCUSABLE : FOCUSABLE;
+  if (element.matches(query)) {
     return true;
   }
 
   if (
     !element.localName.includes("-") ||
-    element.matches(NOT_DISABLED_OR_HIDDEN)
+    !element.matches(NOT_DISABLED_OR_HIDDEN)
   ) {
     return false;
   }
 
   return element.shadowRoot?.delegatesFocus ?? false;
+}
+
+export interface GetFocusableElementsOptions extends Omit<
+  TraverseOptions,
+  "check" | "first"
+> {
+  programmatic?: boolean;
 }
 
 /**
@@ -32,14 +47,13 @@ export function isFocusable(element: Element | Node): element is HTMLElement {
  * @private
  */
 export function getFocusableElements(
-  root: Node,
-  firstFocusTrap: HTMLElement | undefined,
-  lastFocusTrap: HTMLElement | undefined,
+  options: GetFocusableElementsOptions,
 ): readonly HTMLElement[] {
+  const { programmatic, ...traverseOptions } = options;
+
   return traverse({
-    root,
-    check: isFocusable,
-    ignore: (node) => node === firstFocusTrap || node === lastFocusTrap,
+    ...traverseOptions,
+    check: (node) => isFocusable(node, programmatic),
   });
 }
 
