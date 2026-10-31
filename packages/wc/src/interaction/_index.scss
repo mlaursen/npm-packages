@@ -204,6 +204,7 @@ $-keyframes: (
 );
 
 $is-disabled: ":is([disabled], [aria-disabled=true])";
+$is-delegate-aria-disabled: ":is([disabled], [aria-disabled], [data-disabled=true])";
 $is-focus-visible: ":is(:focus-visible, [focus-visible])";
 
 @mixin configure(
