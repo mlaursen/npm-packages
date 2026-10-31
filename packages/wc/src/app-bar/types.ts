@@ -61,33 +61,33 @@ export interface AppBarProperties {
    * @inheritdoc AppBarSize
    * @defaultValue `"small"`
    */
-  size?: AppBarSize;
+  size: AppBarSize;
 
   /**
    * @see AppBarVariant
    * @inheritdoc AppBarVariant
    * @defaultValue `"flexible"`
    */
-  variant?: AppBarVariant;
+  variant: AppBarVariant;
 
   /**
    * @see AppBarPosition
    * @inheritdoc AppBarPosition
    * @defaultValue `"top"`
    */
-  position?: AppBarPosition;
+  position: AppBarPosition;
 
   /**
    * @defaultValue `"sticky"`
    */
-  scrollBehavior?: AppBarScrollBehavior;
+  scrollBehavior: AppBarScrollBehavior;
 
   /**
    * This property should normally not be set manually as it is automatically
    * set using an Intersection Observer. It is used to add additional box
    * shadow when scrolled and elevated
    */
-  scrolled?: boolean;
+  scrolled: boolean;
 
   /**
    * Set this to `true` to enable the subtitle slot in the default
@@ -96,7 +96,7 @@ export interface AppBarProperties {
    *
    * @defaultValue `false`
    */
-  subtitle?: boolean;
+  subtitle: boolean;
 
   /**
    * Set this to `true` if you do not want to render the default
@@ -105,12 +105,12 @@ export interface AppBarProperties {
    *
    * @defaultValue `false`
    */
-  disableTitle?: boolean;
+  disableTitle: boolean;
 
   /**
    * @defaultValue `"start"`
    */
-  titlePosition?: AppBarTitlePosition;
+  titlePosition: AppBarTitlePosition;
 
   /**
    * Set this to `true` to prevent rendering everything related to the
@@ -118,7 +118,7 @@ export interface AppBarProperties {
    *
    * @defaultValue `false`
    */
-  disableActions?: boolean;
+  disableActions: boolean;
 
   /**
    * Set this to `true` remove the elevation from the app bar and just render
@@ -126,5 +126,5 @@ export interface AppBarProperties {
    *
    * @defaultValue `false`
    */
-  disableElevation?: boolean;
+  disableElevation: boolean;
 }

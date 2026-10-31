@@ -1,7 +1,6 @@
 import type { PropertyValues, TemplateResult } from "lit";
-import { LitElement, html } from "lit";
+import { LitElement, html, nothing } from "lit";
 import { property } from "lit/decorators.js";
-import { ifDefined } from "lit/directives/if-defined.js";
 
 import { ElevationMixin } from "../elevation/elevation-mixin.js";
 import { PaletteMixin } from "../palette/palette-mixin.js";
@@ -93,22 +92,22 @@ export class AppBar extends BaseAppBar implements AppBarProperties {
   scrollBehavior: AppBarScrollBehavior = "sticky";
 
   @property({ type: Boolean, reflect: true })
-  scrolled?: boolean;
+  scrolled = false;
 
   @property({ type: Boolean })
-  subtitle?: boolean;
+  subtitle = false;
 
   @property({ type: Boolean, attribute: "disable-title" })
-  disableTitle?: boolean;
+  disableTitle = false;
 
   @property({ attribute: "title-position" })
-  titlePosition?: AppBarTitlePosition;
+  titlePosition: AppBarTitlePosition = "start";
 
   @property({ type: Boolean, attribute: "disable-actions" })
-  disableActions?: boolean;
+  disableActions = false;
 
   @property({ type: Boolean, attribute: "disable-elevation" })
-  disableElevation?: boolean;
+  disableElevation = false;
 
   #observer?: IntersectionObserver;
   #scrollSentinel?: HTMLDivElement;
@@ -120,7 +119,16 @@ export class AppBar extends BaseAppBar implements AppBarProperties {
     this.#scrollSentinel?.remove();
   }
 
+  protected override willUpdate(changed: PropertyValues): void {
+    super.willUpdate(changed);
+
+    if (changed.has("disableElevation")) {
+      this.toggleAttribute("elevated", !this.disableElevation);
+    }
+  }
+
   protected override updated(changed: PropertyValues): void {
+    super.updated(changed);
     if (changed.has("scrollBehavior")) {
       this.#updateScrollObserver();
     }
@@ -159,7 +167,7 @@ export class AppBar extends BaseAppBar implements AppBarProperties {
       <slot name="title-container">
         <mwc-app-bar-title
           size=${this.size}
-          position=${ifDefined(this.titlePosition)}
+          position=${(this.hasAttribute("title-position") ? this.titlePosition : nothing) as AppBarTitlePosition}
           ?subtitle=${this.subtitle}
         >
           <slot name="title"></slot>

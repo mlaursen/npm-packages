@@ -144,7 +144,7 @@ export class Card extends BaseCard implements CardProperties {
   #renderBox(): TemplateResult {
     return html`
       <mwc-box
-        class="container"
+        class="container elevation"
         align=${this.align}
         justify=${this.justify}
         gap=${this.gap}

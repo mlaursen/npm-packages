@@ -141,9 +141,6 @@ $-configure-tokens: (
 $-base-styles: (
   "--_level": "elevation.level",
   "--_shadow-color": "elevation.shadow-color",
-);
-
-$-box-shadow-styles: (
   box-shadow: "#{-get-key-box-shadow()}, #{-get-ambient-box-shadow()}",
   transition-property: "box-shadow, opacity",
   transition-duration: "elevation.transition-duration",
@@ -181,25 +178,16 @@ $-box-shadow-styles: (
 }
 
 @mixin css-styles {
-  $styles: ();
-  // @each $selector, $properties in $-styles {
-  //   @if $selector == base {
-  //     $styles: map.set($styles, "&elevation", $properties);
-  //   } @else {
-  //     $styles: map.set($styles, "&elevation", $selector, $properties);
-  //   }
-  // }
+  $styles: (
+    "&elevation": $-base-styles,
+  );
 
   @include utils.css-styles($styles);
 }
 
 @mixin host-styles {
   $styles: (
-    ":host": $-base-styles,
-    ":host, .elevation, .elevation-before::before, .elevation-after::after":
-      $-box-shadow-styles,
-    ".elevation-before::before, .elevation-after::after":
-      utils.pseudo-element($z-index: null),
+    ":host([elevated]), .elevation": $-base-styles,
   );
 
   @include utils.host-styles($styles);
