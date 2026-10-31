@@ -1,3 +1,6 @@
+// @ts-check
+export const repoName = "npm-packages";
+export const packagePath = "packages/wc";
 export const packageName = "@mlaursen/wc";
 export const title = `${packageName}: An accessible web component library`;
 export const siteName = `${packageName} documentation`;
@@ -6,8 +9,6 @@ export const description =
 export const symbols = true;
 
 export const currentVersion = 0;
-
-export const sourcePath = "npm-packages/packages/wc";
 
 export const materialThemeBuilderUrl =
   "https://material-foundation.github.io/material-theme-builder/";
@@ -34,6 +35,7 @@ export const theme = {
   baseThemes,
 
   /** @type {import("@mlaursen/wc").PaletteBackgroundColor[]} */
+  // @ts-expect-error does not like the flatMap
   backgrounds: [
     "background",
     "surface",
@@ -70,10 +72,10 @@ export const appBar = {
 };
 
 export const avatar = {
-  /** @type {import("@mlaursen.wc").AvatarSize[]} */
+  /** @type {import("@mlaursen/wc").AvatarSize[]} */
   sizes: ["small", "medium"],
 
-  /** @type {import("@mlaursen.wc").AvatarShape[]} */
+  /** @type {import("@mlaursen/wc").AvatarShape[]} */
   shapes: defaultShapes,
 };
 
@@ -173,7 +175,7 @@ export const switchEl = {
   sizes: defaultSizes,
 
   /** @type {(import("@mlaursen/wc").SwitchIcons)[]} **/
-  icons: ["none", "checked", "always"],
+  icons: ["never", "checked", "always"],
 
   states: ["unchecked", "checked", "error", "disabled"],
 };
@@ -270,11 +272,20 @@ export const typography = {
 };
 
 export const eleventyComputed = {
-  playground: (data) => {
-    const slug = data.page.fileSlug;
+  // /** @type {import("#types").EleventyComputedCallback<"playground", import("#types").WebComponentsMeta>} */
+  // playground: (data) => {
+  //   // console.log("data:", data);
+  //   const slug = /** @type {keyof import("#types").WebComponentsMeta} */ (
+  //     data.page.fileSlug
+  //   );
+  //   if (slug in data && data[slug] && typeof data[slug] === "object" && "playground" in data[slug]) {
+  //     return data[slug].playground ?? null
+  //   }
+  //
+  //   return null
+  // },
 
-    return data[slug]?.playground ?? null;
-  },
+  /** @type {import("#types").EleventyComputedCallback<"title">} */
   title: (data) => {
     if (data.page.title) {
       return `${data.page.title} - ${packageName}`;

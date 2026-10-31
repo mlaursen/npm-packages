@@ -3,6 +3,9 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
+  "imports": {
+    "#types": "./types.ts"
+  },
   "scripts": {
     "node-run": "node --experimental-strip-types",
     "test-clean-generated": "git clean -ndX src",

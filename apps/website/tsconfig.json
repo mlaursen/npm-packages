@@ -40,9 +40,6 @@
     "skipLibCheck": true,
 
     "rootDir": ".",
-    "paths": {
-      "@/test": ["./fixtures/test.ts"]
-    },
     "plugins": [
       {
         "name": "ts-lit-plugin"

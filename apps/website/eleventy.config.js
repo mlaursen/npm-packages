@@ -23,6 +23,7 @@ import {
   loadShiki,
   shikiCssPreprocessor,
 } from "./src/_config/plugins/shiki.js";
+import { sourcePathPlugin } from "./src/_config/plugins/sourcePath.js";
 import { ShikiCssFileCache } from "./src/_config/utils/shiki.js";
 
 enableLogger();
@@ -47,6 +48,7 @@ export default defineConfig((eleventyConfig) => {
   eleventyConfig.addPlugin(eleventyNavigationPlugin);
   eleventyConfig.addPlugin(htmlPlugin);
   eleventyConfig.addPlugin(draftsPlugin);
+  eleventyConfig.addPlugin(sourcePathPlugin);
 
   eleventyConfig.addPlugin(EleventyRenderPlugin);
   eleventyConfig.addPlugin(eleventyImageTransformPlugin, {
