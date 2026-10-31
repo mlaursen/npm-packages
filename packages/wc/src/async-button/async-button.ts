@@ -90,8 +90,7 @@ export class AsyncButton extends Button implements AsyncButtonProperties {
     super.willUpdate(changed);
 
     if (changed.has("pending") || changed.has("asyncDisabledVariant")) {
-      const state = this.pending ? "true" : null;
-      this.ariaBusy = state;
+      this.ariaBusy = this.pending ? "true" : null;
 
       if (this.#setDisabled && this.asyncDisabledVariant !== "disabled") {
         this.#setDisabled = false;
@@ -102,13 +101,11 @@ export class AsyncButton extends Button implements AsyncButtonProperties {
         this.#setAriaDisabled &&
         this.asyncDisabledVariant !== "aria-disabled"
       ) {
-        this.#setAriaDisabled = false;
-        this.ariaDisabled = null;
+        this.#updateAriaDisabled(false);
       }
 
       if (this.asyncDisabledVariant === "aria-disabled") {
-        this.ariaDisabled = state;
-        this.#setAriaDisabled = this.pending;
+        this.#updateAriaDisabled(this.pending);
       } else if (this.asyncDisabledVariant === "disabled") {
         this.#setDisabled = this.pending;
         this.toggleAttribute("disabled", this.pending);
@@ -116,7 +113,19 @@ export class AsyncButton extends Button implements AsyncButtonProperties {
     }
   }
 
-  override render(): TemplateResult {
+  #updateAriaDisabled(disabled: boolean): void {
+    this.#setAriaDisabled = disabled;
+    const button = this._button;
+    if (disabled) {
+      this.dataset.disabled = "true";
+      button?.setAttribute("aria-disabled", "true");
+    } else {
+      delete this.dataset.disabled;
+      button?.removeAttribute("aria-disabled");
+    }
+  }
+
+  protected override renderContent(): TemplateResult {
     return html`
       <slot name="start"></slot>
       <span class="progress">

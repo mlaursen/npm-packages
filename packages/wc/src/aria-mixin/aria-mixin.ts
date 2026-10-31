@@ -27,12 +27,10 @@ export function AriaMixin<
   role: AriaRole,
   formAssociated = true,
 ): LitElementWithAriaProperties<T> {
-  const BaseWithInternals = InternalsMixin(Base);
+  const BaseWithInternals = InternalsMixin(Base, formAssociated);
   class AriaElement extends BaseWithInternals implements AriaMixinProperties {
     @property({ reflect: true })
     override role: AriaRole = role;
-
-    static formAssociated = formAssociated;
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     constructor(...args: any[]) {

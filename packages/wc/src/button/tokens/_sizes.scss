@@ -5,8 +5,9 @@
 $extra-small-tokens: (
   height: 2rem,
   gap: "spacing.small",
-  padding-left: "spacing.medium",
-  padding-right: "spacing.medium",
+  padding: (
+    inline: "spacing.medium",
+  ),
   icon: (
     size: 1.25rem,
   ),
@@ -22,8 +23,9 @@ $extra-small-styles: utils.remap-variants(
 $small-tokens: (
   height: 2.5rem,
   gap: "spacing.small",
-  padding-left: "spacing.large",
-  padding-right: "spacing.large",
+  padding: (
+    inline: "spacing.large",
+  ),
   icon: (
     size: 1.25rem,
   ),
@@ -34,8 +36,9 @@ $small-styles: utils.remap-variants(button, small, $size-token-remaps...);
 $medium-tokens: (
   height: 3.5rem,
   gap: "spacing.small",
-  padding-left: "spacing.extra-large",
-  padding-right: "spacing.extra-large",
+  padding: (
+    inline: "spacing.extra-large",
+  ),
   icon: (
     size: 1.5rem,
   ),
@@ -53,8 +56,9 @@ $medium-styles: map.merge(
 $large-tokens: (
   height: 6rem,
   gap: "spacing.medium",
-  padding-left: "spacing(6)",
-  padding-right: "spacing(6)",
+  padding: (
+    inline: "spacing(6)",
+  ),
   icon: (
     size: 2rem,
   ),
@@ -72,8 +76,9 @@ $large-styles: map.merge(
 $extra-large-tokens: (
   height: 8.5rem,
   gap: "spacing.large",
-  padding-left: "spacing(8)",
-  padding-right: "spacing(8)",
+  padding: (
+    inline: "spacing(8)",
+  ),
   icon: (
     size: 2.5rem,
   ),

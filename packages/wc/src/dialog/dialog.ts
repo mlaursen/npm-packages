@@ -44,16 +44,16 @@ const BaseDialog = ElevationMixin(
  *
  * @example Invoker Commands API Example
 ```html
-<mwc-button command="show-modal" commandfor="dialog-1">
+<mwc-button command="--show-modal" commandfor="dialog-1">
   Show
 </mwc-button>
 <mwc-dialog id="dialog-1">
   <h2 slot="title">Title</h2>
   <p slot="content">Hello, world!</p>
-  <mwc-text-button slot="actions" command="close" commandfor="dialog-1">
+  <mwc-text-button slot="actions" command="--close" commandfor="dialog-1">
     Cancel
   </mwc-text-button>
-  <mwc-text-button slot="actions" command="close" commandfor="dialog-1" autofocus>
+  <mwc-text-button slot="actions" command="--close" commandfor="dialog-1" autofocus>
     Ok
   </mwc-text-button>
 </mwc-dialog>
@@ -61,7 +61,7 @@ const BaseDialog = ElevationMixin(
  *
  * @example Form Dialog Example
 ```html
-<mwc-button command="show-modal" commandfor="dialog-1">
+<mwc-button command="--show-modal" commandfor="dialog-1">
   Show
 </mwc-button>
 <mwc-dialog id="dialog-1">
@@ -209,12 +209,14 @@ export class Dialog extends BaseDialog implements DialogProperties {
     super.connectedCallback();
 
     this.addEventListener("submit", this.#handleSubmit);
+    this.addEventListener("command", this.#handleCommand);
   }
 
   override disconnectedCallback(): void {
     super.disconnectedCallback();
 
     this.removeEventListener("submit", this.#handleSubmit);
+    this.removeEventListener("command", this.#handleCommand);
     globalThis.cancelAnimationFrame(this.#forceOpenFrame);
   }
 
@@ -469,6 +471,35 @@ export class Dialog extends BaseDialog implements DialogProperties {
     this.close({
       returnValue: submitter.getAttribute("value") ?? this.returnValue,
     });
+  }
+
+  /**
+   * Need to register custom commands for showing and closing since the browser
+   * does not trigger the default `showModal()` unless it is the `dialog`
+   * element.
+   */
+  #handleCommand(event: Event): void {
+    // CommandEvent isn't in type definitions yet
+    const { command, source } = event as Event & {
+      command: string;
+      source: Element | null;
+    };
+
+    switch (command) {
+      case "--show-modal":
+        this.show();
+        break;
+      case "--close":
+        this.close(
+          source instanceof HTMLButtonElement ? source.value : undefined,
+        );
+        break;
+      case "--request-close":
+        this.requestClose(
+          source instanceof HTMLButtonElement ? source.value : undefined,
+        );
+        break;
+    }
   }
 
   #handleClick(event: MouseEvent): void {

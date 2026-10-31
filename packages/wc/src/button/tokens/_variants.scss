@@ -222,19 +222,18 @@ $outlined-tokens: (
     ),
   ),
 );
-$outlined-styles: utils.deep-merge(
-  utils.remap-variants(button, outlined, $-color-variants-without-backgrounds),
+$outlined-styles: utils.remap-variants(
+  button,
+  outlined,
+  $-color-variants-without-backgrounds
+);
+$outlined-pseudo-styles: map.merge(
+  utils.pseudo-element(),
   (
-    "&::after":
-      map.merge(
-        utils.pseudo-element(),
-        (
-          border-color: "button.outlined.outline.color",
-          border-style: solid,
-          border-width: "button.outlined.outline.width",
-          box-sizing: border-box,
-        )
-      ),
+    border-color: "button.outlined.outline.color",
+    border-style: solid,
+    border-width: "button.outlined.outline.width",
+    box-sizing: border-box,
   )
 );
 $outlined-disabled-styles: utils.remap-variants(

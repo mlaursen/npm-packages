@@ -70,10 +70,12 @@ $-styles: utils.deep-merge(
     "icon.size": 1em,
     font-size: "icon-button.icon-size",
     height: auto,
-    padding-block: 'calc(("icon-button.height" - 1em) / 2)',
-    padding-inline: 'calc(("icon-button.width" - 1em) / 2)',
     width: auto,
   )
+);
+$-padding-styles: (
+  padding-block: 'calc(("icon-button.height" - 1em) / 2)',
+  padding-inline: 'calc(("icon-button.width" - 1em) / 2)',
 );
 $-extra-small-styles: -remap-size(extra-small);
 $-small-styles: -remap-size(small);
@@ -101,7 +103,7 @@ $-wide-styles: (
 
 @mixin css-styles {
   $styles: (
-    "&icon-button": $-styles,
+    "&icon-button": map.merge($-styles, $-padding-styles),
     "&icon-button--extra-small": $-extra-small-styles,
     // small is removed since it is the default remapping
     // "&icon-button--small": $-small-styles,
@@ -125,6 +127,7 @@ $-wide-styles: (
     ":host([size=extra-large])": $-extra-large-styles,
     ":host([width=narrow])": $-narrow-styles,
     ":host([width=wide])": $-wide-styles,
+    ".button": $-padding-styles,
   );
   @include utils.host-styles($styles, $short-names: $-short-names);
 }

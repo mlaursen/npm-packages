@@ -312,7 +312,7 @@ $is-focus-visible: ":is(:focus-visible, [focus-visible])";
     ":host(#{$is-focus-visible})": $-focused-styles,
     ":host([interaction=inward]#{$is-focus-visible})": $-focused-inward-styles,
     ":host([interaction=outward]#{$is-focus-visible})": $-focused-outward-styles,
-    ":host(#{$is-disabled})": $-base-disabled-styles,
+    ":host(#{$is-delegate-aria-disabled})": $-base-disabled-styles,
     ".state-layer, .ripple": $-base-interaction-layer-styles,
     ".state-layer": $state-layer-styles,
     ".ripple": $-base-ripple-styles,

@@ -12,7 +12,7 @@ page:
   <mwc-typography variant="headline">
     <h2>Command API</h2>
   </mwc-typography>
-  <mwc-button command="show-modal" commandfor="command-dialog-1">
+  <mwc-button command="--show-modal" commandfor="command-dialog-1">
     Show Modal
   </mwc-button>
   <mwc-dialog id="command-dialog-1">
@@ -20,19 +20,19 @@ page:
     <p>Hello, world!</p>
     <mwc-button slot="actions"
                 variant="text"
-                command="close"
+                command="--close"
                 commandfor="command-dialog-1">
       Cancel
     </mwc-button>
     <mwc-button slot="actions"
                 variant="text"
-                command="close"
+                command="--close"
                 commandfor="command-dialog-1"
                 autofocus>
       Ok
     </mwc-button>
   </mwc-dialog>
-  <mwc-button command="show-modal" commandfor="command-dialog-2">
+  <mwc-button command="--show-modal" commandfor="command-dialog-2">
     Show Alert
   </mwc-button>
   <mwc-dialog id="command-dialog-2" type="alert">
@@ -42,12 +42,12 @@ page:
     </p>
     <mwc-button slot="actions"
                 variant="text"
-                command="close"
+                command="--close"
                 commandfor="command-dialog-2">
       Ok
     </mwc-button>
   </mwc-dialog>
-  <mwc-button command="show-modal" commandfor="command-dialog-3">
+  <mwc-button command="--show-modal" commandfor="command-dialog-3">
     Show Icon Modal
   </mwc-button>
   <mwc-dialog id="command-dialog-3" width="small">
@@ -60,13 +60,13 @@ page:
     </p>
     <mwc-button slot="actions"
                 variant="text"
-                command="close"
+                command="--close"
                 commandfor="command-dialog-3">
       Delete
     </mwc-button>
     <mwc-button slot="actions"
                 variant="tonal"
-                command="close"
+                command="--close"
                 commandfor="command-dialog-3"
                 autofocus>
       Cancel
@@ -77,7 +77,7 @@ page:
   <mwc-typography variant="headline">
     <h2>Form API</h2>
   </mwc-typography>
-  <mwc-button command="show-modal"
+  <mwc-button command="--show-modal"
               commandfor="form-dialog-1"
               onclick="document.querySelector('#form-dialog-1-form').reset()">
     Show Modal
@@ -189,13 +189,13 @@ page:
     <p>Fixed dialogs were mostly added to support "inline" sheets.</p>
     <mwc-button slot="actions"
                 variant="text"
-                command="close"
+                command="--close"
                 commandfor="fixed-dialog-1">
       Delete
     </mwc-button>
     <mwc-button slot="actions"
                 variant="tonal"
-                command="close"
+                command="--close"
                 commandfor="fixed-dialog-1"
                 autofocus>
       Cancel

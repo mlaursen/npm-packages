@@ -52,13 +52,13 @@ page:
       {% for i in range(1, 3) %}
         <mwc-async-button async-variant="{{ asyncVariant }}">
           {% if i === 1 or i === 3 %}
-            <mwc-material-symbol slot="start-addon">
+            <mwc-material-symbol slot="start">
               favorite
             </mwc-material-symbol>
           {% endif %}
           {{ asyncVariant }}
           {% if i == 2 or i == 3 %}
-            <mwc-material-symbol slot="end-addon">
+            <mwc-material-symbol slot="end">
               close
             </mwc-material-symbol>
           {% endif %}

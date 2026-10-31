@@ -45,8 +45,6 @@ export class TextField extends BaseTextField implements TextFieldProperties {
     delegatesFocus: true,
   };
 
-  static formAssociated = true;
-
   @property({ reflect: true })
   variant: TextFieldVariant = "outlined";
 

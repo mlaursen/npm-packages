@@ -1,10 +1,12 @@
-import type { PropertyValues, TemplateResult } from "lit";
+import { spread } from "@open-wc/lit-helpers";
+import type { TemplateResult } from "lit";
 import { LitElement, html } from "lit";
-import { property } from "lit/decorators.js";
+import { property, query } from "lit/decorators.js";
 
-import { AriaMixin } from "../aria-mixin/aria-mixin.js";
+import { DelegateAriaMixin } from "../delegate-aria-mixin/delegate-aria-mixin.js";
 import { ElevationMixin } from "../elevation/elevation-mixin.js";
 import { InteractionMixin } from "../interaction/interaction-mixin.js";
+import { InternalsMixin } from "../internals-mixin/internals-mixin.js";
 import { PASS_THROUGH_LINK_PROPS } from "../link/constants.js";
 import { MarginMixin } from "../margin/margin-mixin.js";
 import { PaletteMixin } from "../palette/palette-mixin.js";
@@ -20,26 +22,18 @@ import type {
 const BaseStyledButton = ElevationMixin(
   InteractionMixin(PaletteMixin(MarginMixin(LitElement))),
 );
-const BaseButton = AriaMixin(BaseStyledButton, "button");
+const BaseButton = DelegateAriaMixin(InternalsMixin(BaseStyledButton));
 
 const INVALID_LINK_TYPES = new Set(["button", "submit", "reset"]);
-
-// CommandEvent doesn't exist in typescript yet
-interface CommandEventInit extends EventInit {
-  command: string;
-  source?: Element;
-}
-
-// oxlint-disable-next-line no-redeclare
-interface CommandEvent extends Event {
-  readonly command: string;
-  readonly source: Element | null;
-}
-
-declare const CommandEvent: {
-  new (type: string, eventInitDict: CommandEventInit): CommandEvent;
-  prototype: CommandEvent;
-};
+const PASS_THROUGH_BUTTON_PROPS = [
+  "name",
+  "command",
+  "formAction",
+  "formEnctype",
+  "formMethod",
+  "formTarget",
+  "value",
+] as const satisfies (keyof HTMLButtonElement | "command")[];
 
 /**
  * This example will use the default styling of a small, round, and filled
@@ -97,7 +91,25 @@ declare const CommandEvent: {
  */
 export class Button extends BaseButton implements ButtonProperties {
   static override styles = [...BaseButton.styles, styles];
+  static formAssociated = true;
+  static override shadowRootOptions: ShadowRootInit = {
+    ...BaseButton.shadowRootOptions,
+    delegatesFocus: true,
+  };
   static readonly elementName: string = "mwc-button";
+
+  @query("button")
+  _button?: HTMLButtonElement;
+
+  @query("a")
+  _link?: HTMLAnchorElement;
+
+  protected override get delegateAriaTarget(): HTMLElement | null {
+    return this._button ?? this._link ?? null;
+  }
+
+  @property()
+  name = "";
 
   @property()
   type: HTMLButtonElement["type"] = "submit";
@@ -110,6 +122,42 @@ export class Button extends BaseButton implements ButtonProperties {
 
   @property({ reflect: true })
   variant: ButtonVariant = "filled";
+
+  @property()
+  command: CommandAttribute | "" = "";
+
+  @property({ attribute: "commandfor" })
+  commandFor = "";
+
+  @property({ attribute: false })
+  commandForElement: Element | null = null;
+
+  @property({ attribute: "popovertarget" })
+  popoverTarget = "";
+
+  @property({ attribute: "popovertargetaction" })
+  popoverTargetAction: PopoverTargetAction = "toggle";
+
+  @property({ attribute: false })
+  popoverTargetElement: Element | null = null;
+
+  @property({ attribute: "formaction" })
+  formAction = "";
+
+  @property({ attribute: "formenctype" })
+  formEnctype: HTMLButtonElement["formEnctype"] = "";
+
+  @property({ attribute: "formmethod" })
+  formMethod: HTMLButtonElement["formMethod"] = "";
+
+  @property({ type: Boolean, attribute: "formnovalidate" })
+  formNoValidate = false;
+
+  @property({ attribute: "formtarget" })
+  formTarget = "";
+
+  @property()
+  value = "";
 
   // link only properties
   @property()
@@ -133,74 +181,105 @@ export class Button extends BaseButton implements ButtonProperties {
   @property()
   ping?: string;
 
-  @property()
-  command?: CommandAttribute;
-
-  @property()
-  commandfor?: string;
-
-  @property()
-  popovertarget?: string;
-
-  @property()
-  popovertargetaction?: PopoverTargetAction;
-
-  @property({ type: Boolean, attribute: "formnovalidate" })
-  formNoValidate = false;
-
-  @property()
-  value?: string;
-
   override connectedCallback(): void {
     super.connectedCallback();
 
-    if (!this.internals) {
-      return;
-    }
-
-    // I do not support adding an href later
-    if (this.href) {
-      this.role = "link";
-      this.internals.role = "link";
-      this.addEventListener("auxclick", this.#handleMiddleClick);
-    }
-  }
-
-  protected override willUpdate(changed: PropertyValues): void {
-    super.willUpdate(changed);
-
-    if (changed.has("value") && this.value && this.internals) {
-      this.internals.setFormValue(this.value);
-    }
+    this.addEventListener("click", this.handleClick, { capture: true });
   }
 
   override disconnectedCallback(): void {
     super.disconnectedCallback();
 
-    this.removeEventListener("auxclick", this.#handleMiddleClick);
+    this.removeEventListener("click", this.handleClick, { capture: true });
   }
 
   override render(): TemplateResult {
-    return html`
-      <slot></slot>
-      ${this._renderStateLayer()}
-    `;
+    if (this.href) {
+      return this.renderLink();
+    }
+
+    return this.renderButton();
   }
 
-  override handleClick(event: MouseEvent): void {
-    super.handleClick(event);
+  protected renderContent(): TemplateResult {
+    return html`<slot></slot>${this._renderStateLayer()}`;
+  }
 
-    if (this.href) {
-      this.#clickLink(event.ctrlKey);
+  protected renderButton(): TemplateResult {
+    const props: Record<string, string> = {};
+    for (const name of PASS_THROUGH_BUTTON_PROPS) {
+      const value = this[name];
+      if (value) {
+        props[name.toLowerCase()] = value;
+      }
+    }
+
+    if (this.hasAttribute("popovertargetaction")) {
+      props.popovertargetaction = this.popoverTargetAction;
+    }
+
+    return html`<button
+      class="button elevation"
+      type=${this.type}
+      ?disabled=${this.disabled}
+      @focus=${this._updateFocusVisible}
+      @blur=${this._updateFocusVisible}
+      ${spread(props)}
+      ?formnovalidate=${this.formNoValidate}
+      .commandForElement=${this.commandForElement}
+      .popoverTargetElement=${this.popoverTargetElement}
+    >
+      ${this.renderContent()}
+    </button>`;
+  }
+
+  protected renderLink(): TemplateResult {
+    const props: Record<string, string> = {};
+    for (const name of PASS_THROUGH_LINK_PROPS) {
+      const value = this[name];
+      if (
+        value !== undefined &&
+        (name !== "type" || INVALID_LINK_TYPES.has(value))
+      ) {
+        props[name] = value;
+      }
+    }
+
+    return html`<a
+      class="button elevation"
+      ${spread(props)}
+      @focus=${this._updateFocusVisible}
+      @blur=${this._updateFocusVisible}
+      >${this.renderContent()}</a
+    >`;
+  }
+
+  override focus(options?: FocusOptions): void {
+    this._button?.focus(options);
+  }
+
+  override blur(): void {
+    this._button?.blur();
+  }
+
+  protected handleClick(event: MouseEvent): void {
+    if (this.dataset.ariaDisabled === "true" || (this.href && this.disabled)) {
+      event.stopImmediatePropagation();
+      event.preventDefault();
       return;
     }
 
-    if (this.#tryPopoverApi() || this.#tryCommandApi()) {
+    const button = this._button;
+    if (!button) {
       return;
     }
 
-    const internals = this.internals;
-    const form = internals.form;
+    this.#resolveTargetElements(button);
+    this.#resolveFormAction();
+  }
+
+  #resolveFormAction(): void {
+    const form = this.form;
     if (!form || this.type === "button") {
       return;
     }
@@ -223,7 +302,7 @@ export class Button extends BaseButton implements ButtonProperties {
       { capture: true, once: true },
     );
 
-    internals.setFormValue(this.value ?? "");
+    this.internals.setFormValue(this.value ?? "");
     if (this.formNoValidate) {
       const prevNoValidate = form.noValidate;
       form.noValidate = true;
@@ -234,109 +313,27 @@ export class Button extends BaseButton implements ButtonProperties {
     }
   }
 
-  #clickLink(forceNewTab = false): void {
-    const link = document.createElement("a");
-    for (const name of PASS_THROUGH_LINK_PROPS) {
-      const value = this[name];
-      if (
-        value !== undefined &&
-        (name !== "type" || INVALID_LINK_TYPES.has(value))
-      ) {
-        link[name] = value;
-      }
+  /**
+   * Need to manually resolve the `commandfor` and `popovertarget` id refs since
+   * they do not work cross shadow boundaries.
+   */
+  #resolveTargetElements(button: HTMLButtonElement): void {
+    const root = this.getRootNode() as Document | ShadowRoot;
+    if (
+      this.commandFor &&
+      !this.commandForElement &&
+      !button.commandForElement
+    ) {
+      // oxlint-disable-next-line unicorn/prefer-query-selector
+      button.commandForElement = root.getElementById(this.commandFor);
     }
-
-    if (forceNewTab) {
-      link.target = "_blank";
+    if (
+      this.popoverTarget &&
+      !this.popoverTargetElement &&
+      !button.popoverTargetElement
+    ) {
+      // oxlint-disable-next-line unicorn/prefer-query-selector
+      button.popoverTargetElement = document.getElementById(this.popoverTarget);
     }
-
-    link.click();
-  }
-
-  #handleMiddleClick(event: MouseEvent): void {
-    if (event.button === 1) {
-      event.preventDefault();
-      this.#clickLink(true);
-    }
-  }
-
-  #tryCommandApi(): boolean {
-    if (!this.command || !this.commandfor) {
-      return false;
-    }
-
-    const target = document.querySelector<HTMLElement>(`#${this.commandfor}`);
-    if (!target) {
-      return false;
-    }
-
-    if (this.command.startsWith("--") && CommandEvent !== undefined) {
-      target.dispatchEvent(
-        new CommandEvent("command", { command: this.command, source: this }),
-      );
-      return true;
-    }
-
-    switch (this.command) {
-      case "show-modal":
-        if ("showModal" in target && typeof target.showModal === "function") {
-          target.showModal();
-          return true;
-        }
-        break;
-      case "request-close":
-        if (
-          "requestClose" in target &&
-          typeof target.requestClose === "function"
-        ) {
-          target.requestClose(this.value);
-          return true;
-        }
-        break;
-      case "close":
-        if ("close" in target && typeof target.close === "function") {
-          target.close(this.value);
-          return true;
-        }
-        break;
-      case "show-popover":
-        target.showPopover();
-        return true;
-      case "hide-popover":
-        target.hidePopover();
-        return true;
-      case "toggle-popover":
-        target.togglePopover();
-        return true;
-    }
-
-    return false;
-  }
-
-  #tryPopoverApi(): boolean {
-    if (!this.popovertarget || !this.popovertargetaction) {
-      return false;
-    }
-
-    const popover = document.querySelector<HTMLElement>(
-      `#${this.popovertarget}`,
-    );
-    if (!popover?.showPopover) {
-      return false;
-    }
-
-    switch (this.popovertargetaction) {
-      case "show":
-        popover.showPopover();
-        return true;
-      case "hide":
-        popover.hidePopover();
-        return true;
-      case "toggle":
-        popover.togglePopover();
-        return true;
-    }
-
-    return false;
   }
 }

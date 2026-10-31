@@ -41,51 +41,99 @@ export interface ButtonLinkProperties extends PassThroughLinkProperties {
 }
 
 export interface ButtonProperties extends ButtonLinkProperties {
-  /**
-   * @defaultValue `"submit"`
-   */
-  type?: HTMLButtonElement["type"];
+  /** @defaultValue `false` */
+  disabled: boolean;
+
+  /** @defaultValue `""` */
+  name: string;
+
+  /** @defaultValue `"submit"` */
+  type: HTMLButtonElement["type"];
 
   /**
    * @see ButtonSize
    * @defaultValue `"small"`
    */
-  size?: ButtonSize;
+  size: ButtonSize;
 
   /**
    * @see ButtonShape
    * @defaultValue `"round"`
    */
-  shape?: ButtonShape;
+  shape: ButtonShape;
 
   /**
    * @see ButtonVariant
    * @defaultValue `"filled"`
    */
-  variant?: ButtonVariant;
+  variant: ButtonVariant;
 
   /**
    * @see [Invoker Commands API](https://developer.mozilla.org/en-US/docs/Web/API/Invoker_Commands_API)
+   *
+   * NOTE: `commandfor` is unsupported due to being an id ref
+   *
+   * @defaultValue `""`
    */
-  command?: CommandAttribute;
+  command: CommandAttribute | "";
 
   /**
    * @see [Invoker Commands API](https://developer.mozilla.org/en-US/docs/Web/API/Invoker_Commands_API)
+   *
+   * @defaultValue `""`
    */
-  commandfor?: string;
+  commandFor: string;
+
+  /**
+   * This can be used to programmatically set the command target.
+   *
+   * @example
+```ts
+const target = document.querySelector("#some-element")
+const button = document.querySelector("mwc-button");
+
+button.commandForElement = target;
+button.command = "--show-modal"
+```
+   *
+   * @defaultValue `null`
+   */
+  commandForElement: Element | null;
+
+  /**
+   * @see [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/button#popovertarget)
+   *
+   * @defaultValue `""`
+   */
+  popoverTarget: string;
 
   /**
    * @see [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/button#popovertargetaction)
+   *
+   * @defaultValue `"toggle"`
    */
-  popovertarget?: string;
+  popoverTargetAction: PopoverTargetAction;
 
   /**
-   * @see [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/button#popovertargetaction)
-   */
-  popovertargetaction?: PopoverTargetAction;
+   * This can be used to programmatically set the popover target.
+   *
+   * @example
+```ts
+const target = document.querySelector("#some-element")
+const button = document.querySelector("mwc-button");
 
-  /**
-   * @see {@link HTMLButtonElement.formNoValidate}
+button.popoverTargetElement = target;
+button.popoverTargetAction = "show-popover"
+```
+   *
+   * @defaultValue `null`
    */
-  formNoValidate?: boolean;
+  popoverTargetElement: Element | null;
+
+  // NOTE: `form` is unsupported due to being an id ref
+  formAction: string;
+  formEnctype: HTMLButtonElement["formEnctype"];
+  formMethod: HTMLButtonElement["formMethod"];
+  formNoValidate: boolean;
+  formTarget: string;
 }

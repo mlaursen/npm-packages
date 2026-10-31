@@ -19,6 +19,10 @@ const BaseListItem = InteractionMixin(InternalsMixin(LitElement), true);
  */
 export class ListItem extends BaseListItem implements ListItemProperties {
   static override styles = [...BaseListItem.styles, styles];
+  static override shadowRootOptions: ShadowRootInit = {
+    ...BaseListItem.shadowRootOptions,
+    delegatesFocus: true,
+  };
   static readonly elementName: string = "mwc-list-item";
 
   override interaction: InteractionDirection = "inward";
