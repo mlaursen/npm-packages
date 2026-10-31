@@ -47,5 +47,5 @@
       }
     ]
   },
-  "exclude": ["node_modules", "dist", "types"]
+  "exclude": ["node_modules", "dist", "types", "coverage"]
 }
