@@ -86,10 +86,10 @@ export class ListItem extends BaseListItem implements ListItemProperties {
 
   override render(): TemplateResult {
     if (this.href) {
-      return this.#renderLink();
+      return this.renderLink();
     }
 
-    return this.#renderButton();
+    return this.renderButton();
   }
 
   #renderSlots(): TemplateResult {
@@ -156,7 +156,7 @@ export class ListItem extends BaseListItem implements ListItemProperties {
     `;
   }
 
-  #renderLink(): TemplateResult {
+  protected renderLink(): TemplateResult {
     const props: Partial<HTMLAnchorElement> = {};
     for (const name of PASS_THROUGH_LINK_PROPS) {
       props[name] = this[name];
@@ -174,7 +174,7 @@ export class ListItem extends BaseListItem implements ListItemProperties {
     `;
   }
 
-  #renderButton(): TemplateResult {
+  protected renderButton(): TemplateResult {
     let tabIndex = 0;
     let ariaDisabled: "true" | undefined;
     let ariaSelected: "true" | "false" | undefined;
@@ -194,8 +194,8 @@ export class ListItem extends BaseListItem implements ListItemProperties {
         role="button"
         class="state-layer-target"
         tabindex=${tabIndex}
-        @click=${this.#handleButtonClick}
-        @keydown=${this.#handleButtonKeyDown}
+        @click=${this.handleButtonClick}
+        @keydown=${this.handleButtonKeyDown}
         @focus=${this._updateFocusVisible}
         @blur=${this._updateFocusVisible}
       >
@@ -204,14 +204,13 @@ export class ListItem extends BaseListItem implements ListItemProperties {
     `;
   }
 
-  #handleButtonClick(event: MouseEvent): void {
+  protected handleButtonClick(event: MouseEvent): void {
     if (this.disabled) {
       event.preventDefault();
-      event.stopPropagation();
     }
   }
 
-  #handleButtonKeyDown(event: KeyboardEvent): void {
+  protected handleButtonKeyDown(event: KeyboardEvent): void {
     if (event.key !== "Enter" && event.key !== " ") {
       return;
     }
@@ -253,7 +252,7 @@ export class ListItem extends BaseListItem implements ListItemProperties {
       case "start-image":
         name = "_hasStartImage";
         break;
-      case "start-videp":
+      case "start-video":
         name = "_hasStartVideo";
         break;
       case "end-icon":
@@ -265,7 +264,7 @@ export class ListItem extends BaseListItem implements ListItemProperties {
       case "end-image":
         name = "_hasEndImage";
         break;
-      case "end-videp":
+      case "end-video":
         name = "_hasEndVideo";
         break;
       default:
