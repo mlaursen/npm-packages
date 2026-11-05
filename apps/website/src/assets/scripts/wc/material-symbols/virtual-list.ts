@@ -182,11 +182,7 @@ export class VirtualList extends LitElement {
 
     if (changed.has("_columns") || changed.has("query")) {
       this.#available = this.#getAvailableSymbols();
-      const virtualizer = this.#windowController.getVirtualizer();
-      virtualizer.setOptions({
-        ...virtualizer.options,
-        count: this.#available.length,
-      });
+      this.#windowController.setOptions({ count: this.#available.length });
     }
   }
 
