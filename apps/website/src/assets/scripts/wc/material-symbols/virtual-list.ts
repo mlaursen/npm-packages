@@ -170,7 +170,10 @@ export class VirtualList extends LitElement {
       }
 
       frame = globalThis.requestAnimationFrame(() => {
-        this._columns = Math.floor(entry.contentRect.width / MIN_CELL_WIDTH);
+        this._columns = Math.max(
+          1,
+          Math.floor(entry.contentRect.width / MIN_CELL_WIDTH),
+        );
       });
     };
 

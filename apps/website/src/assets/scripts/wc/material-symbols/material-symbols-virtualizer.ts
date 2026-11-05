@@ -1,24 +1,23 @@
 import { debounce, titleCase } from "@mlaursen/utils";
+import type {
+  DialogBackdropVariant,
+  MaterialSymbolCustomPropertyName,
+  MaterialSymbolGrade,
+  MaterialSymbolOpticalSize,
+} from "@mlaursen/wc";
 import {
   isCustomElement,
   isMaterialSymbolFamily,
   isMaterialSymbolGrade,
   isMaterialSymbolOpticalSize,
   isMaterialSymbolWeight,
+  MediaQueryController,
   Radio,
   TextField,
   toggleMaterialSymbolVar,
-  type MaterialSymbolCustomPropertyName,
-  type MaterialSymbolGrade,
-  type MaterialSymbolOpticalSize,
 } from "@mlaursen/wc";
-import {
-  css,
-  html,
-  LitElement,
-  type PropertyValues,
-  type TemplateResult,
-} from "lit";
+import type { PropertyValues, TemplateResult } from "lit";
+import { css, html, LitElement } from "lit";
 import { customElement, query, state } from "lit/decorators.js";
 import { map } from "lit/directives/map.js";
 
@@ -44,14 +43,18 @@ export class MaterialSymbolsVirtualizer
   @query("virtual-list")
   _list?: VirtualList;
 
+  #phone = new MediaQueryController({ host: this, query: "phone" });
+  #desktop = new MediaQueryController({ host: this, query: "desktop" });
+
   static override styles = css`
     :host {
+      --app-bar-size: 4rem;
       --filters-panel-size: 20rem;
+      --filters-desktop-visible-size: 0px;
       --filters-visible-size: 0px;
       --selected-panel-size: 20rem;
       --selected-visible-size: 0px;
-      --app-bar-size: 4rem;
-      --mwc-sheet-fixed-top: calc(var(--app-bar-size) * 2);
+      --selected-desktop-visible-size: 0px;
 
       display: grid;
       grid-template-columns: var(--filters-visible-size) minmax(0, 1fr) var(
@@ -79,7 +82,7 @@ export class MaterialSymbolsVirtualizer
     }
 
     .filters-panel {
-      --mwc-dialog-width: var(--filters-visible-size);
+      --mwc-dialog-width: calc(100% - 3.5rem);
     }
 
     .selected-panel {
@@ -89,6 +92,18 @@ export class MaterialSymbolsVirtualizer
     virtual-list {
       grid-column: 2;
       grid-row: 2;
+    }
+
+    @media (min-width: 48em) {
+      :host {
+        --filters-visible-size: var(--filters-desktop-visible-size);
+        --selected-visible-size: var(--selected-desktop-visible-size);
+        --mwc-sheet-fixed-top: calc(var(--app-bar-size) * 2);
+      }
+
+      .filters-panel {
+        --mwc-dialog-width: var(--filters-visible-size);
+      }
     }
   `;
 
@@ -124,6 +139,8 @@ export class MaterialSymbolsVirtualizer
   @state()
   family = getSearchParamsValue("family", this.#urlController);
 
+  #lastPanelOpened: "filters" | "selected" | null = null;
+
   #handleSearchInput(event: InputEvent): void {
     const target = event.currentTarget as HTMLInputElement;
     this.#setQuery(target.value.trim());
@@ -134,19 +151,38 @@ export class MaterialSymbolsVirtualizer
   }, 150);
 
   override willUpdate(changed: PropertyValues): void {
-    if (changed.has("filtersVisible")) {
+    if (changed.has("filtersVisible") || changed.has("selected")) {
+      const isFiltersVisible = changed.has("filtersVisible");
+      const entering = isFiltersVisible ? this.filtersVisible : !!this.selected;
+
       this.style.setProperty(
         "--duration",
-        this.filtersVisible
-          ? "var(--mwc-duration-long-2)"
-          : "var(--mwc-duration-short-3)",
+        entering ? "var(--mwc-duration-long-2)" : "var(--mwc-duration-short-3)",
       );
       this.style.setProperty(
         "--easing",
-        this.filtersVisible
+        entering
           ? "var(--mwc-easing-emphasized)"
           : "var(--mwc-easing-emphasized-accelerate)",
       );
+
+      this.#lastPanelOpened = null;
+      if (entering) {
+        this.#lastPanelOpened = isFiltersVisible ? "filters" : "selected";
+      }
+    }
+
+    if (
+      this.#lastPanelOpened &&
+      !this.#desktop.matches &&
+      this.filtersVisible &&
+      this.selected
+    ) {
+      if (this.#lastPanelOpened === "filters") {
+        this.selected = "";
+      } else {
+        this.filtersVisible = false;
+      }
     }
   }
 
@@ -249,11 +285,11 @@ export class MaterialSymbolsVirtualizer
   #updateSize(panel: "selected" | "filters", visible: boolean): void {
     if (visible) {
       this.style.setProperty(
-        `--${panel}-visible-size`,
+        `--${panel}-desktop-visible-size`,
         `var(--${panel}-panel-size)`,
       );
     } else {
-      this.style.removeProperty(`--${panel}-visible-size`);
+      this.style.removeProperty(`--${panel}-desktop-visible-size`);
     }
   }
 
@@ -272,9 +308,13 @@ export class MaterialSymbolsVirtualizer
     });
   }
 
+  #getBackdrop(): DialogBackdropVariant {
+    return this.#phone.matches ? "visible" : "disabled";
+  }
+
   override render(): TemplateResult {
     return html`
-      ${this.#renderAppBar()} ${this.#renderFiltersPanel()}
+      ${this.#renderAppBar()}${this.#renderFiltersPanel()}
       <virtual-list
         query=${this.query}
         ?filters-visible=${this.filtersVisible}
@@ -323,12 +363,14 @@ export class MaterialSymbolsVirtualizer
     return html`
       <mwc-sheet
         style="--mwc-sheet-header-padding-block-end: 0"
-        disable-focus-trap
         class="filters-panel"
-        position="left"
         type="fixed"
+        position="left"
+        backdrop=${this.#getBackdrop()}
+        disable-focus-trap
+        disable-scroll-lock
         ?open=${this.filtersVisible}
-        @close=${() => {
+        @closed=${() => {
           this.filtersVisible = false;
         }}
         close-button
@@ -439,12 +481,14 @@ export class MaterialSymbolsVirtualizer
     // I need a way to add text-transform to the sheet title or render a custom <mwc-sheet-title>
     const title = titleCase(this.selected.replaceAll("_", " "), " ");
     return html`<mwc-sheet
-      disable-focus-trap
       class="selected-panel"
-      position="right"
       type="fixed"
+      position="right"
+      backdrop=${this.#getBackdrop()}
+      disable-focus-trap
+      disable-scroll-lock
       ?open=${!!this.selected}
-      @close=${() => {
+      @closed=${() => {
         this.selected = "";
       }}
       close-button
