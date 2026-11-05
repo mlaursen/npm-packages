@@ -23,6 +23,7 @@ import styles from "./dialog-styles.js";
 import type {
   AnimateDialogElementMap,
   CloseDialogOptions,
+  DialogBackdropVariant,
   DialogProperties,
   DialogShape,
   DialogType,
@@ -33,6 +34,9 @@ import type {
 const BaseDialog = ElevationMixin(
   ScrollLockMixin(PopoverMixin(FocusTrapMixin(LitElement))),
 );
+
+type ShowDialogName = "show" | "showModal" | "showPopover";
+type CloseDialogName = "close" | "hidePopover";
 
 /**
  * The dialog's open state can be controlled any of the following:
@@ -75,6 +79,71 @@ const BaseDialog = ElevationMixin(
     Ok
   </mwc-text-button>
 </mwc-dialog>
+```
+ *
+ * @example Using Open Attribute
+```html
+<mwc-button id="show-button">
+  Show
+</mwc-button>
+<mwc-dialog id="dialog-1">
+  <h2 slot="title">Title</h2>
+  <mwc-text-button id="cancel-button" slot="actions">
+    Cancel
+  </mwc-text-button>
+  <mwc-text-button id="confirm-button" slot="actions" autofocus>
+    Ok
+  </mwc-text-button>
+</mwc-dialog>
+<script>
+const dialog = document.querySelector("#dialog-1");
+const showButton = document.querySelector("#show-button");
+const cancelButton = document.querySelector("#cancel-button");
+const confirmButton = document.querySelector("#show-button");
+
+const showDialog = () => {
+  dialog.open = true;
+};
+const closeDialog = () => {
+  dialog.open = false;
+};
+
+showButton.addEventListener("click", showDialog);
+cancelButton.addEventListener("click", closeDialog);
+confirmButton.addEventListener("click", closeDialog);
+</script>
+```
+ *
+ *
+ * @example Dispatching close-dialog Event
+```html
+<mwc-dialog id="dialog-1">
+  <h2 slot="title">Title</h2>
+  <mwc-text-button id="cancel-button" slot="actions">
+    Cancel
+  </mwc-text-button>
+  <mwc-text-button id="confirm-button" slot="actions" autofocus>
+    Ok
+  </mwc-text-button>
+</mwc-dialog>
+
+<script type="importmap">
+  {
+    "imports": {
+      "@mlaursen/wc/": "https://esm.run/@mlaursen/wc/"
+    }
+  }
+</script>
+<script type="module">
+  import { CloseElementEvent } from "@mlaursen/wc";
+
+  const confirmButton = document.querySelector("#confirm-button");
+  confirmButton.addEventListener("click", () => {
+    confirmButton.dispatchEvent(
+      new CloseElementEvent({ name: "dialog", initiation: confirmButton }),
+    );
+  });
+</script>
 ```
  *
  * NOTE: The `<mwc-dialog-header>` will be hidden if the `title`, `icon`, and
@@ -162,8 +231,14 @@ export class Dialog extends BaseDialog implements DialogProperties {
   @property()
   width?: DialogWidth;
 
+  @property()
+  backdrop: DialogBackdropVariant = "visible";
+
+  @property({ type: Boolean, attribute: "disable-scroll-lock" })
+  disableScrollLock = false;
+
   @property({ type: Boolean, attribute: "disable-content-stretch" })
-  disableContentStretch?: boolean;
+  disableContentStretch = false;
 
   @query("dialog")
   protected _dialog?: HTMLDialogElement;
@@ -194,6 +269,7 @@ export class Dialog extends BaseDialog implements DialogProperties {
 
   #prevReturnValue = "";
   #requestCloseValue?: string;
+  #shownBy: ShowDialogName = "showModal";
   #escaped = false;
   #forceOpenFrame = 0;
 
@@ -243,11 +319,28 @@ export class Dialog extends BaseDialog implements DialogProperties {
   protected override updated(changed: PropertyValues): void {
     super.updated(changed);
 
-    if (!changed.has("open") || this.popoverType || this.type === "fixed") {
-      return;
+    // if the dialog is open and the backdrop variant has changed, need to
+    // check to see if the dialog needs to be re-shown so the backdrop can be
+    // shown/hidden and the correct `inert` behavior is applied
+    if (
+      this.open &&
+      changed.has("backdrop") &&
+      this.#shownBy !== this.#getShowElement()
+    ) {
+      this._closeElement();
+      this._showElement();
     }
 
-    this._scrollLock(this.open);
+    // toggle the scroll lock behavior when opening/closing and the
+    // disableScrollLock attribute changes. It will always be ignored if the
+    // popoverType exists and I do not support toggling that value. Create a
+    // different dialog instead.
+    if (
+      !this.popoverType &&
+      (changed.has("open") || changed.has("disableScrollLock"))
+    ) {
+      this._scrollLock(this.open && !this.disableScrollLock);
+    }
   }
 
   override render(): TemplateResult {
@@ -402,26 +495,16 @@ export class Dialog extends BaseDialog implements DialogProperties {
   }
 
   override _showElement(): void {
-    if (this.popoverType) {
-      this._dialog?.showPopover();
-    } else if (this.type === "fixed") {
-      this._dialog?.show();
-    } else {
-      this._dialog?.showModal();
-    }
+    this.#shownBy = this.#getShowElement();
+    this._dialog?.[this.#shownBy]();
 
     this.open = true;
     this._content?.scrollTo({ top: 0 });
     this.focusFirstAutoFocus();
   }
 
-  override _closeElement(): void {
-    if (this.popoverType) {
-      this._dialog?.hidePopover();
-    } else {
-      this._dialog?.close();
-    }
-
+  override _closeElement(shownBy?: ShowDialogName): void {
+    this._dialog?.[this.#getCloseElement(shownBy)]();
     this.open = false;
   }
 
@@ -455,6 +538,29 @@ export class Dialog extends BaseDialog implements DialogProperties {
   override _onCloseCanceled(): void {
     this.#requestCloseValue = undefined;
     this.returnValue = this.#prevReturnValue;
+  }
+
+  #getShowElement(): ShowDialogName {
+    if (this.popoverType) {
+      return "showPopover";
+    }
+
+    if (this.backdrop === "disabled") {
+      return "show";
+    }
+
+    return "showModal";
+  }
+
+  #getCloseElement(shownBy?: ShowDialogName): CloseDialogName {
+    if (
+      shownBy === "showPopover" ||
+      (this.popoverType && shownBy !== "show" && shownBy !== "showModal")
+    ) {
+      return "hidePopover";
+    }
+
+    return "close";
   }
 
   #handleSubmit(event: SubmitEvent): void {
@@ -503,7 +609,11 @@ export class Dialog extends BaseDialog implements DialogProperties {
   }
 
   #handleClick(event: MouseEvent): void {
-    if (this.type === "alert" || event.target !== event.currentTarget) {
+    if (
+      this.type === "alert" ||
+      event.target !== event.currentTarget ||
+      this.backdrop === "disabled"
+    ) {
       return;
     }
 

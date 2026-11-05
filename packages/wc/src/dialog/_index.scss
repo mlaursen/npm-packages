@@ -135,6 +135,9 @@ $-backdrop-styles: (
   background: "dialog.scrim.background",
   opacity: "dialog.scrim.opacity",
 );
+$-backdrop-hidden-styles: (
+  "dialog.scrim.opacity": 0,
+);
 $-square-styles: (
   "dialog.shape.all": "dialog.shape.square",
 );
@@ -217,6 +220,7 @@ $-extra-large-width-styles: utils.remap-variants(dialog, extra-large, width);
     ":host([popover-type])": $-popover-dialog-styles,
     "dialog": $-base-dialog-styles,
     "dialog::backdrop": $-backdrop-styles,
+    ":host([backdrop=hidden])": $-backdrop-hidden-styles,
     ".fixed": $-fixed-dialog-styles,
     ".header": $-header-and-content-styles,
     ".actions": $-content-and-actions-styles,

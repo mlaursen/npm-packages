@@ -184,7 +184,10 @@ page:
               onclick="document.querySelector('#fixed-dialog-1').show()">
     Show
   </mwc-button>
-  <mwc-dialog id="fixed-dialog-1" type="fixed">
+  <mwc-dialog id="fixed-dialog-1"
+              type="fixed"
+              backdrop="disabled"
+              disable-scroll-lock>
     <h2 slot="title">Fixed Dialog Title</h2>
     <p>Fixed dialogs were mostly added to support "inline" sheets.</p>
     <mwc-button slot="actions"

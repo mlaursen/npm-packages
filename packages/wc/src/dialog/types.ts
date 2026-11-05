@@ -46,6 +46,23 @@ export type DialogShape = OverridableStringUnion<
   DialogShapeOverrides
 >;
 
+export interface DialogBackdropVariantOverrides {}
+export type DefaultDialogBackdropVariant = "visible" | "hidden" | "disabled";
+/**
+ * The default dialog backdrop variant is `"visible"`.
+ *
+ * - `"visible"` - displays the normal backdrop when the dialog is open so
+ *   clicking the backdrop closes the dialog
+ * - `"hidden"` - renders an invisible backdrop when the dialog is open so
+ *   clicking anywhere on the page closes the dialog
+ * - `"disabled"` - hides the backdrop and disables pointer events so clicking
+ *   outside the dialog does not close the dialog
+ */
+export type DialogBackdropVariant = OverridableStringUnion<
+  DefaultDialogBackdropVariant,
+  DialogBackdropVariantOverrides
+>;
+
 export type AnimateDialogElementMap = AnimateElementMap<
   "dialog" | "header" | "content" | "actions"
 >;
@@ -88,7 +105,7 @@ export interface DialogProperties {
    * @see {@link DialogType}
    * @defaultValue `"modal"`
    */
-  type?: DialogType;
+  type: DialogType;
 
   /**
    * An optional width to enforce for the dialog. Defaults to the size of the
@@ -106,6 +123,18 @@ export interface DialogProperties {
   returnValue: HTMLDialogElement["returnValue"];
 
   /**
+   * This disables the backdrop when the dialog is opened.
+   *
+   * @defaultValue `"visible"`
+   */
+  backdrop: DialogBackdropVariant;
+
+  /**
+   * @defaultValue `false`
+   */
+  disableScrollLock: boolean;
+
+  /**
    * Set to true to prevent the default `<mwc-dialog-content>` from applying:
    *
    * ```css
@@ -115,7 +144,7 @@ export interface DialogProperties {
    *
    * @defaultValue `false`
    */
-  disableContentStretch?: boolean;
+  disableContentStretch: boolean;
 
   /**
    * This function will show the dialog with an animation using
