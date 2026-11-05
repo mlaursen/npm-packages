@@ -5,9 +5,9 @@ import { Checkbox, Radio, TextField } from "@mlaursen/wc";
 const form = document.querySelector("form");
 const playgroundTarget = document.querySelector<Box>("#playground-target");
 const cardTemplate = playgroundTarget?.querySelector<Card>("mwc-card");
-const itemPrefix = (cardTemplate
-  ?.querySelector("p")
-  ?.textContent.match(/([^0-9]+)/) ?? [])[0];
+const itemPrefix = (
+  cardTemplate?.querySelector("p")?.textContent.match(/([^0-9]+)/) ?? []
+)[0];
 const [, gridTrueRadio] = document.querySelectorAll<Radio>(
   "mwc-radio[name=grid]",
 );
