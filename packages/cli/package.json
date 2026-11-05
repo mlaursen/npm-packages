@@ -32,7 +32,7 @@
   "devDependencies": {
     "@mlaursen/oxlint-config": "workspace:*",
     "@rollup/plugin-node-resolve": "^16.0.3",
-    "@types/node": "^24.19.2",
+    "@types/node": "^26.6.6",
     "concurrently": "^10.0.6",
     "oxfmt": "^0.74.0",
     "oxlint": "^1.89.0",

@@ -17,15 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
-      - uses: pnpm/action-setup@v6
-        with:
-          version: 12.3.4
-
-      - uses: actions/setup-node@v7
-        with:
-          # NOTE: Currently does not support mise.toml
-          node-version: 24.18.0
-          cache: pnpm
+      - uses: jdx/mise-action@v3
       - run: pnpm install --frozen-lockfile
       - run: pnpm check-format
       - run: pnpm build

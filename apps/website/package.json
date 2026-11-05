@@ -55,7 +55,7 @@
     "@shikijs/markdown-it": "^4.5.0",
     "@shikijs/transformers": "^4.5.0",
     "@types/html-minifier-terser": "^7.0.2",
-    "@types/node": "^24.19.2",
+    "@types/node": "^26.6.6",
     "browserslist": "^4.29.4",
     "concurrently": "^10.0.6",
     "cross-env": "^10.1.0",
