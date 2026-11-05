@@ -4,7 +4,7 @@ export interface FocusTrapProperties {
   /**
    * @defaultValue `false`
    */
-  disableFocusTrap?: boolean;
+  disableFocusTrap: boolean;
 
   /**
    * This is used when there are no focusable elements within the component and

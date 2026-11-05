@@ -12,7 +12,7 @@ export function FocusTrapMixin<T extends LitConstructor>(
 ): T & LitConstructor<FocusTrapProperties> {
   class FocusTrapElement extends Base implements FocusTrapProperties {
     @property({ type: Boolean, attribute: "disable-focus-trap" })
-    disableFocusTrap?: boolean;
+    disableFocusTrap = false;
 
     @query("#first-focus-trap")
     private _firstFocusTrap?: HTMLDivElement;
