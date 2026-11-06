@@ -1,14 +1,13 @@
 import type { CompileResult, Options } from "sass";
 import { compileString } from "sass";
 
-import { FILE_URL } from "./constants.js";
-import { getPossiblePaths } from "./getPossiblePaths.js";
-import { resolveSassImportFromPackageJson } from "./resolveSassImportFromPackageJson.js";
+import {
+  createScssImporter,
+  type CreateScssImporterOptions,
+} from "./createScssImporter.js";
 
-export interface CompileScssOptions {
+export interface CompileScssOptions extends CreateScssImporterOptions {
   code: string;
-  load: (filePath: string) => string;
-  basePath: string;
   sassOptions?: Options<"sync">;
 }
 
@@ -129,49 +128,8 @@ export function compileScss(options: CompileScssOptions): CompileResult {
   return compileString(code, {
     ...sassOptions,
     importers: [
-      {
-        canonicalize(url) {
-          // if it's a relative path, let sass handle it itself.
-          if (url.startsWith(".")) {
-            return null;
-          }
-
-          let currentUrl = url;
-          if (currentUrl.startsWith(FILE_URL)) {
-            currentUrl = currentUrl.replace(FILE_URL, "");
-          }
-          currentUrl = currentUrl.replace(basePath + "/", "");
-
-          const resolved = resolveSassImportFromPackageJson({
-            url: currentUrl,
-            load,
-            basePath,
-          });
-          if (resolved) {
-            return new URL(resolved, FILE_URL);
-          }
-
-          const possiblePaths = getPossiblePaths(`${basePath}/${currentUrl}`);
-          for (const path of possiblePaths) {
-            try {
-              load(path);
-              return new URL(path, FILE_URL);
-            } catch {
-              continue;
-            }
-          }
-          return null;
-        },
-        load(canonicalUrl) {
-          const filePath = canonicalUrl.pathname;
-          const contents = load(filePath);
-
-          return {
-            syntax: "scss",
-            contents,
-          };
-        },
-      },
+      createScssImporter({ load, basePath }),
+      ...(sassOptions?.importers ?? []),
     ],
   });
 }
