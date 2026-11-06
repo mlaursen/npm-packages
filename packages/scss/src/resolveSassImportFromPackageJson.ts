@@ -1,3 +1,5 @@
+import { resolve } from "node:path";
+
 import type { SassResolvePackageJson } from "./assertSassResolvePackageJson.js";
 import { assertSassResolvePackageJson } from "./assertSassResolvePackageJson.js";
 import { getPossiblePaths } from "./getPossiblePaths.js";
@@ -92,7 +94,7 @@ export function resolveSassImportFromPackageJson(
     }
 
     try {
-      const joined = `${basePath}/node_modules/${packageName}/${path}`;
+      const joined = resolve(`${basePath}/node_modules/${packageName}/${path}`);
       load(joined);
       return joined;
     } catch {

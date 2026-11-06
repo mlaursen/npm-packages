@@ -75,12 +75,34 @@ const { css } = compileScss({
 });
 ```
 
-### Generating SCSS Lookup
+### Generate SCSS Lookup
 
 ```ts
 import { readFileSync, writeFileSync } from "node:fs";
 
-import { assertScssResolvePackageJson, compileScss } from "@mlaursen/scss";
+import { generateBrowserLookup } from "@mlaursen/scss";
+
+const { lookup, contents } = generateBrowserLookup({
+  code: "@use 'everything';",
+});
+
+writeFileSync("./scssLookup.ts", contents, "utf8");
+
+// or manually
+writeFileSync(
+  "./scssLookup.js",
+  `export const LOOKUP = ${JSON.stringify(lookup)};`,
+  "utf8",
+);
+```
+
+### Generating SCSS Lookup (Manually)
+
+```ts
+// this is pretty much the code for `generateBrowserLookup`
+import { readFileSync, writeFileSync } from "node:fs";
+
+import { assertSassResolvePackageJson, compileScss } from "@mlaursen/scss";
 import { format } from "oxfmt";
 
 const basePath = process.cwd();
@@ -92,10 +114,10 @@ compileScss({
   code: "@use 'everything';",
   load: (filePath) => {
     const contents = readFileSync(filePath, "utf8");
-    const browserName = filePath.replace(basePath, "/__home__");
+    const browserName = filePath.replace(basePath, browserBasePath);
     if (filePath.endsWith("package.json")) {
       const parsed = JSON.parse(contents);
-      assertScssResolvePackageJson(parsed);
+      assertSassResolvePackageJson(parsed);
 
       // can trim down the exports if needed
       lookup[browserName] = JSON.stringify({
@@ -116,7 +138,7 @@ compileScss({
 const lookupString = JSON.stringify(lookup);
 const formatted = await format(
   browserOutFilePath,
-  `export const SCSS_LOOKUP: Record<string, string> = ${lookupString};`,
+  `export const SCSS_LOOKUP: Readonly<Record<string, string>> = ${lookupString};`,
 );
 writeFileSync(browserOutFilePath, formatted.code, "utf8");
 ```

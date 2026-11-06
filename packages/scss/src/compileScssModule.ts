@@ -50,7 +50,7 @@ export function compileScssModule(options: CompileScssModuleOptions): Result {
             const { parent, nodes } = node;
             if (parent && nodes.length > 0) {
               for (const childNode of nodes) {
-                // eslint-disable-next-line unicorn/prefer-modern-dom-apis
+                // oxlint-disable-next-line unicorn/prefer-modern-dom-apis
                 parent.insertBefore(node, childNode);
               }
             }

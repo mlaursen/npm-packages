@@ -5,7 +5,16 @@ import { getPossiblePaths } from "./getPossiblePaths.js";
 import { resolveSassImportFromPackageJson } from "./resolveSassImportFromPackageJson.js";
 
 export interface CreateScssImporterOptions {
+  /**
+   * Used to load the file. For node environments, this should generally be
+   * `(filePath) => readFileSync(filePath, "utf8")`.
+   */
   load: (filePath: string) => string;
+
+  /**
+   * The base path for resolving files. This should generally be
+   * `process.cwd()` for node environments.
+   */
   basePath: string;
 }
 
