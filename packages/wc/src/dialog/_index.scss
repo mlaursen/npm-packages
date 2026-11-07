@@ -11,7 +11,7 @@ $-tokens: (
     opacity: 0.32,
   ),
   elevation: 3,
-  max-width: 35rem,
+  max-width: 80rem,
   min-width: 17.5rem,
   gap: "spacing.large",
   max-height: 100%,
@@ -75,13 +75,13 @@ $-tokens: (
     width: "dialog.min-width",
   ),
   small: (
-    width: 20rem,
+    width: 25rem,
   ),
   medium: (
-    width: 28rem,
+    width: 40rem,
   ),
   large: (
-    width: 32rem,
+    width: 60rem,
   ),
   extra-large: (
     width: "dialog.max-width",
