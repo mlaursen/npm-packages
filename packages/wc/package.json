@@ -18,6 +18,11 @@
     "directory": "packages/wc"
   },
   "type": "module",
+  "sideEffects": [
+    "./dist/**/define.js",
+    "./dist/**/*.scss",
+    "./dist/**/*.css"
+  ],
   "exports": {
     ".": {
       "sass": "./dist/_index.scss",

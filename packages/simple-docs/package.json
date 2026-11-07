@@ -21,6 +21,7 @@
     "simple-docs": "./cli.js"
   },
   "type": "module",
+  "sideEffects": false,
   "exports": {
     ".": {
       "types": "./dist/generate.d.ts",

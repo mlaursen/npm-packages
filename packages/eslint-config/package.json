@@ -17,6 +17,7 @@
     "directory": "packages/eslint-config"
   },
   "type": "module",
+  "sideEffects": false,
   "exports": {
     ".": "./dist/index.js",
     "./package.json": "./package.json"

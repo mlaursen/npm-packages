@@ -3,6 +3,7 @@
   "version": "0.2.2",
   "description": "A small util to copy SCSS files for publishing.",
   "type": "module",
+  "sideEffects": false,
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",

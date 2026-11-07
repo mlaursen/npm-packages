@@ -18,6 +18,7 @@
     "directory": "packages/sass"
   },
   "type": "module",
+  "sideEffects": false,
   "exports": {
     ".": {
       "node": {
