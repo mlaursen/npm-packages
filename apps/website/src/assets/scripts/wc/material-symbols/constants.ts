@@ -1,31 +1,19 @@
-import type {
-  MaterialSymbolCustomPropertyName,
-  MaterialSymbolFamily,
-} from "@mlaursen/wc";
+import type { MaterialSymbolCustomPropertyName } from "@mlaursen/wc";
 
 import type {
   MaterialSymbolsSearchParam,
   MaterialSymbolsState,
 } from "./types.js";
 
-export const SYMBOL_FAMILIES = [
-  "outlined",
-  "rounded",
-  "sharp",
-] as const satisfies MaterialSymbolFamily[];
-
-export const SYMBOL_QUERY_STATE_DEFAULTS = {
-  fill: 0,
-  weight: 500,
-  grade: 0,
-  opsz: 48,
-  family: "outlined",
-  query: "",
-  selected: "",
-} as const satisfies Partial<MaterialSymbolsState>;
-export const SYMBOL_QUERY_STATE_PARAMS = Object.keys(
-  SYMBOL_QUERY_STATE_DEFAULTS,
-);
+export const SYMBOL_QUERY_STATE_PARAMS = [
+  "fill",
+  "weight",
+  "grade",
+  "opsz",
+  "family",
+  "query",
+  "selected",
+] as const satisfies (keyof MaterialSymbolsState)[];
 export const SYMBOL_CUSTOM_PROPERTY_NAMES = [
   "fill",
   "weight",

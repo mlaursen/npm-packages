@@ -172,6 +172,22 @@ $-token-names: (
       @include phone-media {
         @content;
       }
+    } @else if $name == tablet-media {
+      @include tablet-media {
+        @content;
+      }
+    } @else if $name == tablet-only-media {
+      @include tablet-only-media {
+        @content;
+      }
+    } @else if $name == desktop-media {
+      @include desktop-media {
+        @content;
+      }
+    } @else if $name == large-desktop-media {
+      @include large-desktop-media {
+        @content;
+      }
     }
   }
 }

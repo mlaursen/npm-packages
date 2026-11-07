@@ -1,0 +1,30 @@
+@use "@mlaursen/wc" as *;
+
+@include map-to-styles(
+  (
+    ".container": (
+      height: var(--height),
+      position: relative,
+    ),
+
+    ".row": (
+      left: 0,
+      position: absolute,
+      top: 0,
+      transform: translateY(var(--position)),
+    ),
+
+    ".grid": (
+      grid-auto-rows: 8rem,
+    ),
+
+    ".symbol": (
+      "icon.size": 2rem,
+
+      gap: "spacing.large",
+      flex-direction: column,
+      height: 100%,
+      width: 100%,
+    ),
+  )
+);

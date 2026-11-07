@@ -2,7 +2,6 @@ import { alphaNumericSort, chunk } from "@mlaursen/utils";
 import { WindowVirtualizerController } from "@tanstack/lit-virtual";
 import Fuse from "fuse.js";
 import {
-  css,
   html,
   LitElement,
   type PropertyValues,
@@ -22,6 +21,8 @@ import {
   OTHER_HEADING_HEIGHT,
 } from "./constants.js";
 
+import styles from "./virtual-list.scss";
+
 @customElement("virtual-list")
 export class VirtualList extends LitElement {
   #containerRef = createRef<HTMLDivElement>();
@@ -31,32 +32,7 @@ export class VirtualList extends LitElement {
   #fuse = this.#createFuse();
   #available = this.#getAvailableSymbols();
 
-  static override styles = css`
-    .container {
-      height: var(--height);
-      position: relative;
-    }
-
-    .row {
-      left: 0;
-      position: absolute;
-      top: 0;
-      transform: translateY(var(--position));
-    }
-
-    .grid {
-      grid-auto-rows: 8rem;
-    }
-
-    .symbol {
-      --mwc-icon-size: 2rem;
-
-      gap: var(--mwc-spacing-large);
-      flex-direction: column;
-      height: 100%;
-      width: 100%;
-    }
-  `;
+  static override styles = styles;
 
   @property()
   query: string = "";

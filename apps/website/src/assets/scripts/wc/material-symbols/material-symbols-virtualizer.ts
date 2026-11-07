@@ -2,38 +2,38 @@ import { debounce, titleCase } from "@mlaursen/utils";
 import type {
   DialogBackdropVariant,
   MaterialSymbolCustomPropertyName,
-  MaterialSymbolGrade,
-  MaterialSymbolOpticalSize,
 } from "@mlaursen/wc";
 import {
+  getVar,
+  getVarName,
   isCustomElement,
   isMaterialSymbolFamily,
   isMaterialSymbolGrade,
   isMaterialSymbolOpticalSize,
   isMaterialSymbolWeight,
+  MATERIAL_SYMBOL_GRADES,
+  MATERIAL_SYMBOL_OPTICAL_SIZES,
   MediaQueryController,
   Radio,
   TextField,
   toggleMaterialSymbolVar,
+  URLSearchParamsController,
 } from "@mlaursen/wc";
 import type { PropertyValues, TemplateResult } from "lit";
-import { css, html, LitElement } from "lit";
+import { html, LitElement } from "lit";
 import { customElement, query, state } from "lit/decorators.js";
 import { map } from "lit/directives/map.js";
 
 import { families } from "../../../../_data/materialSymbols.js";
 import {
   SYMBOL_CUSTOM_PROPERTY_NAMES,
-  SYMBOL_QUERY_STATE_DEFAULTS,
   SYMBOL_QUERY_STATE_PARAMS,
 } from "./constants.js";
+import { materialSymbolsDefaults, materialSymbolsSchema } from "./schema.js";
 import type { MaterialSymbolsState } from "./types.js";
-import { URLSearchParamsController } from "./URLSearchParamsController.js";
-import { getSearchParamsUpdate, getSearchParamsValue } from "./utils.js";
 import type { VirtualList } from "./virtual-list.js";
 
-const GRADES = [-25, 0, 200] as const satisfies MaterialSymbolGrade[];
-const OPSZS = [20, 24, 40, 48] as const satisfies MaterialSymbolOpticalSize[];
+import styles from "./material-symbols-virtualizer.scss";
 
 @customElement("material-symbols-virtualizer")
 export class MaterialSymbolsVirtualizer
@@ -46,98 +46,41 @@ export class MaterialSymbolsVirtualizer
   #phone = new MediaQueryController({ host: this, query: "phone" });
   #desktop = new MediaQueryController({ host: this, query: "desktop" });
 
-  static override styles = css`
-    :host {
-      --app-bar-size: 4rem;
-      --filters-panel-size: 20rem;
-      --filters-desktop-visible-size: 0px;
-      --filters-visible-size: 0px;
-      --selected-panel-size: 20rem;
-      --selected-visible-size: 0px;
-      --selected-desktop-visible-size: 0px;
-
-      display: grid;
-      grid-template-columns: var(--filters-visible-size) minmax(0, 1fr) var(
-          --selected-visible-size
-        );
-      grid-template-rows: var(--app-bar-size) 1fr;
-      min-height: 100dvh;
-
-      transition: grid-template-columns
-        var(--duration, var(--mwc-duration-long-2))
-        var(--easing, var(--mwc-easing-emphasized));
-    }
-
-    .search-container {
-      grid-column: 1/-1;
-      grid-row: 1;
-      display: flex;
-      padding-inline: var(--mwc-spacing-large);
-      top: var(--app-bar-size);
-    }
-
-    .search {
-      --mwc-text-field-shape-all: var(--mwc-shape-corner-full);
-      width: 100%;
-    }
-
-    .filters-panel {
-      --mwc-dialog-width: calc(100% - 3.5rem);
-    }
-
-    .selected-panel {
-      --mwc-dialog-width: var(--selected-visible-size);
-    }
-
-    virtual-list {
-      grid-column: 2;
-      grid-row: 2;
-    }
-
-    @media (min-width: 48em) {
-      :host {
-        --filters-visible-size: var(--filters-desktop-visible-size);
-        --selected-visible-size: var(--selected-desktop-visible-size);
-        --mwc-sheet-fixed-top: calc(var(--app-bar-size) * 2);
-      }
-
-      .filters-panel {
-        --mwc-dialog-width: var(--filters-visible-size);
-      }
-    }
-  `;
-
+  static override styles = styles;
   static override shadowRootOptions: ShadowRootInit = {
     ...LitElement.shadowRootOptions,
     delegatesFocus: true,
   };
 
-  #urlController = new URLSearchParamsController(this);
+  #searchParams = new URLSearchParamsController(this, {
+    schema: materialSymbolsSchema,
+    omitDefaults: true,
+  });
 
   @state()
-  query = getSearchParamsValue("query", this.#urlController);
+  query = this.#searchParams.get("q");
 
   @state()
   filtersVisible =
-    !this.#urlController.get("icon") || globalThis.innerWidth > 1200;
+    !this.#searchParams.get("icon") || globalThis.innerWidth > 1200;
 
   @state()
-  selected = getSearchParamsValue("selected", this.#urlController);
+  selected = this.#searchParams.get("icon");
 
   @state()
-  fill = getSearchParamsValue("fill", this.#urlController);
+  fill = this.#searchParams.get("FILL");
 
   @state()
-  grade = getSearchParamsValue("grade", this.#urlController);
+  grade = this.#searchParams.get("GRAD");
 
   @state()
-  weight = getSearchParamsValue("weight", this.#urlController);
+  weight = this.#searchParams.get("wght");
 
   @state()
-  opsz = getSearchParamsValue("opsz", this.#urlController);
+  opsz = this.#searchParams.get("opsz");
 
   @state()
-  family = getSearchParamsValue("family", this.#urlController);
+  family = this.#searchParams.get("family");
 
   #lastPanelOpened: "filters" | "selected" | null = null;
 
@@ -155,16 +98,7 @@ export class MaterialSymbolsVirtualizer
       const isFiltersVisible = changed.has("filtersVisible");
       const entering = isFiltersVisible ? this.filtersVisible : !!this.selected;
 
-      this.style.setProperty(
-        "--duration",
-        entering ? "var(--mwc-duration-long-2)" : "var(--mwc-duration-short-3)",
-      );
-      this.style.setProperty(
-        "--easing",
-        entering
-          ? "var(--mwc-easing-emphasized)"
-          : "var(--mwc-easing-emphasized-accelerate)",
-      );
+      this.#setTransition(entering);
 
       this.#lastPanelOpened = null;
       if (entering) {
@@ -188,17 +122,15 @@ export class MaterialSymbolsVirtualizer
 
   override updated(changed: PropertyValues): void {
     if (SYMBOL_QUERY_STATE_PARAMS.some((key) => changed.has(key))) {
-      this.#urlController.update(
-        getSearchParamsUpdate({
-          query: this.query,
-          fill: this.fill,
-          weight: this.weight,
-          grade: this.grade,
-          opsz: this.opsz,
-          family: this.family,
-          selected: this.selected,
-        }),
-      );
+      this.#searchParams.update({
+        q: this.query,
+        FILL: this.fill,
+        GRAD: this.grade,
+        wght: this.weight,
+        opsz: this.opsz,
+        family: this.family,
+        icon: this.selected,
+      });
     }
 
     if (changed.has("filtersVisible")) {
@@ -223,11 +155,11 @@ export class MaterialSymbolsVirtualizer
   }
 
   #reset(): void {
-    this.fill = SYMBOL_QUERY_STATE_DEFAULTS.fill;
-    this.weight = SYMBOL_QUERY_STATE_DEFAULTS.weight;
-    this.grade = SYMBOL_QUERY_STATE_DEFAULTS.grade;
-    this.opsz = SYMBOL_QUERY_STATE_DEFAULTS.opsz;
-    this.family = SYMBOL_QUERY_STATE_DEFAULTS.family;
+    this.fill = materialSymbolsDefaults.FILL;
+    this.weight = materialSymbolsDefaults.wght;
+    this.grade = materialSymbolsDefaults.GRAD;
+    this.opsz = materialSymbolsDefaults.opsz;
+    this.family = materialSymbolsDefaults.family;
   }
 
   #toggleFill(): void {
@@ -253,7 +185,7 @@ export class MaterialSymbolsVirtualizer
       return;
     }
 
-    const grade = GRADES[input.valueAsNumber];
+    const grade = MATERIAL_SYMBOL_GRADES[input.valueAsNumber];
     if (isMaterialSymbolGrade(grade)) {
       this.grade = grade;
     }
@@ -265,7 +197,7 @@ export class MaterialSymbolsVirtualizer
       return;
     }
 
-    const opsz = OPSZS[input.valueAsNumber];
+    const opsz = MATERIAL_SYMBOL_OPTICAL_SIZES[input.valueAsNumber];
     if (isMaterialSymbolOpticalSize(opsz)) {
       this.opsz = opsz;
     }
@@ -280,6 +212,17 @@ export class MaterialSymbolsVirtualizer
     }
 
     this.family = event.currentTarget.value;
+  }
+
+  #setTransition(entering: boolean): void {
+    const duration = entering
+      ? getVar("duration.long-2")
+      : getVar("duration.short-3");
+    const easing = entering
+      ? getVar("easing.emphasized")
+      : getVar("easing.emphasized-accelerate");
+    this.style.setProperty("--duration", duration);
+    this.style.setProperty("--easing", easing);
   }
 
   #updateSize(panel: "selected" | "filters", visible: boolean): void {
@@ -353,11 +296,11 @@ export class MaterialSymbolsVirtualizer
 
   #renderFiltersPanel(): TemplateResult {
     const isCustomized =
-      this.fill !== SYMBOL_QUERY_STATE_DEFAULTS.fill ||
-      this.weight !== SYMBOL_QUERY_STATE_DEFAULTS.weight ||
-      this.grade !== SYMBOL_QUERY_STATE_DEFAULTS.grade ||
-      this.opsz !== SYMBOL_QUERY_STATE_DEFAULTS.opsz ||
-      this.family !== SYMBOL_QUERY_STATE_DEFAULTS.family;
+      this.fill !== materialSymbolsDefaults.FILL ||
+      this.weight !== materialSymbolsDefaults.wght ||
+      this.grade !== materialSymbolsDefaults.GRAD ||
+      this.opsz !== materialSymbolsDefaults.opsz ||
+      this.family !== materialSymbolsDefaults.family;
 
     // NOTE: need to swap out the text fields for sliders once I create them
     return html`
@@ -370,6 +313,11 @@ export class MaterialSymbolsVirtualizer
         disable-focus-trap
         disable-scroll-lock
         ?open=${this.filtersVisible}
+        @close=${() => {
+          // need this for when the built-in close button is clicked
+          this.#setTransition(false);
+          this.#updateSize("filters", false);
+        }}
         @closed=${() => {
           this.filtersVisible = false;
         }}
@@ -420,7 +368,7 @@ export class MaterialSymbolsVirtualizer
               name="grade"
               min="0"
               max="2"
-              .value=${`${GRADES.indexOf(this.grade)}`}
+              .value=${`${MATERIAL_SYMBOL_GRADES.indexOf(this.grade)}`}
               @change=${this.#handleGradeChange}
             >
               <span slot="label">Grade (${this.grade})</span>
@@ -430,7 +378,7 @@ export class MaterialSymbolsVirtualizer
               name="opsz"
               min="0"
               max="3"
-              .value=${`${OPSZS.indexOf(this.opsz)}`}
+              .value=${`${MATERIAL_SYMBOL_OPTICAL_SIZES.indexOf(this.opsz)}`}
               @change=${this.#handleOpszChange}
             >
               <span slot="label">Optical Size (${this.opsz}px)</span>
@@ -488,6 +436,11 @@ export class MaterialSymbolsVirtualizer
       disable-focus-trap
       disable-scroll-lock
       ?open=${!!this.selected}
+      @close=${() => {
+        // need this for when the built-in close button is clicked
+        this.#setTransition(false);
+        this.#updateSize("selected", false);
+      }}
       @closed=${() => {
         this.selected = "";
       }}
