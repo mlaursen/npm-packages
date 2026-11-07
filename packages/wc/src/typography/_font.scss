@@ -95,10 +95,10 @@ $-tokens: (
 $-utility-classes: true;
 $-font-styles: italic oblique normal;
 $-font-weights: map.keys(map.get($-tokens, weight));
-$-text-alignments: left center right;
-$-text-decorations: underline overline line-through none;
-$-text-transforms: capitalize uppercase lowercase;
-$-text-overflows: nowrap ellipsis;
+$-text-alignments: start end left right center justify inherit;
+$-text-decorations: underline overline line-through none inherit;
+$-text-transforms: capitalize uppercase lowercase inherit;
+$-text-overflows: nowrap ellipsis clip inherit;
 
 $-font-token-names: map.keys(map.get($-tokens, font));
 $-weight-token-names: map.keys(map.get($-tokens, weight));

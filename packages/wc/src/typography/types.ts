@@ -24,6 +24,29 @@ export type TypographyVariant = OverridableStringUnion<
   TypographyVariantOverrides
 >;
 
+export type TypographyTextAlign =
+  | "start"
+  | "end"
+  | "left"
+  | "right"
+  | "center"
+  | "justify"
+  | "inherit"
+  | null;
+export type TypographyTextTransform =
+  | "capitalize"
+  | "uppercase"
+  | "lowercase"
+  | "inherit"
+  | "none"
+  | null;
+export type TypographyTextOverflow =
+  | "nowrap"
+  | "ellipsis"
+  | "clip"
+  | "inherit"
+  | null;
+
 export interface TypographyProperties extends PaletteProperties {
   /**
    * @defaultValue `"large"`
@@ -39,4 +62,19 @@ export interface TypographyProperties extends PaletteProperties {
    * @defaultValue `"body"`
    */
   prominent: boolean;
+
+  /**
+   * @defaultValue `null`
+   */
+  textAlign: TypographyTextAlign;
+
+  /**
+   * @defaultValue `null`
+   */
+  textTransform: TypographyTextTransform;
+
+  /**
+   * @defaultValue `null`
+   */
+  textOverflow: TypographyTextOverflow;
 }

@@ -8,6 +8,9 @@ import { PaletteMixin } from "../palette/palette-mixin.js";
 import type {
   TypographyProperties,
   TypographySize,
+  TypographyTextAlign,
+  TypographyTextOverflow,
+  TypographyTextTransform,
   TypographyVariant,
 } from "./types.js";
 import styles from "./typography-styles.js";
@@ -42,6 +45,15 @@ export class Typography extends BaseTypography implements TypographyProperties {
 
   @property({ type: Boolean })
   prominent = false;
+
+  @property({ attribute: "text-align" })
+  textAlign: TypographyTextAlign = null;
+
+  @property({ attribute: "text-transform" })
+  textTransform: TypographyTextTransform = null;
+
+  @property({ attribute: "text-overflow" })
+  textOverflow: TypographyTextOverflow = null;
 
   protected override render(): TemplateResult {
     return html`<slot></slot>`;
