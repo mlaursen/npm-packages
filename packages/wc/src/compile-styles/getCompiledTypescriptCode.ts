@@ -1,13 +1,14 @@
-import type { CreateStylesOutput } from "./types.js";
+import type { CompileStylesOutput, CompileStylesResult } from "./types.js";
 
-export interface GetStylesOptions {
-  output: CreateStylesOutput;
-  development: string;
-  production: string;
+interface Options extends CompileStylesResult {
+  output: CompileStylesOutput;
 }
 
-export function getStyles(options: GetStylesOptions): string {
-  const { output, development, production } = options;
+/**
+ * @internal
+ */
+export function getCompiledTypescriptCode(options: Options): string {
+  const { output, production, development } = options;
 
   let contents: string;
   if (output === "minified") {

@@ -8,7 +8,9 @@ node_modules
 /coverage
 
 # generated
-src/**/*-styles.ts
+src/palette/dark-styles.ts
+src/palette/light-styles.ts
+src/palette/light-dark-styles.ts
 
 material-theme.json
 material-theme.scss

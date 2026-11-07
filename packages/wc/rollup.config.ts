@@ -1,6 +1,7 @@
 import type { ChildProcess } from "node:child_process";
 import { execSync, spawn } from "node:child_process";
 import { glob } from "node:fs/promises";
+import { basename } from "node:path";
 
 import { getGitRoot, touch } from "@mlaursen/node-utils";
 import { nodeResolve } from "@rollup/plugin-node-resolve";
@@ -8,6 +9,8 @@ import type { Plugin, RollupOptions } from "rollup";
 import { defineConfig } from "rollup";
 import { dts } from "rollup-plugin-dts";
 import { swc } from "rollup-plugin-swc3";
+
+import { compileStylesRollupPlugin } from "./src/compile-styles/rollupPlugin.js";
 
 const mainIndexFile = "./src/index.ts";
 const external = (id: string): boolean => !/^[./]/.test(id);
@@ -86,30 +89,6 @@ function generateTypesPlugin(): Plugin {
   };
 }
 
-function generateComponentsPlugin(): Plugin {
-  let watcher: ChildProcess | undefined;
-  let promise: Promise<void> | undefined;
-  return {
-    name: "generate-components-plugin",
-    buildStart() {
-      if (!this.meta.watchMode) {
-        execSync("pnpm build-components");
-        return;
-      }
-
-      if (watcher) {
-        return;
-      }
-
-      ({ promise, watcher } = setupWatcher("build-components-watch"));
-      return promise;
-    },
-    closeWatcher() {
-      watcher?.kill();
-    },
-  };
-}
-
 async function getDefineFiles(): Promise<readonly string[]> {
   const files: string[] = [];
   for await (const entry of glob("src/**/define.ts")) {
@@ -119,12 +98,30 @@ async function getDefineFiles(): Promise<readonly string[]> {
   return files;
 }
 
+async function getStylesFiles(): Promise<Record<string, string>> {
+  const files: Record<string, string> = {};
+  for await (const entry of glob("src/**/*-styles.ts")) {
+    const withoutSrc = basename(entry, ".ts");
+    files[withoutSrc] = "./" + entry;
+  }
+
+  return files;
+}
+
 export default defineConfig(async (): Promise<RollupOptions[]> => {
   const tsInput: Record<string, string> = {
     index: mainIndexFile,
+    "compile-styles": "./src/compile-styles/index.ts",
+    "compile-styles-rollup-plugin": "./src/compile-styles/rollupPlugin.ts",
+    "compile-styles-esbuild-plugin": "./src/compile-styles/esbuildPlugin.ts",
+    ...(await getStylesFiles()),
   };
   const dtsInput: Record<string, string> = {
     index: "./types/index.d.ts",
+    "compile-styles": "./types/compile-styles/index.d.ts",
+    "compile-styles-rollup-plugin": "./types/compile-styles/rollupPlugin.d.ts",
+    "compile-styles-esbuild-plugin":
+      "./types/compile-styles/esbuildPlugin.d.ts",
   };
 
   const defineFiles = await getDefineFiles();
@@ -149,7 +146,10 @@ export default defineConfig(async (): Promise<RollupOptions[]> => {
       },
       external,
       plugins: [
-        generateComponentsPlugin(),
+        compileStylesRollupPlugin({
+          wcPath: "./src",
+          sassOptions: { sourceMap: true },
+        }),
         nodeResolve(),
         swcPlugin,
         touchWebsitePlugin(),

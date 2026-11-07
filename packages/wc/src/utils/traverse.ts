@@ -101,7 +101,7 @@ export function traverse<E extends HTMLElement>(
 }
 
 /**
- * @private
+ * @internal
  */
 export function isWithinRoot(root: Node, node: Node): boolean {
   let current: Node | null = node;

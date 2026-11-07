@@ -67,6 +67,7 @@
     "markdown-it": "^15.0.3",
     "oxfmt": "^0.76.0",
     "oxlint": "^1.91.0",
+    "sass-embedded": "^1.107.1",
     "sharp": "^0.35.5",
     "sharp-ico": "^0.1.5",
     "slugify": "^1.6.9",

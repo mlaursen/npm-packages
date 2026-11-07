@@ -2,6 +2,7 @@ import { readFileSync, writeFileSync } from "node:fs";
 
 import { assertSassResolvePackageJson } from "./assertSassResolvePackageJson.js";
 import { compileScss } from "./compileScss.js";
+import { getBrowserFileContents } from "./getBrowserFileContents.js";
 
 export interface GenerateBrowserLookupOptions {
   /**
@@ -147,18 +148,7 @@ export function generateBrowserLookup(
     basePath,
   });
 
-  const contents = `export const SCSS_LOOKUP: Readonly<Record<string, string>> = ${JSON.stringify(lookup)};
-export const BASE_PATH = "${browserBasePath}";
-
-export const loadFromScssLookup = (filePath: string): string => {
-  const contents = SCSS_LOOKUP[filePath];
-  if (!contents) {
-    throw new Error(\`File not found: \${filePath}\`);
-  }
-
-  return contents;
-};
-`;
+  const contents = getBrowserFileContents(lookup, browserBasePath);
   if (browserOutFilePath) {
     writeFileSync(browserOutFilePath, contents, "utf8");
   }

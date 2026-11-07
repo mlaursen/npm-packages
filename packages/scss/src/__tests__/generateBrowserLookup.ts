@@ -7,6 +7,7 @@ import {
   generateBrowserLookup,
   type GenerateBrowserLookupResult,
 } from "../generateBrowserLookup.js";
+import { getBrowserFileContents } from "../getBrowserFileContents.js";
 
 const basePath = "/home/example";
 const FILES: Record<string, string> = {
@@ -59,20 +60,7 @@ describe("generateBrowserLookup", () => {
     expect(result).toEqual({
       lookup,
       basePath: "/__home__",
-      contents: expect.any(String),
+      contents: getBrowserFileContents(lookup, "/__home__"),
     } satisfies GenerateBrowserLookupResult);
-    expect(result.contents)
-      .toBe(`export const SCSS_LOOKUP: Readonly<Record<string, string>> = {"/__home__/_index.scss":"@use 'everything';","/__home__/_everything.scss":"\\n@use \\"sass:math\\";\\n@use \\"@mlaursen/wc\\";\\n","/__home__/node_modules/@mlaursen/wc/package.json":"{\\"exports\\":{\\".\\":{\\"sass\\":\\"./dist/_index.scss\\",\\"default\\":\\"./dist/index.js\\"},\\"./define\\":\\"./dist/define.js\\",\\"./*/define\\":\\"./dist/*/define.js\\",\\"./standalone\\":\\"./dist/standalone.js\\",\\"./package.json\\":\\"./package.json\\"}}","/__home__/node_modules/@mlaursen/wc/dist/_index.scss":"\\n.fake-css {}\\n"};
-export const BASE_PATH = "/__home__";
-
-export const loadFromScssLookup = (filePath: string): string => {
-  const contents = SCSS_LOOKUP[filePath];
-  if (!contents) {
-    throw new Error(\`File not found: \${filePath}\`);
-  }
-
-  return contents;
-};
-`);
   });
 });

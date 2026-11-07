@@ -1,15 +1,18 @@
 import { basename, dirname } from "node:path";
 
 import { generateFile } from "@mlaursen/node-utils";
+import { compileStylesEsbuildPlugin } from "@mlaursen/wc/compile-styles-esbuild-plugin";
 import esbuild from "esbuild";
 import { glob } from "glob";
+import * as sassEmbedded from "sass-embedded";
 
-import { url } from "../../_data/meta.js";
+import { colorScheme, url } from "../../_data/meta.js";
 import {
   IS_PRODUCTION,
   NODE_ENV,
   SCRIPTS_DIR,
   SCRIPTS_OUT_DIR,
+  SCSS_DIR,
 } from "../constants.js";
 
 /**
@@ -31,6 +34,13 @@ async function build(entryPoint) {
         process.env.SHOW_HOME_NAVIGATION ?? "",
       ),
     },
+    plugins: [
+      compileStylesEsbuildPlugin({
+        sass: sassEmbedded,
+        colorScheme,
+        configureFilePath: `${SCSS_DIR}/_configure-website.scss`,
+      }),
+    ],
   });
 
   // prevent nunjucks from attempting to parse `{{`

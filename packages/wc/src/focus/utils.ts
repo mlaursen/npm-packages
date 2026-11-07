@@ -6,7 +6,7 @@ import {
 } from "./constants.js";
 
 /**
- * @private
+ * @internal
  */
 export function isFocusable(
   element: Element | Node,
@@ -44,7 +44,7 @@ export interface GetFocusableElementsOptions extends Omit<
  * `mwc-sheet-header` that had focusable buttons inside that were not picked up
  * from the `mwc-sheet`.
  *
- * @private
+ * @internal
  */
 export function getFocusableElements(
   options: GetFocusableElementsOptions,

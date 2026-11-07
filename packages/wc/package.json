@@ -23,9 +23,11 @@
       "sass": "./dist/_index.scss",
       "default": "./dist/index.js"
     },
+    "./compile-styles": "./dist/compile-styles.js",
+    "./compile-styles-esbuild-plugin": "./dist/compile-styles-esbuild-plugin.js",
+    "./compile-styles-rollup-plugin": "./dist/compile-styles-rollup-plugin.js",
     "./define": "./dist/define.js",
     "./*/define": "./dist/*/define.js",
-    "./standalone": "./dist/standalone.js",
     "./package.json": "./package.json"
   },
   "publishConfig": {
@@ -55,7 +57,7 @@
     "build-default-css": "pnpm node-run scripts/build-default-css.ts",
     "build-scss": "mlaursen-cli copy-scss-files \"src/**/_*.scss\"",
     "build-scss-watch": "pnpm build-scss -w",
-    "build-rollup": "rollup -c rollup.config.ts",
+    "build-rollup": "rollup -c rollup.config.ts --configPlugin rollup-plugin-swc3",
     "build-rollup-watch": "pnpm build-rollup --watch",
     "build-types": "tsc -P tsconfig.types.json",
     "build-types-watch": "pnpm build-types --watch",
@@ -85,20 +87,52 @@
     "browserslist": "^4.29.5",
     "chokidar": "^6.0.0",
     "concurrently": "^10.0.6",
+    "css-declaration-sorter": "^7.4.0",
+    "esbuild": "^0.28.2",
     "glob": "^14.0.3",
     "happy-dom": "^21.0.4",
     "lightningcss": "^1.32.0",
     "oxfmt": "^0.76.0",
     "oxlint": "^1.91.0",
+    "postcss": "^8.5.32",
     "prettier": "^3.9.10",
     "prettier-plugin-css-order": "^2.2.0",
     "rollup": "^4.67.4",
     "rollup-plugin-dts": "^6.4.1",
     "rollup-plugin-summary": "^3.0.1",
     "rollup-plugin-swc3": "^0.12.1",
+    "sass-embedded": "^1.107.1",
     "ts-lit-plugin": "^2.0.2",
     "tsx": "^4.23.15",
     "typescript": "^6.0.3",
     "vitest": "^5.1.0"
+  },
+  "peerDependencies": {
+    "@mlaursen/node-utils": "workspace:*",
+    "@mlaursen/scss": "workspace:*",
+    "css-declaration-sorter": "^7.4.0",
+    "lightningcss": "^1.32.0",
+    "postcss": "^8.5.32",
+    "sass-embedded": "^1.107.1"
+  },
+  "peerDependenciesMeta": {
+    "@mlaursen/node-utils": {
+      "optional": true
+    },
+    "@mlaursen/scss": {
+      "optional": true
+    },
+    "lightningcss": {
+      "optional": true
+    },
+    "postcss": {
+      "optional": true
+    },
+    "css-declaration-sorter": {
+      "optional": true
+    },
+    "sass-embedded": {
+      "optional": true
+    }
   }
 }

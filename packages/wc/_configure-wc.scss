@@ -1,0 +1,8 @@
+@use "./src" as *;
+
+@include configure(
+  $palette: (
+    color-scheme: light-dark,
+  ),
+  $short-var-names: true
+);
