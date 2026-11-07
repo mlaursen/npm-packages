@@ -60,6 +60,7 @@ export * from "./list/list.js";
 export * from "./list/types.js";
 export * from "./margin/margin-mixin.js";
 export * from "./margin/types.js";
+export * from "./material-symbol/constants.js";
 export * from "./material-symbol/material-symbol.js";
 export * from "./material-symbol/types.js";
 export * from "./material-symbol/utils.js";

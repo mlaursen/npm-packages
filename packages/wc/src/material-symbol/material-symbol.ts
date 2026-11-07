@@ -3,15 +3,17 @@ import { html } from "lit";
 import { property } from "lit/decorators.js";
 
 import { Icon } from "../icon/icon.js";
+import type {
+  MaterialSymbolFamily,
+  MaterialSymbolFill,
+  MaterialSymbolWeight,
+  MaterialSymbolGrade,
+  MaterialSymbolOpticalSize,
+} from "./constants.js";
 import styles from "./material-symbol-styles.js";
 import type {
   MaterialSymbolCustomPropertyName,
-  MaterialSymbolFamily,
-  MaterialSymbolFill,
-  MaterialSymbolGrade,
-  MaterialSymbolOpticalSize,
   MaterialSymbolProperties,
-  MaterialSymbolWeight,
 } from "./types.js";
 import { toggleMaterialSymbolVar } from "./utils.js";
 

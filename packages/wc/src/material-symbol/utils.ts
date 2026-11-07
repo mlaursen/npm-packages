@@ -1,45 +1,45 @@
 import { titleCase } from "@mlaursen/utils";
 
+import {
+  MATERIAL_SYMBOL_FILLS,
+  MATERIAL_SYMBOL_GRADES,
+  MATERIAL_SYMBOL_OPTICAL_SIZES,
+  MATERIAL_SYMBOL_WEIGHTS,
+  type MaterialSymbolFamily,
+  type MaterialSymbolFill,
+  type MaterialSymbolGrade,
+  type MaterialSymbolOpticalSize,
+  type MaterialSymbolWeight,
+} from "./constants.js";
 import type {
   MaterialSymbolCustomProperties,
   MaterialSymbolCustomPropertyName,
-  MaterialSymbolFamily,
-  MaterialSymbolFill,
-  MaterialSymbolGrade,
-  MaterialSymbolOpticalSize,
-  MaterialSymbolWeight,
 } from "./types.js";
 
 export function isMaterialSymbolFill(
   value: unknown,
 ): value is MaterialSymbolFill {
-  return value === 0 || value === 1;
+  return MATERIAL_SYMBOL_FILLS.includes(value as MaterialSymbolFill);
 }
 
 export function isMaterialSymbolWeight(
   value: unknown,
 ): value is MaterialSymbolWeight {
-  return (
-    value === 100 ||
-    value === 200 ||
-    value === 300 ||
-    value === 400 ||
-    value === 500 ||
-    value === 600 ||
-    value === 700
-  );
+  return MATERIAL_SYMBOL_WEIGHTS.includes(value as MaterialSymbolWeight);
 }
 
 export function isMaterialSymbolGrade(
   value: unknown,
 ): value is MaterialSymbolGrade {
-  return value === -25 || value === 0 || value === 200;
+  return MATERIAL_SYMBOL_GRADES.includes(value as MaterialSymbolGrade);
 }
 
 export function isMaterialSymbolOpticalSize(
   value: unknown,
 ): value is MaterialSymbolOpticalSize {
-  return value === 20 || value === 24 || value === 40 || value === 48;
+  return MATERIAL_SYMBOL_OPTICAL_SIZES.includes(
+    value as MaterialSymbolOpticalSize,
+  );
 }
 
 export function isMaterialSymbolFamily(
