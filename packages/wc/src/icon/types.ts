@@ -1,9 +1,9 @@
 import type { OverridableStringUnion } from "@mlaursen/utils";
 
-import type { DefaultComponentExtraSize } from "../types.js";
+import type { DefaultComponentSize } from "../types.js";
 
 export interface IconSizeOverrides {}
-export type DefaultIconSize = DefaultComponentExtraSize;
+export type DefaultIconSize = DefaultComponentSize;
 export type IconSize = OverridableStringUnion<
   DefaultIconSize,
   IconSizeOverrides

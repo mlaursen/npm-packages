@@ -9,7 +9,7 @@ $-tokens: (
   fill: 0,
   weight: 400,
   grade: 0,
-  opsz: 48,
+  opsz: 24,
 );
 $-configure-tokens: list.append(map.keys($-tokens), base-styles);
 

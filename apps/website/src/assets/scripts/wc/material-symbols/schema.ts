@@ -21,8 +21,8 @@ const choice = <T extends number>(values: readonly T[], fallback: T) =>
 export const materialSymbolsSchema = z.object({
   FILL: choice<MaterialSymbolFill>(MATERIAL_SYMBOL_FILLS, 0),
   GRAD: choice<MaterialSymbolGrade>(MATERIAL_SYMBOL_GRADES, 0),
-  wght: choice<MaterialSymbolWeight>(MATERIAL_SYMBOL_WEIGHTS, 500),
-  opsz: choice<MaterialSymbolOpticalSize>(MATERIAL_SYMBOL_OPTICAL_SIZES, 48),
+  wght: choice<MaterialSymbolWeight>(MATERIAL_SYMBOL_WEIGHTS, 400),
+  opsz: choice<MaterialSymbolOpticalSize>(MATERIAL_SYMBOL_OPTICAL_SIZES, 24),
 
   family: z
     .string()
