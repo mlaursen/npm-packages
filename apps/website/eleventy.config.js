@@ -13,7 +13,10 @@ import {
   WC_ROOT,
 } from "./src/_config/constants.js";
 import { buildJs } from "./src/_config/events/build-js.js";
-import { buildScss } from "./src/_config/events/build-scss.js";
+import {
+  buildScss,
+  ShikiCssFileCache,
+} from "./src/_config/events/build-scss.js";
 import { slugify } from "./src/_config/filters/slugify.js";
 import { draftsPlugin } from "./src/_config/plugins/drafts.js";
 import { htmlPlugin } from "./src/_config/plugins/html.js";
@@ -22,8 +25,7 @@ import {
   loadShiki,
   shikiCssPreprocessor,
 } from "./src/_config/plugins/shiki.js";
-import { sourcePathPlugin } from "./src/_config/plugins/sourcePath.js";
-import { ShikiCssFileCache } from "./src/_config/utils/shiki.js";
+import { sourcePathPlugin } from "./src/_config/plugins/source-path.js";
 
 enableLogger();
 const shiki = await logTask(loadShiki(), "Loading shiki", "Shiki loaded!");

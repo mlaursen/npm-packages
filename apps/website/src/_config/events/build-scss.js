@@ -17,12 +17,24 @@ import {
 } from "../constants.js";
 import { getContentHash } from "../utils/getContentHash.js";
 
+export class ShikiCssFileCache {
+  #fileName = "";
+
+  set fileName(fileName) {
+    this.#fileName = fileName;
+  }
+
+  get fileName() {
+    return this.#fileName;
+  }
+}
+
 /**
  * @typedef {object} BaseCompileOptions
  * @property {string} cwd
  * @property {string} filePath
  * @property {string} outFileName
- * @property {import("../utils/shiki.js").ShikiCssFileCache} shikiCache
+ * @property {ShikiCssFileCache} shikiCache
  */
 
 /**
@@ -155,7 +167,7 @@ async function removeShikiFiles() {
 }
 
 /**
- * @param {import("../utils/shiki.js").ShikiCssFileCache} shikiCache
+ * @param {ShikiCssFileCache} shikiCache
  */
 export async function buildScss(shikiCache) {
   const cwd = process.cwd();
