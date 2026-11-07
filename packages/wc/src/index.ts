@@ -104,6 +104,8 @@ export * from "./transition/types.js";
 export * from "./types.js";
 export * from "./typography/types.js";
 export * from "./typography/typography.js";
+export * from "./url-search-params-controller/types.js";
+export * from "./url-search-params-controller/url-search-params-controller.js";
 export * from "./utils/async-click-event.js";
 export * from "./utils/clamp.js";
 export * from "./utils/getPercentage.js";
