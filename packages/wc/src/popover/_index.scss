@@ -166,6 +166,10 @@ $-horizontal-anchor-styles: (
   ),
   center: (
     "popover.area-x": center,
+    // not sure when or why, but firefox started automatically resolving this
+    // to always be above when using the default fallbacks. using only
+    // `flip-block` fixes it
+    "popover.fallbacks": "flip-block",
   ),
   inner-right: (
     "popover.area-x": span-start,
@@ -183,6 +187,10 @@ $-vertical-anchor-styles: (
   ),
   center: (
     "popover.area-y": center,
+    // not sure when or why, but firefox started automatically resolving this
+    // to always be above when using the default fallbacks. using only
+    // `flip-inline` fixes it
+    "popover.fallbacks": "flip-inline",
   ),
   bottom: (
     "popover.area-y": span-end,
