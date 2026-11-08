@@ -113,6 +113,8 @@ export * from "./utils/getPercentage.js";
 export * from "./utils/isCustomElement.js";
 export * from "./utils/loop.js";
 export * from "./utils/luminance.js";
+export * from "./utils/mergeStyles.js";
+export * from "./utils/redispatchEvent.js";
 export * from "./utils/safeDefine.js";
 export * from "./utils/slots.js";
 export * from "./utils/tokens.js";
