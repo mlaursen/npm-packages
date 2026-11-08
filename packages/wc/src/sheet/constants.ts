@@ -1,9 +1,11 @@
+import { slide } from "../animations/slide.js";
 import {
-  DEFAULT_DIALOG_CLOSE_ANIMATION,
-  DEFAULT_DIALOG_OPEN_ANIMATION,
+  DEFAULT_DIALOG_BACKDROP_CLOSE_ANIMATION,
+  DEFAULT_DIALOG_BACKDROP_OPEN_ANIMATION,
 } from "../dialog/constants.js";
 import type { AnimateDialogElementMap } from "../dialog/types.js";
 import { Duration, Easing } from "../transition/constants.js";
+import { calcRtlTranslate } from "../utils/rtl.js";
 import { getVar } from "../utils/tokens.js";
 
 const openFromX = getVar("sheet.open.from.x", 0);
@@ -17,42 +19,24 @@ const closeToY = getVar("sheet.close.to.y", openFromY);
 
 export const DEFAULT_SHEET_OPEN_ANIMATION = {
   dialog: [
-    [
-      [
-        {
-          transform: `translate(${openFromX}, ${openFromY})`,
-        },
-        {
-          transform: `translate(${openToX}, ${openToY})`,
-        },
-      ],
-      {
-        duration: Duration.Long2,
-        easing: Easing.Emphasized,
-      },
-    ],
+    slide({
+      from: `${calcRtlTranslate(openFromX)} ${openFromY}`,
+      to: `${calcRtlTranslate(openToX)} ${openToY}`,
+      duration: Duration.Long2,
+    }),
 
-    ...DEFAULT_DIALOG_OPEN_ANIMATION.dialog.slice(2),
+    DEFAULT_DIALOG_BACKDROP_OPEN_ANIMATION,
   ],
 } as const satisfies AnimateDialogElementMap;
 
 export const DEFAULT_SHEET_CLOSE_ANIMATION = {
   dialog: [
-    [
-      [
-        {
-          transform: `translate(${closeFromX}, ${closeFromY})`,
-        },
-        {
-          transform: `translate(${closeToX}, ${closeToY})`,
-        },
-      ],
-      {
-        duration: Duration.Short3,
-        easing: Easing.EmphasizedAccelerate,
-      },
-    ],
+    slide({
+      from: `${calcRtlTranslate(closeFromX)} ${closeFromY}`,
+      to: `${calcRtlTranslate(closeToX)} ${closeToY}`,
+      easing: Easing.EmphasizedAccelerate,
+    }),
 
-    ...DEFAULT_DIALOG_CLOSE_ANIMATION.dialog.slice(2),
+    DEFAULT_DIALOG_BACKDROP_CLOSE_ANIMATION,
   ],
 } as const satisfies AnimateDialogElementMap;

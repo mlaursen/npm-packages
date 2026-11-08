@@ -218,3 +218,43 @@ await element.close();
    */
   _onCloseCanceled(): void;
 }
+
+export type KeyframeDescriptor = Keyframe | PropertyIndexedKeyframes;
+export type KeyframeDescriptors = readonly KeyframeDescriptor[];
+export type OneOrManyKeyframeDescriptors =
+  | KeyframeDescriptor
+  | KeyframeDescriptors;
+
+export interface AnimateFromTo<From, To = From> {
+  /** The starting animation(s) or settings. */
+  from?: From;
+
+  /** The ending animation or settings. */
+  to?: To;
+}
+
+export interface BaseCreateAnimationOptions extends KeyframeAnimationOptions {
+  /**
+   * This is a rename of the {@link KeyframeAnimationOptions.pseudoElement}
+   * that just allows for some autocomplete.
+   */
+  pseudoElement?: "::backdrop" | "::before" | "::after" | (string & {});
+}
+
+export interface CreateAnimationOptions<
+  From = OneOrManyKeyframeDescriptors,
+  To = KeyframeDescriptor,
+>
+  extends BaseCreateAnimationOptions, Required<AnimateFromTo<From, To>> {
+  /**
+   * This should either be a single keyframe descriptor or an array of
+   * keyframes.
+   */
+  from: From;
+
+  /**
+   * The ending keyframe descriptor. Use the {@link from} array version to
+   * create multiple steps in the animation.
+   */
+  to: To;
+}

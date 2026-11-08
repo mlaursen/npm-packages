@@ -1,127 +1,89 @@
-import type { AnimateElementArgs } from "../animations/types.js";
+import { fade } from "../animations/fade.js";
+import { slide } from "../animations/slide.js";
 import { Duration, Easing } from "../transition/constants.js";
 import { getVar } from "../utils/tokens.js";
 import type { AnimateDialogElementMap } from "./types.js";
 
-export const DEFAULT_DIALOG_BACKDROP_OPEN_ANIMATION = [
-  [{ opacity: 0 }, { opacity: getVar("dialog.scrim.opacity", 0.32) }],
-  {
-    duration: Duration.Long2,
-    easing: Easing.Linear,
-    pseudoElement: "::backdrop",
-  },
-] as const satisfies AnimateElementArgs;
-export const DEFAULT_DIALOG_BACKDROP_CLOSE_ANIMATION = [
-  [{ opacity: getVar("dialog.scrim.opacity", 0.32) }, { opacity: 0 }],
-  {
-    duration: Duration.Short3,
-    easing: Easing.Linear,
-    pseudoElement: "::backdrop",
-  },
-] as const satisfies AnimateElementArgs;
+const backdropOpacity = getVar("dialog.scrim.opacity", 0.32);
+const offsetFade = fade({
+  from: [0, { opacity: 0, offset: 0.2 }],
+  to: 1,
+  fill: "forwards",
+  duration: Duration.Medium1,
+});
+
+export const DEFAULT_DIALOG_BACKDROP_OPEN_ANIMATION = fade({
+  pseudoElement: "::backdrop",
+  from: 0,
+  to: backdropOpacity,
+  easing: Easing.Linear,
+  duration: Duration.Long2,
+});
 
 export const DEFAULT_DIALOG_OPEN_ANIMATION = {
   dialog: [
-    [
-      // slide down animation
-      [
-        {
-          transform: `translateY(${getVar("dialog.transition.distance", "-1.875rem")})`,
-          // this is so the dialog progressively reveals more content as the
-          // animation progresses. the `-100vmax` is required so the box-shadow
-          // still displays
-          clipPath: "inset(0 -100vmax 100% -100vmax)",
-        },
-        {
-          transform: "translateY(0)",
-          clipPath: "inset(-100vmax)",
-        },
-      ],
-      {
-        duration: Duration.Long2,
-        easing: Easing.Emphasized,
-      },
-    ],
-
-    // short opacity animation
-    [
-      [{ opacity: 0 }, { opacity: 1 }],
-      {
-        duration: Duration.Short1,
-        easing: Easing.Linear,
-      },
-    ],
+    // slide down with fade
+    slide({
+      slideDirection: "downwards",
+      from: `0 ${getVar("dialog.slide.distance", "-1.875rem")}`,
+      to: "0 0",
+      reveal: true,
+      duration: Duration.Long2,
+      easing: Easing.Emphasized,
+    }),
+    fade({
+      from: 0,
+      to: 1,
+      duration: Duration.Short1,
+    }),
 
     DEFAULT_DIALOG_BACKDROP_OPEN_ANIMATION,
   ],
-  header: [
-    [
-      [{ opacity: 0 }, { opacity: 0, offset: 0.2 }, { opacity: 1 }],
-      { duration: Duration.Medium1, easing: Easing.Linear, fill: "forwards" },
-    ],
-  ],
-  content: [
-    [
-      [{ opacity: 0 }, { opacity: 0, offset: 0.2 }, { opacity: 1 }],
-      { duration: Duration.Medium1, easing: Easing.Linear, fill: "forwards" },
-    ],
-  ],
+  header: [offsetFade],
+  content: [offsetFade],
   actions: [
-    [
-      [{ opacity: 0 }, { opacity: 0, offset: 0.5 }, { opacity: 1 }],
-      { duration: Duration.Medium1, easing: Easing.Linear, fill: "forwards" },
-    ],
+    fade({
+      from: [0, { opacity: 0, offset: 0.5 }],
+      to: 1,
+      fill: "forwards",
+      duration: Duration.Medium1,
+    }),
   ],
 } as const satisfies AnimateDialogElementMap;
 
+const shortFade = fade({
+  from: 1,
+  to: 0,
+  duration: Duration.Short2,
+  fill: "forwards",
+});
+
+export const DEFAULT_DIALOG_BACKDROP_CLOSE_ANIMATION = fade({
+  pseudoElement: "::backdrop",
+  from: backdropOpacity,
+  to: 0,
+});
 export const DEFAULT_DIALOG_CLOSE_ANIMATION = {
   dialog: [
-    [
-      [
-        {
-          transform: "translateY(0)",
-          clipPath: "inset(0)",
-        },
-        {
-          transform: `translateY(${getVar("dialog.transition.distance", "-1.875rem")})`,
-          clipPath: "inset(0 0 35% 0)",
-        },
-      ],
-      {
-        duration: Duration.Short3,
-        easing: Easing.EmphasizedAccelerate,
-      },
-    ],
+    // slide up with delayed fade
+    slide({
+      slideDirection: "upwards",
+      from: "0 0",
+      to: `0 ${getVar("dialog.slide.distance", "-1.875rem")}`,
+      reveal: true,
+    }),
+    fade({
+      from: 1,
+      to: 0,
+      delay: Duration.Short2,
+      duration: Duration.Short1,
+    }),
 
-    // main dialog opacity
-    [
-      [{ opacity: 1 }, { opacity: 0 }],
-      {
-        delay: Duration.Short2,
-        duration: Duration.Short1,
-        easing: Easing.Linear,
-      },
-    ],
-
+    // backdrop fade
     DEFAULT_DIALOG_BACKDROP_CLOSE_ANIMATION,
   ],
 
-  header: [
-    [
-      [{ opacity: 1 }, { opacity: 0 }],
-      { duration: Duration.Short2, easing: Easing.Linear, fill: "forwards" },
-    ],
-  ],
-  content: [
-    [
-      [{ opacity: 1 }, { opacity: 0 }],
-      { duration: Duration.Short2, easing: Easing.Linear, fill: "forwards" },
-    ],
-  ],
-  actions: [
-    [
-      [{ opacity: 1 }, { opacity: 0 }],
-      { duration: Duration.Short2, easing: Easing.Linear, fill: "forwards" },
-    ],
-  ],
+  header: [shortFade],
+  content: [shortFade],
+  actions: [shortFade],
 } as const satisfies AnimateDialogElementMap;
