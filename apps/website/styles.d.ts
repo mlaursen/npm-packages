@@ -4,3 +4,8 @@ declare module "*.scss" {
   const styles: CSSResult;
   export default styles;
 }
+
+declare module "*.md" {
+  const content: string;
+  export default content;
+}

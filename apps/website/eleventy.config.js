@@ -10,6 +10,7 @@ import {
   ASSETS_DIR,
   ENABLE_SSR,
   ROOT_DIR,
+  SCRIPTS_DIR,
   WC_ROOT,
 } from "./src/_config/constants.js";
 import { buildJs } from "./src/_config/events/build-js.js";
@@ -34,7 +35,7 @@ const shikiCache = new ShikiCssFileCache();
 export default defineConfig((eleventyConfig) => {
   eleventyConfig.on("eleventy.before", async () => {
     await buildScss(shikiCache);
-    await buildJs();
+    await buildJs(shiki);
   });
 
   eleventyConfig.addWatchTarget(
@@ -85,6 +86,7 @@ export default defineConfig((eleventyConfig) => {
       mdLib.use(markdownRenderers);
     },
   );
+  eleventyConfig.ignores.add(`${SCRIPTS_DIR}/**/*.md`);
   eleventyConfig.addPreprocessor("shiki-css", "md", shikiCssPreprocessor);
 
   eleventyConfig.addFilter("slugify", slugify);

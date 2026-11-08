@@ -14,12 +14,14 @@ import {
   SCRIPTS_OUT_DIR,
   SCSS_DIR,
 } from "../constants.js";
+import { shikiEsbuildPlugin } from "../plugins/shiki.js";
 
 /**
  * @param {string} entryPoint
+ * @param {(markdownit: import("markdown-it").MarkdownIt) => void} shiki
  * @return {Promise<string>}
  */
-async function build(entryPoint) {
+async function build(entryPoint, shiki) {
   const result = await esbuild.build({
     target: "es2020",
     entryPoints: [entryPoint],
@@ -40,6 +42,7 @@ async function build(entryPoint) {
         colorScheme,
         configureFilePath: `${SCSS_DIR}/_configure-website.scss`,
       }),
+      shikiEsbuildPlugin(shiki),
     ],
   });
 
@@ -49,10 +52,10 @@ async function build(entryPoint) {
 }
 
 /**
- * @param {{ filePath: string; outFileName: string }} options
+ * @param {{ filePath: string; outFileName: string; shiki: (md: import("markdown-it").MarkdownIt) => void }} options
  */
-async function compile({ filePath, outFileName }) {
-  const output = await build(filePath);
+async function compile({ filePath, outFileName, shiki }) {
+  const output = await build(filePath, shiki);
   await generateFile({
     format: false,
     banner: false,
@@ -61,15 +64,20 @@ async function compile({ filePath, outFileName }) {
   });
 }
 
-export async function buildJs() {
+/**
+ * @param {(markdownit: import("markdown-it").MarkdownIt) => void} shiki
+ */
+export async function buildJs(shiki) {
   const tasks = [
     compile({
       filePath: `${SCRIPTS_DIR}/main.ts`,
       outFileName: "main",
+      shiki,
     }),
     compile({
       filePath: `${SCRIPTS_DIR}/404.ts`,
       outFileName: "404",
+      shiki,
     }),
   ];
 
@@ -79,6 +87,7 @@ export async function buildJs() {
       compile({
         filePath: `${SCRIPTS_DIR}/${filePath}`,
         outFileName: dirname(filePath),
+        shiki,
       }),
     );
   }
@@ -91,6 +100,7 @@ export async function buildJs() {
       compile({
         filePath: `${SCRIPTS_DIR}/${filePath}`,
         outFileName: basename(filePath, ".ts"),
+        shiki,
       }),
     );
   }
