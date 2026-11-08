@@ -14,6 +14,9 @@ const {
   largeDesktopMinWidth,
 } = DEFAULT_BREAKPOINTS;
 
+/**
+ * @internal
+ */
 export function getDefaultNamedMediaQueries(): NamedMediaQueries {
   const screenAnd = "screen and";
   const tabletQuery = `${screenAnd} (min-width: ${tabletMinWidth})`;
@@ -26,19 +29,29 @@ export function getDefaultNamedMediaQueries(): NamedMediaQueries {
   };
 }
 
+/**
+ * @internal
+ */
 export function isNamedMediaQuery(
   query: string,
-  queries: Readonly<Record<MediaQueryName, string>>,
+  queries: NamedMediaQueries,
 ): query is MediaQueryName {
   return (
     query in queries && typeof queries[query as MediaQueryName] === "string"
   );
 }
 
+/**
+ * @internal
+ */
 export function createMediaQuery(
-  queryOrName: MediaQueryNameOrQuery,
+  queryOrName: MediaQueryNameOrQuery | null,
   getNamedMediaQueries: GetNamedMediaQueries = getDefaultNamedMediaQueries,
-): MediaQueryList {
+): MediaQueryList | null {
+  if (!queryOrName || typeof globalThis.matchMedia !== "function") {
+    return null;
+  }
+
   const queries = getNamedMediaQueries();
   const query = isNamedMediaQuery(queryOrName, queries)
     ? queries[queryOrName]

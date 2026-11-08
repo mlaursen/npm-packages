@@ -20,7 +20,7 @@ export type GetNamedMediaQueries = () => NamedMediaQueries;
 
 export interface MediaQueryControllerOptions {
   host: ReactiveControllerHost;
-  query: MediaQueryNameOrQuery;
+  query: MediaQueryNameOrQuery | null;
 
   /**
    * @defaultValue `MediaQueryController.getNamedQueries()`

@@ -1,7 +1,8 @@
-import type { ReactiveController, ReactiveControllerHost } from "lit";
+import { type ReactiveController, type ReactiveControllerHost } from "lit";
 
 import type {
   MediaQueryControllerOptions,
+  MediaQueryNameOrQuery,
   NamedMediaQueries,
 } from "./types.js";
 import { createMediaQuery, getDefaultNamedMediaQueries } from "./utils.js";
@@ -42,8 +43,10 @@ export class MyExample extends LitElement {
  *
  */
 export class MediaQueryController implements ReactiveController {
-  #media: MediaQueryList;
-  #host: ReactiveControllerHost;
+  #media: MediaQueryList | null = null;
+  readonly #host: ReactiveControllerHost;
+  readonly #getNamedQueries: () => NamedMediaQueries;
+  #connected = false;
 
   /**
    * The available named queries for the
@@ -54,28 +57,48 @@ export class MediaQueryController implements ReactiveController {
 
   constructor(options: MediaQueryControllerOptions) {
     const { host, query, getNamedQueries } = options;
+
     this.#host = host;
-    this.#media = createMediaQuery(
-      query,
-      getNamedQueries ?? MediaQueryController.getNamedQueries,
-    );
+    this.#getNamedQueries =
+      getNamedQueries ?? MediaQueryController.getNamedQueries;
+    this.#media = createMediaQuery(query, this.#getNamedQueries);
 
     host.addController(this);
   }
 
   hostConnected(): void {
-    this.#media.addEventListener("change", this.#emit);
+    this.#connected = true;
+    this.#subscribe();
   }
 
   hostDisconnected(): void {
-    this.#media.removeEventListener("change", this.#emit);
+    this.#connected = false;
+    this.#unsubscribe();
+  }
+
+  setQuery(query: MediaQueryNameOrQuery | null): void {
+    this.#unsubscribe();
+    this.#media = createMediaQuery(query, this.#getNamedQueries);
+    if (this.#connected) {
+      this.#subscribe();
+    }
+
+    this.#host.requestUpdate();
   }
 
   get matches(): boolean {
-    return this.#media.matches;
+    return this.#media?.matches ?? false;
   }
 
   #emit = (): void => {
     this.#host.requestUpdate();
   };
+
+  #subscribe(): void {
+    this.#media?.addEventListener("change", this.#emit);
+  }
+
+  #unsubscribe(): void {
+    this.#media?.removeEventListener("change", this.#emit);
+  }
 }
