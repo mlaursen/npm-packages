@@ -1,11 +1,11 @@
 import type { TemplateResult } from "lit";
 
-import type { BaseAnimateOptions } from "../transition/types.js";
+import type { BaseAnimationOptions } from "../animations/types.js";
 import type { Point } from "../types.js";
 
 export type InteractionDirection = "inward" | "outward";
 
-export interface RippleAnimateOptions extends BaseAnimateOptions {
+export interface RippleAnimateOptions extends BaseAnimationOptions {
   rippleSize: number;
   rippleScale: number;
   startPoint: Readonly<Point>;

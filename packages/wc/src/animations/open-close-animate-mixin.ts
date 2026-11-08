@@ -1,25 +1,25 @@
 import { property } from "lit/decorators.js";
 
 import type { LitConstructor } from "../types.js";
-import { BaseAnimateMixin } from "./base-animate-mixin.js";
+import { AnimateMixin } from "./animate-mixin.js";
 import type {
-  AnimateOptions,
-  AnimatedElementProperties,
+  AnimationOptions,
+  OpenCloseAnimatedElementProperties,
   AnimationList,
-  BaseAnimateOptions,
+  BaseAnimationOptions,
 } from "./types.js";
 
 /**
- * The `AnimateMixin` is used to add a toggleable animation usually based on an
+ * The `OpenCloseAnimateMixin` is used to add a toggleable animation usually based on an
  * `open` state that is controlled with the
- * {@link AnimatedElementProperties.show} and
- * {@link AnimatedElementProperties.close} methods.
+ * {@link OpenCloseAnimatedElementProperties.show} and
+ * {@link OpenCloseAnimatedElementProperties.close} methods.
  *
  * The extending class should override the
- * {@link AnimatedElementProperties._getAnimations} function to define the
+ * {@link OpenCloseAnimatedElementProperties._getAnimations} function to define the
  * animations.
  *
- * @see {@link BaseAnimateMixin} for more information around the animations.
+ * @see {@link AnimateMixin} for more information around the animations.
  *
  * @fires {Event} open - Fired before the show animation occurs and can be used
  * to cancel opening the element by calling `event.preventDefault()`.
@@ -30,12 +30,12 @@ import type {
  * @fires {Event} closed - Fired once the element has closed and the animations
  * have completed.
  */
-export function AnimateMixin<T extends LitConstructor>(
+export function OpenCloseAnimateMixin<T extends LitConstructor>(
   Base: T,
-): T & LitConstructor<AnimatedElementProperties> {
-  class AnimatedLitElement
-    extends BaseAnimateMixin(Base)
-    implements AnimatedElementProperties
+): T & LitConstructor<OpenCloseAnimatedElementProperties> {
+  class OpenCloseAnimatedLitElement
+    extends AnimateMixin(Base)
+    implements OpenCloseAnimatedElementProperties
   {
     @property({ type: Boolean, reflect: true })
     opening = false;
@@ -67,20 +67,20 @@ export function AnimateMixin<T extends LitConstructor>(
 
     _onBeforeOpen(): void {}
     _onOpenCanceled(): void {}
-    _onBeforeClose(_options: BaseAnimateOptions): void {}
+    _onBeforeClose(_options: BaseAnimationOptions): void {}
     _onCloseCanceled(): void {}
     _onNotConnectedClose(): void {}
     _onNotClosable(): void {}
 
-    override _getAnimations(_options: AnimateOptions): AnimationList {
+    override _getAnimations(_options: AnimationOptions): AnimationList {
       return [];
     }
 
-    override _animate(options: AnimateOptions): Promise<void> {
+    override _animate(options: AnimationOptions): Promise<void> {
       return super._animate(options);
     }
 
-    async show(options: BaseAnimateOptions = {}): Promise<void> {
+    async show(options: BaseAnimationOptions = {}): Promise<void> {
       // do not animate if not yet initialized by default
       const { animate = this._initialized } = options;
       this.closing = false;
@@ -109,7 +109,7 @@ export function AnimateMixin<T extends LitConstructor>(
       this.dispatchEvent(new Event("opened"));
     }
 
-    async close(options: BaseAnimateOptions = {}): Promise<void> {
+    async close(options: BaseAnimationOptions = {}): Promise<void> {
       const { animate } = options;
 
       this.opening = false;
@@ -143,5 +143,5 @@ export function AnimateMixin<T extends LitConstructor>(
     }
   }
 
-  return AnimatedLitElement;
+  return OpenCloseAnimatedLitElement;
 }

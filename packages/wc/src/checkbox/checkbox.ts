@@ -2,18 +2,18 @@ import type { PropertyValues, TemplateResult } from "lit";
 import { LitElement, html, isServer } from "lit";
 import { property, query } from "lit/decorators.js";
 
+import { AnimateMixin } from "../animations/animate-mixin.js";
+import type {
+  AnimationList,
+  BaseAnimationOptions,
+  GetAnimationMap,
+} from "../animations/types.js";
 import { AriaMixin } from "../aria-mixin/aria-mixin.js";
 import { FormValidationMixin } from "../form-validation/form-validation-mixin.js";
 import { requiredValidator } from "../form-validation/required-validator.js";
 import { InteractionMixin } from "../interaction/interaction-mixin.js";
 import { MarginMixin } from "../margin/margin-mixin.js";
 import { PaletteMixin } from "../palette/palette-mixin.js";
-import { BaseAnimateMixin } from "../transition/base-animate-mixin.js";
-import type {
-  AnimationList,
-  BaseAnimateOptions,
-  GetAnimationMap,
-} from "../transition/types.js";
 import styles from "./checkbox-styles.js";
 import {
   DEFAULT_CHECKBOX_CHECKED_ANIMATION,
@@ -26,7 +26,7 @@ import type {
   CheckboxSize,
 } from "./types.js";
 
-const BaseStyledCheckbox = BaseAnimateMixin(
+const BaseStyledCheckbox = AnimateMixin(
   InteractionMixin(PaletteMixin(MarginMixin(LitElement))),
 );
 const BaseCheckbox = FormValidationMixin(
@@ -163,7 +163,7 @@ export class Checkbox extends BaseCheckbox implements CheckboxProperties {
     `;
   }
 
-  override _getAnimations(options: BaseAnimateOptions): AnimationList {
+  override _getAnimations(options: BaseAnimationOptions): AnimationList {
     const { animate = true } = options;
     if (!animate) {
       return [];

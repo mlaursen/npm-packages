@@ -7,15 +7,15 @@ export type AnimateElementMap<K extends string = string> = Partial<
 export type GetAnimationMap<T extends AnimateElementMap = AnimateElementMap> =
   () => T;
 
-export interface BaseAnimateOptions<
+export interface BaseAnimationOptions<
   T extends AnimateElementMap = AnimateElementMap,
 > {
   animate?: boolean | (() => Readonly<T>);
 }
 
-export interface AnimateOptions<
+export interface AnimationOptions<
   T extends AnimateElementMap = AnimateElementMap,
-> extends BaseAnimateOptions<T> {
+> extends BaseAnimationOptions<T> {
   opening: boolean;
 }
 
@@ -25,7 +25,7 @@ export type AnimationList = readonly [
   animations: readonly AnimateElementArgs[] | undefined,
 ][];
 
-export interface BaseAnimatedElementProperties {
+export interface AnimatedElementProperties {
   /**
    * This is a protected property that can be used to check if the animated
    * element has been updated at least once. The main use-case is if a
@@ -42,7 +42,7 @@ export interface BaseAnimatedElementProperties {
    *
    * @virtual
    */
-  _getAnimations(options: BaseAnimateOptions): AnimationList;
+  _getAnimations(options: BaseAnimationOptions): AnimationList;
 
   /**
    * This is a protected function that handles animating the element. It will
@@ -53,7 +53,7 @@ export interface BaseAnimatedElementProperties {
    *
    * @virtual
    */
-  _animate(options?: BaseAnimateOptions): Promise<void>;
+  _animate(options?: BaseAnimationOptions): Promise<void>;
 }
 
 /**
@@ -66,7 +66,7 @@ export interface BaseAnimatedElementProperties {
  * @fires {Event} closed - Fired once the element has closed and the animations
  * have completed.
  */
-export interface AnimatedElementProperties extends BaseAnimatedElementProperties {
+export interface OpenCloseAnimatedElementProperties extends AnimatedElementProperties {
   /**
    * This is a reflected property which will be `true` while the open animation
    * is occurring.
@@ -84,16 +84,16 @@ export interface AnimatedElementProperties extends BaseAnimatedElementProperties
   closing: boolean;
 
   /**
-   * @see BaseAnimatedElementProperties._getAnimations
+   * @see AnimatedElementProperties._getAnimations
    * @override
    */
-  _getAnimations(options: AnimateOptions): AnimationList;
+  _getAnimations(options: AnimationOptions): AnimationList;
 
   /**
-   * @see BaseAnimatedElementProperties._animate
+   * @see AnimatedElementProperties._animate
    * @override
    */
-  _animate(options: AnimateOptions): Promise<void>;
+  _animate(options: AnimationOptions): Promise<void>;
 
   /**
    * Public API to show the animated element and will resolve once the
@@ -107,7 +107,7 @@ await element.show();
    *
    * @sealed
    */
-  show(options?: BaseAnimateOptions): Promise<void>;
+  show(options?: BaseAnimationOptions): Promise<void>;
 
   /**
    * Public API to close the animated element and will resolve once the
@@ -121,7 +121,7 @@ await element.close();
    *
    * @sealed
    */
-  close(options?: BaseAnimateOptions): Promise<void>;
+  close(options?: BaseAnimationOptions): Promise<void>;
 
   /**
    * This can be used to prevent opening/showing an element. The default
@@ -208,7 +208,7 @@ await element.close();
    *
    * @virtual
    */
-  _onBeforeClose(options: BaseAnimateOptions): void;
+  _onBeforeClose(options: BaseAnimationOptions): void;
 
   /**
    * An optional callback that will be fired if the `"close"` event was

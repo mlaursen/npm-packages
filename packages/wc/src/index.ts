@@ -1,3 +1,6 @@
+export * from "./animations/animate-mixin.js";
+export * from "./animations/open-close-animate-mixin.js";
+export * from "./animations/types.js";
 export * from "./app-bar/app-bar.js";
 export * from "./app-bar/types.js";
 export * from "./aria-mixin/aria-mixin.js";
@@ -101,10 +104,7 @@ export * from "./text-field/text-field.js";
 export * from "./text-field/types.js";
 export * from "./tooltip/tooltip.js";
 export * from "./tooltip/types.js";
-export * from "./transition/animate-mixin.js";
-export * from "./transition/base-animate-mixin.js";
 export * from "./transition/constants.js";
-export * from "./transition/types.js";
 export * from "./types.js";
 export * from "./typography/types.js";
 export * from "./typography/typography.js";

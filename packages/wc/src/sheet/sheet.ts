@@ -3,10 +3,10 @@ import { html } from "lit";
 import { property, state } from "lit/decorators.js";
 import { ifDefined } from "lit/directives/if-defined.js";
 
+import type { GetAnimationMap } from "../animations/types.js";
 import { Dialog } from "../dialog/dialog.js";
 import type { AnimateDialogElementMap, DialogWidth } from "../dialog/types.js";
 import type { SheetHeaderAutoFocus } from "../sheet-header/types.js";
-import type { GetAnimationMap } from "../transition/types.js";
 import { isSlotted } from "../utils/slots.js";
 import {
   DEFAULT_SHEET_CLOSE_ANIMATION,

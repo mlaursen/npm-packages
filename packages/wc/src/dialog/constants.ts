@@ -1,5 +1,5 @@
+import type { AnimateElementArgs } from "../animations/types.js";
 import { Duration, Easing } from "../transition/constants.js";
-import type { AnimateElementArgs } from "../transition/types.js";
 import { getVar } from "../utils/tokens.js";
 import type { AnimateDialogElementMap } from "./types.js";
 

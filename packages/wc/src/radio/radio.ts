@@ -2,17 +2,17 @@ import type { PropertyValues, TemplateResult } from "lit";
 import { LitElement, html, isServer } from "lit";
 import { property, query } from "lit/decorators.js";
 
+import { AnimateMixin } from "../animations/animate-mixin.js";
+import type {
+  AnimationList,
+  BaseAnimationOptions,
+  GetAnimationMap,
+} from "../animations/types.js";
 import { AriaMixin } from "../aria-mixin/aria-mixin.js";
 import { FormValidationMixin } from "../form-validation/form-validation-mixin.js";
 import { InteractionMixin } from "../interaction/interaction-mixin.js";
 import { MarginMixin } from "../margin/margin-mixin.js";
 import { PaletteMixin } from "../palette/palette-mixin.js";
-import { BaseAnimateMixin } from "../transition/base-animate-mixin.js";
-import type {
-  AnimationList,
-  BaseAnimateOptions,
-  GetAnimationMap,
-} from "../transition/types.js";
 import {
   DEFAULT_RADIO_CHECKED_ANIMATION,
   DEFAULT_RADIO_UNCHECKED_ANIMATION,
@@ -24,7 +24,7 @@ import type {
   RadioSize,
 } from "./types.js";
 
-const BaseStyledRadio = BaseAnimateMixin(
+const BaseStyledRadio = AnimateMixin(
   InteractionMixin(PaletteMixin(MarginMixin(LitElement))),
 );
 const BaseRadio = FormValidationMixin(AriaMixin(BaseStyledRadio, "radio"), {
@@ -133,7 +133,7 @@ export class Radio extends BaseRadio implements RadioProperties {
     `;
   }
 
-  override _getAnimations(options: BaseAnimateOptions): AnimationList {
+  override _getAnimations(options: BaseAnimationOptions): AnimationList {
     const { animate = true } = options;
     if (!animate) {
       return [];

@@ -1,11 +1,11 @@
 import type { OverridableStringUnion } from "@mlaursen/utils";
 
-import type { FormValidationStates } from "../form-validation/types.js";
 import type {
   AnimateElementMap,
-  BaseAnimateOptions,
+  BaseAnimationOptions,
   GetAnimationMap,
-} from "../transition/types.js";
+} from "../animations/types.js";
+import type { FormValidationStates } from "../form-validation/types.js";
 import type { DefaultComponentSize } from "../types.js";
 
 export interface CheckboxSizeOverrides {}
@@ -20,7 +20,7 @@ export type AnimateCheckboxElementMap = AnimateElementMap<
 >;
 
 export type AnimateCheckboxOptions =
-  BaseAnimateOptions<AnimateCheckboxElementMap>;
+  BaseAnimationOptions<AnimateCheckboxElementMap>;
 
 export interface CheckboxProperties extends FormValidationStates {
   size?: CheckboxSize;

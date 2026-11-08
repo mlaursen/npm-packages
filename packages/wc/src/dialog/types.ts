@@ -3,9 +3,9 @@ import type { TemplateResult } from "lit";
 
 import type {
   AnimateElementMap,
-  BaseAnimateOptions,
+  BaseAnimationOptions,
   GetAnimationMap,
-} from "../transition/types.js";
+} from "../animations/types.js";
 import type {
   DefaultComponentExtraSize,
   DefaultComponentShape,
@@ -67,7 +67,7 @@ export type AnimateDialogElementMap = AnimateElementMap<
   "dialog" | "header" | "content" | "actions"
 >;
 
-export type ShowDialogOptions = BaseAnimateOptions<AnimateDialogElementMap>;
+export type ShowDialogOptions = BaseAnimationOptions<AnimateDialogElementMap>;
 
 export interface CloseDialogOptions extends ShowDialogOptions {
   /** @see {@link HTMLDialogElement.returnValue} */

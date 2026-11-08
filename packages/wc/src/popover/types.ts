@@ -2,9 +2,9 @@ import type { TemplateResult } from "lit";
 
 import type {
   AnimateElementMap,
-  AnimatedElementProperties,
+  OpenCloseAnimatedElementProperties,
   GetAnimationMap,
-} from "../transition/types.js";
+} from "../animations/types.js";
 
 /**
  *                  ------------
@@ -86,7 +86,7 @@ export interface RenderPopoverTargetOptions {
 
 export type AnimatePopoverElementMap = AnimateElementMap<"popover" | "content">;
 
-export interface PopoverProperties extends AnimatedElementProperties {
+export interface PopoverProperties extends OpenCloseAnimatedElementProperties {
   /**
    * @see {@link HorizontalAnchor}
    * @defaultValue `"center"`

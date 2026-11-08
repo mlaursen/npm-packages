@@ -3,12 +3,12 @@ import type { PropertyValues } from "lit";
 import type { LitConstructor } from "../types.js";
 import type {
   AnimationList,
-  BaseAnimateOptions,
-  BaseAnimatedElementProperties,
+  BaseAnimationOptions,
+  AnimatedElementProperties,
 } from "./types.js";
 
 /**
- * The `BaseAnimateMixin` should generally be used when the animation should be
+ * The `AnimateMixin` should generally be used when the animation should be
  * triggered programmatically; otherwise the `AnimateMixin` is recommended to
  * toggle open/close states.
  *
@@ -16,12 +16,12 @@ import type {
  * {@link AnimatedElementProperties._getAnimations} function to define the
  * animations and call `this._animate()` to animate.
  */
-export function BaseAnimateMixin<T extends LitConstructor>(
+export function AnimateMixin<T extends LitConstructor>(
   Base: T,
-): T & LitConstructor<BaseAnimatedElementProperties> {
-  return class BaseAnimatedElement
+): T & LitConstructor<AnimatedElementProperties> {
+  return class AnimatedElement
     extends Base
-    implements BaseAnimatedElementProperties
+    implements AnimatedElementProperties
   {
     _initialized = false;
     #animationController?: AbortController;
@@ -43,11 +43,11 @@ export function BaseAnimateMixin<T extends LitConstructor>(
      */
     #animations: Animation[] = [];
 
-    _getAnimations(_options: BaseAnimateOptions): AnimationList {
+    _getAnimations(_options: BaseAnimationOptions): AnimationList {
       return [];
     }
 
-    async _animate(options: BaseAnimateOptions = {}): Promise<void> {
+    async _animate(options: BaseAnimationOptions = {}): Promise<void> {
       this.#animationController?.abort();
       this.#animationController = new AbortController();
 

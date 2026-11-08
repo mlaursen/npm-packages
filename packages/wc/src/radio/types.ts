@@ -1,11 +1,11 @@
 import type { OverridableStringUnion } from "@mlaursen/utils";
 
-import type { InteractionProperties } from "../interaction/types.js";
 import type {
   AnimateElementMap,
-  BaseAnimateOptions,
+  BaseAnimationOptions,
   GetAnimationMap,
-} from "../transition/types.js";
+} from "../animations/types.js";
+import type { InteractionProperties } from "../interaction/types.js";
 import type { DefaultComponentSize } from "../types.js";
 
 export interface RadioSizeOverrides {}
@@ -19,7 +19,7 @@ export type AnimateRadioElementMap = AnimateElementMap<
   "icon" | "mark" | "outline"
 >;
 
-export type AnimateRadioOptions = BaseAnimateOptions<AnimateRadioElementMap>;
+export type AnimateRadioOptions = BaseAnimationOptions<AnimateRadioElementMap>;
 
 export interface RadioProperties extends InteractionProperties {
   name: string;

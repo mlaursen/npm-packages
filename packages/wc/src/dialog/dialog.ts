@@ -4,15 +4,15 @@ import { property, query, state } from "lit/decorators.js";
 import { classMap } from "lit/directives/class-map.js";
 import { ifDefined } from "lit/directives/if-defined.js";
 
+import type {
+  AnimationOptions,
+  AnimationList,
+  GetAnimationMap,
+} from "../animations/types.js";
 import { ElevationMixin } from "../elevation/elevation-mixin.js";
 import { FocusTrapMixin } from "../focus/focus-trap-mixin.js";
 import { PopoverMixin } from "../popover/popover-mixin.js";
 import { ScrollLockMixin } from "../scroll-lock/scroll-lock-mixin.js";
-import type {
-  AnimateOptions,
-  AnimationList,
-  GetAnimationMap,
-} from "../transition/types.js";
 import { redispatchEvent } from "../utils/redispatchEvent.js";
 import { isSlotted } from "../utils/slots.js";
 import {
@@ -512,7 +512,7 @@ export class Dialog extends BaseDialog implements DialogProperties {
     this.open = false;
   }
 
-  override _getAnimations(options: AnimateOptions): AnimationList {
+  override _getAnimations(options: AnimationOptions): AnimationList {
     const { animate = true, opening } = options;
     if (!animate) {
       return [];

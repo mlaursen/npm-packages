@@ -3,13 +3,13 @@ import { html } from "lit";
 import { property, query, state } from "lit/decorators.js";
 import { ifDefined } from "lit/directives/if-defined.js";
 
-import { AnimateMixin } from "../transition/animate-mixin.js";
+import { OpenCloseAnimateMixin } from "../animations/open-close-animate-mixin.js";
 import type {
-  AnimateOptions,
+  AnimationOptions,
   AnimationList,
-  BaseAnimateOptions,
+  BaseAnimationOptions,
   GetAnimationMap,
-} from "../transition/types.js";
+} from "../animations/types.js";
 import type {
   StylableLitElement,
   StyledLitElementWithProperties,
@@ -38,12 +38,15 @@ import type {
  * alongside the `MarginMixin` so that wrapping the popover targets can still
  * have general margin and spacing applied.
  *
- * @see {@link AnimateMixin} for animation behavior
+ * @see {@link OpenCloseAnimateMixin} for animation behavior
  */
 export function PopoverMixin<T extends StylableLitElement>(
   Base: T,
 ): StyledLitElementWithProperties<PopoverProperties, T> {
-  class PopoverElement extends AnimateMixin(Base) implements PopoverProperties {
+  class PopoverElement
+    extends OpenCloseAnimateMixin(Base)
+    implements PopoverProperties
+  {
     static override styles = mergeStyles(Base, styles);
 
     @property({ attribute: "anchor-x" })
@@ -185,7 +188,7 @@ export function PopoverMixin<T extends StylableLitElement>(
         </div>`;
     }
 
-    override _getAnimations(options: AnimateOptions): AnimationList {
+    override _getAnimations(options: AnimationOptions): AnimationList {
       const { animate = true, opening } = options;
       if (!animate) {
         return [];
@@ -218,7 +221,7 @@ export function PopoverMixin<T extends StylableLitElement>(
       this.close();
     }
 
-    override _onBeforeClose(options: BaseAnimateOptions): void {
+    override _onBeforeClose(options: BaseAnimationOptions): void {
       super._onBeforeClose(options);
 
       this.#closing = true;
