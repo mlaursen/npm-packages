@@ -271,7 +271,7 @@ await Promise.all([
   }),
   generateFile({
     banner: false,
-    contents: 'export { default } from "./_index.scss";',
+    contents: `export { default } from "./${kebabName}.scss";`,
     filePath: `${srcFolder}/${kebabName}-styles.ts`,
   }),
   generateFile({
