@@ -20,6 +20,10 @@ export class AsyncClickEvent<Result = unknown> extends Event {
 }
 
 declare global {
+  interface WindowEventMap {
+    "async-click": AsyncClickEvent;
+  }
+
   interface HTMLElementEventMap {
     "async-click": AsyncClickEvent;
   }

@@ -105,7 +105,10 @@ export function markdownRenderers(md) {
       const preHtml = shikiFence(tokens, idx, options, env, renderer);
       const lines = [
         preHtml.replace("pre", 'pre slot="pre"'),
-        html`<copy-to-clipboard slot="sticky"></copy-to-clipboard>`,
+        html`<mwc-copy-to-clipboard
+          slot="sticky"
+          position="absolute"
+        ></mwc-copy-to-clipboard>`,
       ];
 
       return `<mwc-code-block>${lines.join("")}</mwc-code-block>`;

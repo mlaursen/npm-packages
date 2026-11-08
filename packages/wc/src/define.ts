@@ -8,6 +8,7 @@ import "./card/define.js";
 import "./checkbox/define.js";
 import "./circular-progress/define.js";
 import "./code-block/define.js";
+import "./copy-to-clipboard/define.js";
 import "./dialog-actions/define.js";
 import "./dialog-content/define.js";
 import "./dialog-header/define.js";

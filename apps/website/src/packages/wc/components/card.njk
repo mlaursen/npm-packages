@@ -53,13 +53,13 @@ components:
 </mwc-typography>
 <mwc-box id="dnd-area">
   {% for i in [1, 2, 3, 4] %}
-    <mwc-clickable-card draggable="true">
+    <mwc-card draggable="true">
       <mwc-box>
         <mwc-typography variant="title">
           <h4>Drag Me {{ i }}</h4>
         </mwc-typography>
       </mwc-box>
-    </mwc-clickable-card>
+    </mwc-card>
   {% endfor %}
 </mwc-box>
 {% js "defer" %}

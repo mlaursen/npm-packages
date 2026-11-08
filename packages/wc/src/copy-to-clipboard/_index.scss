@@ -1,0 +1,63 @@
+@use "sass:map";
+
+@use "../utils";
+
+$-tokens-registered: false;
+$-tokens: (
+  start: auto,
+  end: "spacing.large",
+  top: "spacing.extra-small",
+);
+
+$-configure-tokens: map.keys($-tokens);
+
+// I'm not supporting more. It will be easier to just set the styles on this
+// element instead
+$-absolute-styles: (
+  inset-inline-end: "copy-to-clipboard.end",
+  inset-inline-start: "copy-to-clipboard.start",
+  position: absolute,
+  top: "copy-to-clipboard.top",
+);
+
+// ok, this is dumb. have to wrap the `slot="popover-target"` in a span so
+// `position-anchor` works correctly. it does not work on a `slot` element
+// itself
+$-popover-target-styles: (
+  align-items: center,
+  display: inline-flex,
+  justify-content: center,
+);
+
+@mixin configure() {
+  @if not $-tokens-registered {
+    $-tokens-registered: true !global;
+    @include utils.register-tokens(
+      $tokens: $-tokens,
+      $prefix: "copy-to-clipboard"
+    );
+  }
+}
+
+@mixin configure-global($overrides: null) {
+  $overrides: utils.get-config-map(list, $overrides, $-configure-tokens);
+  @include configure();
+}
+
+@mixin css-styles {
+  $styles: ();
+  @include utils.css-styles($styles);
+}
+
+@mixin host-styles {
+  $styles: (
+    ".popover-target": $-popover-target-styles,
+    ":host([position=absolute])": $-absolute-styles,
+  );
+  @include utils.host-styles($styles);
+}
+
+@mixin styles {
+  @include css-styles;
+  @include host-styles;
+}

@@ -32,6 +32,7 @@
 @use "code-block";
 @use "circular-progress";
 @use "async-button";
+@use "copy-to-clipboard";
 
 @mixin styles {
   @include palette.styles;
@@ -71,4 +72,5 @@
   @include code-block.styles;
   @include circular-progress.styles;
   @include async-button.styles;
+  @include copy-to-clipboard.styles;
 }

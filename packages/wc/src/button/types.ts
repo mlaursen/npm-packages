@@ -1,6 +1,10 @@
 import type { OverridableStringUnion } from "@mlaursen/utils";
 
+import type { ElevationProperties } from "../elevation/types.js";
+import type { InteractionProperties } from "../interaction/types.js";
 import type { PassThroughLinkProperties } from "../link/types.js";
+import type { MarginProperties } from "../margin/types.js";
+import type { PaletteProperties } from "../palette/types.js";
 import type {
   CommandAttribute,
   DefaultComponentExtraSize,
@@ -40,7 +44,13 @@ export interface ButtonLinkProperties extends PassThroughLinkProperties {
   href?: string;
 }
 
-export interface ButtonProperties extends ButtonLinkProperties {
+export interface ButtonProperties
+  extends
+    ButtonLinkProperties,
+    PaletteProperties,
+    MarginProperties,
+    InteractionProperties,
+    ElevationProperties {
   /** @defaultValue `false` */
   disabled: boolean;
 

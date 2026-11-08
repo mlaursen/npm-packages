@@ -1,0 +1,27 @@
+@use "@mlaursen/wc" as *;
+@use "configure-website";
+
+@include map-to-styles(
+  (
+    ".paste-target": (
+      "&::before":
+        deep-merge(
+          pseudo-element(),
+          (
+            border: '3px solid "palette.primary"',
+            opacity: 0,
+          )
+        ),
+      "mouse-hover": (
+        "&::before": (
+          opacity: 1,
+        ),
+      ),
+    ),
+    ".paste-output": (
+      height: 20rem,
+      overflow: auto,
+      place-content: flex-start,
+    ),
+  )
+);
