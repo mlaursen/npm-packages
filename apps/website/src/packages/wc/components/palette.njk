@@ -1,0 +1,24 @@
+---
+layout: docs
+eleventyNavigation:
+  key: Palette
+  parent: Home
+
+page:
+  title: Palette
+---
+
+<mwc-box grid align="stretch">
+  {% for color in theme.backgrounds %}
+    <mwc-box background="{{ color }}">
+      {{ color }}
+    </mwc-box>
+  {% endfor %}
+</mwc-box>
+<mwc-box grid align="stretch">
+  {% for color in theme.colors %}
+    <mwc-box color="{{ color }}">
+      {{ color }}
+    </mwc-box>
+  {% endfor %}
+</mwc-box>

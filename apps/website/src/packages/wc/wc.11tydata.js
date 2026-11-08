@@ -49,6 +49,21 @@ export const theme = {
     "surface-container-highest",
     ...baseThemes.flatMap((name) => [name, `${name}-container`]),
   ],
+
+  /** @type {import("@mlaursen/wc").PaletteTextColor[]} */
+  // @ts-expect-error does not like the flatMap
+  colors: [
+    ...baseThemes.flatMap((name) => [
+      name,
+      `on-${name}`,
+      `on-${name}-container`,
+    ]),
+    "on-background",
+    "on-surface",
+    "on-surface-variant",
+    "disabled",
+    "currentcolor",
+  ],
 };
 
 export const appBar = {
@@ -156,6 +171,11 @@ export const dialog = {
 
   /** @type {(import("@mlaursen/wc").DialogWidth)[]} **/
   widths: defaultSizes,
+};
+
+export const icon = {
+  /** @type {(import("@mlaursen/wc").IconSize)[]} **/
+  sizes: defaultSizes,
 };
 
 export const checkbox = {
