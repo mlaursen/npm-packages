@@ -110,7 +110,7 @@ export function PopoverMixin<T extends StylableLitElement>(
         return;
       }
 
-      this.#bindTargetHandlers(this._hasPopoverTarget);
+      this.#bindTargetHandlers(this.isPopoverEnabled());
     }
 
     override updated(changed: PropertyValues): void {
@@ -144,6 +144,10 @@ export function PopoverMixin<T extends StylableLitElement>(
       this.#bindPopoverHandlers(false);
       this.#bindTargetHandlers(false);
       this.#clearTimeout();
+    }
+
+    isPopoverEnabled(): boolean {
+      return this._hasPopoverTarget;
     }
 
     renderPopoverTarget(target?: TemplateResult): TemplateResult {

@@ -1,9 +1,11 @@
 import type { TemplateResult } from "lit";
 import { LitElement, html } from "lit";
+import { state } from "lit/decorators.js";
 
 import { MarginMixin } from "../margin/margin-mixin.js";
 import { PopoverMixin } from "../popover/popover-mixin.js";
 import type { PopoverInitiator, PopoverType } from "../popover/types.js";
+import { isSlotted } from "../utils/slots.js";
 import styles from "./tooltip-styles.js";
 import type { TooltipProperties } from "./types.js";
 
@@ -42,9 +44,24 @@ export class Tooltip extends BaseTooltip implements TooltipProperties {
   override popoverType: PopoverType = "hint";
   override popoverInitiator: PopoverInitiator = "no-click";
 
+  @state()
+  _hasContent = false;
+
   protected override render(): TemplateResult {
     return this.renderPopover({
-      content: html`<slot name="tooltip"></slot>`,
+      content: html`<slot
+        name="tooltip"
+        @slotchange=${this.#handleContentSlotChange}
+      ></slot>`,
     });
+  }
+
+  #handleContentSlotChange(event: Event): void {
+    this._hasContent = isSlotted(event);
+    this.requestUpdate("_hasPopoverTarget");
+  }
+
+  override isPopoverEnabled(): boolean {
+    return super.isPopoverEnabled() && this._hasContent;
   }
 }

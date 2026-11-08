@@ -183,6 +183,15 @@ export interface PopoverProperties extends AnimatedElementProperties {
   _hasPopoverTarget: boolean;
 
   /**
+   * This can be used to disable the popover event listeners if needed. The
+   * default behavior is just `this._hasPopoverTarget` but might be useful
+   * to check if content exists as well.
+   *
+   * @sealed
+   */
+  isPopoverEnabled(): boolean;
+
+  /**
    * This is used to actually implement the popover behavior within the lit
    * element.
    *
