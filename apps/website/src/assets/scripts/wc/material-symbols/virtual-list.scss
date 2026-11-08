@@ -1,30 +1,55 @@
 @use "@mlaursen/wc" as *;
 
-@include map-to-styles(
-  (
-    ".container": (
-      height: var(--height),
-      position: relative,
-    ),
+$-styles: (
+  ".container": (
+    height: var(--height),
+    position: relative,
+  ),
 
-    ".row": (
-      left: 0,
-      position: absolute,
-      top: 0,
-      transform: translateY(var(--position)),
-    ),
+  ".row": (
+    left: 0,
+    position: absolute,
+    top: 0,
+    transform: translateY(var(--position)),
+  ),
 
-    ".grid": (
-      grid-auto-rows: 8rem,
-    ),
+  ".grid": (
+    grid-auto-rows: 8rem,
+  ),
 
-    ".symbol": (
-      "icon.size": 2rem,
+  ".symbol": (
+    "icon.size": 2rem,
 
-      gap: "spacing.large",
-      flex-direction: column,
-      height: 100%,
-      width: 100%,
-    ),
-  )
+    gap: "spacing.large",
+    flex-direction: column,
+    height: 100%,
+    width: 100%,
+  ),
+  ":host([loading]) mwc-material-symbol": (
+    "--shimmer-color": 128 128 128,
+
+    animation: shimmer 1.2s linear infinite,
+    background:
+      linear-gradient(
+        90deg,
+        rgb(var(--shimmer-color) / 15%) 25%,
+        rgb(var(--shimmer-color) / 30%) 50%,
+        rgb(var(--shimmer-color) / 15%) 75%
+      ),
+    background-size: 200% 100%,
+    border-radius: 0.25rem,
+    color: transparent,
+  ),
 );
+$-keyframes: (
+  shimmer: (
+    from: (
+      background-position: 200% 0,
+    ),
+    to: (
+      background-position: -200% 0,
+    ),
+  ),
+);
+
+@include host-styles($styles: $-styles, $keyframes: $-keyframes);

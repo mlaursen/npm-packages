@@ -46,6 +46,9 @@ export class VirtualList extends LitElement {
   @state()
   _columns = 8;
 
+  @property({ type: Boolean })
+  loading = true;
+
   #createFuse(): Fuse<{ name: string; categories: string[] }> {
     const taggedSymbols = Object.entries(tags).map(([name, categories]) => ({
       name,
@@ -120,7 +123,7 @@ export class VirtualList extends LitElement {
             );
           }}
         >
-          <mwc-material-symbol>${name}</mwc-material-symbol>
+          <mwc-material-symbol class="shimmer">${name}</mwc-material-symbol>
           <mwc-typography text-transform="capitalize" text-align="center">
             <span>${name.replaceAll("_", " ")}</span>
           </mwc-typography>

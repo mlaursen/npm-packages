@@ -1,11 +1,11 @@
-import { debounce, titleCase } from "@mlaursen/utils";
+import { debounce, upperFirst } from "@mlaursen/utils";
 import type {
   DialogBackdropVariant,
   MaterialSymbolCustomPropertyName,
+  MaterialSymbolFamily,
 } from "@mlaursen/wc";
 import {
   getVar,
-  getVarName,
   isCustomElement,
   isMaterialSymbolFamily,
   isMaterialSymbolGrade,
@@ -44,7 +44,6 @@ export class MaterialSymbolsVirtualizer
   _list?: VirtualList;
 
   #phone = new MediaQueryController({ host: this, query: "phone" });
-  #desktop = new MediaQueryController({ host: this, query: "desktop" });
 
   static override styles = styles;
   static override shadowRootOptions: ShadowRootInit = {
@@ -82,8 +81,6 @@ export class MaterialSymbolsVirtualizer
   @state()
   family = this.#searchParams.get("family");
 
-  #lastPanelOpened: "filters" | "selected" | null = null;
-
   #handleSearchInput(event: InputEvent): void {
     const target = event.currentTarget as HTMLInputElement;
     this.#setQuery(target.value.trim());
@@ -93,29 +90,27 @@ export class MaterialSymbolsVirtualizer
     this.query = query;
   }, 150);
 
+  #fonts = new Map<MaterialSymbolFamily, Promise<void> | true>();
+  #loadFont = async (fontFamily: MaterialSymbolFamily): Promise<void> => {
+    await document.fonts
+      .load(`1em "Material Symbols ${upperFirst(fontFamily)}"`)
+      .finally(() => {
+        this.#fonts.set(fontFamily, true);
+        if (this.isConnected) {
+          this.requestUpdate();
+        }
+      });
+  };
+
   override willUpdate(changed: PropertyValues): void {
-    if (changed.has("filtersVisible") || changed.has("selected")) {
-      const isFiltersVisible = changed.has("filtersVisible");
-      const entering = isFiltersVisible ? this.filtersVisible : !!this.selected;
-
-      this.#setTransition(entering);
-
-      this.#lastPanelOpened = null;
-      if (entering) {
-        this.#lastPanelOpened = isFiltersVisible ? "filters" : "selected";
-      }
+    if (changed.has("filtersVisible")) {
+      this.#setTransition(this.filtersVisible);
     }
 
-    if (
-      this.#lastPanelOpened &&
-      !this.#desktop.matches &&
-      this.filtersVisible &&
-      this.selected
-    ) {
-      if (this.#lastPanelOpened === "filters") {
-        this.selected = "";
-      } else {
-        this.filtersVisible = false;
+    if (changed.has("family")) {
+      const pending = this.#fonts.get(this.family);
+      if (pending === undefined) {
+        this.#fonts.set(this.family, this.#loadFont(this.family));
       }
     }
   }
@@ -134,11 +129,7 @@ export class MaterialSymbolsVirtualizer
     }
 
     if (changed.has("filtersVisible")) {
-      this.#updateSize("filters", this.filtersVisible);
-    }
-
-    if (changed.has("selected")) {
-      this.#updateSize("selected", !!this.selected);
+      this.#updateSize(this.filtersVisible);
     }
 
     for (const name of SYMBOL_CUSTOM_PROPERTY_NAMES) {
@@ -225,14 +216,14 @@ export class MaterialSymbolsVirtualizer
     this.style.setProperty("--easing", easing);
   }
 
-  #updateSize(panel: "selected" | "filters", visible: boolean): void {
-    if (visible) {
+  #updateSize(filtersVisible: boolean): void {
+    if (filtersVisible) {
       this.style.setProperty(
-        `--${panel}-desktop-visible-size`,
-        `var(--${panel}-panel-size)`,
+        "--filters-desktop-visible-size",
+        "var(--filters-panel-size)",
       );
     } else {
-      this.style.removeProperty(`--${panel}-desktop-visible-size`);
+      this.style.removeProperty("--filters-desktop-visible-size");
     }
   }
 
@@ -256,6 +247,7 @@ export class MaterialSymbolsVirtualizer
   }
 
   override render(): TemplateResult {
+    const loadingFonts = this.#fonts.get(this.family) !== true;
     return html`
       ${this.#renderAppBar()}${this.#renderFiltersPanel()}
       <virtual-list
@@ -263,8 +255,15 @@ export class MaterialSymbolsVirtualizer
         ?filters-visible=${this.filtersVisible}
         @selected=${this.#handleSelected}
         selected=${this.selected}
+        ?loading=${loadingFonts}
       ></virtual-list>
-      ${this.#renderSelectedPanel()}
+      <selected-dialog
+        ?loading=${loadingFonts}
+        icon=${this.selected}
+        @closed=${() => {
+          this.selected = "";
+        }}
+      ></selected-dialog>
     `;
   }
 
@@ -316,7 +315,7 @@ export class MaterialSymbolsVirtualizer
         @close=${() => {
           // need this for when the built-in close button is clicked
           this.#setTransition(false);
-          this.#updateSize("filters", false);
+          this.#updateSize(false);
         }}
         @closed=${() => {
           this.filtersVisible = false;
@@ -423,31 +422,6 @@ export class MaterialSymbolsVirtualizer
         </div>
       </mwc-sheet>
     `;
-  }
-
-  #renderSelectedPanel(): TemplateResult {
-    // I need a way to add text-transform to the sheet title or render a custom <mwc-sheet-title>
-    const title = titleCase(this.selected.replaceAll("_", " "), " ");
-    return html`<mwc-sheet
-      class="selected-panel"
-      type="fixed"
-      position="right"
-      backdrop=${this.#getBackdrop()}
-      disable-focus-trap
-      disable-scroll-lock
-      ?open=${!!this.selected}
-      @close=${() => {
-        // need this for when the built-in close button is clicked
-        this.#setTransition(false);
-        this.#updateSize("selected", false);
-      }}
-      @closed=${() => {
-        this.selected = "";
-      }}
-      close-button
-    >
-      <h3 slot="title">${title}</h3>
-    </mwc-sheet>`;
   }
 }
 

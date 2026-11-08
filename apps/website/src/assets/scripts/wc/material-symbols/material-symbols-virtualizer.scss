@@ -1,59 +1,50 @@
 @use "@mlaursen/wc" as *;
 
-@include map-to-styles(
-  (
-    ":host": (
-      "--app-bar-size": 4rem,
-      "--filters-panel-size": 20rem,
-      "--filters-desktop-visible-size": 0px,
-      "--filters-visible-size": 0px,
-      "--selected-panel-size": 20rem,
-      "--selected-visible-size": 0px,
-      "--selected-desktop-visible-size": 0px,
+$-styles: (
+  ":host": (
+    "--app-bar-size": 4rem,
+    "--filters-panel-size": 20rem,
+    "--filters-desktop-visible-size": 0px,
+    "--filters-visible-size": 0px,
 
-      display: grid,
-      grid-template-columns:
-        "var(--filters-visible-size) minmax(0, 1fr) var(--selected-visible-size)",
-      grid-template-rows: "var(--app-bar-size) 1fr",
-      min-height: 100dvh,
-      transition:
-        'grid-template-columns var(--duration, "transition.duration.long-2") var(--easing, "transition.easing.emphasized")',
+    display: grid,
+    grid-template-columns: "var(--filters-visible-size) minmax(0, 1fr)",
+    grid-template-rows: "var(--app-bar-size) 1fr",
+    min-height: 100dvh,
+    transition:
+      'grid-template-columns var(--duration, "transition.duration.long-2") var(--easing, "transition.easing.emphasized")',
 
-      "desktop-media": (
-        "--filters-visible-size": var(--filters-desktop-visible-size),
-        "--selected-visible-size": var(--selected-desktop-visible-size),
-        "sheet.fixed.top": "calc(var(--app-bar-size) * 2)",
-      ),
+    "desktop-media": (
+      "--filters-visible-size": var(--filters-desktop-visible-size),
+      "sheet.fixed.top": "calc(var(--app-bar-size) * 2)",
     ),
+  ),
 
-    ".search-container": (
-      grid-column: "1/-1",
-      grid-row: 1,
-      display: flex,
-      padding-inline: "spacing.large",
-      top: var(--app-bar-size),
+  ".search-container": (
+    grid-column: "1/-1",
+    grid-row: 1,
+    display: flex,
+    padding-inline: "spacing.large",
+    top: var(--app-bar-size),
+  ),
+
+  ".search": (
+    "text-field.shape.all": "shape.corner.full",
+    width: 100%,
+  ),
+
+  ".filters-panel": (
+    "dialog.width": calc(100% - 3.5rem),
+
+    "desktop-media": (
+      "dialog.width": var(--filters-visible-size),
     ),
+  ),
 
-    ".search": (
-      "text-field.shape.all": "shape.corner.full",
-      width: 100%,
-    ),
-
-    ".filters-panel": (
-      "dialog.width": calc(100% - 3.5rem),
-
-      "desktop-media": (
-        "dialog.width": var(--filters-visible-size),
-      ),
-    ),
-
-    ".selected-panel": (
-      "dialog.width": var(--selected-visible-size),
-    ),
-
-    "virtual-list": (
-      grid-column: 2,
-      grid-row: 2,
-    ),
-  )
+  "virtual-list": (
+    grid-column: 2,
+    grid-row: 2,
+  ),
 );
+
+@include host-styles($styles: $-styles);
