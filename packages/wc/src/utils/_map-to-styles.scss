@@ -78,6 +78,13 @@
   @if $styles {
     @each $property, $value in $styles {
       $value-type: meta.type-of($value);
+
+      // coerce number properties to strings since they _should_ generally be
+      // percentages from keyframes
+      @if meta.type-of($property) == number {
+        $property: "#{$property}";
+      }
+
       @if media-queries.is-media-query($property) {
         @include media-queries.media-query($property) {
           @include map-to-styles($value, $short-names);
