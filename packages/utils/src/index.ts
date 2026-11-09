@@ -4,6 +4,7 @@ export * from "./chunk.js";
 export * from "./debounce.js";
 export * from "./kebabCase.js";
 export * from "./pascalCase.js";
+export * from "./randomInt.js";
 export * from "./throttle.js";
 export * from "./titleCase.js";
 export * from "./types.js";
