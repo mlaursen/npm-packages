@@ -15,25 +15,29 @@ page:
       <h3 id="{{ size }}-title">{{ size }}{{ " (Default)" if size == "medium" }}</h3>
     </mwc-typography>
     <mwc-radio-group aria-labelledby="{{ size }}-title">
-      {% for i in range(1, 5) %}
-        <mwc-radio aria-label="Radio {{ state }} {{ i }}"
-                   name="{{ size }}"
-                   size="{{ size }}"
-                   {{ "disabled" if i == 4 }}
-                   required>
-        </mwc-radio>
-      {% endfor %}
+      <mwc-box disable-padding>
+        {% for i in range(1, 5) %}
+          <mwc-radio aria-label="Radio {{ state }} {{ i }}"
+                     name="{{ size }}"
+                     size="{{ size }}"
+                     {{ "disabled" if i == 4 }}
+                     required>
+          </mwc-radio>
+        {% endfor %}
+      </mwc-box>
     </mwc-radio-group>
     <mwc-radio-group aria-label="Additional States">
-      {% for i in range(1, 5) %}
-        <mwc-radio aria-label="Errored {{ state }}"
-                   error
-                   name="{{ size }}-fake"
-                   size="{{ size }}"
-                   {{ "checked" if i % 2 == 0 }}
-                   {{ "disabled" if i >= 3 }}>
-        </mwc-radio>
-      {% endfor %}
+      <mwc-box disable-padding>
+        {% for i in range(1, 5) %}
+          <mwc-radio aria-label="Errored {{ state }}"
+                     error
+                     name="{{ size }}-fake"
+                     size="{{ size }}"
+                     {{ "checked" if i % 2 == 0 }}
+                     {{ "disabled" if i >= 3 }}>
+          </mwc-radio>
+        {% endfor %}
+      </mwc-box>
     </mwc-radio-group>
     {% if size !== radio.sizes.at(-1) %}
       <mwc-divider>
@@ -47,34 +51,46 @@ page:
     Submit
   </mwc-button>
 </form>
-<form>
-  <label>
-    Apple
-    <input type="radio" required name="fruit" value="apple">
-  </label>
-  <label>
-    Orange
-    <input type="radio" required name="fruit" value="orange">
-  </label>
-  <label>
-    Banana
-    <input type="radio" required name="fruit" value="banana">
-  </label>
-  <label>
-    Consent
-    <input type="checkbox" required name="consent" />
-  </label>
-  <label>
-    Consent 3
-    <input type="checkbox" name="consent-3" />
-  </label>
-  <label for="consent-2">Consent 2</label>
-  <mwc-checkbox id="consent-2" name="consent-2">
-  </mwc-checkbox>
-  <mwc-button type="reset" variant="tonal">
-    Reset
-  </mwc-button>
-  <mwc-button type="submit">
-    Submit
-  </mwc-button>
-</form>
+<mwc-card>
+  <form>
+    <mwc-box>
+      <label>
+        Apple
+        <input type="radio" required name="fruit" value="apple">
+      </label>
+      <label>
+        Orange
+        <input type="radio" required name="fruit" value="orange">
+      </label>
+      <label>
+        Banana
+        <input type="radio" required name="fruit" value="banana">
+      </label>
+    </mwc-box>
+    <mwc-box>
+      <label>
+        Consent (Required)
+        <input type="checkbox" required name="consent" />
+      </label>
+      <label>
+        Consent (Optional)
+        <input type="checkbox" name="consent-3" />
+      </label>
+      <mwc-box disable-padding>
+        <mwc-typography variant="label">
+          <label for="consent-2">Consent (Required)</label>
+        </mwc-typography>
+        <mwc-checkbox id="consent-2" name="consent-2">
+        </mwc-checkbox>
+      </mwc-box>
+    </mwc-box>
+    <mwc-dialog-actions>
+      <mwc-button type="reset" variant="tonal">
+        Reset
+      </mwc-button>
+      <mwc-button type="submit">
+        Submit
+      </mwc-button>
+    </mwc-dialog-actions>
+  </form>
+</mwc-card>

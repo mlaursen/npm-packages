@@ -14,27 +14,29 @@ page:
     <mwc-typography variant="title" text-transform="capitalize">
       <h3>{{ size }}{{ " (Default)" if size == "medium" }}</h3>
     </mwc-typography>
-    {% for state in checkbox.states %}
-      <mwc-checkbox aria-label="Checkbox {{ state }}"
-                    size="{{ size }}"
-                    name="{{ size }}"
-                    {{ state if state !== "unchecked" }}>
-      </mwc-checkbox>
-      {% if state == "error" or state == "disabled" %}
-        <mwc-checkbox aria-label="Checkbox {{ state }} Checked"
+    <mwc-box disable-padding>
+      {% for state in checkbox.states %}
+        <mwc-checkbox aria-label="Checkbox {{ state }}"
                       size="{{ size }}"
                       name="{{ size }}"
-                      {{ state }}
-                      checked>
+                      {{ state if state !== "unchecked" }}>
         </mwc-checkbox>
-        <mwc-checkbox aria-label="Checkbox {{ state }} indeterminate"
-                      size="{{ size }}"
-                      name="{{ size }}"
-                      {{ state }}
-                      indeterminate>
-        </mwc-checkbox>
-      {% endif %}
-    {% endfor %}
+        {% if state == "error" or state == "disabled" %}
+          <mwc-checkbox aria-label="Checkbox {{ state }} Checked"
+                        size="{{ size }}"
+                        name="{{ size }}"
+                        {{ state }}
+                        checked>
+          </mwc-checkbox>
+          <mwc-checkbox aria-label="Checkbox {{ state }} indeterminate"
+                        size="{{ size }}"
+                        name="{{ size }}"
+                        {{ state }}
+                        indeterminate>
+          </mwc-checkbox>
+        {% endif %}
+      {% endfor %}
+    </mwc-box>
     {% if size !== checkbox.sizes.at(-1) %}
       <mwc-divider>
       </mwc-divider>
