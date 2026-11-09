@@ -1,0 +1,34 @@
+---
+layout: docs
+
+eleventyNavigation:
+  key: SrOnly
+  parent: Home
+
+page:
+  title: SrOnly
+---
+
+<mwc-box>
+  <mwc-button>
+    <mwc-sr-only>
+      Favorite Button
+    </mwc-sr-only>
+    <mwc-material-symbol>
+      favorite
+    </mwc-material-symbol>
+  </mwc-button>
+  <mwc-button>
+    <mwc-sr-only active-media="phone">
+      Hidden on phone
+    </mwc-sr-only>
+    <mwc-material-symbol>
+      favorite
+    </mwc-material-symbol>
+  </mwc-button>
+</mwc-box>
+<mwc-sr-only focusable>
+  <mwc-typography>
+    <span tabindex="0">Visible when focused</span>
+  </mwc-typography>
+</mwc-sr-only>

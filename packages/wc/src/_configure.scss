@@ -48,6 +48,7 @@
 @use "circular-progress";
 @use "async-button";
 @use "copy-to-clipboard";
+@use "sr-only";
 
 @mixin configure(
   $output: null,
@@ -97,7 +98,8 @@
   $code-block: null,
   $circular-progress: null,
   $async-button: null,
-  $copy-to-clipboard: null
+  $copy-to-clipboard: null,
+  $sr-only: null
 ) {
   @include utils.configure-setup(
     $output: $output,
@@ -150,4 +152,5 @@
   @include circular-progress.configure-global($circular-progress);
   @include async-button.configure-global($async-button);
   @include copy-to-clipboard.configure-global($copy-to-clipboard);
+  @include sr-only.configure-global($sr-only);
 }
