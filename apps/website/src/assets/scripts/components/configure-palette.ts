@@ -2,6 +2,7 @@ import type { ColorScheme } from "@mlaursen/wc";
 import {
   convertMaterialThemeToProperties,
   parseMaterialTheme,
+  toggleRtl,
 } from "@mlaursen/wc";
 import { spread } from "@open-wc/lit-helpers";
 import type { PropertyValues, TemplateResult } from "lit";
@@ -115,7 +116,7 @@ export class ConfigurePalette extends LitElement {
     }
 
     if (changed.has("dir")) {
-      document.documentElement.setAttribute("dir", this.dir);
+      toggleRtl({ dir: this.dir });
     }
   }
 
