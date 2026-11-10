@@ -19,6 +19,9 @@ export class SelectedDialog extends LitElement {
   @property()
   icon = "";
 
+  @property({ type: Boolean })
+  loading = false;
+
   override render(): TemplateResult {
     const title = titleCase(this.icon.replaceAll("_", " "), " ");
     const code = template
@@ -39,12 +42,8 @@ export class SelectedDialog extends LitElement {
       </h3>
       <mwc-code-block>${unsafeHTML(code)}</mwc-code-block>
       <mwc-box grid="2" align="start">
-        <mwc-material-symbol class="preview">${this.icon}</mwc-material-symbol>
-        <mwc-box
-          grid="3"
-          disable-padding
-          style="--mwc-box-item-min-size: auto;"
-        >
+        ${this.#renderSymbol({ className: "preview" })}
+        <mwc-box grid="3" padding="none" style="--mwc-box-item-min-size: auto;">
           ${map(icon.sizes, (size) => this.#renderSymbol({ size }))}
           ${map(theme.baseThemes.slice(0, 3), (color) => this.#renderSymbol({ color }))}
           ${map(theme.baseThemes.slice(0, 3), (background) => this.#renderSymbol({ background }))}
@@ -65,22 +64,37 @@ export class SelectedDialog extends LitElement {
   ): TemplateResult {
     const { className = "", ...props } = overrides;
 
-    let tooltip: TemplateResult | undefined;
-    if ("size" in props) {
-      tooltip = html`<span slot="tooltip">size=${props.size}</span>`;
-    } else if ("color" in props) {
-      tooltip = html`<span slot="tooltip">color=${props.color}</span>`;
+    let content: TemplateResult;
+    if (this.loading) {
+      content = html`
+        <mwc-skeleton ?active=${this.loading} size="content" variant="diagonal">
+          <mwc-material-symbol class="${className}" ${spread(props)}
+            >${this.icon}</mwc-material-symbol
+          >
+        </mwc-skeleton>
+      `;
+    } else {
+      let tooltip: TemplateResult | undefined;
+      if ("size" in props) {
+        tooltip = html`<span slot="tooltip">size=${props.size}</span>`;
+      } else if ("color" in props) {
+        tooltip = html`<span slot="tooltip">color=${props.color}</span>`;
+      }
+
+      content = html`
+        <mwc-tooltip popover-arrow>
+          ${tooltip}
+          <mwc-material-symbol
+            slot="popover-target"
+            class="${className}"
+            ${spread(props)}
+            >${this.icon}</mwc-material-symbol
+          >
+        </mwc-tooltip>
+      `;
     }
 
-    return html`<mwc-tooltip popover-arrow>
-      ${tooltip}
-      <mwc-material-symbol
-        slot="popover-target"
-        class="${className}"
-        ${spread(props)}
-        >${this.icon}</mwc-material-symbol
-      ></mwc-tooltip
-    >`;
+    return html` <mwc-box padding="none"> ${content} </mwc-box> `;
   }
 }
 

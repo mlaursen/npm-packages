@@ -1,0 +1,39 @@
+---
+layout: docs
+
+eleventyNavigation:
+  key: Skeleton
+  parent: Home
+
+page:
+  title: Skeleton
+---
+
+<mwc-box stacked align="start">
+  <mwc-skeleton>
+  </mwc-skeleton>
+  <mwc-skeleton variant="fade">
+  </mwc-skeleton>
+  <mwc-skeleton variant="wave">
+  </mwc-skeleton>
+  <mwc-skeleton variant="wave" style="height: 4rem; width: 4rem;">
+  </mwc-skeleton>
+  <mwc-skeleton variant="diagonal" style="height: 4rem; width: 4rem;">
+  </mwc-skeleton>
+  <mwc-skeleton id="target" variant="diagonal" size="content">
+    <mwc-material-symbol>
+      favorite
+    </mwc-material-symbol>
+  </mwc-skeleton>
+  <mwc-divider>
+  </mwc-divider>
+  <mwc-skeleton random-width>
+  </mwc-skeleton>
+  <mwc-skeleton random-delay>
+  </mwc-skeleton>
+  <mwc-skeleton random-width random-delay>
+  </mwc-skeleton>
+</mwc-box>
+{% js "defer" %}
+{% include "scripts/wc/skeleton.js" %}
+{% endjs %}

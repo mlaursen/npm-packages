@@ -123,7 +123,12 @@ export class VirtualList extends LitElement {
             );
           }}
         >
-          <mwc-material-symbol class="shimmer">${name}</mwc-material-symbol>
+          <mwc-skeleton
+            ?active=${this.loading}
+            size="content"
+            variant="diagonal"
+            ><mwc-material-symbol>${name}</mwc-material-symbol></mwc-skeleton
+          >
           <mwc-typography text-transform="capitalize" text-align="center">
             <span>${name.replaceAll("_", " ")}</span>
           </mwc-typography>

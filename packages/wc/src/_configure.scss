@@ -49,6 +49,7 @@
 @use "async-button";
 @use "copy-to-clipboard";
 @use "sr-only";
+@use "skeleton";
 
 @mixin configure(
   $output: null,
@@ -99,7 +100,8 @@
   $circular-progress: null,
   $async-button: null,
   $copy-to-clipboard: null,
-  $sr-only: null
+  $sr-only: null,
+  $skeleton: null
 ) {
   @include utils.configure-setup(
     $output: $output,
@@ -153,4 +155,5 @@
   @include async-button.configure-global($async-button);
   @include copy-to-clipboard.configure-global($copy-to-clipboard);
   @include sr-only.configure-global($sr-only);
+  @include skeleton.configure-global($skeleton);
 }

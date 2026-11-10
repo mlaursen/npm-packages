@@ -34,6 +34,7 @@
 @use "async-button";
 @use "copy-to-clipboard";
 @use "sr-only";
+@use "skeleton";
 
 @mixin styles {
   @include palette.styles;
@@ -75,4 +76,5 @@
   @include async-button.styles;
   @include copy-to-clipboard.styles;
   @include sr-only.styles;
+  @include skeleton.styles;
 }

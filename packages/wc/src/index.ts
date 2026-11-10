@@ -99,6 +99,8 @@ export * from "./sheet-title/sheet-title.js";
 export * from "./sheet/constants.js";
 export * from "./sheet/sheet.js";
 export * from "./sheet/types.js";
+export * from "./skeleton/skeleton.js";
+export * from "./skeleton/types.js";
 export * from "./sr-only/sr-only.js";
 export * from "./sr-only/types.js";
 export * from "./svg-icon/svg-icon.js";

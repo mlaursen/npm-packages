@@ -1,0 +1,171 @@
+@use "sass:map";
+
+@use "../utils";
+
+$-tokens-registered: false;
+$-tokens: (
+  animation: (
+    name: null,
+    delay: 0ms,
+    duration: null,
+    easing: null,
+  ),
+  background: "palette.surface-container-highest",
+  height: 1em,
+  width: 100%,
+
+  shape: (
+    all: "skeleton.shape.round",
+    circle: "shape.corner.full",
+    square: "shape.corner.none",
+    round: "shape.corner.extra-small",
+  ),
+
+  fade: (
+    duration: 1.8s,
+    easing: ease-in-out,
+  ),
+
+  wave: (
+    background: 'color-mix(in srgb, "palette.on-surface" 12%, transparent)',
+    angle: 90deg,
+    duration: 1.2s,
+    size: 200% 100%,
+    width: 25%,
+  ),
+  diagonal: (
+    angle: 135deg,
+    duration: 0.8s,
+    size: 250% 250%,
+    width: 15%,
+  ),
+);
+
+$-configure-tokens: map.keys($-tokens);
+
+$-base-styles: (
+  align-items: center,
+  animation-delay: "skeleton.animation.delay",
+  animation-duration: "skeleton.animation.duration",
+  animation-iteration-count: infinite,
+  animation-name: "skeleton.animation.name",
+  animation-timing-function: linear,
+  background-color: "skeleton.background",
+  border-radius: "skeleton.shape.all",
+  color: transparent,
+  display: inline-flex,
+  justify-content: center,
+);
+$-round-styles: (
+  "skeleton.shape.all": "skeleton.shape.round",
+);
+$-square-styles: (
+  "skeleton.shape.all": "skeleton.shape.square",
+);
+$-circle-styles: (
+  "skeleton.shape.all": "skeleton.shape.circle",
+);
+
+$-base-size-styles: (
+  height: "skeleton.height",
+  width: "skeleton.width",
+);
+$-content-size-styles: (
+  display: contents,
+);
+
+$-fade-styles: (
+  "skeleton.animation.name": fade,
+  "skeleton.animation.duration": "skeleton.fade.duration",
+  "skeleton.animation.easing": linear,
+);
+$-wave-styles: (
+  "skeleton.animation.name": wave,
+  "skeleton.animation.duration": "skeleton.wave.duration",
+  "--_width": "skeleton.wave.width",
+  "--_angle": "skeleton.wave.angle",
+  "--_bgw1": "calc(50% - var(--_width))",
+  "--_bgw2": "calc(50% + var(--_width))",
+  "--_bg": "skeleton.wave.background",
+
+  background-image:
+    "linear-gradient(var(--_angle), transparent var(--_bgw1), var(--_bg) 50%, transparent var(--_bgw2))",
+  background-size: "skeleton.wave.size",
+);
+$-diagonal-styles: (
+  "skeleton.animation.name": diagonal,
+  "skeleton.wave.angle": "skeleton.diagonal.angle",
+  "skeleton.wave.duration": "skeleton.diagonal.duration",
+  "skeleton.wave.size": "skeleton.diagonal.size",
+  "skeleton.wave.width": "skeleton.diagonal.width",
+);
+
+$-keyframes: (
+  fade: (
+    0%: (
+      opacity: 1,
+    ),
+    50%: (
+      opacity: 0.5,
+    ),
+    100%: (
+      opacity: 1,
+    ),
+  ),
+  wave: (
+    from: (
+      background-position: 200% 0,
+    ),
+    to: (
+      background-position: -200% 0,
+    ),
+  ),
+  diagonal: (
+    from: (
+      background-position: 100% 100%,
+    ),
+    to: (
+      background-position: 0 0,
+    ),
+  ),
+);
+
+@mixin configure() {
+  @if not $-tokens-registered {
+    $-tokens-registered: true !global;
+    @include utils.register-tokens($tokens: $-tokens, $prefix: "skeleton");
+  }
+}
+
+@mixin configure-global($overrides: null) {
+  $overrides: utils.get-config-map(list, $overrides, $-configure-tokens);
+  @include configure();
+}
+
+@mixin css-styles {
+  $styles: ();
+  @include utils.css-styles($styles);
+}
+
+@mixin host-styles {
+  $styles: (
+    ":host": $-content-size-styles,
+    ":host([active])": $-base-styles,
+    ":host([active]) ::slotted(*)": (
+      opacity: 0,
+    ),
+    ":host([active]:not([size=content]))": $-base-size-styles,
+    ":host([shape=round])": $-round-styles,
+    ":host([shape=square])": $-square-styles,
+    ":host([shape=circle])": $-circle-styles,
+    ":host([variant=fade])": $-fade-styles,
+    ":host(:is([variant=wave], [variant=diagonal]))": $-wave-styles,
+    ":host([variant=diagonal])": $-diagonal-styles,
+  );
+  @include utils.host-styles($styles, $keyframes: $-keyframes);
+}
+
+@mixin styles {
+  @include css-styles;
+  @include host-styles;
+}
