@@ -28,16 +28,16 @@
   "dependencies": {
     "@mlaursen/copy-scss-files": "workspace:*",
     "@mlaursen/node-utils": "workspace:*",
-    "commander": "^15.0.0"
+    "commander": "^15.1.0"
   },
   "devDependencies": {
     "@mlaursen/oxlint-config": "workspace:*",
     "@rollup/plugin-node-resolve": "^16.0.3",
     "@types/node": "^26.6.6",
-    "concurrently": "^10.0.6",
-    "oxfmt": "^0.76.0",
-    "oxlint": "^1.91.0",
-    "rollup": "^4.67.4",
+    "concurrently": "^10.0.7",
+    "oxfmt": "^0.78.0",
+    "oxlint": "^1.93.0",
+    "rollup": "^4.68.2",
     "rollup-plugin-swc3": "^0.12.1",
     "typescript": "^6.0.3"
   }
