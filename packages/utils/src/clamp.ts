@@ -1,4 +1,6 @@
-export interface ClampOptions {
+import type { RangeOptions } from "./types.js";
+
+export interface ClampOptions extends Partial<RangeOptions> {
   /**
    * An optional min value. Ignored when `undefined`
    */
@@ -21,14 +23,14 @@ export interface ClampOptions {
  * @returns the updated value
  */
 export function clamp(options: Readonly<ClampOptions>): number {
-  const { min, max, value } = options;
+  const { min = Infinity, max = Infinity, value } = options;
 
   let nextValue = value;
-  if (typeof min === "number") {
+  if (typeof min === "number" && Number.isFinite(min)) {
     nextValue = Math.max(min, nextValue);
   }
 
-  if (typeof max === "number") {
+  if (typeof max === "number" && Number.isFinite(max)) {
     nextValue = Math.min(max, nextValue);
   }
 

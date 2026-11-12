@@ -1,6 +1,7 @@
 import { clamp } from "./clamp.js";
+import type { RangeOptions } from "./types.js";
 
-export interface LoopOptions {
+export interface LoopOptions extends Partial<RangeOptions> {
   /**
    * The current value that should be modified.
    */

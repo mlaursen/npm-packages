@@ -1,4 +1,6 @@
-export interface GetPercentageOptions {
+import type { RangeOptions } from "./types.js";
+
+export interface GetPercentageOptions extends Partial<RangeOptions> {
   /** @defaultValue `0` */
   min?: number;
 

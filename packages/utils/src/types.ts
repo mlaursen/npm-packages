@@ -46,3 +46,12 @@ export type DebouncedFunction<F extends AnyFunction> = CancelableFunction<
 export type ThrottledFunction<F extends AnyFunction> = CancelableFunction<
   (...args: Parameters<F>) => ReturnType<F>
 >;
+
+export interface RangeOptions {
+  min: number;
+  max: number;
+}
+
+export interface StepRangeOptions extends RangeOptions {
+  step: number;
+}

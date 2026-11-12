@@ -1,10 +1,10 @@
+import { loop } from "@mlaursen/utils";
 import type { TemplateResult } from "lit";
 import { LitElement, html } from "lit";
 
 import { NOT_DISABLED_OR_HIDDEN } from "../focus/constants.js";
 import { requiredValidator } from "../form-validation/required-validator.js";
 import { InternalsMixin } from "../internals-mixin/internals-mixin.js";
-import { loop } from "../utils/loop.js";
 import { traverse } from "../utils/traverse.js";
 
 const BaseRadioGroup = InternalsMixin(LitElement);

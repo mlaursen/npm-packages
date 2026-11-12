@@ -1,7 +1,6 @@
-import { kebabCase } from "@mlaursen/utils";
+import { clamp, kebabCase } from "@mlaursen/utils";
 import {
   Checkbox,
-  clamp,
   isCustomElement,
   Radio,
   TextField,

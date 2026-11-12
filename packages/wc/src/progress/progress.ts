@@ -1,9 +1,9 @@
+import { getPercentage } from "@mlaursen/utils";
 import { LitElement, type PropertyValues } from "lit";
 import { property } from "lit/decorators.js";
 
 import { InternalsMixin } from "../internals-mixin/internals-mixin.js";
 import { MarginMixin } from "../margin/margin-mixin.js";
-import { getPercentage } from "../utils/getPercentage.js";
 import styles from "./progress-styles.js";
 import type { ProgressProperties, ProgressVariant } from "./types.js";
 

@@ -18,4 +18,16 @@ describe("clamp", () => {
     expect(clamp({ value: 10.5, min: 10, max: 11 })).toBe(10.5);
     expect(clamp({ value: 10.5, min: 9, max: 10 })).toBe(10);
   });
+
+  it("should ignore NaN min", () => {
+    expect(clamp({ value: 0, min: Number.NaN, max: 100 })).toBe(0);
+  });
+
+  it("should ignore NaN max", () => {
+    expect(clamp({ value: 0, min: 0, max: Number.NaN })).toBe(0);
+  });
+
+  it("should ignore NaN value", () => {
+    expect(clamp({ value: Number.NaN, min: 0, max: 100 })).toBe(Number.NaN);
+  });
 });
