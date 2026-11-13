@@ -1,3 +1,4 @@
+import type { PropertyValues } from "lit";
 import { property } from "lit/decorators.js";
 
 import type { LitConstructor } from "../types.js";
@@ -37,6 +38,9 @@ export function OpenCloseAnimateMixin<T extends LitConstructor>(
     extends AnimateMixin(Base)
     implements OpenCloseAnimatedElementProperties
   {
+    @property({ type: Boolean })
+    open: boolean = false;
+
     @property({ type: Boolean, reflect: true })
     opening = false;
 
@@ -50,14 +54,32 @@ export function OpenCloseAnimateMixin<T extends LitConstructor>(
       this.#connectedResolvers.resolve(void 0);
     }
 
+    protected override willUpdate(changed: PropertyValues): void {
+      super.willUpdate(changed);
+
+      if (changed.has("open")) {
+        if (this.open) {
+          this.show();
+        } else if (this._initialized) {
+          // do not go through the closing flow with animations until it has been
+          // opened at least once
+          this.close();
+        }
+      }
+    }
+
     override disconnectedCallback(): void {
       super.disconnectedCallback();
 
       this.#connectedResolvers = Promise.withResolvers();
     }
 
-    _showElement(): void {}
-    _closeElement(): void {}
+    _showElement(): void {
+      this.open = true;
+    }
+    _closeElement(): void {
+      this.open = false;
+    }
     _isOpenable(): boolean {
       return true;
     }
@@ -69,7 +91,9 @@ export function OpenCloseAnimateMixin<T extends LitConstructor>(
     _onOpenCanceled(): void {}
     _onBeforeClose(_options: BaseAnimationOptions): void {}
     _onCloseCanceled(): void {}
-    _onNotConnectedClose(): void {}
+    _onNotConnectedClose(): void {
+      this.open = false;
+    }
     _onNotClosable(): void {}
 
     override _getAnimations(_options: AnimationOptions): AnimationList {

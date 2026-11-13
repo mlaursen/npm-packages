@@ -68,6 +68,13 @@ export interface AnimatedElementProperties {
  */
 export interface OpenCloseAnimatedElementProperties extends AnimatedElementProperties {
   /**
+   * Setting this value will either open or close the element.
+   *
+   * @defaultValue `false`
+   */
+  open: boolean;
+
+  /**
    * This is a reflected property which will be `true` while the open animation
    * is occurring.
    */

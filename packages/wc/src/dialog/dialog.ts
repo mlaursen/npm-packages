@@ -219,9 +219,6 @@ export class Dialog extends BaseDialog implements DialogProperties {
   @property({ attribute: false })
   returnValue = "";
 
-  @property({ type: Boolean })
-  open: boolean = false;
-
   @property()
   type: DialogType = "modal";
 
@@ -303,16 +300,6 @@ export class Dialog extends BaseDialog implements DialogProperties {
       changed.set("disableFocusTrap", this.disableFocusTrap);
       this.disableFocusTrap =
         this.hasAttribute("disable-focus-trap") || !!this.popoverType;
-    }
-
-    if (changed.has("open")) {
-      if (this.open) {
-        this.show();
-      } else if (this._initialized) {
-        // do not go through the closing flow with animations until it has been
-        // opened at least once
-        this.close();
-      }
     }
   }
 
@@ -498,18 +485,16 @@ export class Dialog extends BaseDialog implements DialogProperties {
     this.#shownBy = this.#getShowElement();
     this._dialog?.[this.#shownBy]();
 
-    this.open = true;
     this._content?.scrollTo({ top: 0 });
     this.focusFirstAutoFocus();
+
+    super._showElement();
   }
 
   override _closeElement(shownBy?: ShowDialogName): void {
     this._dialog?.[this.#getCloseElement(shownBy)]();
-    this.open = false;
-  }
 
-  override _onNotConnectedClose(): void {
-    this.open = false;
+    super._closeElement();
   }
 
   override _getAnimations(options: AnimationOptions): AnimationList {

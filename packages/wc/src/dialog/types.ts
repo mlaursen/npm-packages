@@ -5,6 +5,7 @@ import type {
   AnimateElementMap,
   BaseAnimationOptions,
   GetAnimationMap,
+  OpenCloseAnimatedElementProperties,
 } from "../animations/types.js";
 import type {
   DefaultComponentExtraSize,
@@ -80,7 +81,7 @@ export interface RenderDialogOptions {
   actions?: TemplateResult;
 }
 
-export interface DialogProperties {
+export interface DialogProperties extends OpenCloseAnimatedElementProperties {
   /**
    * This is a pass-through for the `aria-label` attribute on the `dialog`
    * element
