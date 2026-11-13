@@ -29,6 +29,8 @@ export * from "./code-block/types.js";
 export * from "./copy-to-clipboard/copy-to-clipboard.js";
 export * from "./copy-to-clipboard/types.js";
 export * from "./copy-to-clipboard/utils.js";
+export * from "./custom-command-mixin/custom-command-mixin.js";
+export * from "./custom-command-mixin/types.js";
 export * from "./dialog-actions/dialog-actions.js";
 export * from "./dialog-content/dialog-content.js";
 export * from "./dialog-header/dialog-header.js";

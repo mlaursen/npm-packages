@@ -5,10 +5,11 @@ import { classMap } from "lit/directives/class-map.js";
 import { ifDefined } from "lit/directives/if-defined.js";
 
 import type {
-  AnimationOptions,
   AnimationList,
+  AnimationOptions,
   GetAnimationMap,
 } from "../animations/types.js";
+import { CustomCommandMixin } from "../custom-command-mixin/custom-command-mixin.js";
 import { ElevationMixin } from "../elevation/elevation-mixin.js";
 import { FocusTrapMixin } from "../focus/focus-trap-mixin.js";
 import { PopoverMixin } from "../popover/popover-mixin.js";
@@ -31,8 +32,8 @@ import type {
   RenderDialogOptions,
 } from "./types.js";
 
-const BaseDialog = ElevationMixin(
-  ScrollLockMixin(PopoverMixin(FocusTrapMixin(LitElement))),
+const BaseDialog = CustomCommandMixin(
+  ElevationMixin(ScrollLockMixin(PopoverMixin(FocusTrapMixin(LitElement)))),
 );
 
 type ShowDialogName = "show" | "showModal" | "showPopover";
@@ -282,14 +283,12 @@ export class Dialog extends BaseDialog implements DialogProperties {
     super.connectedCallback();
 
     this.addEventListener("submit", this.#handleSubmit);
-    this.addEventListener("command", this.#handleCommand);
   }
 
   override disconnectedCallback(): void {
     super.disconnectedCallback();
 
     this.removeEventListener("submit", this.#handleSubmit);
-    this.removeEventListener("command", this.#handleCommand);
     globalThis.cancelAnimationFrame(this.#forceOpenFrame);
   }
 
@@ -562,35 +561,6 @@ export class Dialog extends BaseDialog implements DialogProperties {
     this.close({
       returnValue: submitter.getAttribute("value") ?? this.returnValue,
     });
-  }
-
-  /**
-   * Need to register custom commands for showing and closing since the browser
-   * does not trigger the default `showModal()` unless it is the `dialog`
-   * element.
-   */
-  #handleCommand(event: Event): void {
-    // CommandEvent isn't in type definitions yet
-    const { command, source } = event as Event & {
-      command: string;
-      source: Element | null;
-    };
-
-    switch (command) {
-      case "--show-modal":
-        this.show();
-        break;
-      case "--close":
-        this.close(
-          source instanceof HTMLButtonElement ? source.value : undefined,
-        );
-        break;
-      case "--request-close":
-        this.requestClose(
-          source instanceof HTMLButtonElement ? source.value : undefined,
-        );
-        break;
-    }
   }
 
   #handleClick(event: MouseEvent): void {
