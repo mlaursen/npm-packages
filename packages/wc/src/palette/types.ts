@@ -69,6 +69,8 @@ export type PaletteTokenProperties = CamelCaseKeys<{
 export type PaletteTextColor =
   | BasePaletteTheme
   | OnBasePaletteContainer
+  | "inverse-primary"
+  | "inverse-on-surface"
   | "disabled"
   | "currentcolor";
 
