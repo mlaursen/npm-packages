@@ -334,6 +334,22 @@ $-token-names: map.keys($-light-theme-tokens);
   );
 }
 
+@function -get-styles-selector($name, $is-css, $is-color) {
+  $selector: "&#{$name}";
+  @if not $is-css {
+    $selector: ":host([";
+    @if $is-color {
+      $selector: $selector + "color=#{$name}";
+    } @else {
+      $selector: $selector + "background=#{$name}";
+    }
+
+    $selector: $selector + "])";
+  }
+
+  @return $selector;
+}
+
 @function -get-styles($is-css) {
   $no-text-color: (
     inverse-primary,
@@ -345,6 +361,7 @@ $-token-names: map.keys($-light-theme-tokens);
     surface-container-high,
     surface-container-highest
   );
+  $extra-color-names: (disabled, inverse-primary, inverse-on-surface);
 
   $ignored: (
     outline,
@@ -363,22 +380,10 @@ $-token-names: map.keys($-light-theme-tokens);
   $styles: ();
   @each $name in $token-names {
     $is-on-color: string.index($name, "on-") == 1;
-    $is-color: $is-on-color or $name == disabled or $name == inverse-on-surface;
+    $is-color: $is-on-color or list.index($extra-color-names, $name);
     $is-no-color: list.index($no-text-color, $name);
 
-    $selector: "&#{$name}";
     $inner-styles: null;
-    @if not $is-css {
-      $selector: ":host([";
-      @if $is-color {
-        $selector: $selector + "color=#{$name}";
-      } @else {
-        $selector: $selector + "background=#{$name}";
-      }
-
-      $selector: $selector + "])";
-    }
-
     @if $is-color {
       $inner-styles: (
         color: "palette.#{$name}",
@@ -402,6 +407,7 @@ $-token-names: map.keys($-light-theme-tokens);
       }
     }
 
+    $selector: -get-styles-selector($name, $is-css, $is-color);
     $styles: map.deep-merge(
       $styles,
       (
@@ -428,10 +434,16 @@ $-token-names: map.keys($-light-theme-tokens);
     }
   }
 
-  // &current-color {
-  //   color: currentcolor;
-  // }
-  //
+  $selector: -get-styles-selector(currentcolor, $is-css, true);
+  $styles: map.deep-merge(
+    $styles,
+    (
+      $selector: (
+        color: currentcolor,
+      ),
+    )
+  );
+
   @return $styles;
 }
 
