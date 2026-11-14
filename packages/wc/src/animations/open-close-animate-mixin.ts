@@ -1,13 +1,14 @@
 import type { PropertyValues } from "lit";
 import { property } from "lit/decorators.js";
 
-import type { LitConstructor } from "../types.js";
+import type { LitConstructor, TypedEventLitConstructor } from "../types.js";
 import { AnimateMixin } from "./animate-mixin.js";
 import type {
-  AnimationOptions,
-  OpenCloseAnimatedElementProperties,
   AnimationList,
+  AnimationOptions,
   BaseAnimationOptions,
+  OpenCloseAnimatedElementProperties,
+  OpenCloseEventMap,
 } from "./types.js";
 
 /**
@@ -33,7 +34,11 @@ import type {
  */
 export function OpenCloseAnimateMixin<T extends LitConstructor>(
   Base: T,
-): T & LitConstructor<OpenCloseAnimatedElementProperties> {
+): TypedEventLitConstructor<
+  T,
+  OpenCloseAnimatedElementProperties,
+  OpenCloseEventMap
+> {
   class OpenCloseAnimatedLitElement
     extends AnimateMixin(Base)
     implements OpenCloseAnimatedElementProperties

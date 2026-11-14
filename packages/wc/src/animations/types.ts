@@ -265,3 +265,10 @@ export interface CreateAnimationOptions<
    */
   to: To;
 }
+
+export interface OpenCloseEventMap {
+  close: Event;
+  closed: Event;
+  open: Event;
+  opened: Event;
+}

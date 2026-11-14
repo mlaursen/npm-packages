@@ -121,13 +121,7 @@ export async function copyToClipboard<D extends ClipboardData>(
 }
 
 declare global {
-  interface HTMLElementEventMap {
-    "clipboard-copy-data": AsyncClickEvent<ClipboardData>;
-    "clipboard-copy": CustomEvent<ClipboardCopyEventDetail>;
-    "clipboard-copy-error": CustomEvent<ClipboardCopyErrorEventDetail>;
-  }
-
-  interface WindowEventMap {
+  interface GlobalEventHandlersEventMap {
     "clipboard-copy-data": AsyncClickEvent<ClipboardData>;
     "clipboard-copy": CustomEvent<ClipboardCopyEventDetail>;
     "clipboard-copy-error": CustomEvent<ClipboardCopyErrorEventDetail>;

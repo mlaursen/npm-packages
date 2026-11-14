@@ -48,6 +48,30 @@ export type StyledLitElement<T = LitElement> = LitConstructor<T> & {
 export type StyledLitElementWithProperties<P, T = LitElement> = T &
   StyledLitElement<P>;
 
+/**
+ * This is used to ensure that `element.addEventListener()` adds the custom
+ * event map autocompletion without affecting the global types
+ */
+export declare class TypedEventTarget<CustomEventMap extends object> {
+  addEventListener<K extends keyof CustomEventMap & string>(
+    type: K,
+    listener: (this: this, ev: CustomEventMap[K]) => unknown,
+    options?: boolean | AddEventListenerOptions,
+  ): void;
+
+  removeEventListener<K extends keyof CustomEventMap & string>(
+    type: K,
+    listener: (this: this, ev: CustomEventMap[K]) => unknown,
+    options?: boolean | EventListenerOptions,
+  ): void;
+}
+
+export type TypedEventLitConstructor<
+  T,
+  P extends object,
+  CustomEventMap extends object,
+> = T & LitConstructor<P & TypedEventTarget<CustomEventMap>>;
+
 export interface Point {
   x: number;
   y: number;
