@@ -9,6 +9,7 @@ import "./src/_config/env.js";
 import {
   ASSETS_DIR,
   ENABLE_SSR,
+  OUT_DIR,
   ROOT_DIR,
   SCRIPTS_DIR,
   WC_ROOT,
@@ -27,6 +28,7 @@ import {
   shikiCssPreprocessor,
 } from "./src/_config/plugins/shiki.js";
 import { sourcePathPlugin } from "./src/_config/plugins/source-path.js";
+import { unsplashPlugin } from "./src/_config/plugins/unsplash.js";
 
 enableLogger();
 const shiki = await logTask(loadShiki(), "Loading shiki", "Shiki loaded!");
@@ -51,6 +53,7 @@ export default defineConfig((eleventyConfig) => {
   eleventyConfig.addPlugin(htmlPlugin);
   eleventyConfig.addPlugin(draftsPlugin);
   eleventyConfig.addPlugin(sourcePathPlugin);
+  eleventyConfig.addPlugin(unsplashPlugin);
 
   eleventyConfig.addPlugin(EleventyRenderPlugin);
   eleventyConfig.addPlugin(eleventyImageTransformPlugin, {
@@ -63,7 +66,8 @@ export default defineConfig((eleventyConfig) => {
         decoding: "async",
         // the style="all: inherit" is required so that `mwc-object-fit` and
         // other styles are applied correctly
-        style: "all: inherit",
+        style:
+          "object-fit: inherit; object-position: inherit; width: inherit; height: inherit;",
       },
       pictureAttributes: {},
     },
@@ -92,6 +96,7 @@ export default defineConfig((eleventyConfig) => {
   eleventyConfig.addFilter("slugify", slugify);
 
   eleventyConfig.addPassthroughCopy(`${ASSETS_DIR}/fonts`);
+  eleventyConfig.addPassthroughCopy(`${ASSETS_DIR}/images/unsplash`);
   eleventyConfig.addPassthroughCopy({
     [`${ASSETS_DIR}/favicon/*`]: "/",
   });
@@ -108,7 +113,7 @@ export default defineConfig((eleventyConfig) => {
     markdownTemplateEngine: "njk",
 
     dir: {
-      output: "_site",
+      output: OUT_DIR,
       input: ROOT_DIR,
       includes: "_includes",
       layouts: "_layouts",

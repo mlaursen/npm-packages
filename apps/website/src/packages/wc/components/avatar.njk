@@ -29,14 +29,12 @@ page:
         <mwc-avatar size="{{ size }}"
                     shape="{{ shape }}"
                     background="{{ background }}">
-          <img alt=""
-               src="https://picsum.photos/200/300?image=30"
-               eleventy:ignore />
+          {% unsplash "coffeeCup", { ignore: true, width: 200, height: 300 } %}
         </mwc-avatar>
         <mwc-avatar size="{{ size }}"
                     shape="{{ shape }}"
                     background="{{ background }}">
-          <img alt="" src="https://picsum.photos/200/300?image=30" />
+          {% unsplash "coffeeCup", { width: 200, height: 300 } %}
         </mwc-avatar>
       {% endfor %}
     {% endfor %}

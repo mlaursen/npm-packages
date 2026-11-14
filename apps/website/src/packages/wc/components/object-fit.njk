@@ -9,10 +9,18 @@ page:
   title: Object Fit
 
 images:
-  - https://picsum.photos/200/300?image=30
-  - https://picsum.photos/300/200?image=3
-  - https://picsum.photos/300?image=1008
-  - https://picsum.photos/100/110?image=233
+  - name: coffeeCup
+    width: 200
+    height: 300
+  - name: laptop
+    width: 300
+    height: 200
+  - name: sunset
+    width: 300
+    height: 300
+  - name: trainStation
+    width: 100
+    height: 110
 ---
 
 <mwc-card style="position: sticky;
@@ -49,10 +57,10 @@ images:
   <h3>With Picture</h3>
 </mwc-typography>
 <mwc-box grid align="stretch" full-width>
-  {% for src in images %}
+  {% for image in images %}
     <mwc-card align="center" justify="center">
       <mwc-object-fit>
-        <img src="{{ src }}" alt="" />
+        {% unsplash image.name, { width: image.width, height: image.height } %}
       </mwc-object-fit>
     </mwc-card>
   {% endfor %}
@@ -63,10 +71,10 @@ images:
   <h3>Without Picture</h3>
 </mwc-typography>
 <mwc-box grid align="stretch" full-width>
-  {% for src in images %}
+  {% for image in images %}
     <mwc-card align="center" justify="center">
       <mwc-object-fit>
-        <img src="{{ src }}" alt="" eleventy:ignore />
+        {% unsplash image.name, { width: image.width, height: image.height, ignore: true } %}
       </mwc-object-fit>
     </mwc-card>
   {% endfor %}
@@ -78,7 +86,7 @@ images:
 </mwc-typography>
 <mwc-card align="center" justify="center" style="width: 960px; height: 540px;">
   <mwc-object-fit inline>
-    <img src="https://picsum.photos/480/270?image=101" alt="" eleventy:ignore />
+    {% unsplash "lake", { width: 480, height: 270, ignore: true } %}
   </mwc-object-fit>
 </mwc-card>
 <mwc-card align="center"
@@ -87,14 +95,14 @@ images:
                  height: 800px;
                  margin-top: var(--mwc-spacing-extra-large)">
   <mwc-object-fit inline>
-    <img src="https://picsum.photos/480/270?image=101" alt="" eleventy:ignore />
+    {% unsplash "lake", { width: 480, height: 270, ignore: true } %}
   </mwc-object-fit>
 </mwc-card>
 <mwc-divider style="margin-block: var(--mwc-spacing-extra-large)">
 </mwc-divider>
 <mwc-card align="center" justify="center"style="width: 960px; height: 540px;">
   <mwc-object-fit>
-    <img src="https://picsum.photos/480/270?image=101" alt="" eleventy:ignore />
+    {% unsplash "lake", { width: 480, height: 270, ignore: true } %}
   </mwc-object-fit>
 </mwc-card>
 <mwc-card align="center"
@@ -103,7 +111,7 @@ images:
                  height: 800px;
                  margin-top: var(--mwc-spacing-extra-large)">
   <mwc-object-fit>
-    <img src="https://picsum.photos/480/270?image=101" alt="" eleventy:ignore />
+    {% unsplash "lake", { width: 480, height: 270, ignore: true } %}
   </mwc-object-fit>
 </mwc-card>
 {% js "defer" %}
