@@ -35,7 +35,7 @@ page:
   <mwc-button command="--show-modal" commandfor="command-dialog-2">
     Show Alert
   </mwc-button>
-  <mwc-dialog id="command-dialog-2" type="alert">
+  <mwc-dialog id="command-dialog-2" type="alert" width="medium">
     <h2 slot="title">Alert dialog</h2>
     <p>
       This is a description of the alert. The alertdialog role is used to notify users of urgent information that demands the user's immediate attention.
@@ -128,15 +128,13 @@ page:
       </label>
     </mwc-typography>
   </mwc-box>
-  <pre style="height: 20rem;
-              overflow: auto;
-              width: 100%"><ol id="cancelable-dialog-logs"></ol></pre>
+  <pre style="height: 20rem; overflow: auto; width: 100%"><ol id="cancelable-dialog-logs"></ol></pre>
   <mwc-box justify="end">
     <mwc-button id="clear-cancelable-dialog-logs">
       Clear Logs
     </mwc-button>
   </mwc-box>
-  <mwc-dialog id="cancelable-dialog">
+  <mwc-dialog id="cancelable-dialog" width="medium">
     <h2 slot="title">Cancelable Dialog</h2>
     <mwc-typography>
       <p id="cancelable-dialog-close-message">
