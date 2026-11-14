@@ -94,12 +94,14 @@ export function OpenCloseAnimateMixin<T extends LitConstructor>(
 
     _onBeforeOpen(): void {}
     _onOpenCanceled(): void {}
+    _onOpened(): void {}
     _onBeforeClose(_options: BaseAnimationOptions): void {}
     _onCloseCanceled(): void {}
     _onNotConnectedClose(): void {
       this.open = false;
     }
     _onNotClosable(): void {}
+    _onClosed(): void {}
 
     override _getAnimations(_options: AnimationOptions): AnimationList {
       return [];
@@ -136,6 +138,7 @@ export function OpenCloseAnimateMixin<T extends LitConstructor>(
       await this._animate({ animate, opening: true });
       this.opening = false;
       this.dispatchEvent(new Event("opened"));
+      this._onOpened();
     }
 
     async close(options: BaseAnimationOptions = {}): Promise<void> {
@@ -169,6 +172,7 @@ export function OpenCloseAnimateMixin<T extends LitConstructor>(
       this.closing = false;
       this._closeElement();
       this.dispatchEvent(new Event("closed"));
+      this._onClosed();
     }
   }
 

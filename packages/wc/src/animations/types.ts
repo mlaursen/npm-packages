@@ -194,6 +194,11 @@ await element.close();
   _onOpenCanceled(): void;
 
   /**
+   * @virtual
+   */
+  _onOpened(): void;
+
+  /**
    * An optional callback that will be fired when {@link close} is called
    * before the element has connected in the DOM.
    *
@@ -224,6 +229,11 @@ await element.close();
    * @virtual
    */
   _onCloseCanceled(): void;
+
+  /**
+   * @virtual
+   */
+  _onClosed(): void;
 }
 
 export type KeyframeDescriptor = Keyframe | PropertyIndexedKeyframes;
