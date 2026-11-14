@@ -220,7 +220,7 @@ export class Button extends BaseButton implements ButtonProperties {
 
     return html`<button
       class="button elevation"
-      type=${this.type}
+      type=${this.command ? "button" : this.type}
       ?disabled=${this.disabled}
       @focus=${this._updateFocusVisible}
       @blur=${this._updateFocusVisible}
@@ -280,7 +280,7 @@ export class Button extends BaseButton implements ButtonProperties {
 
   #resolveFormAction(): void {
     const form = this.form;
-    if (!form || this.type === "button") {
+    if (!form || this.type === "button" || this.command) {
       return;
     }
 
