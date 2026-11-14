@@ -24,16 +24,16 @@ export function FormValidationMixin<
   class FormValidatorElement extends Base implements FormValidationProperties {
     static formValidators: Validator[] = [];
 
-    @property({ type: Boolean })
+    @property({ type: Boolean, reflect: true })
     error = false;
 
-    @property({ type: Boolean })
+    @property({ type: Boolean, reflect: true })
     disabled = false;
 
-    @property({ type: Boolean })
+    @property({ type: Boolean, reflect: true })
     required = false;
 
-    @property({ type: Boolean })
+    @property({ type: Boolean, attribute: "readonly", reflect: true })
     readOnly = false;
 
     @property()
