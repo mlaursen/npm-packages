@@ -62,31 +62,31 @@ export class Box extends BaseBox implements BoxProperties {
   static override styles = [...BaseBox.styles, boxStyles];
   static readonly elementName: string = "mwc-box";
 
-  @property()
+  @property({ reflect: true })
   align?: BoxAlignItems;
 
-  @property()
+  @property({ reflect: true })
   justify?: BoxJustifyContent;
 
-  @property({ type: Boolean })
+  @property({ type: Boolean, reflect: true })
   inline = false;
 
   @property({ reflect: false })
   grid: BoxGrid = false;
 
-  @property({ type: Boolean, attribute: "full-width" })
+  @property({ type: Boolean, attribute: "full-width", reflect: true })
   fullWidth?: boolean;
 
   @property({ type: Boolean, reflect: true })
   stacked?: boolean;
 
-  @property({ type: Boolean })
+  @property({ type: Boolean, reflect: true })
   reversed?: boolean;
 
   @property({ reflect: true })
   gap: BoxGap = "all";
 
-  @property({ type: Boolean })
+  @property({ type: Boolean, reflect: true })
   nowrap?: boolean;
 
   @property({ reflect: true })
