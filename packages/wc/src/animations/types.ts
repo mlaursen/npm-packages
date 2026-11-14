@@ -132,7 +132,7 @@ await element.close();
 
   /**
    * This can be used to prevent opening/showing an element. The default
-   * implementation always returns `true`.
+   * implementation returns `true`.
    *
    * @virtual
    */
@@ -140,7 +140,7 @@ await element.close();
 
   /**
    * This can be used to prevent closing/hiding an element. The default
-   * implementation always returns `true`.
+   * implementation returns `true`.
    *
    * @virtual
    */

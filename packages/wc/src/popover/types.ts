@@ -163,6 +163,25 @@ export interface PopoverProperties extends OpenCloseAnimatedElementProperties {
   isPopoverEnabled(): boolean;
 
   /**
+   * This can be used to add additional checks to see if the popover can be
+   * opened like checking if the popover target is overflow. The default
+   * implementation is:
+   * `!!this.popoverType && !!this._popoverTarget && !this.open`
+   *
+   * @sealed
+   */
+  isPopoverOpenable(): boolean;
+
+  /**
+   * This can be used to add additional checks to see if the popover can be
+   * closed. The default implementation is:
+   * `!!this.popoverType && !!this._popoverTarget && this.open`
+   *
+   * @sealed
+   */
+  isPopoverClosable(): boolean;
+
+  /**
    * This is used to actually implement the popover behavior within the lit
    * element.
    *

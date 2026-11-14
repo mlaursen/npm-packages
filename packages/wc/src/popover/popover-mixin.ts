@@ -149,6 +149,14 @@ export function PopoverMixin<T extends StylableLitElement>(
       return this._hasPopoverTarget;
     }
 
+    isPopoverOpenable(): boolean {
+      return !!this.popoverType && !!this._popoverTarget && !this.open;
+    }
+
+    isPopoverClosable(): boolean {
+      return !!this.popoverType && !!this._popoverTarget && this.open;
+    }
+
     renderPopoverTarget(target?: TemplateResult): TemplateResult {
       return html`
         <slot
@@ -203,10 +211,14 @@ export function PopoverMixin<T extends StylableLitElement>(
 
     override _showElement(): void {
       this._popover?.showPopover();
+
+      super._showElement();
     }
 
     override _closeElement(): void {
       this._popover?.hidePopover();
+
+      super._closeElement();
     }
 
     override showPopover(): void {
@@ -310,7 +322,7 @@ export function PopoverMixin<T extends StylableLitElement>(
     }
 
     #showPopover(initiator: PopoverInitiatorAction): void {
-      if (!this.popoverType) {
+      if (!this.isPopoverOpenable()) {
         return;
       }
 
@@ -342,7 +354,7 @@ export function PopoverMixin<T extends StylableLitElement>(
     }
 
     #hidePopover(initiator: PopoverInitiatorAction): void {
-      if (!this.popoverType) {
+      if (!this.isPopoverClosable()) {
         return;
       }
 

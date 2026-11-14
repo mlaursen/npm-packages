@@ -8,10 +8,7 @@ page:
   title: Tooltip
 ---
 
-<mwc-card style="position: sticky;
-                 top: 4rem;
-                 z-index: 8;
-                 --mwc-box-item-min-size: 10rem">
+<mwc-card style="position: sticky; top: 4rem; z-index: 8;">
   <form style="width: 100%">
     <mwc-dialog-header>
       <mwc-dialog-title>
@@ -25,6 +22,24 @@ page:
             <mwc-checkbox name="arrow">
             </mwc-checkbox>
             Arrow
+          </mwc-box>
+        </label>
+      </mwc-typography>
+      <mwc-typography variant="label">
+        <label>
+          <mwc-box padding="none">
+            <mwc-checkbox name="overflowOnly">
+            </mwc-checkbox>
+            Overflow Only
+          </mwc-box>
+        </label>
+      </mwc-typography>
+      <mwc-typography variant="label">
+        <label>
+          <mwc-box padding="none">
+            <mwc-checkbox name="buttonOverflow">
+            </mwc-checkbox>
+            Overflown Text
           </mwc-box>
         </label>
       </mwc-typography>
@@ -56,7 +71,16 @@ page:
 </mwc-card>
 <mwc-box style="height: 20rem" justify="center">
   <mwc-tooltip id="tooltip">
-    <mwc-button slot="popover-target">
+    <mwc-typography id="overflown-text"
+                    slot="popover-target"
+                    margin="none"
+                    text-overflow="ellipsis"
+                    white-space="nowrap"
+                    style="width: 8rem"
+                    hidden>
+      <p>This is a lot of text that will be overflown.</p>
+    </mwc-typography>
+    <mwc-button id="button" slot="popover-target">
       Button
     </mwc-button>
     <div slot="tooltip">Hello, world!</div>

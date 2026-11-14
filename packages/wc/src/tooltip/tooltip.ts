@@ -1,11 +1,13 @@
 import type { TemplateResult } from "lit";
 import { LitElement, html } from "lit";
-import { state } from "lit/decorators.js";
+import { property, state } from "lit/decorators.js";
 
 import { MarginMixin } from "../margin/margin-mixin.js";
 import { PopoverMixin } from "../popover/popover-mixin.js";
 import type { PopoverInitiator, PopoverType } from "../popover/types.js";
+import { isElementClipped } from "../utils/isElementClipped.js";
 import { isSlotted } from "../utils/slots.js";
+import { traverse } from "../utils/traverse.js";
 import styles from "./tooltip-styles.js";
 import type { TooltipProperties } from "./types.js";
 
@@ -44,6 +46,9 @@ export class Tooltip extends BaseTooltip implements TooltipProperties {
   override popoverType: PopoverType = "hint";
   override popoverInitiator: PopoverInitiator = "no-click";
 
+  @property({ attribute: "overflow-only", type: Boolean })
+  overflowOnly = false;
+
   @state()
   _hasContent = false;
 
@@ -54,6 +59,27 @@ export class Tooltip extends BaseTooltip implements TooltipProperties {
         @slotchange=${this.#handleContentSlotChange}
       ></slot>`,
     });
+  }
+
+  override isPopoverOpenable(): boolean {
+    return (
+      super.isPopoverOpenable() && (!this.overflowOnly || this.#isOverflown())
+    );
+  }
+
+  #isOverflown(): boolean {
+    return (
+      !!this._popoverTarget &&
+      this._popoverTarget.assignedElements({ flatten: true }).some(
+        (element) =>
+          isElementClipped(element) ||
+          traverse({
+            root: element,
+            first: true,
+            check: isElementClipped,
+          }),
+      )
+    );
   }
 
   #handleContentSlotChange(event: Event): void {
