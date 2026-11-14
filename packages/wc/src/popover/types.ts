@@ -1,3 +1,4 @@
+import type { OverridableStringUnion } from "@mlaursen/utils";
 import type { TemplateResult } from "lit";
 
 import type {
@@ -6,66 +7,42 @@ import type {
   GetAnimationMap,
 } from "../animations/types.js";
 
-/**
- *                  ------------
- *                  |  above   |
- *        ------|------------------|
- *        | top |   ------------   |
- *        ------|   |  center  |   |---------
- *              |   ------------   | bottom |
- *              |------------------|---------
- *                  |  below   |
- *                  ------------
- * Above:
- * - the container top is in-line with the bottom of the element.
- *
- * Below:
- * - the container bottom is in-line with the top of the element
- *
- * Center:
- * - the container center is in-line with the top of the element
- *
- * Top:
- * - the container top is in-line with the top of the element
- *
- * Bottom:
- * - the container bottom is in-line with the bottom of the element
- */
-export type VerticalAnchor = "above" | "below" | "center" | "top" | "bottom";
+export interface PopoverPlacementOverrides {}
 
 /**
- *
- *     ----------    ---------------
- *     |  left  |    | inner-right |
- *     ---------|------------------|
- *              |   ------------   |
- *              |   |  center  |   |
- *              |   ------------   |
- *              |------------------|--------
- *              | inner-left |     | right |
- *              --------------     ---------
- * Left:
- * - the container left is in-line with the right of the element
- *
- * Right:
- * - the container right is in-line with the left of the element
- *
- * Center:
- * - the container's horizontal center point will be aligned with the element's
- *   horizontal center point
- *
- * Inner Left:
- * - the container's left is in-line with the left of the element
- *
- * Inner Right:
- * - the container's right is in-line with the right of the element
+ * ```
+ *              inline-start       inline-center      inline-end
+ *             ┌──────────────────┬──────────────────┬──────────────────┐
+ *             │                  │                  │                  │
+ * block-start │      start       │   start-center   │    start-end     │
+ *             │                  │                  │                  │
+ *             ├──────────────────┼──────────────────┼──────────────────┤
+ *             │                  │ ┌──────────────┐ │                  │
+ *             │                  │ │    anchor    │ │                  │
+ * block-center│   center-start   │ │   (center)   │ │    center-end    │
+ *             │                  │ └──────────────┘ │                  │
+ *             ├──────────────────┼──────────────────┼──────────────────┤
+ *             │                  │                  │                  │
+ * block-end   │    end-start     │    end-center    │       end        │
+ *             │                  │                  │                  │
+ *             └──────────────────┴──────────────────┴──────────────────┘
+ * ```
  */
-export type HorizontalAnchor =
-  | "left"
-  | "right"
+export type DefaultPopoverPlacement =
+  | "start"
+  | "start-center"
+  | "start-end"
+  | "center-start"
   | "center"
-  | "inner-left"
-  | "inner-right";
+  | "center-end"
+  | "end-start"
+  | "end-center"
+  | "end";
+/** @see DefaultPopoverPlacement */
+export type PopoverPlacement = OverridableStringUnion<
+  DefaultPopoverPlacement,
+  PopoverPlacementOverrides
+>;
 
 export type PopoverType = "auto" | "hint" | "manual" | (string & {});
 export type PopoverInitiator =
@@ -88,16 +65,10 @@ export type AnimatePopoverElementMap = AnimateElementMap<"popover" | "content">;
 
 export interface PopoverProperties extends OpenCloseAnimatedElementProperties {
   /**
-   * @see {@link HorizontalAnchor}
-   * @defaultValue `"center"`
+   * @see PopoverPlacement
+   * @defaultValue `"end-center"`
    */
-  anchorX: HorizontalAnchor;
-
-  /**
-   * @see {@link VerticalAnchor}
-   * @defaultValue `"below"`
-   */
-  anchorY: VerticalAnchor;
+  placement: PopoverPlacement;
 
   /**
    * Set to true to render an arrow from the popover to the target element.
@@ -105,14 +76,14 @@ export interface PopoverProperties extends OpenCloseAnimatedElementProperties {
    *
    * @defaultValue `false`
    */
-  popoverArrow?: boolean;
+  popoverArrow: boolean;
 
   /**
    * The popover will only be enabled if this property is defined.
    *
    * @see {@link HTMLElement.popover}
    */
-  popoverType?: PopoverType;
+  popoverType: PopoverType | null;
 
   /**
    * @defaultValue `"all"`

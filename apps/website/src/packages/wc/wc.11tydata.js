@@ -26,6 +26,19 @@ export const defaultExtraSizes = [
   "extra-large",
 ];
 
+/** @type {import("@mlaursen/wc").DefaultPopoverPlacement[]} */
+export const defaultPopoverPlacements = [
+  "start",
+  "start-center",
+  "start-end",
+  "center-start",
+  "center",
+  "center-end",
+  "end-start",
+  "end-center",
+  "end",
+];
+
 /** @type {import("@mlaursen/wc").DefaultComponentShape[]} */
 const defaultShapes = ["square", "round"];
 
@@ -240,12 +253,11 @@ export const textField = {
 };
 
 export const popover = {
-  /** @type {import("@mlaursen/wc").HorizontalAnchor[]} */
-  horizontalAnchors: ["left", "inner-left", "center", "inner-right", "right"],
-  /** @type {import("@mlaursen/wc").VerticalAnchor[]} */
-  verticalAnchors: ["above", "top", "center", "bottom", "below"],
   /** @type {import("@mlaursen/wc").PopoverType[]} */
   types: ["auto", "hint", "manual"],
+
+  placements: defaultPopoverPlacements,
+
   /** @type {import("@mlaursen/wc").PopoverInitiator[]} */
   initiators: [
     "all",
@@ -276,6 +288,10 @@ export const progress = {
     /** @type {import("@mlaursen/wc").CircularProgressIndicatorWidth[]} */
     indicatorWidths: defaultSizes,
   },
+};
+
+export const tooltip = {
+  placements: defaultPopoverPlacements,
 };
 
 export const objectFit = {

@@ -1,7 +1,7 @@
 import type { OverridableStringUnion } from "@mlaursen/utils";
 
 import type { MediaQueryNameOrQuery } from "../media-queries/types.js";
-import type { HorizontalAnchor, VerticalAnchor } from "../popover/types.js";
+import type { PopoverPlacement } from "../popover/types.js";
 
 export interface CopyToClipboardPositionOverrides {}
 export type DefaultCopyToClipboardPosition = "static" | "absolute";
@@ -54,20 +54,10 @@ export interface CopyToClipboardProperties {
   position: CopyToClipboardPosition;
 
   /**
-   * This is a pass-through property for the `<mwc-tooltip>`.
-   *
-   * @see {@link HorizontalAnchor}
-   * @defaultValue `"left"`
+   * @override
+   * @defaultValue `"center-start"`
    */
-  anchorX: HorizontalAnchor;
-
-  /**
-   * This is a pass-through property for the `<mwc-tooltip>`.
-   *
-   * @see {@link VerticalAnchor}
-   * @defaultValue `"center"`
-   */
-  anchorY: VerticalAnchor;
+  placement: PopoverPlacement;
 
   /**
    * This is a pass-through property for the `<mwc-tooltip>`.

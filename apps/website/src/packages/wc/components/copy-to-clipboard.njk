@@ -12,27 +12,31 @@ page:
 <mwc-typography>
   <p id="content">This should be copied!</p>
 </mwc-typography>
-<mwc-copy-to-clipboard value="Text to copy">
-</mwc-copy-to-clipboard>
-<mwc-copy-to-clipboard value="Text to copy" disabled>
-</mwc-copy-to-clipboard>
-<mwc-copy-to-clipboard id="async-event">
-</mwc-copy-to-clipboard>
-<mwc-copy-to-clipboard value="Text to copy">
-  <mwc-button slot="button">
-    Custom button
-  </mwc-button>
-</mwc-copy-to-clipboard>
-<mwc-copy-to-clipboard id="copy-image">
-  <mwc-button slot="button">
-    Copy Image
-  </mwc-button>
-</mwc-copy-to-clipboard>
-<mwc-copy-to-clipboard value="This is overriding everything">
-  <mwc-typography slot="override" variant="title">
-    <p>This is overriding everything</p>
-  </mwc-typography>
-</mwc-copy-to-clipboard>
+<mwc-box>
+  <mwc-copy-to-clipboard value="Text to copy">
+  </mwc-copy-to-clipboard>
+  <mwc-copy-to-clipboard value="Text to copy" disabled>
+  </mwc-copy-to-clipboard>
+  <mwc-copy-to-clipboard id="async-event">
+  </mwc-copy-to-clipboard>
+  <mwc-copy-to-clipboard value="Text to copy">
+    <mwc-button slot="button">
+      Custom button
+    </mwc-button>
+  </mwc-copy-to-clipboard>
+  <mwc-copy-to-clipboard id="copy-image">
+    <mwc-button slot="button">
+      Copy Image
+    </mwc-button>
+  </mwc-copy-to-clipboard>
+</mwc-box>
+<mwc-box>
+  <mwc-copy-to-clipboard value="This is overriding everything">
+    <mwc-typography slot="override" variant="title">
+      <p>This is overriding everything</p>
+    </mwc-typography>
+  </mwc-copy-to-clipboard>
+</mwc-box>
 <mwc-card class="paste-target">
   <mwc-box>
     <mwc-typography variant="title">

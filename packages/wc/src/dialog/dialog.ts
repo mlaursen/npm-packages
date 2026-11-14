@@ -361,7 +361,7 @@ export class Dialog extends BaseDialog implements DialogProperties {
         aria-describedby=${describedBy}
         role=${ifDefined(role)}
         class="${className} elevation"
-        popover=${ifDefined(this.popoverType)}
+        popover=${ifDefined(this.popoverType || undefined)}
         @click=${this.#handleClick}
         @cancel=${this.#handleCancel}
         @keydown=${this.#handleKeyDown}

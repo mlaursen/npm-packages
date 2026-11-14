@@ -1,19 +1,30 @@
-import { Checkbox, isCustomElement, type Tooltip } from "@mlaursen/wc";
+import {
+  Checkbox,
+  isCustomElement,
+  Radio,
+  type PopoverPlacement,
+  type Tooltip,
+} from "@mlaursen/wc";
+
+import { defaultPopoverPlacements } from "../../../../packages/wc/wc.11tydata.js";
 
 const form = document.querySelector("form");
-const tooltips = document.querySelectorAll<Tooltip>(
-  "#tooltips-playground mwc-tooltip",
-);
-if (!form || tooltips.length === 0) {
+const tooltip = document.querySelector<Tooltip>("#tooltip");
+if (!form || !tooltip) {
   throw new Error("Missing stuff");
 }
 
-form.addEventListener("change", (event) => {
-  if (!isCustomElement(event.target, Checkbox)) {
-    return;
-  }
+function isPopoverPlacement(value: string): value is PopoverPlacement {
+  return defaultPopoverPlacements.includes(value as PopoverPlacement);
+}
 
-  for (const tooltip of tooltips) {
-    tooltip.toggleAttribute("popover-arrow", event.target.checked);
+form.addEventListener("change", (event) => {
+  if (isCustomElement(event.target, Checkbox)) {
+    tooltip.popoverArrow = event.target.checked;
+  } else if (
+    isCustomElement(event.target, Radio) &&
+    isPopoverPlacement(event.target.value)
+  ) {
+    tooltip.placement = event.target.value;
   }
 });

@@ -5,8 +5,8 @@ import { ifDefined } from "lit/directives/if-defined.js";
 
 import { OpenCloseAnimateMixin } from "../animations/open-close-animate-mixin.js";
 import type {
-  AnimationOptions,
   AnimationList,
+  AnimationOptions,
   BaseAnimationOptions,
   GetAnimationMap,
 } from "../animations/types.js";
@@ -23,13 +23,12 @@ import {
 import styles from "./popover-styles.js";
 import type {
   AnimatePopoverElementMap,
-  HorizontalAnchor,
   PopoverInitiator,
   PopoverInitiatorAction,
+  PopoverPlacement,
   PopoverProperties,
   PopoverType,
   RenderPopoverTargetOptions,
-  VerticalAnchor,
 } from "./types.js";
 
 /**
@@ -49,17 +48,17 @@ export function PopoverMixin<T extends StylableLitElement>(
   {
     static override styles = mergeStyles(Base, styles);
 
-    @property({ attribute: "anchor-x" })
-    anchorX: HorizontalAnchor = "center";
-
-    @property({ attribute: "anchor-y" })
-    anchorY: VerticalAnchor = "below";
+    @property()
+    placement: PopoverPlacement = "end-center";
 
     @property({ reflect: true, attribute: "popover-type" })
-    popoverType?: PopoverType;
+    popoverType: PopoverType | null = null;
 
     @property({ attribute: "popover-initiator" })
     popoverInitiator: PopoverInitiator = "all";
+
+    @property({ type: Boolean, attribute: "popover-arrow" })
+    popoverArrow = false;
 
     @property({ type: Number, attribute: "show-delay" })
     showDelay?: number;
@@ -72,9 +71,6 @@ export function PopoverMixin<T extends StylableLitElement>(
 
     @property({ type: Number, attribute: "focus-delay" })
     focusDelay?: number;
-
-    @property({ type: Boolean, attribute: "popover-arrow" })
-    popoverArrow?: boolean;
 
     @query(".popover")
     _popover?: HTMLDivElement;
@@ -121,9 +117,9 @@ export function PopoverMixin<T extends StylableLitElement>(
 
       if (
         !changed.has("popoverType") &&
+        !changed.has("popoverArrow") &&
         !changed.has("popoverInitiator") &&
-        !changed.has("anchorX") &&
-        !changed.has("anchorY")
+        !changed.has("placement")
       ) {
         return;
       }
@@ -131,13 +127,13 @@ export function PopoverMixin<T extends StylableLitElement>(
       // only reflect the popover attributes if popoverType was defined. This
       // helps for the `dialog` component which can opt-in to the popover API
       if (this.hasAttribute("popover-type")) {
+        this.toggleAttribute("popover-arrow", this.popoverArrow);
         this.setAttribute("popover-initiator", this.popoverInitiator);
-        this.setAttribute("anchor-x", this.anchorX);
-        this.setAttribute("anchor-y", this.anchorY);
+        this.setAttribute("placement", this.placement);
       } else {
+        this.removeAttribute("popover-arrow");
         this.removeAttribute("popover-initiator");
-        this.removeAttribute("anchor-x");
-        this.removeAttribute("anchor-y");
+        this.removeAttribute("placement");
       }
     }
 
@@ -181,7 +177,7 @@ export function PopoverMixin<T extends StylableLitElement>(
       return html`${this.renderPopoverTarget(target)}
         <div
           class="popover popover-surface"
-          popover=${ifDefined(this.popoverType)}
+          popover=${ifDefined(this.popoverType || undefined)}
         >
           <div class="popover-content">${content}</div>
           ${this.renderPopoverArrow(arrow)}

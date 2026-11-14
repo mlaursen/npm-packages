@@ -29,22 +29,38 @@ page:
         </label>
       </mwc-typography>
     </mwc-box>
+    <mwc-box stacked align="start">
+      <mwc-typography id="placement-title"variant="title" margin="none">
+        <h3>Placement</h3>
+      </mwc-typography>
+      <mwc-radio-group aria-labelledby="placement-title">
+        <mwc-box padding="none">
+          {% for placement in tooltip.placements %}
+            <mwc-typography>
+              <label>
+                <mwc-box padding="none" inline>
+                  <mwc-radio name="placement"
+                             value="{{ placement }}"
+                             required
+                             {{ "checked" if placement == "end-center" }}>
+                  </mwc-radio>
+                  {{ placement }}
+                </mwc-box>
+              </label>
+            </mwc-typography>
+          {% endfor %}
+        </mwc-box>
+      </mwc-radio-group>
+    </mwc-box>
   </form>
 </mwc-card>
-<mwc-typography variant="title" margin="top">
-  <h3>Placements</h3>
-</mwc-typography>
-<mwc-box id="tooltips-playground" style="--mwc-box-gap: 6rem" stacked>
-  {% for y in popover.verticalAnchors %}
-    {% for x in popover.horizontalAnchors %}
-      <mwc-tooltip anchor-x="{{ x }}" anchor-y="{{ y }}">
-        <mwc-button slot="popover-target">
-          {{ x }} - {{ y }}
-        </mwc-button>
-        <span slot="tooltip">Hello, world!</span>
-      </mwc-tooltip>
-    {% endfor %}
-  {% endfor %}
+<mwc-box style="height: 20rem" justify="center">
+  <mwc-tooltip id="tooltip">
+    <mwc-button slot="popover-target">
+      Button
+    </mwc-button>
+    <div slot="tooltip">Hello, world!</div>
+  </mwc-tooltip>
 </mwc-box>
 {% js "defer" %}
 {% include "scripts/wc/tooltip.js" %}

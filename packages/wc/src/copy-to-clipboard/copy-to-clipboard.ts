@@ -8,7 +8,7 @@ import { property } from "lit/decorators.js";
 
 import { MediaQueryController } from "../media-queries/media-query-controller.js";
 import type { MediaQueryNameOrQuery } from "../media-queries/types.js";
-import type { HorizontalAnchor, VerticalAnchor } from "../popover/types.js";
+import type { PopoverPlacement } from "../popover/types.js";
 import styles from "./copy-to-clipboard-styles.js";
 import type {
   CopyToClipboardPosition,
@@ -51,11 +51,8 @@ export class CopyToClipboard
   @property()
   position: CopyToClipboardPosition = "static";
 
-  @property({ attribute: "anchor-x" })
-  anchorX: HorizontalAnchor = "left";
-
-  @property({ attribute: "anchor-y" })
-  anchorY: VerticalAnchor = "center";
+  @property()
+  placement: PopoverPlacement = "center-start";
 
   @property({ type: Boolean })
   arrow = false;
@@ -95,17 +92,14 @@ export class CopyToClipboard
 
   override render(): TemplateResult {
     return html`<slot ?hidden=${this.#hiddenMedia.matches} name="override">
-      <mwc-tooltip
-        anchor-x=${this.anchorX}
-        anchor-y=${this.anchorY}
-        ?popover-arrow=${this.arrow}
-        ><slot name="tooltip" slot="tooltip">Copy to clipboard</slot
+      <mwc-tooltip placement=${this.placement} ?popover-arrow=${this.arrow}
+        ><span slot="tooltip"
+          ><slot name="tooltip">Copy to clipboard</slot></span
         ><span class="popover-target" slot="popover-target"
           ><slot name="button"
             ><mwc-icon-button
               aria-label="Copy to clipboard"
               .disabled=${this.disabled}
-              slot="popover-target"
               ><mwc-material-symbol
                 >content_copy</mwc-material-symbol
               ></mwc-icon-button

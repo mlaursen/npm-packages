@@ -100,41 +100,15 @@ $-right-bottom: (right, block-end, right-end);
 
 // y -> x -> groups. Key order matches the working version.
 $-popover-arrow-groups: (
-  above: (
-    left: $-above-end,
-    inner-left: $-above-start,
-    center: $-above-center,
-    inner-right: $-above-end,
-    right: $-above-start,
-  ),
-  below: (
-    left: $-below-end,
-    inner-left: $-below-start,
-    center: $-below-center,
-    inner-right: $-below-end,
-    right: $-below-start,
-  ),
-  top: (
-    left: $-left-top,
-    inner-left: $-left-top,
-    center: $-above-center,
-    inner-right: $-right-top,
-    right: $-right-top,
-  ),
-  center: (
-    left: $-left-middle,
-    inner-left: $-left-middle,
-    center: $-above-center,
-    inner-right: $-right-middle,
-    right: $-right-middle,
-  ),
-  bottom: (
-    left: $-left-bottom,
-    inner-left: $-left-bottom,
-    center: $-below-center,
-    inner-right: $-right-bottom,
-    right: $-right-bottom,
-  ),
+  start: $-above-end,
+  start-center: $-above-center,
+  start-end: $-above-start,
+  center-start: $-left-middle,
+  center: $-above-center,
+  center-end: $-right-middle,
+  end-start: $-below-end,
+  end-center: $-below-center,
+  end: $-below-start,
 );
 
 @function -arrow-placement($groups...) {
@@ -154,15 +128,13 @@ $-popover-arrow-groups: (
 @function popover-arrow-placement-styles($is-host) {
   $styles: ();
 
-  @each $y, $row in $-popover-arrow-groups {
-    @each $x, $groups in $row {
-      $selector: "&popover--arrow-#{$x}-#{$y}";
-      @if $is-host {
-        $selector: ":host(:is([popover-arrow], :has([slot=popover-arrow]))[popover-arrow][anchor-y=#{$y}][anchor-x=#{$x}])";
-      }
-
-      $styles: map.set($styles, $selector, -arrow-placement($groups...));
+  @each $placement, $groups in $-popover-arrow-groups {
+    $selector: "&popover--arrow-#{$placement}";
+    @if $is-host {
+      $selector: ":host(:is([popover-arrow], :has([slot=popover-arrow]))[popover-arrow][placement=#{$placement}])";
     }
+
+    $styles: map.set($styles, $selector, -arrow-placement($groups...));
   }
 
   @return $styles;
