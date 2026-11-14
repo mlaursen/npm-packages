@@ -2,11 +2,15 @@
 ///
 /// @param {String} $white-space [nowrap] - the `white-space` value.
 /// @return {Map} -
-@function text-overflow($white-space: nowrap) {
+@function text-overflow(
+  $text-overflow: ellipsis,
+  $white-space: nowrap,
+  $overflow-wrap: anywhere
+) {
   @return (
     overflow: hidden,
-    overflow-wrap: anywhere,
-    text-overflow: ellipsis,
+    overflow-wrap: $overflow-wrap,
+    text-overflow: $text-overflow,
     white-space: $white-space
   );
 }

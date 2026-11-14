@@ -98,7 +98,8 @@ $-font-weights: map.keys(map.get($-tokens, weight));
 $-text-alignments: start end left right center justify inherit;
 $-text-decorations: underline overline line-through none inherit;
 $-text-transforms: capitalize uppercase lowercase inherit;
-$-text-overflows: nowrap ellipsis clip inherit;
+$-text-overflows: ellipsis clip inherit;
+$-white-spaces: nowrap pre pre-line pre-wrap break-spaces inherit;
 
 $-font-token-names: map.keys(map.get($-tokens, font));
 $-weight-token-names: map.keys(map.get($-tokens, weight));
@@ -135,7 +136,8 @@ $-configure-tokens: list.append(
   $font-weights: null,
   $text-alignments: null,
   $text-transforms: null,
-  $text-overflows: null
+  $text-overflows: null,
+  $white-spaces: null
 ) {
   @include -update($brand, font, brand);
   @include -update($plain, font, plain);
@@ -212,7 +214,7 @@ $-configure-tokens: list.append(
     @return "&#{$name}";
   }
 
-  @return ":host([#{$attr}=#{$name}])";
+  @return ":host([#{$attr}=#{$name}]) ::slotted(*)";
 }
 
 @function -get-font-styles($is-css) {
@@ -296,10 +298,22 @@ $-configure-tokens: list.append(
       $attr: "text-overflow",
       $is-css: $is-css
     );
-    // prettier-ignore
-    $inner-styles: if(
-      sass($value == nowrap): (white-space: nowrap);
-      else: utils.text-overflow(null)
+    $inner-styles: utils.text-overflow(
+      $text-overflow: $value,
+      $white-space: null
+    );
+    $styles: map.set($styles, $selector, $inner-styles);
+  }
+
+  @return $styles;
+}
+
+@function -get-white-spaces($is-css) {
+  $styles: ();
+  @each $value in $-white-spaces {
+    $selector: -selector($name: $value, $attr: "white-space", $is-css: $is-css);
+    $inner-styles: (
+      white-space: $value,
     );
     $styles: map.set($styles, $selector, $inner-styles);
   }
@@ -315,7 +329,8 @@ $-configure-tokens: list.append(
     -get-text-alignments($is-css),
     -get-text-decorations($is-css),
     -get-text-transforms($is-css),
-    -get-text-overflows($is-css)
+    -get-text-overflows($is-css),
+    -get-white-spaces($is-css)
   );
   @each $part in $parts {
     $styles: map.merge($styles, $part);

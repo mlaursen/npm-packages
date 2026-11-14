@@ -12,6 +12,7 @@ import type {
   TypographyTextOverflow,
   TypographyTextTransform,
   TypographyVariant,
+  TypographyWhiteSpace,
 } from "./types.js";
 import styles from "./typography-styles.js";
 
@@ -46,14 +47,17 @@ export class Typography extends BaseTypography implements TypographyProperties {
   @property({ type: Boolean })
   prominent = false;
 
-  @property({ attribute: "text-align" })
+  @property({ attribute: "text-align", reflect: true })
   textAlign: TypographyTextAlign = null;
 
-  @property({ attribute: "text-transform" })
+  @property({ attribute: "text-transform", reflect: true })
   textTransform: TypographyTextTransform = null;
 
-  @property({ attribute: "text-overflow" })
+  @property({ attribute: "text-overflow", reflect: true })
   textOverflow: TypographyTextOverflow = null;
+
+  @property({ attribute: "white-space", reflect: true })
+  whiteSpace: TypographyWhiteSpace = null;
 
   protected override render(): TemplateResult {
     return html`<slot></slot>`;

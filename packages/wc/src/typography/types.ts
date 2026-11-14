@@ -40,10 +40,13 @@ export type TypographyTextTransform =
   | "inherit"
   | "none"
   | null;
-export type TypographyTextOverflow =
+export type TypographyTextOverflow = "ellipsis" | "clip" | "inherit" | null;
+export type TypographyWhiteSpace =
   | "nowrap"
-  | "ellipsis"
-  | "clip"
+  | "pre"
+  | "pre-line"
+  | "pre-wrap"
+  | "break-spaces"
   | "inherit"
   | null;
 
@@ -77,4 +80,9 @@ export interface TypographyProperties extends PaletteProperties {
    * @defaultValue `null`
    */
   textOverflow: TypographyTextOverflow;
+
+  /**
+   * @defaultValue `null`
+   */
+  whiteSpace: TypographyWhiteSpace;
 }
