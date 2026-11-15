@@ -1,0 +1,36 @@
+@use "@mlaursen/wc" as *;
+@use "configure-website";
+
+$styles: (
+  "#countdown": (
+    inset: auto 0 0,
+    position: absolute,
+
+    "&.animate::part(determinate-track)::before": (
+      animation: countdown calc(1ms * var(--duration, 5000)) linear,
+      transform: translate(-100%, 0),
+    ),
+
+    "&.paused::part(determinate-track)::before": (
+      animation-play-state: paused,
+    ),
+  ),
+);
+
+@include map-to-styles($styles);
+
+$keyframes: (
+  countdown: (
+    from: (
+      transform: translate(0, 0),
+    ),
+    to: (
+      transform: translate(-100%, 0),
+    ),
+  ),
+);
+@each $name, $styles in $keyframes {
+  @keyframes #{$name} {
+    @include map-to-styles($styles);
+  }
+}

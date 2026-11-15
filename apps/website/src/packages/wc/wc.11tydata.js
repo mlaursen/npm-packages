@@ -252,6 +252,14 @@ export const textField = {
   states: ["normal", "disabled", "readOnly", "error"],
 };
 
+export const toast = {
+  /** @type {import("@mlaursen/wc").ToastPlacement[]} */
+  placements: defaultPopoverPlacements,
+
+  /** @type {import("@mlaursen/wc").ToastShape[]} */
+  shapes: ["round", "square"],
+};
+
 export const popover = {
   /** @type {import("@mlaursen/wc").PopoverType[]} */
   types: ["auto", "hint", "manual"],

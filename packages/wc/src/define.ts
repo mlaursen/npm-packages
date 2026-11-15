@@ -34,5 +34,6 @@ import "./svg-icon/define.js";
 import "./switch/define.js";
 import "./text-container/define.js";
 import "./text-field/define.js";
+import "./toast/define.js";
 import "./tooltip/define.js";
 import "./typography/define.js";

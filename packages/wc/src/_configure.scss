@@ -50,6 +50,7 @@
 @use "copy-to-clipboard";
 @use "sr-only";
 @use "skeleton";
+@use "toast";
 
 @mixin configure(
   $output: null,
@@ -101,7 +102,8 @@
   $async-button: null,
   $copy-to-clipboard: null,
   $sr-only: null,
-  $skeleton: null
+  $skeleton: null,
+  $toast: null
 ) {
   @include utils.configure-setup(
     $output: $output,
@@ -156,4 +158,5 @@
   @include copy-to-clipboard.configure-global($copy-to-clipboard);
   @include sr-only.configure-global($sr-only);
   @include skeleton.configure-global($skeleton);
+  @include toast.configure-global($toast);
 }

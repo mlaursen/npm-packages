@@ -1,0 +1,119 @@
+---
+layout: docs
+
+eleventyNavigation:
+  key: Toast
+  parent: Home
+
+page:
+  title: Toast
+---
+
+<form>
+  <mwc-card style="position: sticky;
+                   top: 4rem;
+                   z-index: 8;
+                   --mwc-box-item-min-size: 12rem">
+    <mwc-box nowrap
+             stacked
+             align="stretch"
+             style="max-height: 40vh;
+                    overflow: auto">
+      <mwc-typography id="timeout-title" variant="title" margin="none">
+        <h4>Base Settings</h4>
+      </mwc-typography>
+      <mwc-text-field name="content" value="This is a toast!">
+        <div slot="label">Content</div>
+      </mwc-text-field>
+      <mwc-box padding="none">
+        <mwc-text-field name="timeout" type="number" min="1" max="20000" value="5000">
+          <div slot="label">Timeout</div>
+        </mwc-text-field>
+        <mwc-typography margin="none" variant="label">
+          <label>
+            <mwc-box inline padding="none">
+              <mwc-checkbox name="manual">
+              </mwc-checkbox>
+              Manual
+            </mwc-box>
+          </label>
+        </mwc-typography>
+      </mwc-box>
+      <mwc-text-field name="action">
+        <div slot="label">Action</div>
+      </mwc-text-field>
+      <mwc-typography margin="none" variant="label">
+        <label>
+          <mwc-box inline padding="none">
+            <mwc-checkbox name="closeButton">
+            </mwc-checkbox>
+            Close Button
+          </mwc-box>
+        </label>
+      </mwc-typography>
+      <mwc-dialog-actions padding="none">
+        <mwc-button id="show" command="--show" commandfor="toast">
+          Show Toast
+        </mwc-button>
+        <mwc-button id="hide" command="--close" commandfor="toast" disabled>
+          Hide Toast
+        </mwc-button>
+      </mwc-dialog-actions>
+      <mwc-divider>
+      </mwc-divider>
+      <mwc-typography id="shape-title" variant="title" margin="top">
+        <h4>Shape</h4>
+      </mwc-typography>
+      <mwc-radio-group aria-labelledby="shape-title">
+        <mwc-box grid padding="none">
+          {% for shape in toast.shapes %}
+            <mwc-typography>
+              <label>
+                <mwc-box padding="none" inline>
+                  <mwc-radio name="shape"
+                             value="{{ shape }}"
+                             required
+                             {{ "checked" if shape === "square" }}>
+                  </mwc-radio>
+                  {{ shape }}
+                </mwc-box>
+              </label>
+            </mwc-typography>
+          {% endfor %}
+        </mwc-box>
+      </mwc-radio-group>
+      <mwc-typography id="placement-title" variant="title" margin="top">
+        <h4>Placement</h4>
+      </mwc-typography>
+      <mwc-radio-group aria-labelledby="placement-title">
+        <mwc-box grid padding="none">
+          {% for placement in toast.placements %}
+            <mwc-typography>
+              <label>
+                <mwc-box padding="none" inline>
+                  <mwc-radio name="placement"
+                             value="{{ placement }}"
+                             required
+                             {{ "checked" if placement === "end-center" }}>
+                  </mwc-radio>
+                  {{ placement }}
+                </mwc-box>
+              </label>
+            </mwc-typography>
+          {% endfor %}
+        </mwc-box>
+      </mwc-radio-group>
+    </mwc-box>
+  </mwc-card>
+</form>
+<mwc-toast id="toast">
+  This is a toast!
+  <mwc-linear-progress id="countdown" value="100" stop-indicator="hidden" shape="square" variant="secondary" disable-gap hidden>
+  </mwc-linear-progress>
+</mwc-toast>
+{% js "defer" %}
+{% include "scripts/wc/toast.js" %}
+{% endjs %}
+{% css "local" %}
+{% include "css/wc/toast.css" %}
+{% endcss %}

@@ -35,6 +35,7 @@
 @use "copy-to-clipboard";
 @use "sr-only";
 @use "skeleton";
+@use "toast";
 
 @mixin styles {
   @include palette.styles;
@@ -77,4 +78,5 @@
   @include copy-to-clipboard.styles;
   @include sr-only.styles;
   @include skeleton.styles;
+  @include toast.styles;
 }

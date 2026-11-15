@@ -1,0 +1,153 @@
+@use "sass:map";
+
+@use "../utils";
+
+$-tokens-registered: false;
+$-tokens: (
+  background: "palette.inverse-surface",
+  color: "palette.inverse-on-surface",
+  elevation: 3,
+
+  block-spacing: "spacing.medium",
+  inline-spacing: "spacing.medium",
+  margin: (
+    block-start: auto,
+    block-end: auto,
+    inline-start: auto,
+    inline-end: auto,
+  ),
+
+  min-height: 3rem,
+
+  padding: (
+    inline-start: "spacing.large",
+    inline-end: "spacing.large",
+    block-start: 0,
+    block-end: 0,
+  ),
+
+  shape: (
+    all: "toast.shape.round",
+    square: "shape.corner.none",
+    round: "shape.corner.medium",
+
+    start-start: "toast.shape.all",
+    start-end: "toast.shape.all",
+    end-start: "toast.shape.all",
+    end-end: "toast.shape.all",
+  ),
+);
+
+$-configure-tokens: map.keys($-tokens);
+
+$-base-styles: (
+  background: none,
+  border: 0,
+  box-sizing: border-box,
+  margin-block-end: "toast.margin.block-end",
+  margin-block-start: "toast.margin.block-start",
+  margin-inline-end: "toast.margin.inline-end",
+  margin-inline-start: "toast.margin.inline-start",
+  outline: 0,
+  padding: 0,
+);
+
+$-square-styles: (
+  "toast.shape.all": "toast.shape.square",
+);
+$-round-styles: (
+  "toast.shape.all": "toast.shape.round",
+);
+
+$-toast-styles: (
+  "elevation.level": "toast.elevation",
+  align-items: center,
+  background: "toast.background",
+  box-sizing: border-box,
+  border-end-end-radius: "toast.shape.end-end",
+  border-end-start-radius: "toast.shape.end-start",
+  border-start-end-radius: "toast.shape.start-end",
+  border-start-start-radius: "toast.shape.start-start",
+  color: "toast.color",
+  display: flex,
+  padding-block: '"toast.padding.block-start" "toast.padding.block-end"',
+  padding-inline: '"toast.padding.inline-start" "toast.padding.inline-end"',
+  min-height: "toast.min-height",
+);
+
+$-remove-padding-end-styles: (
+  "toast.padding.inline-end": 0,
+);
+
+$-placement-styles: (
+  start: (
+    "toast.margin.block-start": "toast.block-spacing",
+    "toast.margin.inline-start": "toast.inline-spacing",
+  ),
+  start-center: (
+    "toast.margin.block-start": "toast.block-spacing",
+  ),
+  start-end: (
+    "toast.margin.block-start": "toast.block-spacing",
+    "toast.margin.inline-end": "toast.inline-spacing",
+  ),
+  center-start: (
+    "toast.margin.inline-start": "toast.inline-spacing",
+  ),
+  center-end: (
+    "toast.margin.inline-end": "toast.inline-spacing",
+  ),
+  end-start: (
+    "toast.margin.block-end": "toast.block-spacing",
+    "toast.margin.inline-start": "toast.inline-spacing",
+  ),
+  end-center: (
+    "toast.margin.block-end": "toast.block-spacing",
+  ),
+  end: (
+    "toast.margin.block-end": "toast.block-spacing",
+    "toast.margin.inline-end": "toast.inline-spacing",
+  ),
+);
+
+@mixin configure() {
+  @if not $-tokens-registered {
+    $-tokens-registered: true !global;
+    @include utils.register-tokens($tokens: $-tokens, $prefix: "toast");
+  }
+}
+
+@mixin configure-global($overrides: null) {
+  $overrides: utils.get-config-map(list, $overrides, $-configure-tokens);
+
+  @include configure();
+}
+
+@mixin css-styles {
+  $styles: ();
+  @include utils.css-styles($styles);
+}
+@mixin host-styles {
+  $styles: (
+    ".popover": $-base-styles,
+    ".toast": $-toast-styles,
+    ":host([remove-padding-end])": $-remove-padding-end-styles,
+    ":host([shape=square])": $-square-styles,
+    ":host([shape=round])": $-round-styles,
+  );
+  @each $placement, $placement-styles in $-placement-styles {
+    $styles: utils.deep-merge(
+      $styles,
+      (
+        ":host([placement=#{$placement}])": $placement-styles,
+      )
+    );
+  }
+
+  @include utils.host-styles($styles);
+}
+
+@mixin styles {
+  @include css-styles;
+  @include host-styles;
+}
