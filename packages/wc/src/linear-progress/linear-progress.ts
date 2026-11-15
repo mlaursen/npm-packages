@@ -9,6 +9,12 @@ import type {
   LinearProgressSize,
 } from "./types.js";
 
+/**
+ * @csspart indeterminate-track - The visible track while in the indeterminate
+ * state. Animate or restyle this.
+ * @csspart determinate-track - The visible track while in the determinate
+ * state. Animate or restyle this.
+ */
 export class LinearProgress
   extends Progress
   implements LinearProgressProperties
@@ -28,12 +34,13 @@ export class LinearProgress
   @property({ reflect: true, attribute: "stop-indicator" })
   stopIndicator: "visible" | "hidden" = "visible";
 
+  // NOTE: I haven't implemented the buffer part again yet
   override render(): TemplateResult {
     return html`
-      <div class="track pseudo indeterminate"></div>
+      <div part="indeterminate-track" class="track pseudo indeterminate"></div>
 
-      <div class="track buffer"></div>
-      <div class="track pseudo determinate"></div>
+      <div part="buffer" class="track buffer"></div>
+      <div part="determinate-track" class="track pseudo determinate"></div>
       <div class="stop-indicator"></div>
     `;
   }
