@@ -39,12 +39,32 @@ const BaseStyledToast = PopoverMixin(
 );
 
 /**
- * @slot - The default slot
- * @slot content -
- * @slot action -
- * @slot action-button -
- * @slot close-button -
- * @slot close-icon -
+ * The toast should generally be used in an `aria-live` region like
+ * `role="status"` or `role="alert"`.
+ *
+ * @slot - The default slot for the main toast content. This
+ * is automatically wrapped with
+ * `<mwc-typography variant="body" size="medium">`. Use the `content` slot to
+ * override this behavior.
+ * @slot content - An optional slot that can be used to remove the default
+ * `<mwc-typography>` applied to content within the toast and the default slot.
+ * @slot action - An optional slot that will render a `<mwc-async-button>`
+ * after the main toast content and before the optional close button. The slot
+ * contents should generally be a label for the button. Use the `action-button`
+ * slot for more customization.
+ * @slot action-button - An optional slot that can be used to render a custom
+ * action button. If this is provided, the toast will no longer automatically
+ * close after being clicked and must be implemented manually.
+ * @slot close-icon - An optional slot to replace the default
+ * `<mwc-material-symbol>close</mwc-material-symbol>` rendered in the close
+ * button.
+ * @slot close-button - An optional slot to replace the default close button.
+ * If this is provided, the toast will no longer close automatically after
+ * being click and must be implemented manually.
+ *
+ * @csspart toast - The toast element that has the main background,
+ * border-radius, color, and padding applied. This can be restyled
+ * using custom properties or `::part(toast)`.
  *
  * @fires {Event} open - Fired before the show animation occurs and can be used
  * to cancel opening the element by calling `event.preventDefault()`.
@@ -168,6 +188,7 @@ export class Toast extends BaseStyledToast implements ToastProperties {
         <div
           @mouseenter=${this.#handleMouseEnter}
           @mouseleave=${this.#handleMouseLeave}
+          part="toast"
           class="toast popover-content elevation"
         >
           <slot name="content"

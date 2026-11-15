@@ -253,9 +253,6 @@ export const textField = {
 };
 
 export const toast = {
-  /** @type {import("@mlaursen/wc").ToastPlacement[]} */
-  placements: defaultPopoverPlacements,
-
   /** @type {import("@mlaursen/wc").ToastShape[]} */
   shapes: ["round", "square"],
 };

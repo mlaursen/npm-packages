@@ -40,13 +40,13 @@ toast.addEventListener("opened", () => {
     return;
   }
 
-  countdown.removeAttribute("hidden");
+  countdown.toggleAttribute("hidden", false);
   countdown.classList.add("animate");
 });
 toast.addEventListener("closed", () => {
   showButton.disabled = false;
   hideButton.disabled = true;
-  countdown.setAttribute("hidden", "hidden");
+  countdown.toggleAttribute("hidden", true);
   countdown.classList.remove("animate");
 });
 toast.addEventListener("toast-state-change", (event) => {

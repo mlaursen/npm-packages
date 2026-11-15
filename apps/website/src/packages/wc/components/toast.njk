@@ -87,7 +87,7 @@ page:
       </mwc-typography>
       <mwc-radio-group aria-labelledby="placement-title">
         <mwc-box grid padding="none">
-          {% for placement in toast.placements %}
+          {% for placement in popover.placements %}
             <mwc-typography>
               <label>
                 <mwc-box padding="none" inline>
@@ -106,11 +106,13 @@ page:
     </mwc-box>
   </mwc-card>
 </form>
-<mwc-toast id="toast">
-  This is a toast!
-  <mwc-linear-progress id="countdown" value="100" stop-indicator="hidden" shape="square" variant="secondary" disable-gap hidden>
-  </mwc-linear-progress>
-</mwc-toast>
+<div role="status" aria-atomic="true">
+  <mwc-toast id="toast">
+    This is a toast!
+    <mwc-linear-progress id="countdown" value="100" stop-indicator="hidden" shape="square" variant="secondary" disable-gap hidden>
+    </mwc-linear-progress>
+  </mwc-toast>
+</div>
 {% js "defer" %}
 {% include "scripts/wc/toast.js" %}
 {% endjs %}

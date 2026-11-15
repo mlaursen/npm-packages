@@ -30,7 +30,8 @@ import type {
  * This mixin can be used to position an element using the popover placement
  * API.
  *
- * @csspart popover-arrow -
+ * @csspart popover-arrow - This part can be used for customizing the popover
+ * arrow when available.
  */
 export function PopoverMixin<T extends StylableLitElement>(
   Base: T,
