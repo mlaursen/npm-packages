@@ -1,12 +1,7 @@
 import type { OverridableStringUnion } from "@mlaursen/utils";
 
-import type {
-  AnimateElementMap,
-  GetAnimationMap,
-  OpenCloseAnimatedElementProperties,
-} from "../animations/types.js";
-import type { MarginProperties } from "../margin/types.js";
-import type { DefaultPopoverPlacement } from "../popover/types.js";
+import type { AnimateElementMap } from "../animations/types.js";
+import type { PopoverPlacementProperties } from "../popover/types.js";
 import type { DefaultComponentShape } from "../types.js";
 
 export interface ToastShapeOverrides {}
@@ -16,29 +11,15 @@ export type ToastShape = OverridableStringUnion<
   ToastShapeOverrides
 >;
 
-export interface ToastPlacementOverrides {}
-export type DefaultToastPlacement = DefaultPopoverPlacement;
-/** @see DefaultPopoverPlacement */
-export type ToastPlacement = OverridableStringUnion<
-  DefaultToastPlacement,
-  ToastPlacementOverrides
->;
-
 export type AnimateToastElementMap = AnimateElementMap<
   "toast" | "content" | "action" | "closeButton"
 >;
 
-export interface ToastProperties
-  extends MarginProperties, OpenCloseAnimatedElementProperties {
+export interface ToastProperties extends PopoverPlacementProperties {
   /**
    * @defaultValue `"square"`
    */
   shape: ToastShape;
-
-  /**
-   * @defaultValue `"end-center"`
-   */
-  placement: ToastPlacement;
 
   /**
    * @defaultValue `false`
@@ -51,12 +32,6 @@ export interface ToastProperties
    * @defaultValue `5000`
    */
   timeout: number | null;
-
-  /** @defaultValue `() => DEFAULT_DIALOG_OPEN_ANIMATION` */
-  getOpenAnimation: GetAnimationMap<AnimateToastElementMap>;
-
-  /** @defaultValue `() => DEFAULT_DIALOG_CLOSE_ANIMATION` */
-  getCloseAnimation: GetAnimationMap<AnimateToastElementMap>;
 }
 
 export type ToastStateAction = "started" | "paused";

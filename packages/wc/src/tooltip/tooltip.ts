@@ -2,16 +2,16 @@ import type { TemplateResult } from "lit";
 import { LitElement, html } from "lit";
 import { property, state } from "lit/decorators.js";
 
-import { MarginMixin } from "../margin/margin-mixin.js";
-import { PopoverMixin } from "../popover/popover-mixin.js";
-import type { PopoverInitiator, PopoverType } from "../popover/types.js";
+import { PopoverTargetMixin } from "../popover-target/popover-target-mixin.js";
+import type { PopoverInitiator, PopoverType } from "../popover-target/types.js";
 import { isElementClipped } from "../utils/isElementClipped.js";
+import { mergeStyles } from "../utils/mergeStyles.js";
 import { isSlotted } from "../utils/slots.js";
 import { traverse } from "../utils/traverse.js";
 import styles from "./tooltip-styles.js";
 import type { TooltipProperties } from "./types.js";
 
-const BaseTooltip = MarginMixin(PopoverMixin(LitElement));
+const BaseTooltip = PopoverTargetMixin(LitElement);
 
 /**
  * @example Simple Example
@@ -28,7 +28,7 @@ const BaseTooltip = MarginMixin(PopoverMixin(LitElement));
  * @slot popover-target - Required slot that is used to be the anchor element
  * and used to show/hide the tooltip.
  *
- * @see PopoverMixin for additional configuration options
+ * @see PopoverTargetMixin for additional configuration options
  *
  * @fires {Event} open - Fired before the show animation occurs and can be used
  * to cancel opening the element by calling `event.preventDefault()`.
@@ -40,7 +40,7 @@ const BaseTooltip = MarginMixin(PopoverMixin(LitElement));
  * have completed.
  */
 export class Tooltip extends BaseTooltip implements TooltipProperties {
-  static override styles = [...BaseTooltip.styles, styles];
+  static override styles = mergeStyles(BaseTooltip, styles);
   static readonly elementName: string = "mwc-tooltip";
 
   override popoverType: PopoverType = "hint";

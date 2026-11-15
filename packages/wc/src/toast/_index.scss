@@ -7,17 +7,16 @@ $-tokens: (
   background: "palette.inverse-surface",
   color: "palette.inverse-on-surface",
   elevation: 3,
+  min-height: 3rem,
 
-  block-spacing: "spacing.medium",
-  inline-spacing: "spacing.medium",
+  spacing: "spacing.medium",
+
   margin: (
     block-start: auto,
     block-end: auto,
     inline-start: auto,
     inline-end: auto,
   ),
-
-  min-height: 3rem,
 
   padding: (
     inline-start: "spacing.large",
@@ -41,15 +40,23 @@ $-tokens: (
 $-configure-tokens: map.keys($-tokens);
 
 $-base-styles: (
-  background: none,
-  border: 0,
-  box-sizing: border-box,
-  margin-block-end: "toast.margin.block-end",
-  margin-block-start: "toast.margin.block-start",
-  margin-inline-end: "toast.margin.inline-end",
-  margin-inline-start: "toast.margin.inline-start",
-  outline: 0,
-  padding: 0,
+  "popover.elevation": "toast.elevation",
+  "popover.background": "toast.background",
+  "popover.color": "toast.color",
+  "popover.margin.block-end": "toast.margin.block-end",
+  "popover.margin.block-start": "toast.margin.block-start",
+  "popover.margin.inline-end": "toast.margin.inline-end",
+  "popover.margin.inline-start": "toast.margin.inline-start",
+  "popover.padding.block-end": "toast.padding.block-end",
+  "popover.padding.block-start": "toast.padding.block-start",
+  "popover.padding.inline-end": "toast.padding.inline-end",
+  "popover.padding.inline-start": "toast.padding.inline-start",
+  "popover.spacing.all": "toast.spacing",
+);
+$-toast-styles: (
+  align-items: center,
+  display: flex,
+  min-height: "toast.min-height",
 );
 
 $-square-styles: (
@@ -57,22 +64,6 @@ $-square-styles: (
 );
 $-round-styles: (
   "toast.shape.all": "toast.shape.round",
-);
-
-$-toast-styles: (
-  "elevation.level": "toast.elevation",
-  align-items: center,
-  background: "toast.background",
-  box-sizing: border-box,
-  border-end-end-radius: "toast.shape.end-end",
-  border-end-start-radius: "toast.shape.end-start",
-  border-start-end-radius: "toast.shape.start-end",
-  border-start-start-radius: "toast.shape.start-start",
-  color: "toast.color",
-  display: flex,
-  padding-block: '"toast.padding.block-start" "toast.padding.block-end"',
-  padding-inline: '"toast.padding.inline-start" "toast.padding.inline-end"',
-  min-height: "toast.min-height",
 );
 
 $-remove-padding-end-styles: (
@@ -129,20 +120,22 @@ $-placement-styles: (
 }
 @mixin host-styles {
   $styles: (
-    ".popover": $-base-styles,
-    ".toast": $-toast-styles,
+    ":host": $-base-styles,
+    ".popover-content": $-toast-styles,
+    // ".popover": $-base-styles,
+    // ".toast": $-toast-styles,
     ":host([remove-padding-end])": $-remove-padding-end-styles,
     ":host([shape=square])": $-square-styles,
     ":host([shape=round])": $-round-styles,
   );
-  @each $placement, $placement-styles in $-placement-styles {
-    $styles: utils.deep-merge(
-      $styles,
-      (
-        ":host([placement=#{$placement}])": $placement-styles,
-      )
-    );
-  }
+  // @each $placement, $placement-styles in $-placement-styles {
+  //   $styles: utils.deep-merge(
+  //     $styles,
+  //     (
+  //       ":host([placement=#{$placement}])": $placement-styles,
+  //     )
+  //   );
+  // }
 
   @include utils.host-styles($styles);
 }

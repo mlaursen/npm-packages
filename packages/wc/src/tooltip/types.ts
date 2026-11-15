@@ -1,20 +1,19 @@
-import type { MarginProperties } from "../margin/types.js";
 import type {
   PopoverInitiator,
-  PopoverProperties,
+  PopoverTargetProperties,
   PopoverType,
-} from "../popover/types.js";
+} from "../popover-target/types.js";
 
-export interface TooltipProperties extends MarginProperties, PopoverProperties {
+export interface TooltipProperties extends PopoverTargetProperties {
   /**
    * @defaultValue `"hint"`
-   * @see {@link PopoverProperties.popoverType}
+   * @see {@link PopoverTargetProperties.popoverType}
    */
   popoverType: PopoverType;
 
   /**
    * @defaultValue `"no-click"`
-   * @see {@link PopoverProperties.popoverInitiator}
+   * @see {@link PopoverTargetProperties.popoverInitiator}
    */
   popoverInitiator: PopoverInitiator;
 

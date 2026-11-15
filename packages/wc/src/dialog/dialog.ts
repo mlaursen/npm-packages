@@ -12,7 +12,7 @@ import type {
 import { CustomCommandMixin } from "../custom-command-mixin/custom-command-mixin.js";
 import { ElevationMixin } from "../elevation/elevation-mixin.js";
 import { FocusTrapMixin } from "../focus/focus-trap-mixin.js";
-import { PopoverMixin } from "../popover/popover-mixin.js";
+import { PopoverTargetMixin } from "../popover-target/popover-target-mixin.js";
 import { ScrollLockMixin } from "../scroll-lock/scroll-lock-mixin.js";
 import { redispatchEvent } from "../utils/redispatchEvent.js";
 import { isSlotted } from "../utils/slots.js";
@@ -33,7 +33,9 @@ import type {
 } from "./types.js";
 
 const BaseDialog = CustomCommandMixin(
-  ElevationMixin(ScrollLockMixin(PopoverMixin(FocusTrapMixin(LitElement)))),
+  ElevationMixin(
+    ScrollLockMixin(PopoverTargetMixin(FocusTrapMixin(LitElement))),
+  ),
 );
 
 type ShowDialogName = "show" | "showModal" | "showPopover";

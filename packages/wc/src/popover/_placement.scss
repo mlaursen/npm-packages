@@ -1,6 +1,138 @@
 @use "sass:list";
 @use "sass:map";
 
+$-popover-placement-styles: (
+  start: (
+    viewport: (
+      "popover.margin.block-start": "popover.spacing.block",
+      "popover.margin.inline-start": "popover.spacing.inline",
+    ),
+    // all `area` will also include the inverses so spacing is applied when
+    // flipped
+    area: (
+      "popover.area-block": start,
+      "popover.area-inline": start,
+      "popover.margin.block-end": "popover.spacing.block",
+      "popover.margin.inline-end": "popover.spacing.inline",
+    ),
+  ),
+  start-center: (
+    viewport: (
+      "popover.margin.block-start": "popover.spacing.block",
+    ),
+    area: (
+      "popover.area-block": start,
+      "popover.area-inline": center,
+      // not sure when or why, but firefox started automatically resolving this
+      // to always be above when using the default fallbacks. using only
+      // `flip-inline` fixes it
+      "popover.fallbacks": "flip-block",
+      "popover.margin.block-end": "popover.spacing.block",
+    ),
+  ),
+  start-end: (
+    viewport: (
+      "popover.margin.block-start": "popover.spacing.block",
+      "popover.margin.inline-end": "popover.spacing.inline",
+    ),
+    area: (
+      "popover.area-block": start,
+      "popover.area-inline": end,
+      "popover.margin.block-end": "popover.spacing.block",
+      "popover.margin.inline-start": "popover.spacing.inline",
+    ),
+  ),
+  center-start: (
+    viewport: (
+      "popover.margin.inline-start": "popover.spacing.inline",
+    ),
+    area: (
+      "popover.area-block": center,
+      "popover.area-inline": start,
+      "popover.fallbacks": "flip-inline",
+      "popover.margin.inline-end": "popover.spacing.inline",
+    ),
+  ),
+  center: (
+    // no viewport styles required
+    // viewport: (),
+    // no spacing applied here since it should cover the element
+    area: (
+      "popover.area-block": center,
+      "popover.area-inline": center,
+      "popover.fallbacks": none,
+    ),
+  ),
+  center-end: (
+    viewport: (
+      "popover.margin.inline-end": "popover.spacing.inline",
+    ),
+    area: (
+      "popover.area-block": center,
+      "popover.area-inline": end,
+      "popover.fallbacks": "flip-inline",
+      "popover.margin.inline-start": "popover.spacing.inline",
+    ),
+  ),
+  end-start: (
+    viewport: (
+      "popover.margin.block-end": "popover.spacing.block",
+      "popover.margin.inline-start": "popover.spacing.inline",
+    ),
+    area: (
+      "popover.area-block": end,
+      "popover.area-inline": start,
+      "popover.margin.block-start": "popover.spacing.block",
+      "popover.margin.inline-end": "popover.spacing.inline",
+    ),
+  ),
+  end-center: (
+    viewport: (
+      "popover.margin.block-end": "popover.spacing.block",
+    ),
+    area: (
+      "popover.area-block": end,
+      "popover.area-inline": center,
+      "popover.fallbacks": "flip-block",
+      "popover.margin.block-start": "popover.spacing.block",
+    ),
+  ),
+  end: (
+    viewport: (
+      "popover.margin.block-end": "popover.spacing.block",
+      "popover.margin.inline-end": "popover.spacing.inline",
+    ),
+    area: (
+      "popover.area-block": end,
+      "popover.area-inline": end,
+      "popover.margin.block-start": "popover.spacing.block",
+      "popover.margin.inline-start": "popover.spacing.inline",
+    ),
+  ),
+);
+
+@function popover-placement-styles($is-host) {
+  $styles: ();
+
+  @each $placement, $placement-mappings in $-popover-placement-styles {
+    @each $name, $placement-styles in $placement-mappings {
+      $is-area: $name == area;
+      $selector: "&popover--#{if(sass($is-area): "area-"; else: "")}#{$placement}";
+      @if $is-host {
+        $prefix: "";
+        @if $is-area {
+          $prefix: ":is([popover-area])";
+        }
+        $selector: ":host(#{$prefix}[placement=#{$placement}])";
+      }
+
+      $styles: map.set($styles, $selector, $placement-styles);
+    }
+  }
+
+  @return $styles;
+}
+
 $-popover-arrow-placement-styles: (
   // Side: `above` means the popover is above the target, so the arrow is on
   // its bottom edge. `left` means the popover is left of the target, so the

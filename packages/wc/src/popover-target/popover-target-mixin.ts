@@ -1,0 +1,402 @@
+import type { PropertyValues, TemplateResult } from "lit";
+import { html } from "lit";
+import { property, query, state } from "lit/decorators.js";
+import { ifDefined } from "lit/directives/if-defined.js";
+
+import type {
+  AnimationList,
+  AnimationOptions,
+  BaseAnimationOptions,
+} from "../animations/types.js";
+import { PopoverMixin } from "../popover/popover-mixin.js";
+import type {
+  StylableLitElement,
+  StyledLitElementWithProperties,
+} from "../types.js";
+import { isSlotted } from "../utils/slots.js";
+import type {
+  PopoverInitiator,
+  PopoverInitiatorAction,
+  PopoverTargetProperties,
+  PopoverType,
+  RenderPopoverTargetOptions,
+} from "./types.js";
+
+/**
+ * This mixin allows other elements to support the popover api if a
+ * `popoverBehavior` property exists. It is generally recommended to use this
+ * alongside the `MarginMixin` so that wrapping the popover targets can still
+ * have general margin and spacing applied.
+ *
+ * @see {@link OpenCloseAnimateMixin} for animation behavior
+ */
+export function PopoverTargetMixin<T extends StylableLitElement>(
+  Base: T,
+): StyledLitElementWithProperties<PopoverTargetProperties, T> {
+  const BaseStyled = PopoverMixin(Base, false);
+  class PopoverElement extends BaseStyled implements PopoverTargetProperties {
+    @property({ reflect: true, attribute: "popover-type" })
+    popoverType: PopoverType | null = null;
+
+    @property({ attribute: "popover-initiator" })
+    popoverInitiator: PopoverInitiator = "all";
+
+    @property({ type: Number, attribute: "show-delay" })
+    showDelay?: number;
+
+    @property({ type: Number, attribute: "hide-delay" })
+    hideDelay?: number;
+
+    @property({ type: Number, attribute: "hover-delay" })
+    hoverDelay?: number;
+
+    @property({ type: Number, attribute: "focus-delay" })
+    focusDelay?: number;
+
+    @query("slot[name=popover-target]")
+    _popoverTarget?: HTMLSlotElement;
+
+    @state()
+    _hasPopoverTarget = false;
+
+    #timeout: ReturnType<typeof globalThis.setTimeout> | undefined;
+    #initiator: PopoverInitiatorAction | null = null;
+    #closing = false;
+
+    override firstUpdated(changed: PropertyValues): void {
+      super.firstUpdated(changed);
+
+      this.#bindPopoverHandlers(true);
+    }
+
+    protected override willUpdate(changed: PropertyValues): void {
+      super.willUpdate(changed);
+
+      if (!changed.has("_hasPopoverTarget")) {
+        return;
+      }
+
+      this.popoverArea = this._hasPopoverTarget;
+      this.#bindTargetHandlers(this.isPopoverEnabled());
+    }
+
+    override updated(changed: PropertyValues): void {
+      super.updated(changed);
+
+      if (
+        !changed.has("popoverType") &&
+        !changed.has("popoverArea") &&
+        !changed.has("popoverArrow") &&
+        !changed.has("popoverInitiator") &&
+        !changed.has("placement")
+      ) {
+        return;
+      }
+
+      // only reflect the popover attributes if popoverType was defined. This
+      // helps for the `dialog` component which can opt-in to the popover API
+      if (this.hasAttribute("popover-type")) {
+        this.toggleAttribute("popover-area", this.popoverArea);
+        this.toggleAttribute("popover-arrow", this.popoverArrow);
+        this.setAttribute("popover-initiator", this.popoverInitiator);
+        this.setAttribute("placement", this.placement);
+      } else {
+        this.removeAttribute("popover-area");
+        this.removeAttribute("popover-arrow");
+        this.removeAttribute("popover-initiator");
+        this.removeAttribute("placement");
+      }
+    }
+
+    override disconnectedCallback(): void {
+      super.disconnectedCallback();
+
+      this.#bindPopoverHandlers(false);
+      this.#bindTargetHandlers(false);
+      this.#clearTimeout();
+    }
+
+    isPopoverEnabled(): boolean {
+      return this._hasPopoverTarget;
+    }
+
+    isPopoverOpenable(): boolean {
+      return !!this.popoverType && !!this._popoverTarget && !this.open;
+    }
+
+    isPopoverClosable(): boolean {
+      return !!this.popoverType && !!this._popoverTarget && this.open;
+    }
+
+    renderPopoverTarget(target?: TemplateResult): TemplateResult {
+      return html`
+        <slot
+          name="popover-target"
+          @slotchange=${this.#handlePopoverTargetSlotChange}
+          >${target}</slot
+        >
+      `;
+    }
+
+    renderPopover(options: RenderPopoverTargetOptions): TemplateResult {
+      const { arrow, target, content } = options;
+      return html`${this.renderPopoverTarget(target)}
+        <div
+          class="popover"
+          popover=${ifDefined(this.popoverType || undefined)}
+        >
+          <div class="popover-content elevation">${content}</div>
+          ${this.renderPopoverArrow(arrow)}
+        </div>`;
+    }
+
+    override _getAnimations(options: AnimationOptions): AnimationList {
+      const { animate = true, opening } = options;
+      if (!animate) {
+        return [];
+      }
+
+      const getDefault = opening
+        ? this.getShowPopoverAnimation
+        : this.getHidePopoverAnimation;
+      const { popover, content } = animate === true ? getDefault() : animate();
+
+      return [
+        [this._popover, popover],
+        [this._popoverContent, content],
+      ];
+    }
+
+    override _showElement(): void {
+      this._popover?.showPopover();
+
+      super._showElement();
+    }
+
+    override _closeElement(): void {
+      this._popover?.hidePopover();
+
+      super._closeElement();
+    }
+
+    override showPopover(): void {
+      this.show();
+    }
+
+    override hidePopover(): void {
+      this.close();
+    }
+
+    override _onBeforeClose(options: BaseAnimationOptions): void {
+      super._onBeforeClose(options);
+
+      this.#closing = true;
+    }
+
+    #bindPopoverHandlers(add: boolean): void {
+      const popover = this._popover;
+      if (!popover) {
+        return;
+      }
+
+      if (add) {
+        popover.addEventListener("toggle", this.#handleToggle);
+        popover.addEventListener("beforetoggle", this.#handleBeforeToggle);
+      } else {
+        popover.removeEventListener("toggle", this.#handleToggle);
+        popover.removeEventListener("beforetoggle", this.#handleBeforeToggle);
+      }
+    }
+
+    #bindTargetHandlers(add: boolean): void {
+      if (add) {
+        this.addEventListener("pointerenter", this.#handleMouseEnter);
+        this.addEventListener("pointerleave", this.#handleMouseLeave);
+        // NOTE: have to use focusin/focusout since it bubbles and is composed
+        this.addEventListener("focusin", this.#handleFocus);
+        this.addEventListener("focusout", this.#handleBlur);
+
+        this._popoverTarget?.addEventListener(
+          "click",
+          this.#handlePopoverTargetClick,
+        );
+      } else {
+        this.removeEventListener("pointerenter", this.#handleMouseEnter);
+        this.removeEventListener("pointerleave", this.#handleMouseLeave);
+        this.removeEventListener("focusin", this.#handleFocus);
+        this.removeEventListener("focusout", this.#handleBlur);
+
+        this._popoverTarget?.removeEventListener(
+          "click",
+          this.#handlePopoverTargetClick,
+        );
+      }
+    }
+
+    #isInitiatorPrevented = (
+      initiator: Exclude<PopoverInitiatorAction, "force">,
+    ): boolean => {
+      switch (this.popoverInitiator) {
+        case "all":
+          return false;
+        case "focus":
+          return initiator !== "focus";
+        case "hover":
+          return initiator !== "hover";
+        case "click":
+          return initiator !== "click";
+        case "no-click":
+          return initiator === "click";
+        case "no-focus":
+          return initiator === "focus";
+        case "no-hover":
+          return initiator === "hover";
+        default:
+          // shouldn't be possible
+          return true;
+      }
+    };
+
+    #handleToggle = (event: ToggleEvent): void => {
+      if (event.newState === "closed") {
+        this.#closing = false;
+        this.#initiator = null;
+        this.#clearTimeout();
+      }
+    };
+
+    #handleBeforeToggle = (event: ToggleEvent): void => {
+      // If the `popoverType` is set to `"hint"` and the browser closes the
+      // popover due to one of the other interactions, the normal close
+      // animation would not occur so capture that flow and animate.
+      if (event.newState === "closed" && !this.#closing && !this.closing) {
+        this.#closing = true;
+        this.close();
+      }
+    };
+
+    #clearTimeout(): void {
+      globalThis.clearTimeout(this.#timeout);
+    }
+
+    #showPopover(initiator: PopoverInitiatorAction): void {
+      if (!this.isPopoverOpenable()) {
+        return;
+      }
+
+      if (initiator === "force") {
+        this.#initiator = initiator;
+        this.#clearTimeout();
+        this.showPopover();
+        return;
+      }
+
+      if (this.#initiator || this.#isInitiatorPrevented(initiator)) {
+        return;
+      }
+
+      let delay = this.showDelay ?? 0;
+      if (initiator === "focus" && typeof this.focusDelay === "number") {
+        delay = this.focusDelay;
+      } else if (initiator === "hover" && typeof this.hoverDelay === "number") {
+        delay = this.hoverDelay;
+      }
+
+      delay = Math.max(0, delay);
+
+      this.#initiator = initiator;
+      this.#clearTimeout();
+      this.#timeout = globalThis.setTimeout(() => {
+        this.showPopover();
+      }, delay);
+    }
+
+    #hidePopover(initiator: PopoverInitiatorAction): void {
+      if (!this.isPopoverClosable()) {
+        return;
+      }
+
+      if (initiator === "force") {
+        this.hidePopover();
+        return;
+      }
+
+      if (this.#initiator !== initiator) {
+        return;
+      }
+
+      this.#clearTimeout();
+      this.#timeout = globalThis.setTimeout(
+        () => {
+          this.hidePopover();
+        },
+        Math.max(this.hideDelay ?? 0),
+      );
+    }
+
+    #handleMouseEnter(event: PointerEvent): void {
+      if (event.pointerType === "touch") {
+        return;
+      }
+
+      this.#showPopover("hover");
+    }
+
+    #handleMouseLeave(event: PointerEvent): void {
+      if (event.pointerType === "touch") {
+        return;
+      }
+
+      this.#hidePopover("hover");
+    }
+
+    #handleFocus(event: FocusEvent): void {
+      const target = event.composedPath()[0];
+      // only show when the user is focusing via keyboard
+      if (target instanceof HTMLElement && target.matches(":focus-visible")) {
+        this.#showPopover("focus");
+      }
+    }
+
+    #handleBlur(event: FocusEvent): void {
+      // allow the popover to gain focus without closing
+      if (
+        event.relatedTarget instanceof HTMLElement &&
+        this.contains(event.relatedTarget)
+      ) {
+        return;
+      }
+
+      this.#hidePopover("focus");
+    }
+
+    #handlePopoverTargetSlotChange(event: Event): void {
+      this._hasPopoverTarget = isSlotted(event);
+    }
+
+    #handlePopoverTargetClick = (event: Event): void => {
+      const eventTarget = event.target;
+      if (
+        this.#isInitiatorPrevented("click") ||
+        !this._popoverTarget ||
+        !this._hasPopoverTarget ||
+        !(eventTarget instanceof Node)
+      ) {
+        return;
+      }
+
+      const elements = this._popoverTarget.assignedElements();
+      if (!elements.some((element) => element.contains(eventTarget))) {
+        return;
+      }
+
+      if (this.#initiator) {
+        this.#hidePopover("click");
+      } else {
+        this.#showPopover("click");
+      }
+    };
+  }
+
+  return PopoverElement;
+}

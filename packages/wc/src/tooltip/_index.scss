@@ -15,6 +15,7 @@ $-tokens: (
     end-end: "popover.shape.all",
   ),
   color: "palette.inverse-on-surface",
+  spacing: "spacing.extra-small",
   padding: "spacing.small",
   max-width: "15rem",
   min-width: min-content,
@@ -25,7 +26,7 @@ $-configure-tokens: map.keys($-tokens);
 $-base-styles: (
   "popover.background": "tooltip.background",
   "popover.color": "tooltip.color",
-  "popover.spacing": "spacing.extra-small",
+  "popover.spacing.all": "tooltip.spacing",
   "popover.fallbacks": "block-start, block-end, inline-start, inline-end",
   "popover.shape.all": "tooltip.shape.all",
   "popover.shape.start-start": "tooltip.shape.start-start",

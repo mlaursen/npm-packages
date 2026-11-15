@@ -14,8 +14,8 @@ import type {
 } from "../animations/types.js";
 import { AsyncClickEvent } from "../async-button/events.js";
 import { CustomCommandMixin } from "../custom-command-mixin/custom-command-mixin.js";
-import { ElevationMixin } from "../elevation/elevation-mixin.js";
 import { MarginMixin } from "../margin/margin-mixin.js";
+import { PopoverMixin } from "../popover/popover-mixin.js";
 import { redispatchAsyncEvent } from "../utils/dispatch-async-event.js";
 import { mergeStyles } from "../utils/mergeStyles.js";
 import { isSlotted } from "../utils/slots.js";
@@ -28,15 +28,14 @@ import { ToastTimeoutPausedEvent, ToastTimeoutStartedEvent } from "./events.js";
 import styles from "./toast-styles.js";
 import type {
   AnimateToastElementMap,
-  ToastPlacement,
   ToastProperties,
   ToastShape,
   ToastTimeoutPausedReason,
   ToastTimeoutStartedReason,
 } from "./types.js";
 
-const BaseStyledToast = CustomCommandMixin(
-  OpenCloseAnimateMixin(ElevationMixin(MarginMixin(LitElement))),
+const BaseStyledToast = PopoverMixin(
+  CustomCommandMixin(OpenCloseAnimateMixin(MarginMixin(LitElement))),
 );
 
 /**
@@ -66,9 +65,6 @@ export class Toast extends BaseStyledToast implements ToastProperties {
   @property({ reflect: true })
   shape: ToastShape = "square";
 
-  @property({ reflect: true })
-  placement: ToastPlacement = "end-center";
-
   @property({ type: Boolean, attribute: "close-button", reflect: true })
   closeButton = false;
 
@@ -87,12 +83,6 @@ export class Toast extends BaseStyledToast implements ToastProperties {
   @state()
   _hasCloseButton = false;
 
-  @query(".popover")
-  _popover?: HTMLDivElement;
-
-  @query(".toast")
-  _toast?: HTMLDivElement;
-
   @query("[name=content]")
   _content?: HTMLElement;
 
@@ -102,10 +92,10 @@ export class Toast extends BaseStyledToast implements ToastProperties {
   @query("[name=close-button]")
   _closeButton?: HTMLElement;
 
-  getOpenAnimation: GetAnimationMap<AnimateToastElementMap> = () =>
-    DEFAULT_TOAST_OPEN_ANIMATION;
-  getCloseAnimation: GetAnimationMap<AnimateToastElementMap> = () =>
-    DEFAULT_TOAST_CLOSE_ANIMATION;
+  override getShowPopoverAnimation: GetAnimationMap<AnimateToastElementMap> =
+    () => DEFAULT_TOAST_OPEN_ANIMATION;
+  override getHidePopoverAnimation: GetAnimationMap<AnimateToastElementMap> =
+    () => DEFAULT_TOAST_CLOSE_ANIMATION;
 
   #focused = false;
   #hovered = false;
@@ -120,12 +110,14 @@ export class Toast extends BaseStyledToast implements ToastProperties {
       return [];
     }
 
-    const getDefault = opening ? this.getOpenAnimation : this.getCloseAnimation;
+    const getDefault = opening
+      ? this.getShowPopoverAnimation
+      : this.getHidePopoverAnimation;
     const { toast, content, action, closeButton } =
       animate === true ? getDefault() : animate();
 
     return [
-      [this._toast, toast],
+      [this._popoverContent, toast],
       [this._content, content],
       [this._action, action],
       [this._closeButton, closeButton],
@@ -172,11 +164,11 @@ export class Toast extends BaseStyledToast implements ToastProperties {
 
   override render(): TemplateResult {
     return html`
-      <div id="popover" popover="manual" class="popover">
+      <div popover="manual" class="popover">
         <div
           @mouseenter=${this.#handleMouseEnter}
           @mouseleave=${this.#handleMouseLeave}
-          class="toast"
+          class="toast popover-content elevation"
         >
           <slot name="content"
             ><mwc-typography variant="body" size="medium"

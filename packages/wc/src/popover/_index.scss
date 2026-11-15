@@ -1,7 +1,5 @@
-@use "sass:list";
 @use "sass:map";
 @use "sass:math";
-@use "sass:string";
 
 @use "../utils";
 @use "./placement" as *;
@@ -10,6 +8,38 @@ $-tokens-registered: false;
 $-tokens: (
   background: "palette.inverse-surface",
   color: "palette.inverse-on-surface",
+  elevation: 0,
+
+  display: block,
+  flex-direction: column,
+  z-index: "z-index.popover",
+
+  // the area tokens are for configuring the position
+  area-inline: "center",
+  area-block: "center",
+  anchor: --popover-target,
+  fallbacks: null,
+
+  margin: (
+    block-start: auto,
+    block-end: auto,
+    inline-start: auto,
+    inline-end: auto,
+  ),
+
+  padding: (
+    inline-start: null,
+    inline-end: null,
+    block-start: null,
+    block-end: null,
+  ),
+
+  spacing: (
+    all: null,
+    block: "popover.spacing.all",
+    inline: "popover.spacing.all",
+  ),
+
   shape: (
     all: null,
 
@@ -17,32 +47,6 @@ $-tokens: (
     start-end: "popover.shape.all",
     end-start: "popover.shape.all",
     end-end: "popover.shape.all",
-  ),
-  display: block,
-  flex-direction: column,
-
-  // the area tokens are for configuring the position
-  area-x: "center",
-  area-y: "center",
-
-  z-index: "z-index.popover",
-
-  spacing: 0%,
-  spacing-x: "popover.spacing",
-  spacing-y: "popover.spacing",
-
-  fallbacks: null,
-
-  opacity: 0,
-  // using a small value so that the base scale applies
-  scale: 1,
-  open: (
-    opacity: 1,
-    scale: 1,
-  ),
-  closed: (
-    opacity: 0,
-    scale: 1,
   ),
 
   arrow: (
@@ -82,55 +86,36 @@ $-tokens: (
   ),
 );
 
-$-configure-tokens: (
-  host-styles,
-  target-styles,
-  popover-styles,
-  popover-content-styles
-);
+$-configure-tokens: map.keys($-tokens);
 
-$-popover-styles: (
-  box-sizing: border-box,
-  flex-direction: "popover.flex-direction",
-  inset: auto,
-  margin: 0,
-  opacity: "popover.opacity",
-  padding-block: "popover.spacing-y",
-  padding-inline: "popover.spacing-x",
-  position-anchor: --popover-target,
-  position-area: '"popover.area-y" "popover.area-x"',
-  position-try-fallbacks: "popover.fallbacks",
-  scale: "popover.scale",
-  z-index: "popover.z-index",
-
-  "&:popover-open": (
-    display: "popover.display",
-    "popover.opacity": "popover.open.opacity",
-    "popover.scale": "popover.open.scale",
-  ),
-);
-$-popover-surface-styles: (
-  background: transparent,
-  border: 0,
-);
-// if the popover is closed via the browser's own behavior, the `hidePopover()`
-// is called immediately before any of the animations occur. there is a
-// workaround to enable the animations by capturing the `beforetoggle` event, but
-// the open styles need to be reapplied so that the element doesn't flash
-$-popover-closing-styles: (
-  "popover.opacity": "popover.open.opacity",
-  "popover.scale": "popover.open.scale",
-  display: "popover.display",
-);
-// this was added so that wrapping elements in a `<mwc-popover>` do not mess
-// up their alignment
 $-host-styles: (
   display: contents,
 );
 $-target-styles: (
-  anchor-name: --popover-target,
+  anchor-name: "popover.anchor",
 );
-$-popover-content-styles: (
+$-base-styles: (
+  "elevation.level": "popover.elevation",
+
+  background: none,
+  border: 0,
+  box-sizing: border-box,
+  flex-direction: "popover.flex-direction",
+  margin-block-end: "popover.margin.block-end",
+  margin-block-start: "popover.margin.block-start",
+  margin-inline-end: "popover.margin.inline-end",
+  margin-inline-start: "popover.margin.inline-start",
+  outline: 0,
+  padding: 0,
+  position-anchor: "popover.anchor",
+  position-area: '"popover.area-block" "popover.area-inline"',
+  position-try-fallbacks: "popover.fallbacks",
+  z-index: "popover.z-index",
+);
+$-open-styles: (
+  display: "popover.display",
+);
+$-content-styles: (
   background: "popover.background",
   border-end-end-radius: "popover.shape.end-end",
   border-end-start-radius: "popover.shape.end-start",
@@ -139,12 +124,11 @@ $-popover-content-styles: (
   border: 0,
   box-sizing: border-box,
   color: "popover.color",
+  padding-block: '"popover.padding.block-start" "popover.padding.block-end"',
+  padding-inline: '"popover.padding.inline-start" "popover.padding.inline-end"',
   display: flex,
 );
-$-popover-arrow-enabled-styles: (
-  "popover.display": flex,
-);
-$-popover-arrow-styles: (
+$-arrow-styles: (
   background: "popover.background",
   box-sizing: border-box,
   clip-path: 'polygon("popover.arrow.points")',
@@ -157,78 +141,11 @@ $-popover-arrow-styles: (
   margin-inline-start: "popover.arrow.margin.inline-start",
   width: "popover.arrow.width",
 );
-$-placement-styles: (
-  start: (
-    "popover.area-y": start,
-    "popover.area-x": start,
-  ),
-  start-center: (
-    "popover.area-y": start,
-    "popover.area-x": center,
-    // not sure when or why, but firefox started automatically resolving this
-    // to always be above when using the default fallbacks. using only
-    // `flip-inline` fixes it
-    "popover.fallbacks": "flip-block",
-  ),
-  start-end: (
-    "popover.area-y": start,
-    "popover.area-x": end,
-  ),
-  center-start: (
-    "popover.area-y": center,
-    "popover.area-x": start,
-    "popover.fallbacks": "flip-inline",
-  ),
-  center: (
-    "popover.area-y": center,
-    "popover.area-x": center,
-    "popover.fallbacks": none,
-  ),
-  center-end: (
-    "popover.area-y": center,
-    "popover.area-x": end,
-    "popover.fallbacks": "flip-inline",
-  ),
-  end-start: (
-    "popover.area-y": end,
-    "popover.area-x": start,
-  ),
-  end-center: (
-    "popover.area-y": end,
-    "popover.area-x": center,
-    "popover.fallbacks": "flip-block",
-  ),
-  end: (
-    "popover.area-y": end,
-    "popover.area-x": end,
-  ),
+$-arrow-enabled-styles: (
+  "popover.display": flex,
 );
 
-@mixin configure(
-  $host-styles: null,
-  $target-styles: null,
-  $popover-styles: null,
-  $popover-content-styles: null
-) {
-  @if $host-styles != null {
-    $-host-styles: $host-styles !global;
-  }
-
-  @if $target-styles != null {
-    $-target-styles: map.merge($-target-styles, $target-styles) !global;
-  }
-
-  @if $popover-styles != null {
-    $-popover-styles: map.merge($-popover-styles, $popover-styles) !global;
-  }
-
-  @if $popover-content-styles != null {
-    $-popover-content-styles: map.merge(
-      $-popover-content-styles,
-      $popover-content-styles
-    ) !global;
-  }
-
+@mixin configure() {
   @if not $-tokens-registered {
     $-tokens-registered: true !global;
     @include utils.register-tokens($tokens: $-tokens, $prefix: "popover");
@@ -236,56 +153,31 @@ $-placement-styles: (
 }
 
 @mixin configure-global($overrides: null) {
-  $overrides: utils.get-config-map(popover, $overrides, $-configure-tokens);
-  @include configure(
-    $host-styles: map.get($overrides, host-styles),
-    $target-styles: map.get($overrides, target-styles),
-    $popover-styles: map.get($overrides, popover-styles),
-    $popover-content-styles: map.get($overrides, popover-content-styles)
-  );
+  $overrides: utils.get-config-map(list, $overrides, $-configure-tokens);
+  @include configure();
 }
 
 @mixin css-styles {
-  $styles: (
-    "&popover": $-popover-styles,
-    "&popover--closing": $-popover-closing-styles,
-    "&popover-target": $-target-styles,
-    "&popover-content": $-popover-content-styles,
-    "&popover-surface": $-popover-surface-styles,
-
-    "&popover--arrow": $-popover-arrow-enabled-styles,
-    "&popover-arrow": $-popover-arrow-styles,
-  );
-
-  @each $placement, $placement-styles in $-placement-styles {
-    $styles: map.set($styles, "&popover--#{$placement}", $placement-styles);
-  }
-  $styles: utils.deep-merge($styles, popover-arrow-placement-styles(false));
-
+  $styles: ();
   @include utils.css-styles($styles);
 }
 
 @mixin host-styles {
   $styles: (
     ":host": $-host-styles,
-    "::slotted([slot=popover-target])": $-target-styles,
-    ":host([closing]) .popover[popover]": $-popover-closing-styles,
     ":host(:is([popover-arrow], :has([slot=popover-arrow])))":
-      $-popover-arrow-enabled-styles,
-    ".popover": $-popover-styles,
-    ".popover-surface": $-popover-surface-styles,
-    ".popover-content": $-popover-content-styles,
-    ".popover-arrow": $-popover-arrow-styles,
+      $-arrow-enabled-styles,
+    ".popover": $-base-styles,
+    ":host([closing]) .popover[popover], .popover:popover-open": $-open-styles,
+    ".popover-content": $-content-styles,
+    ".popover-arrow": $-arrow-styles,
+    "::slotted([slot=popover-target])": $-target-styles,
   );
-
-  @each $placement, $placement-styles in $-placement-styles {
-    $styles: map.set(
-      $styles,
-      ":host([placement=#{$placement}])",
-      $placement-styles
-    );
-  }
-  $styles: utils.deep-merge($styles, popover-arrow-placement-styles(true));
+  $styles: utils.deep-merge(
+    $styles,
+    popover-placement-styles(true),
+    popover-arrow-placement-styles(true)
+  );
 
   @include utils.host-styles($styles);
 }

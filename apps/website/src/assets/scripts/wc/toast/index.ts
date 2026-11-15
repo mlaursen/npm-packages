@@ -28,16 +28,6 @@ if (
   throw new Error("Missing stuff");
 }
 
-// oxlint-disable-next-line unicorn/prefer-top-level-await
-wait(200).then(() => {
-  manual.checked = true;
-  toast.timeout = null;
-  toast.open = true;
-
-  // toast.timeout = null;
-  // toast.open = true;
-});
-
 toast.addEventListener("async-click", (event) => {
   event.waitUntil(wait(3000));
 });
@@ -60,7 +50,6 @@ toast.addEventListener("closed", () => {
   countdown.classList.remove("animate");
 });
 toast.addEventListener("toast-state-change", (event) => {
-  console.log("state change...");
   if (countdown.hidden) {
     return;
   }
