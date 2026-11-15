@@ -6,6 +6,8 @@ import type {
   GetAnimationMap,
 } from "../animations/types.js";
 import type { InteractionProperties } from "../interaction/types.js";
+import type { MarginProperties } from "../margin/types.js";
+import type { PaletteProperties } from "../palette/types.js";
 import type { DefaultComponentSize } from "../types.js";
 
 export interface RadioSizeOverrides {}
@@ -21,7 +23,8 @@ export type AnimateRadioElementMap = AnimateElementMap<
 
 export type AnimateRadioOptions = BaseAnimationOptions<AnimateRadioElementMap>;
 
-export interface RadioProperties extends InteractionProperties {
+export interface RadioProperties
+  extends InteractionProperties, PaletteProperties, MarginProperties {
   name: string;
   checked: boolean;
 

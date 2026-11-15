@@ -56,7 +56,7 @@ export class Radio extends BaseRadio implements RadioProperties {
   @property()
   name = "";
 
-  @property()
+  @property({ reflect: true })
   size: RadioSize = "medium";
 
   @property({ type: Boolean })
@@ -103,7 +103,10 @@ export class Radio extends BaseRadio implements RadioProperties {
     }
 
     if (changed.has("checked")) {
-      this.classList.toggle("checked", this.checked);
+      // using the `selected` attribute for the checked state so that a global
+      // class (`.checked`) doesn't conflict and the initial checked state can
+      // be set with `this.hasAttribute("checked")`
+      this.toggleAttribute("selected", this.checked);
       this._animate({ animate: this._initialized && !this.#reset });
       this.#reset = false;
     }

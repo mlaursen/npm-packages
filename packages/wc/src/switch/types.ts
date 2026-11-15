@@ -1,5 +1,8 @@
 import type { OverridableStringUnion } from "@mlaursen/utils";
 
+import type { InteractionProperties } from "../interaction/types.js";
+import type { MarginProperties } from "../margin/types.js";
+import type { PaletteProperties } from "../palette/types.js";
 import type { DefaultComponentSize } from "../types.js";
 
 export interface SwitchSizeOverrides {}
@@ -17,14 +20,31 @@ export type SwitchSize = OverridableStringUnion<
  */
 export type SwitchIcons = "never" | "checked" | "always";
 
-export interface SwitchProperties {
+export interface SwitchProperties
+  extends InteractionProperties, PaletteProperties, MarginProperties {
   /**
    * @defaultValue `"medium"`
    */
   size: SwitchSize;
+
+  /**
+   * @defaultValue `false`
+   */
   error: boolean;
+
+  /**
+   * @defaultValue `false`
+   */
   checked: boolean;
+
+  /**
+   * @defaultValue `false`
+   */
   required: boolean;
+
+  /**
+   * @defaultValue `"on"`
+   */
   value: string;
 
   /**

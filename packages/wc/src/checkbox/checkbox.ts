@@ -49,7 +49,7 @@ export class Checkbox extends BaseCheckbox implements CheckboxProperties {
   static override formValidators = [requiredValidator];
   static readonly elementName: string = "mwc-checkbox";
 
-  @property()
+  @property({ reflect: true })
   size: CheckboxSize = "medium";
 
   @property()
@@ -123,8 +123,11 @@ export class Checkbox extends BaseCheckbox implements CheckboxProperties {
     }
 
     if (changed.has("checked") || changed.has("indeterminate")) {
-      this.classList.toggle("checked", this.checked);
-      this.classList.toggle("indeterminate", this.indeterminate);
+      // using the `selected` attribute for the checked state so that a global
+      // class (`.checked`) doesn't conflict and the initial checked state can
+      // be set with `this.hasAttribute("checked")`
+      this.toggleAttribute("checked", this.checked);
+      this.toggleAttribute("checked-indeterminate", this.indeterminate);
       this._animate({ animate: this._initialized && !this.#reset });
       this.#reset = false;
     }

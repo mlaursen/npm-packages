@@ -43,10 +43,10 @@ export class Switch extends BaseSwitch implements SwitchProperties {
   static override formValidators = [requiredValidator];
   static readonly elementName: string = "mwc-switch";
 
-  @property()
+  @property({ reflect: true })
   size: SwitchSize = "medium";
 
-  @property()
+  @property({ reflect: true })
   icons: SwitchIcons = "never";
 
   @property({ type: Boolean })
@@ -77,7 +77,8 @@ export class Switch extends BaseSwitch implements SwitchProperties {
     super.willUpdate(changed);
 
     if (changed.has("checked")) {
-      this.classList.toggle("checked", this.checked);
+      // see checkbox and radio comments
+      this.toggleAttribute("selected", this.checked);
     }
   }
 

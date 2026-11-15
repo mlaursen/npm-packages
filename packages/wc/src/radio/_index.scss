@@ -150,7 +150,7 @@ $-error-styles: utils.deep-merge(
 @mixin host-styles {
   $styles: (
     ":host": $-base-styles,
-    ":host(.checked)": $-checked-styles,
+    ":host([selected])": $-checked-styles,
     ":host([size=small])": $-small-styles,
     ":host([size=large])": $-large-styles,
     ":host([disabled])": $-disabled-styles,
