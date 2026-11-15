@@ -1,25 +1,13 @@
-import {
-  AsyncClickEvent,
-  type AsyncClickEventOptions,
-} from "./async-click-event.js";
+import type { AsyncEvent } from "./async-event.js";
+import { type AsyncEventInit } from "./async-event.js";
 
 const noop = (): void => {
   // do nothing
 };
 
-export interface DispatchAsyncEventOptions extends AsyncClickEventOptions {
-  /**
-   * @override
-   * @defaultValue `true`
-   */
-  bubbles?: boolean;
-
-  /**
-   * @override
-   * @defaultValue `true`
-   */
-  composed?: boolean;
-
+export interface DispatchAsyncEventOptions<
+  Result = unknown,
+> extends AsyncEventInit {
   /**
    * The element that should trigger the `dispatchEvent`.
    */
@@ -30,21 +18,25 @@ export interface DispatchAsyncEventOptions extends AsyncClickEventOptions {
    * `event.waitUntil`.
    */
   onBeforeWait?: () => void;
+
+  EventClass: new (init?: AsyncEventInit) => AsyncEvent<Result>;
 }
 
-export interface DispatchAsyncEventResult {
+export interface DispatchAsyncEventResult<Result = unknown> {
   awaited: boolean;
-  results: readonly PromiseSettledResult<unknown>[];
+  results: readonly PromiseSettledResult<Result>[];
   rejected: boolean;
+  fulfilled: readonly Result[];
 }
 
 /**
- * This is used to dispatch or redispatch the {@link AsyncClickEvent} from a
+ * This is used to dispatch or redispatch the {@link AsyncEvent} from a
  * custom element.
  *
  * @example Async Button Example
 ```ts
 await dispatchAsyncEvent({
+  EventClass: AsyncClickEvent,
   element: this,
   onBeforeWait: () => {
     this.pending = true;
@@ -55,32 +47,38 @@ this.pending = false;
  *
  * @see redispatchAsyncEvent to shadow boundary crossing
  */
-export async function dispatchAsyncEvent(
-  options: DispatchAsyncEventOptions,
-): Promise<DispatchAsyncEventResult> {
-  const { element, onBeforeWait = noop, ...eventInit } = options;
+export async function dispatchAsyncEvent<Result = unknown>(
+  options: DispatchAsyncEventOptions<Result>,
+): Promise<DispatchAsyncEventResult<Result>> {
+  const {
+    element,
+    onBeforeWait = noop,
+    EventClass,
+    ...eventInitDict
+  } = options;
 
-  const asyncEvent = new AsyncClickEvent({
-    bubbles: true,
-    composed: true,
-    ...eventInit,
-  });
+  const asyncEvent = new EventClass(eventInitDict);
   element.dispatchEvent(asyncEvent);
   if (asyncEvent.promises.length === 0) {
     return {
       awaited: false,
       results: [],
       rejected: false,
+      fulfilled: [],
     };
   }
 
   onBeforeWait();
   const results = await Promise.allSettled(asyncEvent.promises);
+
   let rejected = false;
+  const fulfilled: Result[] = [];
   for (const result of results) {
     if (result.status === "rejected") {
       rejected = true;
       reportError(result.reason);
+    } else {
+      fulfilled.push(result.value);
     }
   }
 
@@ -88,11 +86,12 @@ export async function dispatchAsyncEvent(
     awaited: true,
     results,
     rejected,
+    fulfilled,
   };
 }
 
 export interface RedispatchAsyncEventOptions extends DispatchAsyncEventOptions {
-  sourceEvent: AsyncClickEvent;
+  sourceEvent: AsyncEvent;
 }
 
 /**

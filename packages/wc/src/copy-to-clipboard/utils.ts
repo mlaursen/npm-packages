@@ -1,9 +1,14 @@
-import { AsyncClickEvent } from "../utils/async-click-event.js";
+import { dispatchAsyncEvent } from "../utils/dispatch-async-event.js";
+import {
+  ClipboardCopyDataEvent,
+  ClipboardCopyErrorEvent,
+  ClipboardCopyEvent,
+} from "./events.js";
 import type {
+  ClipboardCopyErrorEventDetail,
+  ClipboardCopyEventDetail,
   ClipboardData,
   CopyToClipboardOptions,
-  ClipboardCopyEventDetail,
-  ClipboardCopyErrorEventDetail,
 } from "./types.js";
 
 const noop = (): void => {
@@ -17,25 +22,18 @@ async function tryAsyncClickEvent<D extends ClipboardData>(
     return;
   }
 
-  const asyncEvent = new AsyncClickEvent<string | ClipboardItems>({
-    name: "clipboard-copy-data",
+  const { awaited, rejected, fulfilled } = await dispatchAsyncEvent({
+    EventClass: ClipboardCopyDataEvent,
+    element,
     bubbles: true,
     composed: true,
   });
-  element.dispatchEvent(asyncEvent);
-  if (asyncEvent.promises.length !== 1) {
+
+  if (!awaited || rejected || fulfilled.length !== 1) {
     return;
   }
 
-  let data: ClipboardData | undefined;
-  try {
-    data = await asyncEvent.promises[0];
-  } catch {
-    // silently fail if these promises failed
-    return;
-  }
-
-  // but throw error if invalid type was returned
+  const data = fulfilled[0];
   if (
     typeof data !== "string" &&
     !(data instanceof ClipboardItem) &&
@@ -98,11 +96,7 @@ export async function copyToClipboard<D extends ClipboardData>(
     };
 
     element?.dispatchEvent(
-      new CustomEvent("clipboard-copy-error", {
-        bubbles: true,
-        composed: true,
-        detail,
-      }),
+      new ClipboardCopyErrorEvent(detail, { bubbles: true, composed: true }),
     );
     onError(detail);
 
@@ -111,19 +105,7 @@ export async function copyToClipboard<D extends ClipboardData>(
 
   const detail: ClipboardCopyEventDetail<D> = { data: resolved };
   element?.dispatchEvent(
-    new CustomEvent("clipboard-copy", {
-      bubbles: true,
-      composed: true,
-      detail,
-    }),
+    new ClipboardCopyEvent(detail, { bubbles: true, composed: true }),
   );
   onCopy(detail);
-}
-
-declare global {
-  interface GlobalEventHandlersEventMap {
-    "clipboard-copy-data": AsyncClickEvent<ClipboardData>;
-    "clipboard-copy": CustomEvent<ClipboardCopyEventDetail>;
-    "clipboard-copy-error": CustomEvent<ClipboardCopyErrorEventDetail>;
-  }
 }

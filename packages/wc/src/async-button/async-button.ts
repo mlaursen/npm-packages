@@ -4,9 +4,9 @@ import { ifDefined } from "lit/directives/if-defined.js";
 
 import { Button } from "../button/button.js";
 import type { ProgressVariant } from "../progress/types.js";
-import { AsyncClickEvent } from "../utils/async-click-event.js";
 import { dispatchAsyncEvent } from "../utils/dispatch-async-event.js";
 import styles from "./async-button-styles.js";
+import { AsyncClickEvent } from "./events.js";
 import type {
   AsyncButtonDisabledVariant,
   AsyncButtonProperties,
@@ -166,10 +166,13 @@ export class AsyncButton extends Button implements AsyncButtonProperties {
     }
 
     await dispatchAsyncEvent({
+      EventClass: AsyncClickEvent,
       element: this,
       onBeforeWait: () => {
         this.pending = true;
       },
+      bubbles: true,
+      composed: true,
     });
     this.pending = false;
   }
