@@ -17,7 +17,7 @@ export type BoxAlignItems = OverridableStringUnion<
 >;
 
 export type DefaultBoxJustifyContent =
-  | BoxAlignItems
+  | DefaultBoxAlignItems
   | "space-around"
   | "space-between"
   | "space-evenly";
@@ -95,21 +95,21 @@ export interface BoxProperties {
    *
    * @defaultValue `false`
    */
-  inline?: boolean;
+  inline: boolean;
 
   /**
    * @see BoxGrid
    * @inheritdoc BoxGrid
    * @defaultValue `false`
    */
-  grid?: BoxGrid;
+  grid: BoxGrid;
 
   /**
    * Set to `true` to apply `width: 100%`.
    *
    * @defaultValue `false`
    */
-  fullWidth?: boolean;
+  fullWidth: boolean;
 
   /**
    * Set to `true` to use `flex-direction: column` or `flex-direction:
@@ -119,7 +119,7 @@ export interface BoxProperties {
    *
    * @defaultValue `false`
    */
-  stacked?: boolean;
+  stacked: boolean;
 
   /**
    * Set to `true` to use `flex-direction: row-reversed` or `flex-direction:
@@ -129,22 +129,22 @@ export interface BoxProperties {
    *
    * @defaultValue `false`
    */
-  reversed?: boolean;
+  reversed: boolean;
 
   /**
    * @see BoxGap
    * @inheritdoc BoxGap
    * @defaultValue `"all"`
    */
-  gap?: BoxGap;
+  gap: BoxGap;
 
   /**
    * @defaultValue `false`
    */
-  nowrap?: boolean;
+  nowrap: boolean;
 
   /**
    * @defaultValue `"all"`
    */
-  padding?: BoxPadding;
+  padding: BoxPadding;
 }

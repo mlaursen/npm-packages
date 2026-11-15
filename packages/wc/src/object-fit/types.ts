@@ -51,7 +51,7 @@ export interface ObjectFitProperties {
    *
    * @defaultValue `false`
    */
-  inline?: boolean;
+  inline: boolean;
 
   /**
    * This sets the `object-fit` property allowing the content to be resized to
@@ -60,5 +60,5 @@ export interface ObjectFitProperties {
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/CSS/object-fit}
    * @defaultValue `"contain"`
    */
-  variant?: ObjectFitVariant;
+  variant: ObjectFitVariant;
 }

@@ -12,11 +12,11 @@ export class List extends BaseList implements ListProperties {
   static override styles = [...BaseList.styles, styles];
   static readonly elementName: string = "mwc-list";
 
-  @property()
+  @property({ reflect: true })
   size: ListSize = "large";
 
-  @property({ type: Boolean })
-  horizontal?: boolean;
+  @property({ type: Boolean, reflect: true })
+  horizontal = false;
 
   override render(): TemplateResult {
     return html`<slot></slot>`;

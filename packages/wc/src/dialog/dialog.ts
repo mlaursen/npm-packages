@@ -226,10 +226,10 @@ export class Dialog extends BaseDialog implements DialogProperties {
   @property({ reflect: true })
   shape: DialogShape = "round";
 
-  @property()
-  width?: DialogWidth;
+  @property({ reflect: true })
+  width: DialogWidth | null = null;
 
-  @property()
+  @property({ reflect: true })
   backdrop: DialogBackdropVariant = "visible";
 
   @property({ type: Boolean, attribute: "disable-scroll-lock" })

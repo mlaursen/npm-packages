@@ -36,7 +36,7 @@ export class AppBarTitle extends LitElement implements AppBarTitleProperties {
   @property({ type: Boolean })
   subtitle?: boolean;
 
-  @property()
+  @property({ reflect: true })
   position: AppBarTitlePosition = "start";
 
   override render(): TemplateResult {

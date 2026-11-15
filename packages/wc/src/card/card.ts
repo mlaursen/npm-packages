@@ -71,7 +71,7 @@ export class Card extends BaseCard implements CardProperties {
   @property()
   justify: BoxJustifyContent = "stretch";
 
-  @property({ type: Boolean })
+  @property({ type: Boolean, reflect: true })
   inline = false;
 
   @property()
@@ -81,7 +81,7 @@ export class Card extends BaseCard implements CardProperties {
   stacked = true;
 
   @property({ type: Boolean })
-  reversed?: boolean;
+  reversed = false;
 
   @property()
   gap: BoxGap = "none";
@@ -98,10 +98,10 @@ export class Card extends BaseCard implements CardProperties {
   @property({ reflect: true })
   shape: CardShape = "round";
 
-  @property({ type: Boolean })
+  @property({ type: Boolean, reflect: true })
   clickable = false;
 
-  @property({ type: Boolean })
+  @property({ type: Boolean, reflect: true })
   dragging = false;
 
   // link properties

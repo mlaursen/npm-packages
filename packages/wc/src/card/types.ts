@@ -29,37 +29,37 @@ export interface CardBoxProperties extends Omit<BoxProperties, "fullWidth"> {
    * @override
    * @defaultValue `"stretch"`
    */
-  align?: BoxAlignItems;
+  align: BoxAlignItems;
 
   /**
    * @override
    * @defaultValue `"stretch"`
    */
-  justify?: BoxJustifyContent;
+  justify: BoxJustifyContent;
 
   /**
    * @override
    * @defaultValue `true`
    */
-  stacked?: boolean;
+  stacked: boolean;
 
   /**
    * @override
    * @defaultValue `"none"`
    */
-  gap?: BoxGap;
+  gap: BoxGap;
 
   /**
    * @override
    * @defaultValue `true`
    */
-  nowrap?: boolean;
+  nowrap: boolean;
 
   /**
    * @override
    * @defaultValue `"none"`
    */
-  padding?: BoxPadding;
+  padding: BoxPadding;
 }
 
 export interface CardProperties
@@ -67,12 +67,12 @@ export interface CardProperties
   /**
    * @defaultValue `"elevated"`
    */
-  variant?: CardVariant;
+  variant: CardVariant;
 
   /**
    * @defaultValue `"round"`
    */
-  shape?: CardShape;
+  shape: CardShape;
 
   /**
    * @defaultValue `false`

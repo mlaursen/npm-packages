@@ -103,7 +103,6 @@ export class Sheet extends BaseSheet implements SheetProperties {
   @property({ reflect: true })
   position: SheetPosition = "right";
 
-  @property({ reflect: true })
   override width: DialogWidth = "extra-small";
 
   @property({ attribute: "header-focus" })

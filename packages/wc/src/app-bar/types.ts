@@ -1,5 +1,7 @@
 import type { OverridableStringUnion } from "@mlaursen/utils";
 
+import type { ElevationProperties } from "../elevation/types.js";
+import type { PaletteProperties } from "../palette/types.js";
 import type { DefaultComponentSize } from "../types.js";
 
 export interface AppBarSizeOverrides {}
@@ -55,24 +57,19 @@ export type AppBarScrollBehavior = OverridableStringUnion<
   AppBarScrollOverrides
 >;
 
-export interface AppBarProperties {
+export interface AppBarProperties
+  extends ElevationProperties, PaletteProperties {
   /**
-   * @see AppBarSize
-   * @inheritdoc AppBarSize
    * @defaultValue `"small"`
    */
   size: AppBarSize;
 
   /**
-   * @see AppBarVariant
-   * @inheritdoc AppBarVariant
    * @defaultValue `"flexible"`
    */
   variant: AppBarVariant;
 
   /**
-   * @see AppBarPosition
-   * @inheritdoc AppBarPosition
    * @defaultValue `"top"`
    */
   position: AppBarPosition;
@@ -121,10 +118,9 @@ export interface AppBarProperties {
   disableActions: boolean;
 
   /**
-   * Set this to `true` remove the elevation from the app bar and just render
-   * with borders.
-   *
-   * @defaultValue `false`
+   * @see ElevationProperties.elevated
+   * @override
+   * @defaultValue `true`
    */
-  disableElevation: boolean;
+  elevated: boolean;
 }

@@ -18,10 +18,10 @@ export function PaletteMixin<T extends StylableLitElement>(
   class PaletteStyledElement extends Base implements PaletteProperties {
     static override styles = mergeStyles(Base, styles);
 
-    @property()
+    @property({ reflect: true })
     background?: PaletteBackgroundColor;
 
-    @property()
+    @property({ reflect: true })
     color?: PaletteTextColor;
   }
 

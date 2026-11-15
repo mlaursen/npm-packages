@@ -21,7 +21,7 @@ export class Progress extends BaseStyledProgress implements ProgressProperties {
   @property({ reflect: true })
   override role = "progressbar" as const;
 
-  @property()
+  @property({ reflect: true })
   variant: ProgressVariant = "primary";
 
   @property({ type: Number })
@@ -36,16 +36,16 @@ export class Progress extends BaseStyledProgress implements ProgressProperties {
   @property({ type: Number })
   buffer = this.min;
 
-  @property({ type: Boolean, attribute: "disable-gap" })
+  @property({ type: Boolean, attribute: "disable-gap", reflect: true })
   disableGap = false;
 
-  @property({ type: Boolean, attribute: "disable-transition" })
+  @property({ type: Boolean, attribute: "disable-transition", reflect: true })
   disableTransition = false;
 
-  @property({ type: Boolean })
+  @property({ type: Boolean, reflect: true })
   paused = false;
 
-  @property({ type: Boolean })
+  @property({ type: Boolean, reflect: true })
   reversed = false;
 
   /**

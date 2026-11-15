@@ -13,9 +13,18 @@ export interface RippleAnimateOptions extends BaseAnimationOptions {
 }
 
 export interface InteractionProperties {
+  /**
+   * @defaultValue `false`
+   */
   disabled: boolean;
+  /**
+   * @defaultValue `false`
+   */
   disableRipple: boolean;
 
+  /**
+   * @defaultValue `"outward"`
+   */
   interaction: InteractionDirection;
 }
 

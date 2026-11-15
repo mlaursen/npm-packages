@@ -113,7 +113,7 @@ export interface DialogProperties extends OpenCloseAnimatedElementProperties {
    * content. This can also be configured by setting the `--mwc-dialog-width`
    * custom property.
    */
-  width?: DialogWidth;
+  width: DialogWidth | null;
 
   /**
    * @defaultValue `"round"`

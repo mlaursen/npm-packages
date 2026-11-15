@@ -19,14 +19,14 @@ export class LinearProgress
   @property({ attribute: "aria-orientation", reflect: true })
   override ariaOrientation = "horizontal";
 
-  @property()
+  @property({ reflect: true })
   size: LinearProgressSize = "small";
 
   @property({ reflect: true })
   shape: LinearProgressShape = "round";
 
-  @property({ type: Boolean, attribute: "disable-stop-indicator" })
-  disableStopIndicator = false;
+  @property({ reflect: true, attribute: "stop-indicator" })
+  stopIndicator: "visible" | "hidden" = "visible";
 
   override render(): TemplateResult {
     return html`

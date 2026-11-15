@@ -9,9 +9,8 @@ export class IconButton extends Button implements IconButtonProperties {
   static override styles = [...Button.styles, styles];
   static override readonly elementName: string = "mwc-icon-button";
 
-  @property({ reflect: true })
   override variant: ButtonVariant = "text";
 
-  @property()
+  @property({ reflect: true })
   width: IconButtonWidth | null = null;
 }

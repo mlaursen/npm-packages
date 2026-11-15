@@ -4,7 +4,7 @@ export interface AppBarTitleProperties {
   /**
    * @defaultValue `"small"`
    */
-  size?: AppBarSize;
+  size: AppBarSize;
 
   /**
    * Set this to `true` when providing a
@@ -17,5 +17,5 @@ export interface AppBarTitleProperties {
   /**
    * @defaultValue `"start"`
    */
-  position?: AppBarTitlePosition;
+  position: AppBarTitlePosition;
 }

@@ -13,5 +13,5 @@ export type IconSize = OverridableStringUnion<
 
 export interface IconProperties extends PaletteProperties, MarginProperties {
   /** @defaultValue `"medium"` */
-  size?: IconSize;
+  size: IconSize;
 }

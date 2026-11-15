@@ -48,7 +48,7 @@ export class CopyToClipboard
   @property({ type: Boolean, attribute: "allow-empty" })
   allowEmpty = false;
 
-  @property()
+  @property({ reflect: true })
   position: CopyToClipboardPosition = "static";
 
   @property()

@@ -4,6 +4,7 @@ import { property } from "lit/decorators.js";
 
 import { ElevationMixin } from "../elevation/elevation-mixin.js";
 import { PaletteMixin } from "../palette/palette-mixin.js";
+import { mergeStyles } from "../utils/mergeStyles.js";
 import styles from "./app-bar-styles.js";
 import type {
   AppBarPosition,
@@ -76,13 +77,15 @@ const BaseAppBar = ElevationMixin(PaletteMixin(LitElement));
  * grid placement. You probably don't want to use this.
  */
 export class AppBar extends BaseAppBar implements AppBarProperties {
-  static override styles = [...BaseAppBar.styles, styles];
+  static override styles = mergeStyles(BaseAppBar, styles);
   static readonly elementName: string = "mwc-app-bar";
+
+  override elevated = true;
 
   @property({ reflect: true })
   size: AppBarSize = "small";
 
-  @property({ reflect: true })
+  @property()
   variant: AppBarVariant = "flexible";
 
   @property({ reflect: true })
@@ -106,9 +109,6 @@ export class AppBar extends BaseAppBar implements AppBarProperties {
   @property({ type: Boolean, attribute: "disable-actions" })
   disableActions = false;
 
-  @property({ type: Boolean, attribute: "disable-elevation" })
-  disableElevation = false;
-
   #observer?: IntersectionObserver;
   #scrollSentinel?: HTMLDivElement;
 
@@ -117,14 +117,6 @@ export class AppBar extends BaseAppBar implements AppBarProperties {
 
     this.#observer?.disconnect();
     this.#scrollSentinel?.remove();
-  }
-
-  protected override willUpdate(changed: PropertyValues): void {
-    super.willUpdate(changed);
-
-    if (changed.has("disableElevation")) {
-      this.toggleAttribute("elevated", !this.disableElevation);
-    }
   }
 
   protected override updated(changed: PropertyValues): void {

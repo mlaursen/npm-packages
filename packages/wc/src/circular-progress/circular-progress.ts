@@ -17,10 +17,10 @@ export class CircularProgress
   static override styles = [...Progress.styles, styles];
   static readonly elementName: string = "mwc-circular-progress";
 
-  @property()
+  @property({ reflect: true })
   shape: CircularProgressShape = "round";
 
-  @property()
+  @property({ reflect: true })
   size: CircularProgressSize = "medium";
 
   @property({ reflect: true, attribute: "indicator-width" })

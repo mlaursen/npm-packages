@@ -75,19 +75,19 @@ export class Box extends BaseBox implements BoxProperties {
   grid: BoxGrid = false;
 
   @property({ type: Boolean, attribute: "full-width", reflect: true })
-  fullWidth?: boolean;
+  fullWidth = false;
 
   @property({ type: Boolean, reflect: true })
-  stacked?: boolean;
+  stacked = false;
 
   @property({ type: Boolean, reflect: true })
-  reversed?: boolean;
+  reversed = false;
 
   @property({ reflect: true })
   gap: BoxGap = "all";
 
   @property({ type: Boolean, reflect: true })
-  nowrap?: boolean;
+  nowrap = false;
 
   @property({ reflect: true })
   padding: BoxPadding = "all";

@@ -28,7 +28,7 @@ $-tokens: (
   gap: "spacing.extra-small",
   padding-x: "spacing.extra-small",
   padding-y: auto,
-  height: 4rem,
+  height: "app-bar.small.height",
   columns: auto 1fr auto,
   scrolled: (
     background: "palette.surface-container",
@@ -36,6 +36,9 @@ $-tokens: (
   ),
   stacked: (
     padding-y: '"spacing.small" "spacing.medium"',
+  ),
+  small: (
+    height: 4rem,
   ),
   medium: (
     height: 7rem,
@@ -69,7 +72,6 @@ $-base-styles: (
   padding-block: "app-bar.padding-y",
   padding-inline: "app-bar.padding-x",
   position: "app-bar.position",
-  z-index: "z-index.sticky",
 );
 $-position-top-styles: (
   "app-bar.position-v": "0 auto",
@@ -111,10 +113,12 @@ $-scrolled-styles: (
 );
 $-fixed-styles: (
   "app-bar.position": fixed,
+  z-index: "z-index.fixed",
 );
 $-fixed-upwards-styles: ();
 $-sticky-styles: (
   "app-bar.position": sticky,
+  z-index: "z-index.sticky",
 );
 $-sticky-upwards-styles: ();
 
@@ -151,7 +155,7 @@ $-sticky-upwards-styles: ();
     ".actions": $-actions-container-styles,
     "::slotted([slot=actions])": $-actions-styles,
 
-    ":host(:not([size=small]))": $-multiple-rows-styles,
+    ":host(:is([size]:not([size=small])))": $-multiple-rows-styles,
     ":host([size^=medium])": $-medium-styles,
     ":host([size=medium-subtitle])": $-medium-subtitle-styles,
     ":host([size^=large])": $-large-styles,

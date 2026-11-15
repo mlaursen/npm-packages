@@ -17,6 +17,17 @@ export type AvatarShape = OverridableStringUnion<
 >;
 
 export interface AvatarProperties {
-  size?: AvatarSize;
-  shape?: AvatarShape;
+  /**
+   * @defaultValue `"medium"`
+   */
+  size: AvatarSize;
+
+  /**
+   * When this is `null`, the size can be customized using the
+   * `--mwc-avatar-shape` custom property which defaults to the `"round"`
+   * shape.
+   *
+   * @defaultValue `"round"`
+   */
+  shape: AvatarShape;
 }

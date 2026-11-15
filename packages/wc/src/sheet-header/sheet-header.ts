@@ -31,13 +31,13 @@ export class SheetHeader extends LitElement implements SheetHeaderProperties {
   @property({ attribute: "auto-focus" })
   autoFocus: SheetHeaderAutoFocus = "auto";
 
-  @property({ type: Boolean, attribute: "back-button" })
+  @property({ type: Boolean, reflect: true, attribute: "back-button" })
   backButton = false;
 
   @property({ attribute: "back-label" })
   backLabel = "Back";
 
-  @property({ type: Boolean, attribute: "close-button" })
+  @property({ type: Boolean, reflect: true, attribute: "close-button" })
   closeButton = false;
 
   @property({ attribute: "close-label" })

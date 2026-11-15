@@ -48,10 +48,10 @@ export class TextField extends BaseTextField implements TextFieldProperties {
   @property({ reflect: true })
   variant: TextFieldVariant = "outlined";
 
-  @property()
+  @property({ reflect: true })
   size: TextFieldSize = "normal";
 
-  @property()
+  @property({ reflect: true })
   shape: TextFieldShape = "square";
 
   /**
@@ -177,9 +177,6 @@ export class TextField extends BaseTextField implements TextFieldProperties {
   @property({ type: Number })
   cols?: number;
 
-  @state()
-  _hasLabel = false;
-
   @property({ type: Boolean, reflect: true, attribute: "focus-visible" })
   focusVisible = false;
 
@@ -202,6 +199,9 @@ export class TextField extends BaseTextField implements TextFieldProperties {
 
   @query(".resize")
   _resize?: HTMLDivElement;
+
+  @state()
+  _hasLabel = false;
 
   /**
    * [MDN Reference](https://developer.mozilla.org/docs/Web/API/HTMLElement/focus)

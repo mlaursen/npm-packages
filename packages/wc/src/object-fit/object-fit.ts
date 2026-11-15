@@ -29,10 +29,10 @@ export class ObjectFit extends LitElement implements ObjectFitProperties {
   static override styles = styles;
   static readonly elementName: string = "mwc-object-fit";
 
-  @property({ type: Boolean })
+  @property({ type: Boolean, reflect: true })
   inline = false;
 
-  @property()
+  @property({ reflect: true })
   variant: ObjectFitVariant = "contain";
 
   override render(): TemplateResult {

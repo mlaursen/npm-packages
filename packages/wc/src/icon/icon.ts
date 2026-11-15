@@ -11,7 +11,7 @@ const BaseIcon = PaletteMixin(MarginMixin(LitElement));
 export class Icon extends BaseIcon implements IconProperties {
   static override styles = [...BaseIcon.styles, styles];
 
-  @property()
+  @property({ reflect: true })
   size: IconSize = "medium";
 
   override connectedCallback(): void {

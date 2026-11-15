@@ -1,5 +1,3 @@
-import { property } from "lit/decorators.js";
-
 import type { Margin } from "../margin/types.js";
 import type { PaletteTextColor } from "../palette/types.js";
 import type { TypographySize } from "../typography/types.js";
@@ -14,12 +12,7 @@ export class DialogContent
   static override styles = [...Typography.styles, styles];
   static override readonly elementName: string = "mwc-dialog-content";
 
-  @property({ reflect: true })
   override size: TypographySize = "medium";
-
-  @property({ reflect: true })
   override color: PaletteTextColor = "on-surface-variant";
-
-  @property({ reflect: true })
   override margin: Margin = "none";
 }

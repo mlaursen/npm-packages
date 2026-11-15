@@ -60,7 +60,7 @@ export class SelectedDialog extends LitElement {
   }
 
   #renderSymbol(
-    overrides: MaterialSymbolProperties & { className?: string } = {},
+    overrides: Partial<MaterialSymbolProperties> & { className?: string } = {},
   ): TemplateResult {
     const { className = "", ...props } = overrides;
 

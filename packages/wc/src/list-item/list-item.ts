@@ -28,7 +28,7 @@ export class ListItem extends BaseListItem implements ListItemProperties {
   override interaction: InteractionDirection = "inward";
 
   @property({ type: Boolean })
-  selected?: boolean;
+  selected = false;
 
   @property()
   rel?: string;

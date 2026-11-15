@@ -8,5 +8,8 @@ export type IconButtonWidth = OverridableStringUnion<
 >;
 
 export interface IconButtonProperties {
+  /**
+   * @defaultValue `null`
+   */
   width: IconButtonWidth | null;
 }

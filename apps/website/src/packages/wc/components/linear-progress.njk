@@ -14,7 +14,7 @@ toggles:
   - paused
   - disableGap
   - disableTransition
-  - disableStopIndicator
+  - stopIndicator
 ---
 
 <form>
@@ -115,7 +115,8 @@ toggles:
           <mwc-typography variant="label" text-transform="capitalize">
             <label>
               <mwc-box padding="none">
-                <mwc-checkbox name="{{ toggle }}">
+                <mwc-checkbox name="{{ toggle }}"
+                              {{ "checked" if toggle == "stopIndicator"}}>
                 </mwc-checkbox>
                 {{ toggle }}
               </mwc-box>

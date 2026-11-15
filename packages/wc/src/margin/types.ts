@@ -31,5 +31,5 @@ export interface MarginProperties {
    * @see DefaultMargin
    * @see Margin
    */
-  margin?: Margin;
+  margin: Margin | null;
 }

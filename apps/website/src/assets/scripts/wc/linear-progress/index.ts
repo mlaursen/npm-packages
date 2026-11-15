@@ -1,4 +1,4 @@
-import { clamp, kebabCase } from "@mlaursen/utils";
+import { clamp } from "@mlaursen/utils";
 import {
   Checkbox,
   isCustomElement,
@@ -30,20 +30,32 @@ const syncValue = (checked: boolean): void => {
   }
 };
 
+const BOOLEAN_KEYS = [
+  "reversed",
+  "paused",
+  "disableGap",
+  "disableTransition",
+] as const;
+
+function isBooleanAttribute(
+  name: string,
+): name is (typeof BOOLEAN_KEYS)[number] {
+  return BOOLEAN_KEYS.includes(name as "reversed");
+}
+
 form.addEventListener("change", (event) => {
   if (isCustomElement(event.target, Radio)) {
     editable.setAttribute(event.target.name, event.target.value);
   } else if (isCustomElement(event.target, Checkbox)) {
     const { name, checked } = event.target;
     if (name === "vertical") {
-      editable.setAttribute(
-        "aria-orientation",
-        checked ? "vertical" : "horizontal",
-      );
+      editable.ariaOrientation = checked ? "vertical" : "horizontal";
     } else if (name === "indeterminate") {
       syncValue(checked);
-    } else {
-      editable.toggleAttribute(kebabCase(name), checked);
+    } else if (name === "stopIndicator") {
+      editable.stopIndicator = checked ? "visible" : "hidden";
+    } else if (isBooleanAttribute(name)) {
+      editable[name] = checked;
     }
   } else if (isCustomElement(event.target, TextField)) {
     let value = event.target.valueAsNumber;

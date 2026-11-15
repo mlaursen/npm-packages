@@ -1,5 +1,8 @@
 import type { OverridableStringUnion } from "@mlaursen/utils";
 
+import type { AriaMixinProperties } from "../aria-mixin/types.js";
+import type { PaletteProperties } from "../palette/types.js";
+
 export interface ListSizeOverrides {}
 export type DefaultListSize = "small" | "large";
 export type ListSize = OverridableStringUnion<
@@ -7,19 +10,14 @@ export type ListSize = OverridableStringUnion<
   ListSizeOverrides
 >;
 
-export interface ListProperties {
-  /**
-   * @defaultValue `"ul`
-   */
-  as?: "ul" | "ol" | "div";
-
+export interface ListProperties extends AriaMixinProperties, PaletteProperties {
   /**
    * @defaultValue `"large"`
    */
-  size?: ListSize;
+  size: ListSize;
 
   /**
    * @defaultValue `false`
    */
-  horizontal?: boolean;
+  horizontal: boolean;
 }

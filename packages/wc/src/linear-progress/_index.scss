@@ -435,7 +435,7 @@ $-stop-indicator-styles: (
       )
     ),
 );
-$-disable-stop-indicator-styles: (
+$-stop-indicator-hidden-styles: (
   #{-short-name(stop-indicator-display)}: none,
 );
 
@@ -505,7 +505,7 @@ $-disable-stop-indicator-styles: (
     ":host(:not([disable-transition])) .track":
       $-determinate-track-transition-styles,
 
-    ":host([disable-stop-indicator])": $-disable-stop-indicator-styles,
+    ":host([stop-indicator=hidden])": $-stop-indicator-hidden-styles,
 
     ":host([value])": $-determinate-styles,
     ":host(:not([value]))": $-indeterminate-styles,

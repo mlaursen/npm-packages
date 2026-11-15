@@ -36,10 +36,10 @@ export interface LinearProgressProperties extends ProgressProperties {
   shape: LinearProgressShape;
 
   /**
-   * Set to `true` to disable the dot that appears at the end of the linear
+   * Set to `"hidden"` to hide the dot that appears at the end of the linear
    * progress to show the trailing edge.
    *
-   * @defaultValue `false`
+   * @defaultValue `"visible"`
    */
-  disableStopIndicator: boolean;
+  stopIndicator: "visible" | "hidden";
 }
