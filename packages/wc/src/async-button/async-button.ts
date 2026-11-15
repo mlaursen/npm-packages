@@ -91,8 +91,6 @@ export class AsyncButton extends Button implements AsyncButtonProperties {
     super.willUpdate(changed);
 
     if (changed.has("pending") || changed.has("asyncDisabledVariant")) {
-      this.ariaBusy = this.pending ? "true" : null;
-
       if (this.#setDisabled && this.asyncDisabledVariant !== "disabled") {
         this.#setDisabled = false;
         this.removeAttribute("disabled");
