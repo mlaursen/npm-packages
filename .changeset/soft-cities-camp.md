@@ -1,5 +1,5 @@
 ---
-"@mlaursen/node-utils": patch
+"@mlaursen/node-utils": minor
 "@mlaursen/release-script": patch
 ---
 
