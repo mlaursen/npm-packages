@@ -125,7 +125,47 @@ describe("createRelease", () => {
 
     expect(consoleError).toHaveBeenCalledWith("Auth token expired");
     expect(consoleLog).toHaveBeenCalledWith(
-      "The npm token is most likely expired or never created. Update the `.env.local` to include the latest GITHUB_TOKEN",
+      "The npm token is most likely expired or never created. Update the `.env.local` to include the latest `GITHUB_RELEASE_TOKEN`",
+    );
+    expect(consoleLog).toHaveBeenCalledWith(
+      "Regenerate the token: https://github.com/settings/personal-access-tokens",
+    );
+    expect(confirmMock).toHaveBeenCalledExactlyOnceWith({
+      message: "Try creating the Github release again?",
+    });
+  });
+
+  it("should reflect the current options in the error message if the release failed", async () => {
+    octokitRequestMock
+      .mockRejectedValueOnce("Auth token expired")
+      .mockResolvedValue({
+        data: { html_url: "https://github.com/release-url" },
+      });
+
+    await createRelease({
+      body: "Example changelog",
+      prerelease: false,
+      repo: "example-repo",
+      tagName: "example-repo@1.0.0",
+      envPath: ".env.example.test",
+      tokenName: "EXAMPLE_TOKEN_NAME",
+    });
+
+    expect(loadConfigFileMock).toHaveBeenCalledTimes(2);
+    expect(loadConfigFileMock.mock.calls[0]?.[0]).toEqual({
+      path: ".env.example.test",
+      override: false,
+    });
+    expect(loadConfigFileMock.mock.calls[1]?.[0]).toEqual({
+      path: ".env.example.test",
+      override: true,
+    });
+    expect(OctokitMock).toHaveBeenCalledTimes(2);
+    expect(octokitRequestMock).toHaveBeenCalledTimes(2);
+
+    expect(consoleError).toHaveBeenCalledWith("Auth token expired");
+    expect(consoleLog).toHaveBeenCalledWith(
+      "The npm token is most likely expired or never created. Update the `.env.example.test` to include the latest `EXAMPLE_TOKEN_NAME`",
     );
     expect(consoleLog).toHaveBeenCalledWith(
       "Regenerate the token: https://github.com/settings/personal-access-tokens",
