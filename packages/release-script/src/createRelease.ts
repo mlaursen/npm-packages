@@ -64,7 +64,7 @@ export async function createRelease(
 
     console.log();
     console.log(
-      "The npm token is most likely expired or never created. Update the `.env.local` to include the latest GITHUB_TOKEN",
+      `The npm token is most likely expired or never created. Update the \`${envPath}\` to include the latest \`${tokenName}\``,
     );
     console.log(
       "Regenerate the token: https://github.com/settings/personal-access-tokens",
