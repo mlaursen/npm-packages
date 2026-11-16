@@ -14,7 +14,7 @@ import { release } from "../packages/release-script/src/release.js";
 // 3. Publish hopefully works
 await release({
   repo: "npm-packages",
-  buildCommand: "build-dist",
+  buildCommand: "build-release-dist",
   cleanCommand: "clean-dist",
   packagePaths: {
     "@mlaursen/cli": "./packages/cli",
