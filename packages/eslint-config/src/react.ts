@@ -1,5 +1,5 @@
+import eslintReact from "@eslint-react/eslint-plugin";
 import { type Linter } from "eslint";
-import reactPlugin from "eslint-plugin-react";
 import reactHooksPlugin from "eslint-plugin-react-hooks";
 import reactRefreshPlugin from "eslint-plugin-react-refresh";
 
@@ -55,9 +55,7 @@ export interface ReactOptions {
  * ```
  *
  * Enables:
- * - `eslint-plugin-react` with:
- *   - flat.recommended
- *   - flat['jsx-runtime']
+ * - `@eslint-react/eslint-plugin`
  * - `eslint-plugin-react-hooks` with:
  *   - recommended rules
  *   - compiler rules (if `true` is provided)
@@ -67,18 +65,9 @@ export const react = (options: ReactOptions = {}): Linter.Config[] => {
 
   return [
     {
-      ...reactPlugin.configs.flat["recommended"],
+      ...eslintReact.configs["recommended-typescript"],
       name: `${BASE_NAME}/react`,
       files: JSX_FILES,
-      settings: {
-        react: {
-          version: "detect",
-        },
-      },
-      rules: {
-        ...reactPlugin.configs.flat["recommended"]?.rules,
-        ...reactPlugin.configs.flat["jsx-runtime"]?.rules,
-      },
     },
     {
       ...reactHooksPlugin.configs.flat.recommended,
