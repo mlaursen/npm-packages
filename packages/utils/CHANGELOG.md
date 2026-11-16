@@ -1,5 +1,16 @@
 # @mlaursen/utils
 
+## 0.4.0
+
+### Minor Changes
+
+- 2b48f03: Added the simple randomInt util
+- 314d97e: Added clamp, loop, range, numberOfDigits, and percentage utils.
+
+### Patch Changes
+
+- 7108974: Added the sideEffects field to package.json
+
 ## 0.3.1
 
 ### Patch Changes

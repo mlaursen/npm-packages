@@ -1,5 +1,18 @@
 # @mlaursen/copy-scss-files
 
+## 0.2.3
+
+### Patch Changes
+
+- 468ac7c: Bump chokidar from v5 to v6
+- 7108974: Added the sideEffects field to package.json
+- Updated dependencies [72ed725]
+- Updated dependencies [468ac7c]
+- Updated dependencies [7108974]
+- Updated dependencies [e33bc07]
+- Updated dependencies [c5dc182]
+  - @mlaursen/node-utils@0.4.0
+
 ## 0.2.2
 
 ### Patch Changes

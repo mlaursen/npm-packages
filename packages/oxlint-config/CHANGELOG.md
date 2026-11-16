@@ -1,5 +1,11 @@
 # @mlaursen/oxlint-config
 
+## 1.0.4
+
+### Patch Changes
+
+- 7108974: Added the sideEffects field to package.json
+
 ## 1.0.3
 
 ### Patch Changes

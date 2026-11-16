@@ -1,5 +1,18 @@
 # @mlaursen/node-utils
 
+## 0.4.0
+
+### Minor Changes
+
+- e33bc07: Added a simple importOptional util for importing optional peer dependencies
+- c5dc182: Stopped using dotenv and created a small loadConfigFile wrapper for the process.loadConfigFile. No longer trust that package after the v1000 release of dotenv-expand and requiring hiding the ads.
+
+### Patch Changes
+
+- 72ed725: Bumped pretty-ms and pretty-bytes to latest
+- 468ac7c: Bump chokidar from v5 to v6
+- 7108974: Added the sideEffects field to package.json
+
 ## 0.3.2
 
 ### Patch Changes

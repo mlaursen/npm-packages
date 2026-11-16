@@ -1,5 +1,11 @@
 # @mlaursen/eslint-config
 
+## 12.0.14
+
+### Patch Changes
+
+- 7108974: Added the sideEffects field to package.json
+
 ## 12.0.13
 
 ### Patch Changes

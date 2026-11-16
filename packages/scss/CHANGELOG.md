@@ -1,5 +1,18 @@
 # @mlaursen/scss
 
+## 0.1.0
+
+### Minor Changes
+
+- f55e36d: Added a generateBrowserLookup helper to speed that process up
+- c80490a: Create compileScssAsync implementation for node
+
+### Patch Changes
+
+- 5d982bd: Bumped sass and postcss to latest
+- 7108974: Added the sideEffects field to package.json
+- bfa748c: Bump dependencies to latest
+
 ## 0.0.8
 
 ### Patch Changes

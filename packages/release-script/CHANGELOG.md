@@ -1,5 +1,18 @@
 # @mlaursen/release-script
 
+## 1.0.3
+
+### Patch Changes
+
+- 7108974: Added the sideEffects field to package.json
+- c5dc182: Stopped using dotenv and created a small loadConfigFile wrapper for the process.loadConfigFile. No longer trust that package after the v1000 release of dotenv-expand and requiring hiding the ads.
+- Updated dependencies [72ed725]
+- Updated dependencies [468ac7c]
+- Updated dependencies [7108974]
+- Updated dependencies [e33bc07]
+- Updated dependencies [c5dc182]
+  - @mlaursen/node-utils@0.4.0
+
 ## 1.0.2
 
 ### Patch Changes
