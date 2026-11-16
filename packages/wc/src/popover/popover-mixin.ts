@@ -104,6 +104,14 @@ export function PopoverMixin<T extends StylableLitElement>(
       super._closeElement();
     }
 
+    override _isOpenable(): boolean {
+      return !this.open || !this._popover?.matches(":popover-open");
+    }
+
+    override _isClosable(): boolean {
+      return this.open && !!this._popover;
+    }
+
     renderPopoverArrow(arrow?: TemplateResult): TemplateResult {
       return html`<div
           part="popover-arrow"
