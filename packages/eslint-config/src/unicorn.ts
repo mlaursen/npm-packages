@@ -39,6 +39,12 @@ export const unicorn: Linter.Config[] = [
       // I don't care about adding braces to switch cases. I'd prefer
       // `["error", "avoid"]` more though since it only adds them when needed.
       "unicorn/switch-case-braces": "off",
+
+      // don't agree with this one yet
+      "unicorn/no-asterisk-prefix-in-documentation-comments": "off",
+
+      // too many false positives to enable
+      "unicorn/consistent-boolean-name": "off",
     },
   },
   {
