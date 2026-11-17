@@ -1,5 +1,11 @@
 # @mlaursen/release-script
 
+## 1.0.4
+
+### Patch Changes
+
+- 859a7ba: Fixed the github token name and env file path so it reflects the provided options
+
 ## 1.0.3
 
 ### Patch Changes

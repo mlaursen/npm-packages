@@ -1,5 +1,16 @@
 # @mlaursen/eslint-config
 
+## 13.0.0
+
+### Major Changes
+
+- 822c0db: Require `eslint@10` and `typescript@6` or higher. Dropped `eslint-plugin-react` since it doesn't support it and swapped to `@eslint-react/eslint-plugin`.
+- 9caaa66: Bump eslint-plugin-unicorn from v64 to v80.
+
+### Patch Changes
+
+- 8d8ac11: Bump non-breaking dependencies to latest
+
 ## 12.0.14
 
 ### Patch Changes
